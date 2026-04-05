@@ -150,7 +150,7 @@ const ProductsPage = () => {
               </div>
             ))}
           </div>
-        )}
+        ) : null}
       </div>
     </div>
   );
