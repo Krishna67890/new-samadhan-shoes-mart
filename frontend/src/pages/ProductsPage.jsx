@@ -88,12 +88,7 @@ const ProductsPage = () => {
              <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-8"></div>
              <p className="text-slate-400 font-black tracking-[0.5em] uppercase text-[10px]">Synchronizing Catalog...</p>
           </div>
-        ) : error ? (
-           <div className="text-center py-20 bg-white rounded-[3rem] shadow-sm border border-slate-100 p-20">
-             <h3 className="text-2xl font-black text-slate-900 uppercase">Vault Offline</h3>
-             <p className="text-slate-500 mt-4 uppercase text-[10px] font-bold tracking-widest">Unable to retrieve elite collection. Please try again.</p>
-           </div>
-        ) : (
+        ) : (products && products.length > 0) ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12">
             {products.map((product) => (
               <div
