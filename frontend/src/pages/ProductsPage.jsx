@@ -5,11 +5,13 @@ import { AuthContext } from '../context/AuthContext';
 import useFetch from '../hooks/useFetch';
 import { Star, ChevronRight, Sparkles, ShoppingBag, MessageCircle } from 'lucide-react';
 
+import localProducts from '../utils/localProducts';
+
 const ProductsPage = () => {
   const { user, isAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();
   const { loading, error, request } = useFetch();
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState(localProducts);
 
   const isVerified = user?.role === 'admin' || user?.identityVerified;
 
@@ -44,7 +46,11 @@ const ProductsPage = () => {
     const fetchProducts = async () => {
       try {
         const data = await request('/api/products');
-        setProducts(data);
+        if (data && data.length > 0) {
+          setProducts(data);
+        } else {
+          setProducts(localProducts);
+        }
 
         setTimeout(() => {
           gsap.fromTo('.product-card',
@@ -54,6 +60,7 @@ const ProductsPage = () => {
         }, 100);
       } catch (err) {
         console.error("Fetch Error:", err);
+        setProducts(localProducts); // Fail gracefully to local data
       }
     };
     fetchProducts();
