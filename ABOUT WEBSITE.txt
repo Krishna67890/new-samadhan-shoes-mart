@@ -1,0 +1,30 @@
+ABOUT NEW SAMADHAN SHOES MART
+
+New Samadhan Shoes Mart is a high-tech, modern web platform designed for a premium boutique shoe shopping experience. Unlike traditional e-commerce sites, this platform is built with a "Local-First" philosophy, prioritizing speed, user privacy, and direct communication.
+
+CORE CONCEPTS:
+
+1. LOCAL-FIRST IDENTITY:
+Instead of a slow registration process involving databases and verification emails, the site uses "Identity Sync." User profiles, delivery addresses, and cart data are stored directly in the browser's LocalStorage. This makes the app incredibly fast and ensures the user is always "logged in" on their own device.
+
+2. DUAL-DIRECT WHATSAPP ORDERING:
+The checkout process is optimized for local business. When a user confirms an order in "The Vault" (Cart), the system automatically generates a professional, pre-filled WhatsApp message containing the user's name, phone, address, and selected shoes. It then opens direct chat tabs with the official Shopkeepers, bypassing middleman processing and ensuring instant order notification.
+
+3. ELITE AI VOICE ASSISTANT:
+The site features a context-aware AI guide using the Web Speech API (en-IN voice). This assistant provides real-time help:
+   - Welcoming users by name.
+   - Explaining specific shoe collections (Yeezy, Jordan, Air Max).
+   - Guiding users through the Identity Sync process.
+   - Confirming order totals and delivery locations during checkout.
+
+4. ZERO-BLUR DESIGN STANDARD:
+The UI is built for maximum legibility and high-contrast performance. We have enforced a strict "No-Blur" policy (removing backdrop-filters) to ensure the interface is crisp, accessible, and professional on all screens.
+
+5. QUOTA MANAGEMENT:
+To ensure the app never crashes due to browser storage limits (QuotaExceededError), the system proactively cleans up non-essential cached data (like GSAP animation caches) whenever an order is placed or identity is synced.
+
+BUSINESS TARGET:
+Primary Location: Nashik, Maharashtra.
+Focus: Premium Footwear (Nike, Adidas, Puma, Jordan).
+Developer: Krishna Patil Rajput (8080690631).
+Shopkeepers: 9423228843 / 8888644021.

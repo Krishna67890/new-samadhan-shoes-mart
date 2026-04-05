@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #0f172a;
+  --accent: #2563eb;
+  --luxury-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+}
+
+/* --- GLOBAL BLUR SUPPRESSION (VCS PROTOCOL) --- */
+* {
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+body {
+  @apply bg-slate-50 text-slate-900 antialiased;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  overflow-x: hidden;
+}
+
+/* --- 1. LUXURY MARKET TYPOGRAPHY --- */
+.market-heading {
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -0.06em;
+  line-height: 0.8;
+  text-transform: uppercase;
+  @apply font-black text-slate-950;
+}
+
+/* --- 2. THE "SNEAKER DROP" BUTTON --- */
+.btn-luxury {
+  @apply relative overflow-hidden bg-slate-900 text-slate-50 px-10 py-5 rounded-full font-black uppercase tracking-widest
+  hover:bg-blue-600 hover:text-white hover:-translate-y-2 active:scale-95 transition-all duration-500
+  shadow-[0_20px_50px_-10px_rgba(0,0,0,0.2)] border border-slate-900/10;
+}
+
+/* --- 3. GLASSMORPHISM FLOATING CARDS --- */
+.glass-card {
+  @apply bg-white border border-slate-200 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] rounded-[2.5rem] transition-all duration-700;
+  backdrop-filter: none !important;
+}
+
+.glass-card:hover {
+  @apply -translate-y-4 shadow-[0_64px_128px_-32px_rgba(0,0,0,0.15)] border-slate-300;
+}
+
+/* --- 4. THE PRODUCT GLOW --- */
+.product-glow {
+  @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-blue-500/5 rounded-full -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000;
+  filter: none !important;
+}
+
+/* --- 5. SMOOTH BRAND MARQUEE --- */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: inline-flex;
+  animation: marquee 40s linear infinite;
+  width: max-content;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* --- 6. CUSTOM LUXURY SCROLLBAR --- */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-slate-50;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 border-4 border-slate-50 rounded-full hover:bg-blue-600 transition-colors;
+}
+
+/* --- 7. LUXURY FORM INPUTS --- */
+input, select, textarea {
+  @apply bg-white border border-slate-200 rounded-[1.25rem] px-6 py-4 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-300 font-semibold text-slate-950;
+}
+
+input::placeholder, textarea::placeholder {
+  color: #64748b !important;
+  opacity: 1 !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+}
