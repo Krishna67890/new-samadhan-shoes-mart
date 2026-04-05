@@ -96,15 +96,6 @@ const CartPage = () => {
     }, 2000);
   };
 
-    setIsSent(true);
-
-    // 5. Technical Cleanup
-    setTimeout(() => {
-      localStorage.removeItem('cartItems'); // Clear cart after successful redirect
-      // We keep identity to avoid re-syncing, but clear heavy items
-    }, 2000);
-  };
-
   return (
     <div className="bg-slate-50 min-h-screen pt-28 pb-20 no-blur">
       <style dangerouslySetInnerHTML={{ __html: `
