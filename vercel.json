@@ -1,10 +1,13 @@
 {
-  "experimentalServices": {
-    "frontend": {
-      "entrypoint": "frontend"
+  "version": 2,
+  "rewrites": [
+    {
+      "source": "/(api|auth|products|orders|service|shop|upload|user|analytics|visitor)/(.*)",
+      "destination": "backend/server.js"
     },
-    "backend": {
-      "entrypoint": "backend"
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
-  }
+  ]
 }
