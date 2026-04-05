@@ -38,7 +38,7 @@ const ProductsPage = () => {
       return;
     }
 
-    const message = `Hello New Samadhan Shoes Mart! 👋\n\nI want to order this Masterpiece:\n\n👟 *Product:* ${product.name}\n🏷️ *Brand:* ${product.brand}\n💰 *Price:* ₹${product.price.toLocaleString()}\n📏 *Size:* To be confirmed\n📦 *Quantity:* 1\n\n--- CUSTOMER DETAILS ---\n👤 *Name:* ${user?.name || 'Guest'}\n📍 *Address:* ${user?.address || 'Not Provided'}\n🏙️ *City:* ${user?.city || 'Not Provided'}\n📮 *Pincode:* ${user?.pincode || 'Not Provided'}\n\n--- PAYMENT INTENT ---\nI am ready to proceed with the online payment via UPI/Bank Transfer. Please share the QR code or Payment Link.`;
+    const message = `Hello New Samadhan Shoes Mart! 👋\n\nI want to order this Masterpiece:\n\n👟 *Product:* ${product?.name}\n🏷️ *Brand:* ${product?.brand}\n💰 *Price:* ₹${Number(product?.price || 0).toLocaleString()}\n📏 *Size:* To be confirmed\n📦 *Quantity:* 1\n\n--- CUSTOMER DETAILS ---\n👤 *Name:* ${user?.name || 'Guest'}\n📍 *Address:* ${user?.address || 'Not Provided'}\n🏙️ *City:* ${user?.city || 'Not Provided'}\n📮 *Pincode:* ${user?.pincode || 'Not Provided'}\n\n--- PAYMENT INTENT ---\nI am ready to proceed with the online payment via UPI/Bank Transfer. Please share the QR code or Payment Link.`;
 
     // Dual Shopkeeper Protocol
     window.open(`https://wa.me/919423228843?text=${encodeURIComponent(message)}`, '_blank');
@@ -105,35 +105,35 @@ const ProductsPage = () => {
                   onClick={() => handleProductClick(product._id)}
                 >
                     <img
-                      src={product.images[0]}
-                      alt={product.name}
+                      src={product?.images?.[0] || 'https://via.placeholder.com/400'}
+                      alt={product?.name}
                       className="w-full h-full object-cover transform scale-100 group-hover:scale-110 transition-transform duration-1000"
                     />
                   <div className="absolute top-5 left-5">
                     <div className="bg-white px-4 py-1.5 rounded-full text-[8px] font-black text-slate-950 shadow-xl uppercase tracking-widest border border-slate-100">
-                       {product.brand}
+                       {product?.brand}
                     </div>
                   </div>
                 </div>
 
                 <div className="px-10 py-8">
                   <h3
-                    onClick={() => handleProductClick(product._id)}
+                    onClick={() => handleProductClick(product?._id)}
                     className="text-xl font-black text-slate-950 hover:text-blue-600 transition-colors mb-4 line-clamp-1 uppercase tracking-tight cursor-pointer"
                   >
-                    {product.name}
+                    {product?.name}
                   </h3>
 
                   <div className="flex items-center gap-1 mb-8">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} size={12} className={`${i < product.rating ? 'fill-blue-600 text-blue-600' : 'text-slate-100'}`} />
+                      <Star key={i} size={12} className={`${i < product?.rating ? 'fill-blue-600 text-blue-600' : 'text-slate-100'}`} />
                     ))}
                   </div>
 
                   <div className="flex justify-between items-center pt-6 border-t border-slate-50">
                     <div className="flex flex-col">
                       <span className="text-[8px] font-black text-slate-400 uppercase tracking-[0.3em] mb-1">Elite Price</span>
-                      <span className="text-2xl font-black text-slate-950 tracking-tighter">₹{product.price.toLocaleString()}</span>
+                      <span className="text-2xl font-black text-slate-950 tracking-tighter">₹{Number(product?.price || 0).toLocaleString()}</span>
                     </div>
                     <div className="flex gap-2">
                       <button
@@ -144,7 +144,7 @@ const ProductsPage = () => {
                          <MessageCircle size={20} />
                       </button>
                       <button
-                        onClick={() => handleProductClick(product._id)}
+                        onClick={() => handleProductClick(product?._id)}
                         className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all shadow-lg ${isVerified ? 'bg-slate-950 text-white hover:bg-blue-600' : 'bg-slate-200 text-slate-400 cursor-not-allowed opacity-50'}`}
                       >
                         <ChevronRight size={20} />
@@ -155,7 +155,11 @@ const ProductsPage = () => {
               </div>
             ))}
           </div>
-        ) : null}
+        ) : (
+          <div className="text-center py-40">
+            <p className="text-slate-400 font-black tracking-widest uppercase text-xs">No Products Found in the Vault.</p>
+          </div>
+        )}
       </div>
     </div>
   );
