@@ -12,7 +12,11 @@ const useFetch = () => {
       setError(null);
 
       try {
-        const baseUrl = 'http://localhost:5000';
+        // Use relative URL in production to let Vercel handle proxying
+        const baseUrl = process.env.NODE_ENV === 'production'
+          ? ''
+          : 'http://localhost:5000';
+
         const fullUrl = url.startsWith('http') ? url : `${baseUrl}${url}`;
 
         const config = {
