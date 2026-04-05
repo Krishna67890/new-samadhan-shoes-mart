@@ -65,159 +65,161 @@ const CheckoutPage = () => {
     setLoading(true);
 
     const orderRef = `SSM-${Date.now()}`;
-    const shopkeeperNumber = "918080690631";
-    const developerNumber = "918888644021";
+    // Updated Dual Shopkeeper Protocol Numbers
+    const shopkeeper1 = "919423228843";
+    const shopkeeper2 = "918888644021";
 
-    const message = `👞 *NEW ORDER: SAMADHAN SHOES MART* 👞
---------------------------------------
-👤 *CUSTOMER DETAILS:*
-Name: ${formData.name}
-Phone: ${formData.phone}
-Address: ${formData.address}, ${formData.city}, ${formData.state} - ${formData.pincode}
-
-📦 *ORDER SUMMARY:*
-${cartItems.map(item => `Item: ${item.name}
-Price: ₹${item.price.toLocaleString()} x ${item.qty}
-Total: ₹${(item.price * item.qty).toLocaleString()}
-Ref: ${window.location.origin}/product/${item._id}`).join('\n\n')}
-
-✅ *VERIFICATION:*
-Order Ref: #${orderRef}
-Dev Support: +91 ${developerNumber}
---------------------------------------
-_Sent via Elite Portal_`;
-
-    const shopkeeperUrl = `https://wa.me/${shopkeeperNumber}?text=${encodeURIComponent(message)}`;
-
-    // Background Notification Log for Developer (8888644021)
-    console.log(`🚀 SYNCING ORDER DATA TO DEVELOPER CLOUD (+91 ${developerNumber})...`, {
-        orderRef,
-        customer: formData.name,
-        total: cartTotal,
-        items: cartItems
+    const message = `🚀 *NEW ORDER RECEIVED - SAMADHAN SHOES MART*\n`;
+    message += `--------------------------------------\n`;
+    message += `👤 *CUSTOMER:* ${formData.name.toUpperCase()}\n`;
+    message += `📞 *PHONE:* ${formData.phone}\n`;
+    message += `📍 *SHIPPING ADDRESS:* ${formData.address}, ${formData.city}, ${formData.state} - ${formData.pincode}\n`;
+    message += `--------------------------------------\n`;
+    message += `👟 *PRODUCTS:*\n`;
+    cartItems.forEach(item => {
+      message += `  - ${item.name} (Size ${item.size}) x${item.qty} [₹${(item.price * item.qty).toLocaleString()}]\n`;
     });
+    message += `💰 *TOTAL AMOUNT:* ₹${cartTotal.toLocaleString()}\n`;
+    message += `🏢 *ORIGIN:* Samadhan Shoes Mart Factory, Nashik\n`;
+    message += `--------------------------------------\n`;
+    message += `✅ *ORDER REF:* #${orderRef}\n`;
+    message += `🏪 *SHOP CONTACTS: 9423228843 | 8888644021*`;
 
-    // Open Shopkeeper Link
-    window.open(shopkeeperUrl, '_blank');
+    const encodedMsg = encodeURIComponent(message);
+
+    // Dual Shopkeeper Protocol
+    window.open(`https://wa.me/${shopkeeper1}?text=${encodedMsg}`, '_blank');
+
+    setTimeout(() => {
+      window.open(`https://wa.me/${shopkeeper2}?text=${encodedMsg}`, '_blank');
+    }, 600);
 
     // Clear cart and redirect
     setTimeout(() => {
       clearCart();
       navigate('/profile');
       setLoading(false);
-    }, 1000);
+    }, 2000);
   };
 
   return (
-    <div className="bg-slate-50 min-h-screen pt-32 pb-24 px-6 no-blur">
-      <div className="max-w-7xl mx-auto">
+    <div className="bg-[#050505] min-h-screen pt-32 pb-24 px-6 relative overflow-hidden">
+      {/* Background Glow */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-600/5 blur-[120px] rounded-full"></div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
 
         <button
           onClick={() => navigate('/cart')}
-          className="flex items-center gap-2 text-slate-400 hover:text-slate-900 transition-colors mb-12"
+          className="flex items-center gap-4 text-slate-500 hover:text-white transition-all mb-12 group"
         >
-          <ArrowLeft size={20} /> <span className="text-[10px] font-black uppercase tracking-widest">Return to Cart</span>
+          <div className="w-10 h-10 bg-white/5 rounded-xl border border-white/10 flex items-center justify-center group-hover:bg-blue-600 transition-all">
+            <ArrowLeft size={18} />
+          </div>
+          <span className="text-[10px] font-black uppercase tracking-widest">Return to Vault</span>
         </button>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
 
           {/* LEFT: CHECKOUT FORM */}
           <div className="lg:col-span-8 space-y-8">
-            <div className="bg-white rounded-[3.5rem] p-10 md:p-16 border border-slate-100 shadow-2xl shadow-slate-200/50">
-              <div className="flex items-center gap-4 mb-12">
-                 <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-blue-200">
-                    <User size={24} />
+            <div className="bg-white/5 backdrop-blur-3xl rounded-[4rem] p-10 md:p-16 border border-white/10 shadow-2xl">
+              <div className="flex items-center gap-6 mb-12">
+                 <div className="w-14 h-14 bg-blue-600 rounded-[1.5rem] flex items-center justify-center text-white shadow-[0_0_30px_rgba(37,99,235,0.3)]">
+                    <User size={28} />
                  </div>
-                 <h2 className="text-4xl font-black text-slate-950 tracking-tighter uppercase">Delivery Protocol</h2>
+                 <div>
+                    <h2 className="text-4xl font-black text-white tracking-tighter uppercase leading-none">Delivery Protocol</h2>
+                    <p className="text-slate-500 text-[9px] font-black uppercase tracking-[0.3em] mt-2 italic">Secured Identity Verification</p>
+                 </div>
               </div>
 
-              <div className="space-y-8">
-                {/* ... (Existing form fields remain same) ... */}
+              <div className="space-y-10">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                   <div className="space-y-3">
-                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] ml-4">Full Identity</label>
+                   <div className="space-y-4">
+                      <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-6">Legal Name</label>
                       <div className="relative">
                          <input
                            name="name"
                            value={formData.name}
                            onChange={handleInputChange}
-                           className="w-full pl-14 pr-8 py-5 bg-slate-50 rounded-2xl font-bold text-slate-900 outline-none focus:bg-white border-2 border-transparent focus:border-blue-100 transition-all"
-                           placeholder="Enter your name"
+                           className="w-full pl-16 pr-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-blue-500/50 transition-all placeholder:text-white/10"
+                           placeholder="Elite Member Name"
                          />
-                         <User className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300" size={20} />
+                         <User className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-500" size={20} />
                       </div>
                    </div>
-                   <div className="space-y-3">
-                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] ml-4">WhatsApp Contact</label>
+                   <div className="space-y-4">
+                      <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-6">WhatsApp Sync</label>
                       <div className="relative">
                          <input
                            name="phone"
                            value={formData.phone}
                            onChange={handleInputChange}
-                           className="w-full pl-14 pr-8 py-5 bg-slate-50 rounded-2xl font-bold text-slate-900 outline-none focus:bg-white border-2 border-transparent focus:border-blue-100 transition-all"
-                           placeholder="10-digit number"
+                           className="w-full pl-16 pr-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-blue-500/50 transition-all placeholder:text-white/10"
+                           placeholder="+91 XXXXX XXXXX"
                          />
-                         <Phone className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300" size={20} />
+                         <Phone className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-500" size={20} />
                       </div>
                    </div>
                 </div>
 
-                <div className="space-y-3">
-                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] ml-4">Street Address</label>
+                <div className="space-y-4">
+                   <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-6">Vault Shipping Destination</label>
                    <div className="relative">
                       <textarea
                         name="address"
                         value={formData.address}
                         onChange={handleInputChange}
-                        className="w-full pl-14 pr-8 py-5 bg-slate-50 rounded-2xl font-bold text-slate-900 outline-none focus:bg-white border-2 border-transparent focus:border-blue-100 transition-all min-h-[120px]"
-                        placeholder="House No, Building, Area, Landmark"
+                        className="w-full pl-16 pr-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-blue-500/50 transition-all min-h-[140px] placeholder:text-white/10"
+                        placeholder="Complete Street Address & Landmarks"
                       />
-                      <MapPin className="absolute left-5 top-8 text-slate-300" size={20} />
+                      <MapPin className="absolute left-6 top-8 text-slate-500" size={20} />
                    </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                   <div className="space-y-3">
-                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] ml-4">State</label>
+                   <div className="space-y-4">
+                      <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-6">Province</label>
                       <select
                         name="state"
                         value={formData.state}
                         onChange={handleInputChange}
-                        className="w-full px-8 py-5 bg-slate-50 rounded-2xl font-bold text-slate-900 outline-none focus:bg-white border-2 border-transparent focus:border-blue-100 transition-all appearance-none"
+                        className="w-full px-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-blue-500/50 transition-all appearance-none cursor-pointer"
                       >
-                         <option value="">Select State</option>
-                         {indiaData.states.map(s => <option key={s} value={s}>{s}</option>)}
+                         <option value="" className="bg-[#111]">Select State</option>
+                         {indiaData.states.map(s => <option key={s} value={s} className="bg-[#111]">{s}</option>)}
                       </select>
                    </div>
-                   <div className="space-y-3">
-                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] ml-4">City</label>
+                   <div className="space-y-4">
+                      <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-6">Metro / City</label>
                       {indiaData.citiesByState[formData.state] ? (
                         <select
                           name="city"
                           value={formData.city}
                           onChange={handleInputChange}
-                          className="w-full px-8 py-5 bg-slate-50 rounded-2xl font-bold text-slate-900 outline-none focus:bg-white border-2 border-transparent focus:border-blue-100 transition-all appearance-none"
+                          className="w-full px-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-blue-500/50 transition-all appearance-none cursor-pointer"
                         >
-                           <option value="">Select City</option>
-                           {indiaData.citiesByState[formData.state].map(c => <option key={c} value={c}>{c}</option>)}
+                           <option value="" className="bg-[#111]">Select City</option>
+                           {indiaData.citiesByState[formData.state].map(c => <option key={c} value={c} className="bg-[#111]">{c}</option>)}
                         </select>
                       ) : (
                         <input
                           name="city"
                           value={formData.city}
                           onChange={handleInputChange}
-                          className="w-full px-8 py-5 bg-slate-50 rounded-2xl font-bold text-slate-950 outline-none focus:bg-white border-2 border-transparent focus:border-blue-100 transition-all"
-                          placeholder="City"
+                          className="w-full px-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-blue-500/50 transition-all placeholder:text-white/10"
+                          placeholder="Enter City"
                         />
                       )}
                    </div>
-                   <div className="space-y-3">
-                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] ml-4">Pincode</label>
+                   <div className="space-y-4">
+                      <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-6">Postal Code</label>
                       <input
                         name="pincode"
                         value={formData.pincode}
                         onChange={handleInputChange}
-                        className="w-full px-8 py-5 bg-slate-50 rounded-2xl font-bold text-slate-900 outline-none focus:bg-white border-2 border-transparent focus:border-blue-100 transition-all"
+                        className="w-full px-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-blue-500/50 transition-all placeholder:text-white/10"
                         placeholder="6 Digits"
                       />
                    </div>
@@ -225,29 +227,29 @@ _Sent via Elite Portal_`;
               </div>
             </div>
 
-            <div className="bg-white rounded-[3.5rem] p-10 border border-slate-100 shadow-2xl shadow-slate-200/50">
-               <h3 className="text-2xl font-black text-slate-950 uppercase tracking-tighter mb-8 flex items-center gap-3">
-                  <Zap className="text-blue-600" size={24} /> Payment Method
+            <div className="bg-white/5 backdrop-blur-3xl rounded-[4rem] p-12 border border-white/10 shadow-2xl">
+               <h3 className="text-2xl font-black text-white uppercase tracking-tighter mb-10 flex items-center gap-4">
+                  <Zap className="text-blue-500" size={24} /> Payment Channel
                </h3>
-               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <button
                     onClick={() => setPaymentMethod('whatsapp')}
-                    className={`p-6 rounded-3xl border-2 transition-all flex flex-col items-center gap-4 ${paymentMethod === 'whatsapp' ? 'border-blue-600 bg-blue-50' : 'border-slate-100 hover:border-blue-200'}`}
+                    className={`p-8 rounded-[2.5rem] border-2 transition-all flex flex-col items-center gap-6 group ${paymentMethod === 'whatsapp' ? 'border-blue-600 bg-blue-600/10' : 'border-white/5 bg-white/5 hover:border-white/20'}`}
                   >
-                     <MessageCircle size={32} className={paymentMethod === 'whatsapp' ? 'text-blue-600' : 'text-slate-300'} />
+                     <MessageCircle size={36} className={paymentMethod === 'whatsapp' ? 'text-blue-500' : 'text-slate-700 group-hover:text-slate-500'} />
                      <div className="text-center">
-                        <p className="font-black text-slate-950 uppercase text-xs">WhatsApp Pay</p>
-                        <p className="text-[10px] text-slate-400 font-bold uppercase mt-1">Direct Confirmation</p>
+                        <p className="font-black text-white uppercase text-xs tracking-widest">WhatsApp Direct</p>
+                        <p className="text-[9px] text-slate-500 font-black uppercase mt-2 tracking-widest italic">Fastest Clearance</p>
                      </div>
                   </button>
                   <button
                     onClick={() => setPaymentMethod('online')}
-                    className={`p-6 rounded-3xl border-2 transition-all flex flex-col items-center gap-4 ${paymentMethod === 'online' ? 'border-blue-600 bg-blue-50' : 'border-slate-100 hover:border-blue-200'}`}
+                    className={`p-8 rounded-[2.5rem] border-2 transition-all flex flex-col items-center gap-6 group ${paymentMethod === 'online' ? 'border-blue-600 bg-blue-600/10' : 'border-white/5 bg-white/5 hover:border-white/20'}`}
                   >
-                     <ShieldCheck size={32} className={paymentMethod === 'online' ? 'text-blue-600' : 'text-slate-300'} />
+                     <ShieldCheck size={36} className={paymentMethod === 'online' ? 'text-blue-500' : 'text-slate-700 group-hover:text-slate-500'} />
                      <div className="text-center">
-                        <p className="font-black text-slate-950 uppercase text-xs">Online Payment</p>
-                        <p className="text-[10px] text-slate-400 font-bold uppercase mt-1">Stripe / Razorpay</p>
+                        <p className="font-black text-white uppercase text-xs tracking-widest">Secure Gateway</p>
+                        <p className="text-[9px] text-slate-500 font-black uppercase mt-2 tracking-widest italic">UPI / Cards / Net Banking</p>
                      </div>
                   </button>
                </div>
@@ -256,58 +258,60 @@ _Sent via Elite Portal_`;
 
           {/* RIGHT: ORDER SUMMARY */}
           <div className="lg:col-span-4 space-y-8">
-            <div className="bg-slate-950 rounded-[3.5rem] p-10 text-white shadow-2xl shadow-slate-900/50">
-               <h3 className="text-2xl font-black uppercase tracking-tight mb-8 flex items-center gap-3">
-                  <ShoppingBag className="text-blue-500" size={24} /> The Vault
+            <div className="bg-white/5 backdrop-blur-3xl rounded-[4rem] p-12 text-white border border-white/10 shadow-2xl sticky top-32">
+               <div className="absolute top-0 right-0 p-8 opacity-5">
+                   <ShoppingBag size={140} />
+               </div>
+
+               <h3 className="text-2xl font-black uppercase tracking-tighter mb-10 flex items-center gap-4 relative z-10">
+                  <ShoppingBag className="text-blue-500" size={24} /> Review Order
                </h3>
 
-               <div className="space-y-6 mb-10 max-h-[400px] overflow-y-auto pr-4 custom-scrollbar">
+               <div className="space-y-6 mb-12 max-h-[350px] overflow-y-auto pr-4 custom-scrollbar relative z-10">
                   {cartItems.map((item, idx) => (
-                    <div key={idx} className="flex gap-4 p-4 bg-white/5 rounded-3xl border border-white/10 group">
-                       <div className="w-16 h-16 rounded-xl overflow-hidden bg-white shrink-0">
-                          <img src={item.images[0]} alt={item.name} className="w-full h-full object-cover" />
+                    <div key={idx} className="flex gap-5 p-5 bg-[#111] rounded-[2rem] border border-white/5 group hover:border-white/10 transition-colors">
+                       <div className="w-20 h-20 rounded-2xl overflow-hidden bg-white/5 shrink-0 border border-white/5">
+                          <img src={item.images[0]} alt={item.name} className="w-full h-full object-cover opacity-80 group-hover:opacity-100" />
                        </div>
                        <div className="flex-grow min-w-0">
-                          <p className="text-[9px] font-black text-blue-400 uppercase tracking-widest truncate">{item.brand}</p>
-                          <h4 className="text-sm font-black truncate uppercase tracking-tight">{item.name}</h4>
-                          <div className="flex justify-between items-center mt-1">
-                             <p className="text-[10px] font-bold text-slate-400">Size: {item.size} | Qty: {item.qty}</p>
-                             <p className="text-xs font-black text-white">₹{(item.price * item.qty).toLocaleString()}</p>
+                          <p className="text-[8px] font-black text-blue-500 uppercase tracking-[0.3em] mb-1">{item.brand}</p>
+                          <h4 className="text-xs font-black truncate uppercase tracking-tight text-white/90">{item.name}</h4>
+                          <div className="flex justify-between items-center mt-3">
+                             <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Sz {item.size} x {item.qty}</p>
+                             <p className="text-sm font-black text-white tracking-tighter">₹{(item.price * item.qty).toLocaleString()}</p>
                           </div>
                        </div>
                     </div>
                   ))}
                </div>
 
-               <div className="space-y-4 pt-8 border-t border-white/10">
-                  <div className="flex justify-between items-center text-slate-400">
-                     <span className="text-[10px] font-black uppercase tracking-widest">Subtotal</span>
-                     <span className="font-bold">₹{cartTotal.toLocaleString()}</span>
+               <div className="space-y-6 pt-10 border-t border-white/10 relative z-10">
+                  <div className="flex justify-between items-center">
+                     <span className="text-[9px] font-black uppercase tracking-[0.4em] text-slate-500">Subtotal</span>
+                     <span className="text-sm font-black">₹{cartTotal.toLocaleString()}</span>
                   </div>
-                  <div className="flex justify-between items-center text-emerald-400">
-                     <span className="text-[10px] font-black uppercase tracking-widest">Logistics</span>
-                     <span className="font-bold uppercase text-[10px]">Complimentary</span>
+                  <div className="flex justify-between items-center">
+                     <span className="text-[9px] font-black uppercase tracking-[0.4em] text-emerald-500">Priority logistics</span>
+                     <span className="text-[9px] font-black uppercase tracking-widest bg-emerald-500/10 px-3 py-1 rounded-full text-emerald-500 border border-emerald-500/10">FREE</span>
                   </div>
-                  <div className="pt-4 flex justify-between items-end">
-                     <span className="text-xs font-black uppercase tracking-widest text-blue-400">Total Valuation</span>
-                     <span className="text-4xl font-black tracking-tighter text-white">₹{cartTotal.toLocaleString()}</span>
+                  <div className="pt-6 flex flex-col gap-2">
+                     <span className="text-[9px] font-black uppercase tracking-[0.4em] text-blue-500">Final Valuation</span>
+                     <span className="text-5xl font-black tracking-tighter text-white">₹{cartTotal.toLocaleString()}</span>
                   </div>
                </div>
 
                <button
                  onClick={processPayment}
                  disabled={loading}
-                 className="w-full mt-10 bg-blue-600 hover:bg-white hover:text-slate-950 text-white py-6 rounded-3xl text-sm font-black uppercase tracking-[0.2em] transition-all duration-500 shadow-2xl flex items-center justify-center gap-4 group disabled:opacity-50"
+                 className="w-full mt-12 bg-white text-black py-7 rounded-[2rem] text-xs font-black uppercase tracking-[0.3em] transition-all duration-500 shadow-2xl flex items-center justify-center gap-4 group disabled:opacity-50 relative overflow-hidden"
                >
-                  {loading ? "Processing..." : <>Confirm & Complete <ChevronRight size={20} className="group-hover:translate-x-2 transition-transform" /></>}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/5 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
+                  {loading ? "Transmitting..." : <>Finalize Order <ChevronRight size={20} className="group-hover:translate-x-2 transition-transform" /></>}
                </button>
-            </div>
 
-            <div className="bg-white rounded-[3rem] p-8 border border-slate-100 flex items-start gap-4">
-               <Info className="text-blue-600 shrink-0" size={24} />
-               <div>
-                  <h5 className="text-[10px] font-black uppercase tracking-widest text-slate-950 mb-2">Checkout Logic</h5>
-                  <p className="text-xs text-slate-500 font-medium leading-relaxed italic">"Upon confirmation, a formal receipt will be generated. {paymentMethod === 'whatsapp' ? 'Your payment link (UPI/QR) will be provided via WhatsApp.' : 'You will be redirected to our secure online gateway.'}"</p>
+               <div className="mt-8 flex items-center gap-4 p-5 bg-white/5 rounded-[2rem] border border-white/5 backdrop-blur-md">
+                   <ShieldCheck className="text-blue-500" size={24} />
+                   <p className="text-[9px] text-slate-500 font-black uppercase tracking-[0.2em] leading-relaxed italic">Encryption active. Identity verified as {user?.name}.</p>
                </div>
             </div>
           </div>

@@ -13,7 +13,7 @@ const useFetch = () => {
 
       try {
         // Use relative URL in production to let Vercel handle proxying
-        const baseUrl = process.env.NODE_ENV === 'production'
+        const baseUrl = import.meta.env.PROD
           ? ''
           : 'http://localhost:5000';
 

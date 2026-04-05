@@ -13,10 +13,19 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
   }, [cartItems]);
 
+  const sanitizePrice = (rawPrice) => {
+    if (typeof rawPrice === 'number') return rawPrice;
+    if (typeof rawPrice === 'string') {
+      const clean = parseInt(rawPrice.replace(/[^\d]/g, ''));
+      return isNaN(clean) ? 0 : clean;
+    }
+    return 0;
+  };
+
   const addToCart = (product, qty, size) => {
     // Ensure qty is a Number to avoid NaN issues
     const numericQty = Number(qty);
-    const numericPrice = Number(product.price);
+    const numericPrice = sanitizePrice(product.price);
 
     const itemExists = cartItems.find((x) => x._id === product._id && x.size === size);
 
@@ -27,7 +36,9 @@ export const CartProvider = ({ children }) => {
         )
       );
     } else {
-      setCartItems([...cartItems, { ...product, price: numericPrice, qty: numericQty, size }]);
+      // Create a copy of product with sanitized price
+      const sanitizedProduct = { ...product, price: numericPrice };
+      setCartItems([...cartItems, { ...sanitizedProduct, qty: numericQty, size }]);
     }
   };
 

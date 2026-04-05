@@ -3,7 +3,20 @@ import { useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { useAuth } from '../context/AuthContext';
 import { indiaData } from '../utils/indiaData';
-import { Check, Camera, Loader2, Volume2, ArrowLeft, ShieldCheck, MapPin, Phone, User, Mail } from 'lucide-react';
+import {
+  Check,
+  Camera,
+  Loader2,
+  Volume2,
+  ArrowLeft,
+  ShieldCheck,
+  MapPin,
+  Phone,
+  User,
+  Mail,
+  Zap,
+  Info
+} from 'lucide-react';
 
 const IdentityPage = () => {
   const { user, updateProfile } = useAuth();
@@ -40,16 +53,13 @@ const IdentityPage = () => {
     }
 
     const ctx = gsap.context(() => {
-      if (containerRef.current) {
-        gsap.from('.identity-reveal', {
-          y: 30,
-          opacity: 0,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: 'power3.out',
-          clearProps: 'all'
-        });
-      }
+      gsap.from('.identity-reveal', {
+        y: 40,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.1,
+        ease: 'power4.out'
+      });
     }, containerRef);
 
     return () => ctx.revert();
@@ -71,9 +81,9 @@ const IdentityPage = () => {
   const playGuide = () => {
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
-      const msg = new SpeechSynthesisUtterance("Save your address to Nashik so we know where to deliver your shoes. This locks your identity into the vault so the shopkeeper knows where to ship your shoes.");
+      const msg = new SpeechSynthesisUtterance("Identity synchronization required. Secure your delivery destination and contact details within the vault to unlock the high-tier catalog.");
       msg.lang = 'en-IN';
-      msg.rate = 0.9;
+      msg.rate = 0.95;
       window.speechSynthesis.speak(msg);
     }
   };
@@ -82,7 +92,6 @@ const IdentityPage = () => {
     setError(null);
     setUploading(true);
 
-    // Storage Cleanup Protocol to prevent QuotaExceededError
     try {
       const keysToKeep = ['ssm_user_identity', 'cartItems', 'token'];
       Object.keys(localStorage).forEach(key => {
@@ -103,108 +112,166 @@ const IdentityPage = () => {
 
     if (success) {
       setIsVerified(true);
-      // Ensure state is saved immediately before navigation
-      localStorage.setItem('ssm_user_identity', JSON.stringify({
-        ...user,
-        ...formData,
-        phone: phoneClean,
-        avatar: preview,
-        identityVerified: true
-      }));
-      setTimeout(() => navigate('/cart'), 1500);
+      setTimeout(() => navigate('/products'), 2000);
     } else {
-      setError("Vault storage full. Please clear browser cache.");
+      setError("Vault encryption error. Storage quota exceeded.");
     }
     setUploading(false);
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-32 pb-24 px-6 no-blur" ref={containerRef}>
-      <style dangerouslySetInnerHTML={{ __html: `
-        * { backdrop-filter: none !important; filter: none !important; }
-        .form-input {
-          width: 100%;
-          padding: 1.25rem 2rem 1.25rem 3.5rem;
-          background: #ffffff;
-          border: 1px solid #e2e8f0;
-          border-radius: 1.5rem;
-          font-weight: 700;
-          color: #0f172a;
-          outline: none;
-        }
-      `}} />
+    <div className="bg-[#050505] min-h-screen pt-32 pb-24 px-6 relative overflow-hidden" ref={containerRef}>
+      {/* Background Glow */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-600/5 blur-[120px] rounded-full"></div>
 
-      <div className="max-w-2xl mx-auto bg-white rounded-[3rem] p-12 border border-slate-200 shadow-2xl relative overflow-hidden">
+      <div className="max-w-4xl mx-auto relative z-10">
 
         {isVerified && (
-          <div className="absolute inset-0 bg-white z-[100] flex flex-col items-center justify-center text-center animate-in fade-in">
-             <div className="w-24 h-24 bg-emerald-500 rounded-full flex items-center justify-center text-white mb-6 shadow-xl">
-                <Check size={48} />
+          <div className="fixed inset-0 bg-[#050505] z-[100] flex flex-col items-center justify-center text-center animate-in fade-in zoom-in duration-500">
+             <div className="w-32 h-32 bg-blue-600 rounded-[3rem] flex items-center justify-center text-white mb-10 shadow-[0_0_50px_rgba(37,99,235,0.4)] border border-blue-400/50">
+                <Check size={56} strokeWidth={3} />
              </div>
-             <h2 className="text-3xl font-black text-slate-900 uppercase">Identity Synced</h2>
-             <p className="text-emerald-600 font-bold text-xs uppercase tracking-widest mt-2">Opening Vault...</p>
+             <h2 className="text-5xl font-black text-white uppercase tracking-tighter">Identity Synced</h2>
+             <p className="text-blue-500 font-black text-[10px] uppercase tracking-[0.6em] mt-6 italic animate-pulse">Accessing Vault Content...</p>
           </div>
         )}
 
-        <div className="flex justify-between items-start mb-12 identity-reveal">
-          <div>
-            <h1 className="text-4xl font-black text-slate-950 uppercase tracking-tighter">Identity Sync</h1>
-            <p className="text-[10px] font-black text-blue-600 uppercase tracking-widest mt-2">Local-First Vault Active</p>
-          </div>
-          <button onClick={playGuide} className="p-4 bg-slate-50 rounded-2xl text-blue-600 hover:bg-blue-600 hover:text-white transition-all">
-            <Volume2 size={20} />
-          </button>
+        <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-16 identity-reveal">
+           <div className="flex items-center gap-6">
+              <div className="w-16 h-16 bg-blue-600 rounded-[2rem] flex items-center justify-center text-white shadow-[0_0_30px_rgba(37,99,235,0.3)]">
+                 <ShieldCheck size={32} />
+              </div>
+              <div>
+                 <h1 className="text-5xl font-black text-white uppercase tracking-tighter leading-none">Identity Sync</h1>
+                 <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mt-2 italic">Secured Local Encryption</p>
+              </div>
+           </div>
+           <button
+             onClick={playGuide}
+             className="px-8 py-4 bg-white/5 rounded-2xl text-blue-500 hover:bg-blue-600 hover:text-white transition-all border border-white/5 backdrop-blur-md flex items-center gap-4 text-[10px] font-black uppercase tracking-widest"
+           >
+             <Volume2 size={18} /> Audio Protocol
+           </button>
         </div>
 
-        {error && <div className="mb-8 p-4 bg-rose-50 text-rose-600 rounded-xl font-bold text-xs uppercase">{error}</div>}
+        {error && (
+          <div className="mb-10 p-6 bg-rose-500/10 border border-rose-500/20 text-rose-500 rounded-[2rem] font-black text-[10px] uppercase tracking-widest flex items-center gap-4">
+            <Info size={18} /> {error}
+          </div>
+        )}
 
-        <div className="space-y-8 identity-reveal">
-          <div className="flex gap-6 items-center bg-slate-50 p-6 rounded-[2rem]">
-            <div className="relative">
-              <div onClick={() => fileInputRef.current.click()} className="w-24 h-24 rounded-2xl bg-white border-2 border-dashed border-slate-200 flex items-center justify-center cursor-pointer overflow-hidden">
-                {preview ? <img src={preview} className="w-full h-full object-cover" /> : <Camera className="text-slate-300" />}
-              </div>
-              <input type="file" ref={fileInputRef} className="hidden" onChange={handleImageChange} />
-            </div>
-            <div className="flex gap-3">
-              <button onClick={() => setFormData({...formData, gender: 'boy'})} className={`px-6 py-3 rounded-xl text-[10px] font-black uppercase ${formData.gender === 'boy' ? 'bg-blue-600 text-white' : 'bg-white text-slate-400'}`}>Male</button>
-              <button onClick={() => setFormData({...formData, gender: 'girl'})} className={`px-6 py-3 rounded-xl text-[10px] font-black uppercase ${formData.gender === 'girl' ? 'bg-pink-600 text-white' : 'bg-white text-slate-400'}`}>Female</button>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+
+          {/* LEFT: VISUALS & GENDER */}
+          <div className="lg:col-span-4 space-y-8 identity-reveal">
+             <div className="bg-white/5 backdrop-blur-3xl p-10 rounded-[4rem] border border-white/10 shadow-2xl flex flex-col items-center">
+                <div
+                  onClick={() => fileInputRef.current.click()}
+                  className="w-48 h-48 rounded-[3rem] bg-[#111] border-2 border-dashed border-white/10 flex items-center justify-center cursor-pointer overflow-hidden group hover:border-blue-500/50 transition-all mb-10 relative"
+                >
+                  {preview ? (
+                    <img src={preview} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" alt="Avatar" />
+                  ) : (
+                    <Camera className="text-slate-700 group-hover:text-blue-500 transition-colors" size={48} />
+                  )}
+                  <div className="absolute inset-0 bg-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                     <span className="text-[9px] font-black text-white uppercase tracking-widest">Update Image</span>
+                  </div>
+                </div>
+                <input type="file" ref={fileInputRef} className="hidden" onChange={handleImageChange} accept="image/*" />
+
+                <div className="grid grid-cols-2 gap-4 w-full">
+                  <button
+                    onClick={() => setFormData({...formData, gender: 'boy'})}
+                    className={`py-5 rounded-2xl text-[9px] font-black uppercase tracking-widest transition-all ${formData.gender === 'boy' ? 'bg-blue-600 text-white shadow-xl shadow-blue-500/20' : 'bg-white/5 text-slate-500 hover:bg-white/10 border border-white/5'}`}
+                  >
+                    Masculine
+                  </button>
+                  <button
+                    onClick={() => setFormData({...formData, gender: 'girl'})}
+                    className={`py-5 rounded-2xl text-[9px] font-black uppercase tracking-widest transition-all ${formData.gender === 'girl' ? 'bg-rose-600 text-white shadow-xl shadow-rose-500/20' : 'bg-white/5 text-slate-500 hover:bg-white/10 border border-white/5'}`}
+                  >
+                    Feminine
+                  </button>
+                </div>
+             </div>
+
+             <div className="bg-blue-600/5 backdrop-blur-md p-8 rounded-[2.5rem] border border-blue-500/10">
+                <div className="flex items-center gap-4 text-blue-500 mb-4">
+                   <Zap size={20} />
+                   <span className="text-[10px] font-black uppercase tracking-widest">Security Protocol</span>
+                </div>
+                <p className="text-[10px] text-slate-500 leading-relaxed font-bold italic">
+                  Data is stored locally on your device's Elite Vault. No identity information is transmitted to external servers without encryption.
+                </p>
+             </div>
+          </div>
+
+          {/* RIGHT: DATA FORM */}
+          <div className="lg:col-span-8 space-y-8 identity-reveal">
+            <div className="bg-white/5 backdrop-blur-3xl p-12 rounded-[4rem] border border-white/10 shadow-2xl">
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                  <div className="space-y-4">
+                     <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-6">Legal Designation</label>
+                     <div className="relative">
+                        <input name="name" value={formData.name} onChange={handleInputChange} className="w-full pl-16 pr-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-blue-500/50 transition-all" placeholder="FULL NAME" />
+                        <User className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                     </div>
+                  </div>
+                  <div className="space-y-4">
+                     <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-6">Encryption Email</label>
+                     <div className="relative">
+                        <input name="email" value={formData.email} onChange={handleInputChange} className="w-full pl-16 pr-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-blue-500/50 transition-all" placeholder="EMAIL ADDRESS" />
+                        <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                     </div>
+                  </div>
+               </div>
+
+               <div className="space-y-4 mb-10">
+                  <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-6">WhatsApp Sync Number</label>
+                  <div className="relative">
+                     <input name="phone" value={formData.phone} onChange={handleInputChange} className="w-full pl-16 pr-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-blue-500/50 transition-all" placeholder="10 DIGIT MOBILE" />
+                     <Phone className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                  </div>
+               </div>
+
+               <div className="space-y-4 mb-10">
+                  <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-6">Shipping Coordinates</label>
+                  <div className="relative">
+                     <textarea name="address" value={formData.address} onChange={handleInputChange} className="w-full pl-16 pr-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-blue-500/50 transition-all min-h-[120px]" placeholder="STREET ADDRESS, AREA, LANDMARK" />
+                     <MapPin className="absolute left-6 top-8 text-slate-500" size={18} />
+                  </div>
+               </div>
+
+               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                  <div className="space-y-4">
+                     <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-6">State</label>
+                     <select name="state" value={formData.state} onChange={handleInputChange} className="w-full px-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-blue-500/50 transition-all appearance-none cursor-pointer">
+                        <option value="" className="bg-[#111]">SELECT STATE</option>
+                        {indiaData.states.map(s => <option key={s} value={s} className="bg-[#111]">{s}</option>)}
+                     </select>
+                  </div>
+                  <div className="space-y-4">
+                     <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-6">City</label>
+                     <input name="city" value={formData.city} onChange={handleInputChange} className="w-full px-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-blue-500/50 transition-all" placeholder="CITY" />
+                  </div>
+                  <div className="space-y-4">
+                     <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-6">Pincode</label>
+                     <input name="pincode" value={formData.pincode} onChange={handleInputChange} className="w-full px-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-blue-500/50 transition-all" placeholder="6 DIGITS" />
+                  </div>
+               </div>
+
+               <button
+                 onClick={handleComplete}
+                 disabled={!isFormComplete || uploading}
+                 className="w-full py-7 bg-white text-black rounded-[2rem] font-black uppercase tracking-[0.4em] text-[11px] hover:bg-blue-600 hover:text-white transition-all shadow-2xl disabled:opacity-20 flex items-center justify-center gap-6 relative overflow-hidden group"
+               >
+                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/5 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
+                 {uploading ? <Loader2 className="animate-spin" /> : <>Commit to Vault <ArrowLeft className="rotate-180" size={20} /></>}
+               </button>
             </div>
           </div>
 
-          <div className="space-y-4">
-            <div className="relative">
-              <input name="name" value={formData.name} onChange={handleInputChange} className="form-input" placeholder="FULL NAME" />
-              <User className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-            </div>
-            <div className="relative">
-              <input name="email" value={formData.email} onChange={handleInputChange} className="form-input" placeholder="EMAIL ADDRESS" />
-              <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-            </div>
-            <div className="relative">
-              <input name="phone" value={formData.phone} onChange={handleInputChange} className="form-input" placeholder="WHATSAPP NUMBER" />
-              <Phone className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-            </div>
-            <textarea name="address" value={formData.address} onChange={handleInputChange} className="form-input min-h-[100px] !pl-6" placeholder="DELIVERY ADDRESS" />
-            <div className="grid grid-cols-1 gap-4">
-              <select name="state" value={formData.state} onChange={handleInputChange} className="form-input !pl-6 appearance-none">
-                <option value="">SELECT STATE</option>
-                {indiaData.states.map(s => <option key={s} value={s}>{s}</option>)}
-              </select>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <input name="city" value={formData.city} onChange={handleInputChange} className="form-input !pl-6" placeholder="CITY" />
-              <input name="pincode" value={formData.pincode} onChange={handleInputChange} className="form-input !pl-6" placeholder="PINCODE" />
-            </div>
-          </div>
-
-          <button
-            onClick={handleComplete}
-            disabled={!isFormComplete || uploading}
-            className="w-full py-6 bg-slate-950 text-white rounded-2xl font-black uppercase tracking-[0.3em] text-xs hover:bg-blue-600 transition-all shadow-xl disabled:opacity-20"
-          >
-            {uploading ? <Loader2 className="animate-spin mx-auto" /> : "Confirm & Enter Vault"}
-          </button>
         </div>
       </div>
     </div>
