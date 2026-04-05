@@ -68,7 +68,7 @@ const ProductDetailsPage = () => {
       navigate('/login');
       return;
     }
-    const message = `Hello New Samadhan Shoes Mart! 👋\n\nI want to order this Masterpiece:\n\n👟 *Product:* ${product.name}\n🏷️ *Brand:* ${product.brand}\n💰 *Price:* ₹${product.price.toLocaleString()}\n📏 *Size:* ${selectedSize} (UK/IN)\n📦 *Quantity:* ${qty}\n🖼️ *Image:* ${product.images[0]}\n\n--- CUSTOMER DETAILS ---\n👤 *Name:* ${user?.name || 'Guest'}\n📍 *Address:* ${user?.address || 'Not Provided'}\n🏙️ *City:* ${user?.city || 'Not Provided'}\n📮 *Pincode:* ${user?.pincode || 'Not Provided'}\n\n--- PAYMENT INTENT ---\nI am ready to proceed with the online payment via UPI/Bank Transfer. Please share the QR code or Payment Link.`;
+    const message = `Hello New Samadhan Shoes Mart! 👋\n\nI want to order this Masterpiece:\n\n👟 *Product:* ${product?.name}\n🏷️ *Brand:* ${product?.brand}\n💰 *Price:* ₹${product?.price?.toLocaleString()}\n📏 *Size:* ${selectedSize} (UK/IN)\n📦 *Quantity:* ${qty}\n🖼️ *Image:* ${product?.images?.[0]}\n\n--- CUSTOMER DETAILS ---\n👤 *Name:* ${user?.name || 'Guest'}\n📍 *Address:* ${user?.address || 'Not Provided'}\n🏙️ *City:* ${user?.city || 'Not Provided'}\n📮 *Pincode:* ${user?.pincode || 'Not Provided'}\n\n--- PAYMENT INTENT ---\nI am ready to proceed with the online payment via UPI/Bank Transfer. Please share the QR code or Payment Link.`;
     const encodedMessage = encodeURIComponent(message);
     window.open(`https://wa.me/917058564508?text=${encodedMessage}`, '_blank');
   };
@@ -131,7 +131,7 @@ const ProductDetailsPage = () => {
               </div>
             </div>
 
-            {product.images.length > 1 && (
+            {product?.images?.length > 1 ? (
               <div className="grid grid-cols-4 gap-6">
                 {product.images.map((img, index) => (
                   <button
@@ -144,7 +144,7 @@ const ProductDetailsPage = () => {
                   </button>
                 ))}
               </div>
-            )}
+            ) : null}
 
             {/* PRODUCT PATTERNS & TECH (NEW) */}
             <div className="bg-white rounded-[3.5rem] p-12 border border-slate-100 shadow-sm">
@@ -209,7 +209,7 @@ const ProductDetailsPage = () => {
                   <button className="text-blue-600 text-[9px] font-black uppercase tracking-widest flex items-center gap-2">Size Guide <HelpCircle size={12} /></button>
                 </div>
                 <div className="flex flex-wrap gap-4">
-                  {product.sizes.map((size) => (
+                  {product?.sizes?.map((size) => (
                     <button
                       key={size}
                       onClick={() => setSelectedSize(size)}
