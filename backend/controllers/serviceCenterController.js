@@ -6,8 +6,8 @@ const staticServiceCenters = [
     name: 'Samadhan Restoration Hub - Pune Node',
     address: 'S-12, Premium Tech Park, Hinjewadi',
     city: 'Pune',
-    phone: '+91 7058564508',
-    whatsappNumber: '917058564508',
+    phone: '+91 9423228843',
+    whatsappNumber: '919423228843',
     rating: 4.9,
     numReviews: 1240,
     services: ['Deep Clean', 'Sole Repair', 'Color Restor'],
@@ -20,8 +20,8 @@ const staticServiceCenters = [
     name: 'Luxury Sneaker Lab - Mumbai Node',
     address: 'Floor 4, High Street Phoenix, Lower Parel',
     city: 'Mumbai',
-    phone: '+91 7058564508',
-    whatsappNumber: '917058564508',
+    phone: '+91 8888644021',
+    whatsappNumber: '918888644021',
     rating: 4.8,
     numReviews: 850,
     services: ['Sole Swap', 'Authentication', 'Full Restore'],
@@ -34,8 +34,8 @@ const staticServiceCenters = [
     name: 'Artisan Sole Studio - Delhi Node',
     address: 'Block C, DLF Cyber City, Gurgaon',
     city: 'Delhi',
-    phone: '+91 7058564508',
-    whatsappNumber: '917058564508',
+    phone: '+91 8080690631',
+    whatsappNumber: '918080690631',
     rating: 4.7,
     numReviews: 620,
     services: ['Custom Paint', 'Waterproofing', 'Odor Control'],
@@ -111,7 +111,5 @@ const getServiceCenterById = async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 };
-
-export { getServiceCenters, getServiceCenterById };
 
 export { getServiceCenters, getServiceCenterById };

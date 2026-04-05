@@ -57,7 +57,7 @@ const Footer = () => {
             <a href="#" className="hover:text-secondary"><Facebook /></a>
             <a href="#" className="hover:text-secondary"><Instagram /></a>
             <a href="#" className="hover:text-secondary"><Twitter /></a>
-            <a href="https://wa.me/917058564508" target="_blank" rel="noopener noreferrer" onClick={handleWhatsAppClick} className="hover:text-green-500"><MessageCircle /></a>
+            <a href="https://wa.me/919423228843" target="_blank" rel="noopener noreferrer" onClick={handleWhatsAppClick} className="hover:text-green-500"><MessageCircle /></a>
           </div>
         </div>
       </div>

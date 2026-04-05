@@ -39,7 +39,12 @@ const ProductsPage = () => {
     }
 
     const message = `Hello New Samadhan Shoes Mart! 👋\n\nI want to order this Masterpiece:\n\n👟 *Product:* ${product.name}\n🏷️ *Brand:* ${product.brand}\n💰 *Price:* ₹${product.price.toLocaleString()}\n📏 *Size:* To be confirmed\n📦 *Quantity:* 1\n\n--- CUSTOMER DETAILS ---\n👤 *Name:* ${user?.name || 'Guest'}\n📍 *Address:* ${user?.address || 'Not Provided'}\n🏙️ *City:* ${user?.city || 'Not Provided'}\n📮 *Pincode:* ${user?.pincode || 'Not Provided'}\n\n--- PAYMENT INTENT ---\nI am ready to proceed with the online payment via UPI/Bank Transfer. Please share the QR code or Payment Link.`;
-    window.open(`https://wa.me/917058564508?text=${encodeURIComponent(message)}`, '_blank');
+
+    // Dual Shopkeeper Protocol
+    window.open(`https://wa.me/919423228843?text=${encodeURIComponent(message)}`, '_blank');
+    setTimeout(() => {
+      window.open(`https://wa.me/918888644021?text=${encodeURIComponent(message)}`, '_blank');
+    }, 600);
   };
 
   useEffect(() => {

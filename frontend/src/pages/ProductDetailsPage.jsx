@@ -70,7 +70,12 @@ const ProductDetailsPage = () => {
     }
     const message = `Hello New Samadhan Shoes Mart! 👋\n\nI want to order this Masterpiece:\n\n👟 *Product:* ${product?.name}\n🏷️ *Brand:* ${product?.brand}\n💰 *Price:* ₹${product?.price?.toLocaleString()}\n📏 *Size:* ${selectedSize} (UK/IN)\n📦 *Quantity:* ${qty}\n🖼️ *Image:* ${product?.images?.[0]}\n\n--- CUSTOMER DETAILS ---\n👤 *Name:* ${user?.name || 'Guest'}\n📍 *Address:* ${user?.address || 'Not Provided'}\n🏙️ *City:* ${user?.city || 'Not Provided'}\n📮 *Pincode:* ${user?.pincode || 'Not Provided'}\n\n--- PAYMENT INTENT ---\nI am ready to proceed with the online payment via UPI/Bank Transfer. Please share the QR code or Payment Link.`;
     const encodedMessage = encodeURIComponent(message);
-    window.open(`https://wa.me/917058564508?text=${encodedMessage}`, '_blank');
+
+    // Dual Shopkeeper Protocol
+    window.open(`https://wa.me/919423228843?text=${encodedMessage}`, '_blank');
+    setTimeout(() => {
+      window.open(`https://wa.me/918888644021?text=${encodedMessage}`, '_blank');
+    }, 600);
   };
 
   if (loading) return (
