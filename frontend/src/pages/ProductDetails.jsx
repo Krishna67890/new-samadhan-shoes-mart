@@ -4,6 +4,7 @@ import { gsap } from 'gsap';
 import { AuthContext } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import useFetch from '../hooks/useFetch';
+import localProducts from '../utils/localProducts';
 import {
   Star,
   ChevronLeft,
@@ -32,27 +33,42 @@ const ProductDetails = () => {
     const fetchProduct = async () => {
       try {
         const data = await request(`/api/products/${id}`);
-        setProduct(data);
-        if (data?.sizes && data.sizes.length > 0) {
-          setSelectedSize(data.sizes[0]);
-        }
-
-        // Entrance Animation
-        if (document.querySelector('.product-reveal')) {
-          gsap.from('.product-reveal', {
-             y: 30,
-             opacity: 0,
-             duration: 1,
-             stagger: 0.1,
-             ease: 'power3.out'
-          });
+        if (data && data._id) {
+          setProduct(data);
+        } else {
+          // Fallback to local products if API fails or returns empty
+          const local = localProducts.find(p => String(p._id) === String(id));
+          if (local) setProduct(local);
         }
       } catch (err) {
-        console.error(err);
+        console.error("API Fetch failed, using local fallback:", err);
+        const local = localProducts.find(p => String(p._id) === String(id));
+        if (local) setProduct(local);
       }
     };
     fetchProduct();
   }, [id, request]);
+
+  useEffect(() => {
+    if (product) {
+      if (product.sizes && product.sizes.length > 0) {
+        setSelectedSize(product.sizes[0]);
+      } else if (!product.sizes) {
+        // Default sizes for local fallback if missing
+        product.sizes = [7, 8, 9, 10, 11];
+        setSelectedSize(7);
+      }
+
+      // Entrance Animation
+      gsap.from('.product-reveal', {
+         y: 30,
+         opacity: 0,
+         duration: 1,
+         stagger: 0.1,
+         ease: 'power3.out'
+      });
+    }
+  }, [product]);
 
   const handleAddToCart = () => {
     if (!isAuthenticated) {
