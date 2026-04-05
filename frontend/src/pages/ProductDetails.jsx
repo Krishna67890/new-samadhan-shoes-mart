@@ -33,7 +33,7 @@ const ProductDetails = () => {
       try {
         const data = await request(`/api/products/${id}`);
         setProduct(data);
-        if (data.sizes && data.sizes.length > 0) {
+        if (data?.sizes && data.sizes.length > 0) {
           setSelectedSize(data.sizes[0]);
         }
 
@@ -60,12 +60,6 @@ const ProductDetails = () => {
       return;
     }
 
-    // Force guest to identity page if not verified
-    if (user?.isGuest && !user?.identityVerified) {
-      navigate('/identity');
-      return;
-    }
-
     if (!selectedSize) {
       alert("Please select a size first!");
       return;
@@ -82,48 +76,14 @@ const ProductDetails = () => {
       return;
     }
 
-    if (user?.role !== 'admin' && !user?.identityVerified) {
-      navigate('/identity');
-      return;
-    }
+    const total = product?.price * quantity;
+    const message = `Hello Samadhan Shoes Mart! 👟\n\nI want to buy the following elite pair:\n\n*Product:* ${product?.name}\n*Quantity:* ${quantity}\n*Size:* ${selectedSize}\n*Price:* ₹${product?.price?.toLocaleString()}\n*Total Amount:* ₹${total?.toLocaleString()}\n\n*--- CUSTOMER IDENTITY ---*\n*Name:* ${user?.name}\n*Contact:* ${user?.phone}\n*Address:* ${user?.address}\n*City:* ${user?.city}\n*Pincode:* ${user?.pincode}\n\n*--- SYSTEM METADATA ---*\n*Developer ID:* KRISHNA-DEV-001\n*Order Ref:* #${Math.floor(100000 + Math.random() * 900000)}\n\nPlease confirm payment details and availability.`;
 
-    const total = product.price * quantity;
-
-    // --- LOGGING TO ORDER HISTORY ---
-    try {
-      await request('/api/orders', 'POST', {
-        orderItems: [{
-          name: product.name,
-          qty: quantity,
-          image: product.images[0],
-          price: product.price,
-          product: product._id,
-          size: selectedSize
-        }],
-        shippingAddress: {
-          address: user.address,
-          city: user.city,
-          postalCode: user.pincode,
-          country: 'India'
-        },
-        paymentMethod: 'WhatsApp (Pending)',
-        totalPrice: total,
-        phone: user.phone
-      });
-    } catch (err) {
-      console.error("Failed to log WhatsApp order to history:", err);
-    }
-
-    const text = `Hello Samadhan Shoes Mart! 👟\n\nI want to buy the following elite pair:\n\n*Product:* ${product.name}\n*Quantity:* ${quantity}\n*Size:* ${selectedSize}\n*Price:* ₹${product.price.toLocaleString()}\n*Total Amount:* ₹${total.toLocaleString()}\n\n*--- CUSTOMER IDENTITY ---*\n*Name:* ${user.name}\n*Persona:* ${user.gender === 'boy' ? 'Collector Boy' : 'Collector Girl'}\n*Contact:* ${user.phone}\n*Address:* ${user.address}\n*City:* ${user.city}\n*Pincode:* ${user.pincode}\n\n*--- SYSTEM METADATA ---*\n*Developer ID:* KRISHNA-DEV-001\n*Order Ref:* #${Math.floor(100000 + Math.random() * 900000)}\n\nPlease confirm payment details and availability.`;
-
-    const whatsappUrl = `https://wa.me/917058564508?text=${encodeURIComponent(text)}`;
-    window.open(whatsappUrl, '_blank');
-
-    // Secondary line for Developer (CC)
-    const devText = `*DEV-LOG:* Order Ref #${Math.floor(100000 + Math.random() * 900000)} initiated by ${user.name} (${user.phone}).`;
-    console.log("Developer Notification Sync:", devText);
-    // In a real dual-number scenario, you might trigger a second window or a backend webhook.
-    // For this implementation, we ensure the Developer ID is in the main message for the shopkeeper to see.
+    // Dual Shopkeeper Protocol
+    window.open(`https://wa.me/919423228843?text=${encodeURIComponent(message)}`, '_blank');
+    setTimeout(() => {
+      window.open(`https://wa.me/918888644021?text=${encodeURIComponent(message)}`, '_blank');
+    }, 600);
   };
 
   if (loading) return (
@@ -152,19 +112,19 @@ const ProductDetails = () => {
           <div className="space-y-6 product-reveal">
              <div className="aspect-square bg-slate-50 rounded-[4rem] overflow-hidden border border-slate-100 shadow-sm relative group">
                 <img
-                   src={product.images[activeImage]}
-                   alt={product.name}
+                   src={product?.images?.[activeImage]}
+                   alt={product?.name}
                    className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-1000"
                 />
                 <div className="absolute top-10 left-10">
                    <span className="bg-blue-600 text-white px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest shadow-2xl">
-                      {product.brand}
+                      {product?.brand}
                    </span>
                 </div>
              </div>
 
              <div className="grid grid-cols-4 gap-4">
-                {product.images.map((img, i) => (
+                {product?.images?.map((img, i) => (
                    <button
                       key={i}
                       onClick={() => setActiveImage(i)}
@@ -181,19 +141,19 @@ const ProductDetails = () => {
              <div>
                 <div className="flex items-center gap-1 mb-6">
                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} size={16} className={`${i < product.rating ? 'fill-blue-600 text-blue-600' : 'text-slate-200'}`} />
+                      <Star key={i} size={16} className={`${i < product?.rating ? 'fill-blue-600 text-blue-600' : 'text-slate-200'}`} />
                    ))}
-                   <span className="text-slate-400 font-bold text-xs ml-4 uppercase tracking-widest">({product.rating}.0 Verified)</span>
+                   <span className="text-slate-400 font-bold text-xs ml-4 uppercase tracking-widest">({product?.rating}.0 Verified)</span>
                 </div>
-                <h1 className="text-6xl font-black text-slate-950 mb-6 tracking-tighter uppercase leading-none">{product.name}</h1>
-                <p className="text-slate-500 font-medium leading-relaxed text-lg italic">"{product.description}"</p>
+                <h1 className="text-6xl font-black text-slate-950 mb-6 tracking-tighter uppercase leading-none">{product?.name}</h1>
+                <p className="text-slate-500 font-medium leading-relaxed text-lg italic">"{product?.description}"</p>
              </div>
 
              <div className="flex flex-col gap-6 border-y border-slate-50 py-10">
                 <div className="flex flex-wrap items-end gap-10">
                    <div className="flex flex-col">
                       <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Elite Valuation</span>
-                      <span className="text-5xl font-black text-slate-950 tracking-tighter">₹{(product.price * quantity).toLocaleString()}</span>
+                      <span className="text-5xl font-black text-slate-950 tracking-tighter">₹{(product?.price * quantity).toLocaleString()}</span>
                    </div>
                    <div className="flex flex-col">
                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Quantity</span>
@@ -208,7 +168,7 @@ const ProductDetails = () => {
                 <div className="flex flex-col gap-4">
                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Select Size</span>
                    <div className="flex flex-wrap gap-3">
-                      {product.sizes.map((size) => (
+                      {product?.sizes?.map((size) => (
                          <button
                             key={size}
                             onClick={() => setSelectedSize(size)}
@@ -234,32 +194,6 @@ const ProductDetails = () => {
                 >
                    <MessageCircle size={20} /> Pay via WhatsApp
                 </button>
-             </div>
-
-             {/* STEP-BY-STEP WHATSAPP GUIDE */}
-             <div className="bg-blue-50/50 rounded-[3rem] p-10 border border-blue-100/50 relative overflow-hidden">
-                <div className="absolute top-10 right-10 text-blue-200 opacity-20">
-                   <Info size={100} />
-                </div>
-                <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-600 mb-8">Elite WhatsApp Flow</h4>
-                <div className="space-y-6 relative z-10">
-                   <div className="flex gap-4 items-center">
-                      <div className="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center font-black text-xs">1</div>
-                      <p className="text-xs font-bold text-slate-600 uppercase tracking-widest">Click the "Pay via WhatsApp" button above.</p>
-                   </div>
-                   <div className="flex gap-4 items-center">
-                      <div className="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center font-black text-xs">2</div>
-                      <p className="text-xs font-bold text-slate-600 uppercase tracking-widest">Send the auto-generated order message.</p>
-                   </div>
-                   <div className="flex gap-4 items-center">
-                      <div className="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center font-black text-xs">3</div>
-                      <p className="text-xs font-bold text-slate-600 uppercase tracking-widest">Our curator will confirm stock & provide UPI QR.</p>
-                   </div>
-                   <div className="flex gap-4 items-center">
-                      <div className="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center font-black text-xs">4</div>
-                      <p className="text-xs font-bold text-slate-600 uppercase tracking-widest">Confirm payment and receive your tracking ID.</p>
-                   </div>
-                </div>
              </div>
 
              {/* TRUST BADGES */}
