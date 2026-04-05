@@ -120,8 +120,8 @@ const ProductDetailsPage = () => {
           <div className="lg:col-span-7 space-y-8 reveal-item">
             <div className="relative aspect-square bg-white rounded-[4rem] overflow-hidden shadow-2xl shadow-slate-200/50 border border-slate-50 group">
               <img
-                src={product.images[activeImg]}
-                alt={product.name}
+                src={product?.images?.[activeImg]}
+                alt={product?.name}
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
               />
               <div className="absolute top-10 left-10">
