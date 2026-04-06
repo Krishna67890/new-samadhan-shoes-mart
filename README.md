@@ -1,4 +1,4 @@
-# New Samadhan Shoes Mart - Full System Recovery
+# New Samadhan Shoe Mart - Full System Recovery
 
 A premium, local-first boutique footwear web application designed for elite performance and seamless direct-to-shopkeeper ordering.
 
@@ -30,5 +30,5 @@ A premium, local-first boutique footwear web application designed for elite perf
 - **Shopkeeper 2**: 8888644021
 
 ---
-© 2024 New Samadhan Shoes Mart. All rights reserved.
+© 2024 New Samadhan Shoe Mart. All rights reserved.
 # Build Update 

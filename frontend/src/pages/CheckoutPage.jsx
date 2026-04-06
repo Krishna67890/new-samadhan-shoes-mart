@@ -69,7 +69,7 @@ const CheckoutPage = () => {
     const shopkeeper1 = "919423228843";
     const shopkeeper2 = "918888644021";
 
-    const message = `🚀 *NEW ORDER RECEIVED - SAMADHAN SHOES MART*\n`;
+    const message = `🚀 *NEW ORDER RECEIVED - NEW SAMADHAN SHOE MART*\n`;
     message += `--------------------------------------\n`;
     message += `👤 *CUSTOMER:* ${formData.name.toUpperCase()}\n`;
     message += `📞 *PHONE:* ${formData.phone}\n`;
@@ -80,7 +80,7 @@ const CheckoutPage = () => {
       message += `  - ${item.name} (Size ${item.size}) x${item.qty} [₹${(item.price * item.qty).toLocaleString()}]\n`;
     });
     message += `💰 *TOTAL AMOUNT:* ₹${cartTotal.toLocaleString()}\n`;
-    message += `🏢 *ORIGIN:* Samadhan Shoes Mart Factory, Nashik\n`;
+    message += `🏢 *ORIGIN:* New Samadhan Shoe Mart Factory, Nashik\n`;
     message += `--------------------------------------\n`;
     message += `✅ *ORDER REF:* #${orderRef}\n`;
     message += `🏪 *SHOP CONTACTS: 9423228843 | 8888644021*`;

@@ -40,13 +40,13 @@ const addOrderItems = async (req, res) => {
         const orderList = orderItems.map(item => `${item.name} (Qty: ${item.qty})`).join(', ');
         await sendEmail({
           email: req.user.email,
-          subject: `Order Confirmation - NEW SAMADHAN SHOES MART`,
+          subject: `Order Confirmation - NEW SAMADHAN SHOE MART`,
           message: `Hello ${req.user.name},\n\nYour order #${createdOrder._id} has been placed successfully.\n\nItems: ${orderList}\nTotal Amount: ₹${totalPrice}\n\nPlease complete your payment via WhatsApp if you haven't already.\n\nThank you for shopping with us!`,
           html: `
             <div style="font-family: sans-serif; padding: 20px; color: #333;">
               <h1 style="color: #2563eb;">Order Confirmed!</h1>
               <p>Hello <strong>${req.user.name}</strong>,</p>
-              <p>Thank you for your order at <strong>NEW SAMADHAN SHOES MART</strong>.</p>
+              <p>Thank you for your order at <strong>NEW SAMADHAN SHOE MART</strong>.</p>
               <div style="background: #f3f4f6; padding: 15px; border-radius: 10px; margin: 20px 0;">
                 <p><strong>Order ID:</strong> ${createdOrder._id}</p>
                 <p><strong>Total Amount:</strong> ₹${totalPrice}</p>

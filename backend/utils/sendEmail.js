@@ -11,7 +11,7 @@ const sendEmail = async (options) => {
   });
 
   const mailOptions = {
-    from: `New Samadhan Shoes Mart <${process.env.EMAIL_USER}>`,
+    from: `New Samadhan Shoe Mart <${process.env.EMAIL_USER}>`,
     to: options.email,
     subject: options.subject,
     text: options.message,

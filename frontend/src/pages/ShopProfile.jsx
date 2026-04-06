@@ -43,7 +43,7 @@ const ShopProfile = () => {
     const userPincode = user?.pincode || 'Not Provided';
 
     const message = `*NEW ELITE ORDER INQUIRY*\n\n` +
-      `*Source:* New Samadhan Shoes Listing Profile\n` +
+      `*Source:* New Samadhan Shoe Listing Profile\n` +
       `*Vendor:* ${shop.name}\n\n` +
       `*Client Name:* ${userName}\n` +
       `*Contact Number:* ${userPhone}\n` +
@@ -51,7 +51,7 @@ const ShopProfile = () => {
       `*City:* ${userCity}\n` +
       `*Pincode:* ${userPincode}\n\n` +
       `*Product/Inquiry:* I am looking for premium footwear. Please share your UPI QR code and latest stock catalog.\n\n` +
-      `_Automated by New Samadhan Shoes Mart 2026_`;
+      `_Automated by New Samadhan Shoe Mart 2026_`;
 
     const encodedMsg = encodeURIComponent(message);
 

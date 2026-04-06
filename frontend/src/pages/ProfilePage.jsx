@@ -356,7 +356,7 @@ const ProfilePage = () => {
 
         <div className="mt-20 text-center profile-reveal">
            <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.6em] flex items-center justify-center gap-4">
-             <ShieldCheck size={14} className="text-blue-600" /> Secure Verification • Samadhan Shoes Mart
+             <ShieldCheck size={14} className="text-blue-600" /> Secure Verification • New Samadhan Shoe Mart
            </p>
         </div>
       </div>

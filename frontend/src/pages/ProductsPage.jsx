@@ -49,7 +49,7 @@ const ProductsPage = () => {
     }
 
     const cleanPrice = sanitizePrice(product?.price);
-    const message = `Hello New Samadhan Shoes Mart! 👋\n\nI want to order this Masterpiece:\n\n👟 *Product:* ${product?.name}\n🏷️ *Brand:* ${product?.brand}\n💰 *Price:* ₹${cleanPrice.toLocaleString()}\n📏 *Size:* To be confirmed\n📦 *Quantity:* 1\n\n--- CUSTOMER DETAILS ---\n👤 *Name:* ${user?.name || 'Guest'}\n📍 *Address:* ${user?.address || 'Not Provided'}\n🏙️ *City:* ${user?.city || 'Not Provided'}\n📮 *Pincode:* ${user?.pincode || 'Not Provided'}\n\n--- PAYMENT INTENT ---\nI am ready to proceed with the online payment via UPI/Bank Transfer. Please share the QR code or Payment Link.`;
+    const message = `Hello New Samadhan Shoe Mart! 👋\n\nI want to order this Masterpiece:\n\n👟 *Product:* ${product?.name}\n🏷️ *Brand:* ${product?.brand}\n💰 *Price:* ₹${cleanPrice.toLocaleString()}\n📏 *Size:* To be confirmed\n📦 *Quantity:* 1\n\n--- CUSTOMER DETAILS ---\n👤 *Name:* ${user?.name || 'Guest'}\n📍 *Address:* ${user?.address || 'Not Provided'}\n🏙️ *City:* ${user?.city || 'Not Provided'}\n📮 *Pincode:* ${user?.pincode || 'Not Provided'}\n\n--- PAYMENT INTENT ---\nI am ready to proceed with the online payment via UPI/Bank Transfer. Please share the QR code or Payment Link.`;
 
     // Dual Shopkeeper Protocol
     window.open(`https://wa.me/919423228843?text=${encodeURIComponent(message)}`, '_blank');
@@ -96,7 +96,7 @@ const ProductsPage = () => {
                <Sparkles size={12} /> Established Vision 2026
             </div>
           </div>
-          <h1 className="text-7xl md:text-9xl font-black text-white mb-8 tracking-tighter uppercase leading-none mix-blend-difference">The Vault.</h1>
+          <h1 className="text-4xl sm:text-7xl md:text-9xl font-black text-white mb-8 tracking-tighter uppercase leading-none mix-blend-difference">The Vault.</h1>
           <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.6em] max-w-xl mx-auto leading-loose italic">
             "Curated Artisanal Footwear for the Elite Member"
           </p>

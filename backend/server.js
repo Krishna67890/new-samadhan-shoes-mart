@@ -45,7 +45,7 @@ const PORT = process.env.PORT || 5000;
 // Senior Architect Note: Start the server immediately so Guest mode works.
 // Connect to DB in the background.
 app.listen(PORT, () => {
-  console.log(`🚀 [Server] New Samadhan Shoes Mart active on port ${PORT}`);
+  console.log(`🚀 [Server] New Samadhan Shoe Mart active on port ${PORT}`);
   console.log(`💡 [System] Guest Login is now ENABLED.`);
 
   // Background connection attempt

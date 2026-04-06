@@ -32,8 +32,8 @@ const Navbar = () => {
         <Link to="/" className="flex items-center gap-4 group z-[110]">
           <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-[0_0_30px_rgba(37,99,235,0.3)] group-hover:rotate-12 transition-transform border border-blue-500/50">S</div>
           <div className="flex flex-col">
-            <span className="font-black text-white tracking-tighter text-2xl uppercase leading-none hidden sm:block">Samadhan<span className="text-blue-600">Shoes</span></span>
-            <span className="text-[8px] font-black text-slate-500 uppercase tracking-[0.4em] leading-none mt-1 hidden sm:block">The Vault 2026</span>
+            <span className="font-black text-white tracking-tighter text-base sm:text-2xl uppercase leading-none truncate max-w-[150px] sm:max-w-none">New Samadhan<span className="text-blue-600"> Shoe Mart</span></span>
+            <span className="text-[8px] font-black text-slate-500 uppercase tracking-[0.4em] leading-none mt-1">The Vault 2026</span>
           </div>
         </Link>
 
@@ -203,7 +203,7 @@ const Navbar = () => {
           </div>
 
           <div className="p-10 mt-auto border-t border-white/5">
-             <p className="text-[9px] font-black text-slate-600 uppercase tracking-[0.5em] text-center">New Samadhan Shoes Mart © 2026</p>
+             <p className="text-[9px] font-black text-slate-600 uppercase tracking-[0.5em] text-center">New Samadhan Shoe Mart © 2026</p>
           </div>
         </div>
       )}

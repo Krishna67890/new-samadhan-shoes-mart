@@ -104,7 +104,7 @@ const ProductDetails = () => {
 
     const cleanPrice = sanitizePrice(product?.price);
     const total = cleanPrice * quantity;
-    const message = `Hello Samadhan Shoes Mart! 👟\n\nI want to buy the following elite pair:\n\n*Product:* ${product?.name}\n*Quantity:* ${quantity}\n*Size:* ${selectedSize}\n*Price:* ₹${cleanPrice.toLocaleString()}\n*Total Amount:* ₹${total.toLocaleString()}\n\n*--- CUSTOMER IDENTITY ---*\n*Name:* ${user?.name}\n*Contact:* ${user?.phone}\n*Address:* ${user?.address}\n*City:* ${user?.city}\n*Pincode:* ${user?.pincode}\n\n*--- SYSTEM METADATA ---*\n*Developer ID:* KRISHNA-DEV-001\n*Order Ref:* #${Math.floor(100000 + Math.random() * 900000)}\n\nPlease confirm payment details and availability.`;
+    const message = `Hello New Samadhan Shoe Mart! 👟\n\nI want to buy the following elite pair:\n\n*Product:* ${product?.name}\n*Quantity:* ${quantity}\n*Size:* ${selectedSize}\n*Price:* ₹${cleanPrice.toLocaleString()}\n*Total Amount:* ₹${total.toLocaleString()}\n\n*--- CUSTOMER IDENTITY ---*\n*Name:* ${user?.name}\n*Contact:* ${user?.phone}\n*Address:* ${user?.address}\n*City:* ${user?.city}\n*Pincode:* ${user?.pincode}\n\n*--- SYSTEM METADATA ---*\n*Developer ID:* KRISHNA-DEV-001\n*Order Ref:* #${Math.floor(100000 + Math.random() * 900000)}\n\nPlease confirm payment details and availability.`;
 
     // Dual Shopkeeper Protocol
     window.open(`https://wa.me/919423228843?text=${encodeURIComponent(message)}`, '_blank');

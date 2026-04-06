@@ -50,7 +50,7 @@ const CartPage = () => {
     const userAddress = `${user.address}, ${user.city}, ${user.state} - ${user.pincode}`;
     const total = cartTotal.toLocaleString();
 
-    let message = `🚀 *NEW ORDER RECEIVED - SAMADHAN SHOES MART*\n`;
+    let message = `🚀 *NEW ORDER RECEIVED - NEW SAMADHAN SHOE MART*\n`;
     message += `--------------------------------------\n`;
     message += `👤 *CUSTOMER:* ${userName.toUpperCase()}\n`;
     message += `📞 *PHONE:* ${userPhone}\n`;
@@ -61,7 +61,7 @@ const CartPage = () => {
       message += `  - ${item.name} (Size ${item.size}) x${item.qty}\n`;
     });
     message += `💰 *TOTAL AMOUNT:* ₹${total}\n`;
-    message += `🏢 *ORIGIN:* Samadhan Shoes Mart Factory, Nashik\n`;
+    message += `🏢 *ORIGIN:* New Samadhan Shoe Mart Factory, Nashik\n`;
     message += `--------------------------------------\n`;
     message += `🏪 *SHOP CONTACTS: 9423228843 | 8888644021*`;
 

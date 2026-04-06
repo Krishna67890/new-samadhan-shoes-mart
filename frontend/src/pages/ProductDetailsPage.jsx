@@ -80,7 +80,7 @@ const ProductDetailsPage = () => {
     }
 
     const cleanPrice = sanitizePrice(product?.price);
-    const message = `Hello New Samadhan Shoes Mart! 👋\n\nI want to order this Masterpiece:\n\n👟 *Product:* ${product?.name}\n🏷️ *Brand:* ${product?.brand}\n💰 *Price:* ₹${(cleanPrice * qty).toLocaleString()}\n📏 *Size:* ${selectedSize} (UK/IN)\n📦 *Quantity:* ${qty}\n🖼️ *Image:* ${product?.images?.[0]}\n\n--- CUSTOMER DETAILS ---\n👤 *Name:* ${user?.name || 'Guest'}\n📍 *Address:* ${user?.address || 'Not Provided'}\n🏙️ *City:* ${user?.city || 'Not Provided'}\n📮 *Pincode:* ${user?.pincode || 'Not Provided'}\n\n--- PAYMENT INTENT ---\nI am ready to proceed with the online payment via UPI/Bank Transfer. Please share the QR code or Payment Link.`;
+    const message = `Hello New Samadhan Shoe Mart! 👋\n\nI want to order this Masterpiece:\n\n👟 *Product:* ${product?.name}\n🏷️ *Brand:* ${product?.brand}\n💰 *Price:* ₹${(cleanPrice * qty).toLocaleString()}\n📏 *Size:* ${selectedSize} (UK/IN)\n📦 *Quantity:* ${qty}\n🖼️ *Image:* ${product?.images?.[0]}\n\n--- CUSTOMER DETAILS ---\n👤 *Name:* ${user?.name || 'Guest'}\n📍 *Address:* ${user?.address || 'Not Provided'}\n🏙️ *City:* ${user?.city || 'Not Provided'}\n📮 *Pincode:* ${user?.pincode || 'Not Provided'}\n\n--- PAYMENT INTENT ---\nI am ready to proceed with the online payment via UPI/Bank Transfer. Please share the QR code or Payment Link.`;
     const encodedMessage = encodeURIComponent(message);
 
     // Dual Shopkeeper Protocol
@@ -119,7 +119,7 @@ const ProductDetailsPage = () => {
                 <span className="font-black text-[10px] uppercase tracking-[0.3em]">Back to Vault</span>
             </button>
             <div className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-full border border-white/10 shadow-sm text-[9px] font-black text-slate-400 uppercase tracking-widest backdrop-blur-md">
-               <ShieldCheck size={14} className="text-emerald-500" /> Authenticity Verified By Samadhan Shoes
+               <ShieldCheck size={14} className="text-emerald-500" /> Authenticity Verified By New Samadhan Shoe Mart
             </div>
         </div>
 

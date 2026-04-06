@@ -12,7 +12,7 @@ const AIGuide = () => {
     const userName = JSON.parse(localStorage.getItem('ssm_user_identity') || '{}').name || 'Elite User';
 
     if (path === '/') {
-      return `Welcome to Samadhan Shoes, ${userName}. Browse our popular ADIDAS YEEZY BOOST and JORDAN collections. Click Shop to see our collection or Sync Identity to start your purchase.`;
+      return `Welcome to New Samadhan Shoe Mart, ${userName}. Browse our popular ADIDAS YEEZY BOOST and JORDAN collections. Click Shop to see our collection or Sync Identity to start your purchase.`;
     }
     if (path === '/login') {
       return "Please enter your credentials or use Guest Login to browse. Your data is only used for order verification.";
@@ -26,7 +26,7 @@ const AIGuide = () => {
     if (path === '/cart' || path === '/checkout' || path === '/vault') {
       return "Your order is ready. I am opening WhatsApp to notify our Shopkeepers of your purchase. For technical support, you can reach our developer at 80-80-69-06-31.";
     }
-    return "Welcome to New Samadhan Shoes Mart. Browse our collection and add your shoes to the Vault. Finally, click Confirm to send your order details directly to our Shopkeepers via WhatsApp. For technical support, contact our developer at 80-80-69-06-31.";
+    return "Welcome to New Samadhan Shoe Mart. Browse our collection and add your shoes to the Vault.";t. Finally, click Confirm to send your order details directly to our Shopkeepers via WhatsApp. For technical support, contact our developer at 80-80-69-06-31.";
   };
 
   const speak = (text) => {

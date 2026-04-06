@@ -172,25 +172,25 @@ const HomePage = () => {
                     <div className="inline-flex items-center gap-4 px-6 py-2 rounded-full bg-blue-600/20 border border-blue-500/30 text-blue-400 text-[10px] font-black uppercase tracking-[0.5em] shadow-2xl backdrop-blur-md">
                        <Sparkles size={14} className="animate-spin-slow" /> Elite Artifact {shoe.id}
                     </div>
-                    <h2 className="text-7xl md:text-[10rem] font-black text-white leading-[0.85] tracking-tighter uppercase mix-blend-difference">
+                    <h2 className="text-4xl sm:text-7xl md:text-[10rem] font-black text-white leading-[0.85] tracking-tighter uppercase mix-blend-difference">
                        {shoe.brand} <br />
                        <span className="text-blue-600">{shoe.name.split(' ')[0]}</span>
                     </h2>
-                    <p className="text-slate-400 text-xl font-medium italic max-w-xl border-l-2 border-blue-600 pl-8">
+                    <p className="text-slate-400 text-base sm:text-xl font-medium italic max-w-xl border-l-2 border-blue-600 pl-4 sm:pl-8">
                        "Precision engineered for the urban elite. Redefining the boundaries of artisanal footwear."
                     </p>
-                    <div className="flex flex-wrap gap-8 pt-6">
+                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 pt-6">
                        <button
                          onClick={() => navigate('/products')}
-                         className="bg-white text-black px-12 py-6 rounded-[2rem] text-[11px] font-black uppercase tracking-[0.4em] hover:bg-blue-600 hover:text-white transition-all shadow-2xl flex items-center gap-6 group"
+                         className="w-full sm:w-auto bg-white text-black px-8 sm:px-12 py-5 sm:py-6 rounded-[1.5rem] sm:rounded-[2rem] text-[10px] sm:text-[11px] font-black uppercase tracking-[0.4em] hover:bg-blue-600 hover:text-white transition-all shadow-2xl flex items-center justify-center gap-4 sm:gap-6 group"
                        >
-                         Enter The Vault <ArrowRight size={20} className="group-hover:translate-x-3 transition-transform" />
+                         Enter The Vault <ArrowRight size={18} className="group-hover:translate-x-3 transition-transform" />
                        </button>
                        <button
                          onClick={() => navigate('/identity')}
-                         className="bg-white/5 backdrop-blur-md border border-white/10 text-white px-12 py-6 rounded-[2rem] text-[11px] font-black uppercase tracking-[0.4em] hover:bg-white/10 transition-all flex items-center gap-6"
+                         className="w-full sm:w-auto bg-white/5 backdrop-blur-md border border-white/10 text-white px-8 sm:px-12 py-5 sm:py-6 rounded-[1.5rem] sm:rounded-[2rem] text-[10px] sm:text-[11px] font-black uppercase tracking-[0.4em] hover:bg-white/10 transition-all flex items-center justify-center gap-4 sm:gap-6"
                        >
-                         Sync Identity <ShieldCheck size={20} />
+                         Sync Identity <ShieldCheck size={18} />
                        </button>
                     </div>
                  </div>
@@ -200,18 +200,18 @@ const HomePage = () => {
         </div>
 
         {/* Navigation Arrows (Minimalist) */}
-        <div className="absolute bottom-12 right-12 z-30 flex gap-6">
+        <div className="absolute bottom-12 right-6 sm:right-12 z-30 flex gap-4 sm:gap-6">
            <button
              onClick={prevSlide}
-             className="w-16 h-16 bg-white/5 hover:bg-white text-white hover:text-black rounded-full flex items-center justify-center transition-all border border-white/10 backdrop-blur-xl"
+             className="w-12 h-12 sm:w-16 sm:h-16 bg-white/5 hover:bg-white text-white hover:text-black rounded-full flex items-center justify-center transition-all border border-white/10 backdrop-blur-xl"
            >
-             <ChevronLeft size={28} />
+             <ChevronLeft size={24} />
            </button>
            <button
              onClick={nextSlide}
-             className="w-16 h-16 bg-white/5 hover:bg-white text-white hover:text-black rounded-full flex items-center justify-center transition-all border border-white/10 backdrop-blur-xl"
+             className="w-12 h-12 sm:w-16 sm:h-16 bg-white/5 hover:bg-white text-white hover:text-black rounded-full flex items-center justify-center transition-all border border-white/10 backdrop-blur-xl"
            >
-             <ChevronRight size={28} />
+             <ChevronRight size={24} />
            </button>
         </div>
 
@@ -228,24 +228,24 @@ const HomePage = () => {
       </section>
 
       {/* Featured Drops Section */}
-      <section className="container mx-auto px-6 pt-48 relative">
-        <div className="flex flex-col md:flex-row justify-between items-end gap-10 mb-24 home-reveal">
-           <div className="space-y-6">
+      <section className="container mx-auto px-6 pt-32 sm:pt-48 relative">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-10 mb-16 sm:mb-24 home-reveal">
+           <div className="space-y-4 sm:space-y-6">
               <div className="flex items-center gap-4">
-                 <div className="w-16 h-1 bg-blue-600 rounded-full"></div>
-                 <span className="text-[11px] font-black uppercase tracking-[0.6em] text-blue-500">The Collection</span>
+                 <div className="w-12 sm:w-16 h-1 bg-blue-600 rounded-full"></div>
+                 <span className="text-[9px] sm:text-[11px] font-black uppercase tracking-[0.4em] sm:tracking-[0.6em] text-blue-500">The Collection</span>
               </div>
-              <h2 className="text-6xl md:text-8xl font-black text-white tracking-tighter uppercase leading-none">Curated Drops.</h2>
+              <h2 className="text-4xl sm:text-6xl md:text-8xl font-black text-white tracking-tighter uppercase leading-none">Curated Drops.</h2>
            </div>
            <Link
              to="/products"
-             className="text-slate-500 hover:text-white font-black uppercase text-[10px] tracking-[0.4em] flex items-center gap-4 transition-all pb-4 border-b border-white/10 group"
+             className="text-slate-500 hover:text-white font-black uppercase text-[9px] sm:text-[10px] tracking-[0.4em] flex items-center gap-4 transition-all pb-2 sm:pb-4 border-b border-white/10 group"
            >
-             View Entire Vault <MoveRight size={20} className="group-hover:translate-x-3 transition-transform" />
+             View Entire Vault <MoveRight size={18} sm:size={20} className="group-hover:translate-x-3 transition-transform" />
            </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 home-reveal">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 home-reveal">
            {featuredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
            ))}
@@ -253,21 +253,21 @@ const HomePage = () => {
       </section>
 
       {/* Identity Banner */}
-      <section className="container mx-auto px-6 pt-48 home-reveal">
-         <div className="relative bg-white/[0.03] backdrop-blur-3xl rounded-[4rem] border border-white/10 p-16 md:p-32 overflow-hidden shadow-2xl">
-            <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-600/5 blur-[150px] rounded-full translate-x-1/2 -translate-y-1/2"></div>
+      <section className="container mx-auto px-6 pt-32 sm:pt-48 home-reveal">
+         <div className="relative bg-white/[0.03] backdrop-blur-3xl rounded-[2.5rem] sm:rounded-[4rem] border border-white/10 p-10 sm:p-16 md:p-32 overflow-hidden shadow-2xl">
+            <div className="absolute top-0 right-0 w-[500px] sm:w-[800px] h-[500px] sm:h-[800px] bg-blue-600/5 blur-[100px] sm:blur-[150px] rounded-full translate-x-1/2 -translate-y-1/2"></div>
 
-            <div className="max-w-4xl relative z-10 space-y-10">
-               <ShieldCheck size={80} className="text-blue-600 mb-6" />
-               <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter uppercase leading-none">Access Restricted to Verified Members.</h2>
-               <p className="text-slate-400 text-xl font-medium italic leading-relaxed max-w-2xl">
+            <div className="max-w-4xl relative z-10 space-y-8 sm:space-y-10">
+               <ShieldCheck size={60} sm:size={80} className="text-blue-600 mb-4 sm:mb-6" />
+               <h2 className="text-3xl sm:text-5xl md:text-7xl font-black text-white tracking-tighter uppercase leading-none">Access Restricted to Verified Members.</h2>
+               <p className="text-slate-400 text-lg sm:text-xl font-medium italic leading-relaxed max-w-2xl">
                  "Our most exclusive artifacts require Identity Sync. Prove your status and unlock the high-tier catalog today."
                </p>
                <button
                  onClick={() => navigate('/identity')}
-                 className="bg-white text-black px-12 py-7 rounded-[2.5rem] text-[11px] font-black uppercase tracking-[0.4em] hover:bg-blue-600 hover:text-white transition-all shadow-2xl flex items-center gap-6 group"
+                 className="w-full sm:w-auto bg-white text-black px-10 sm:px-12 py-5 sm:py-7 rounded-[1.5rem] sm:rounded-[2.5rem] text-[10px] sm:text-[11px] font-black uppercase tracking-[0.4em] hover:bg-blue-600 hover:text-white transition-all shadow-2xl flex items-center justify-center gap-4 sm:gap-6 group"
                >
-                 Sync Identity Now <ChevronRight size={24} className="group-hover:translate-x-3 transition-transform" />
+                 Sync Identity Now <ChevronRight size={20} sm:size={24} className="group-hover:translate-x-3 transition-transform" />
                </button>
             </div>
          </div>
@@ -293,9 +293,9 @@ const HomePage = () => {
       </section>
 
       {/* Footer-like CTA */}
-      <section className="container mx-auto px-6 pt-64 pb-20 text-center home-reveal">
-         <h3 className="text-[10rem] md:text-[20rem] font-black text-white/5 uppercase leading-none tracking-tighter mb-12 select-none">GRAILS</h3>
-         <p className="text-slate-600 font-black uppercase tracking-[1em] text-xs">New Samadhan Shoes Mart © 2026 Vision</p>
+      <section className="container mx-auto px-6 pt-32 sm:pt-64 pb-20 text-center home-reveal">
+         <h3 className="text-7xl sm:text-[10rem] md:text-[20rem] font-black text-white/5 uppercase leading-none tracking-tighter mb-8 sm:mb-12 select-none">GRAILS</h3>
+         <p className="text-slate-600 font-black uppercase tracking-[0.5em] sm:tracking-[1em] text-[8px] sm:text-xs">New Samadhan Shoe Mart © 2026 Vision</p>
       </section>
     </div>
   );

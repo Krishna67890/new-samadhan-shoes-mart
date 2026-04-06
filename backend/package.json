@@ -1,7 +1,7 @@
 {
   "name": "new-samadhan-shoes-backend",
   "version": "1.0.0",
-  "description": "Backend for New Samadhan Shoes Mart",
+  "description": "Backend for New Samadhan Shoe Mart",
   "main": "server.js",
   "type": "module",
   "scripts": {
