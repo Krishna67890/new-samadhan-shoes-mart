@@ -69,7 +69,7 @@ const CheckoutPage = () => {
     const shopkeeper1 = "919423228843";
     const shopkeeper2 = "918888644021";
 
-    const message = `🚀 *NEW ORDER RECEIVED - NEW SAMADHAN SHOE MART*\n`;
+    let message = `🚀 *NEW ORDER RECEIVED - NEW SAMADHAN SHOE MART*\n`;
     message += `--------------------------------------\n`;
     message += `👤 *CUSTOMER:* ${formData.name.toUpperCase()}\n`;
     message += `📞 *PHONE:* ${formData.phone}\n`;

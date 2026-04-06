@@ -26,7 +26,7 @@ const AIGuide = () => {
     if (path === '/cart' || path === '/checkout' || path === '/vault') {
       return "Your order is ready. I am opening WhatsApp to notify our Shopkeepers of your purchase. For technical support, you can reach our developer at 80-80-69-06-31.";
     }
-    return "Welcome to New Samadhan Shoe Mart. Browse our collection and add your shoes to the Vault.";t. Finally, click Confirm to send your order details directly to our Shopkeepers via WhatsApp. For technical support, contact our developer at 80-80-69-06-31.";
+    return "Welcome to New Samadhan Shoe Mart. Browse our collection and add your shoes to the Vault. Finally, click Confirm to send your order details directly to our Shopkeepers via WhatsApp. For technical support, contact our developer at 80-80-69-06-31.";
   };
 
   const speak = (text) => {
