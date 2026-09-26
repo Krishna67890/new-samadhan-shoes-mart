@@ -22,28 +22,40 @@ export const CartProvider = ({ children }) => {
     return 0;
   };
 
-  const addToCart = (product, qty, size) => {
-    // Ensure qty is a Number to avoid NaN issues
-    const numericQty = Number(qty);
-    const numericPrice = sanitizePrice(product.price);
+  const addToCart = (product, qty = 1, size = null) => {
+    const numericQty = Number(qty || product?.qty || product?.quantity || 1) || 1;
+    const itemSize = size || product?.size || (product?.sizes && product?.sizes[0]) || 8;
+    const numericPrice = sanitizePrice(product?.price);
+    const prodId = product?._id || product?.id || ('prod_' + Date.now());
+    const prodName = product?.name || 'Artisanal Footwear';
+    const prodImage = product?.images?.[0] || product?.image || '/Shoes.png';
 
-    const itemExists = cartItems.find((x) => x._id === product._id && x.size === size);
+    const itemExists = cartItems.find((x) => (x._id === prodId || x.id === prodId) && x.size === itemSize);
 
     if (itemExists) {
       setCartItems(
         cartItems.map((x) =>
-          x._id === product._id && x.size === size ? { ...x, qty: x.qty + numericQty } : x
+          (x._id === prodId || x.id === prodId) && x.size === itemSize
+            ? { ...x, qty: x.qty + numericQty }
+            : x
         )
       );
     } else {
-      // Create a copy of product with sanitized price
-      const sanitizedProduct = { ...product, price: numericPrice };
-      setCartItems([...cartItems, { ...sanitizedProduct, qty: numericQty, size }]);
+      const sanitizedProduct = {
+        ...product,
+        _id: prodId,
+        id: prodId,
+        name: prodName,
+        price: numericPrice,
+        image: prodImage,
+        images: product?.images || [prodImage],
+      };
+      setCartItems([...cartItems, { ...sanitizedProduct, qty: numericQty, size: itemSize }]);
     }
   };
 
   const removeFromCart = (id, size) => {
-    setCartItems(cartItems.filter((x) => !(x._id === id && x.size === size)));
+    setCartItems(cartItems.filter((x) => !((x._id === id || x.id === id) && x.size === size)));
   };
 
   const clearCart = () => {

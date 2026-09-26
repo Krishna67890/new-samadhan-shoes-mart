@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
   ShoppingBag, User, LogOut, Menu, X,
-  Settings, ChevronDown, LayoutDashboard,
-  Package, Wrench, Home, ShoppingCart, ShieldCheck
+  Search, Heart, ShieldCheck, ChevronDown,
+  LayoutDashboard, Package, Wrench, Home, ArrowRight
 } from 'lucide-react';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Navbar = () => {
   const { user, logout, isAdmin } = useAuth();
@@ -14,6 +18,8 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const navigate = useNavigate();
+  const navRef = useRef(null);
+  const logoRef = useRef(null);
 
   const handleLogout = () => {
     logout();
@@ -24,42 +30,88 @@ const Navbar = () => {
 
   const cartCount = cartItems.reduce((acc, item) => acc + item.qty, 0);
 
-  return (
-    <nav className="fixed top-0 w-full z-[100] bg-[#050505]/80 backdrop-blur-2xl border-b border-white/5 transition-all duration-300">
-      <div className="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      ScrollTrigger.create({
+        start: "top top",
+        end: 100,
+        onUpdate: (self) => {
+          const isScrolled = self.scroll() > 50;
+          gsap.to(navRef.current, {
+            height: isScrolled ? "4.5rem" : "6rem",
+            backgroundColor: isScrolled ? "rgba(247, 245, 240, 0.95)" : "rgba(247, 245, 240, 0.85)",
+            boxShadow: isScrolled ? "0 10px 30px rgba(0,0,0,0.03)" : "none",
+            duration: 0.4,
+            ease: "power2.out",
+            overwrite: "auto"
+          });
+          gsap.to(logoRef.current, {
+            scale: isScrolled ? 0.9 : 1,
+            duration: 0.4,
+            ease: "power2.out",
+            overwrite: "auto"
+          });
+        }
+      });
+    });
 
-        {/* LOGO */}
-        <Link to="/" className="flex items-center gap-4 group z-[110]">
-          <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-[0_0_30px_rgba(37,99,235,0.3)] group-hover:rotate-12 transition-transform border border-blue-500/50">S</div>
-          <div className="flex flex-col">
-            <span className="font-black text-white tracking-tighter text-base sm:text-2xl uppercase leading-none truncate max-w-[150px] sm:max-w-none">New Samadhan<span className="text-blue-600"> Shoe Mart</span></span>
-            <span className="text-[8px] font-black text-slate-500 uppercase tracking-[0.4em] leading-none mt-1">The Vault 2026</span>
-          </div>
+    return () => ctx.revert();
+  }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      gsap.fromTo(".mobile-nav-link",
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, stagger: 0.1, ease: "power3.out", duration: 0.5 }
+      );
+    }
+  }, [isOpen]);
+
+  return (
+    <nav
+      ref={navRef}
+      className="fixed top-0 w-full z-[100] bg-[#F7F5F0]/90 backdrop-blur-md border-b border-[#111111]/5 transition-all duration-300 h-24 flex items-center"
+    >
+      <div className="w-full max-w-[1440px] mx-auto px-6 md:px-12 flex items-center justify-between">
+
+        {/* Brand Identity */}
+        <Link to="/" ref={logoRef} className="flex flex-col group z-[110] origin-left">
+          <span className="font-editorial text-xl sm:text-2xl font-black text-[#111111] tracking-tight leading-none uppercase">
+            NEW SAMADHAN
+          </span>
+          <span className="text-[9px] font-sans font-bold tracking-[0.45em] text-[#6B6B6B] uppercase leading-none mt-1">
+            SHOE MART
+          </span>
         </Link>
 
-        {/* DESKTOP LINKS */}
-        <div className="hidden md:flex items-center gap-12">
-          <Link to="/" className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 hover:text-white transition-all">Home</Link>
-          <Link to="/products" className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 hover:text-white transition-all">The Vault</Link>
-          <Link to="/service-centre" className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 hover:text-white transition-all flex items-center gap-3">
-            <Wrench size={16} /> Service Hub
+        {/* Premium Desktop Navigation */}
+        <div className="hidden lg:flex items-center gap-7 xl:gap-8">
+          <Link to="/" className="text-[11px] font-sans font-bold uppercase tracking-[0.25em] text-[#111111] hover:text-[#8B0000] transition-colors">Home</Link>
+          <Link to="/products" className="text-[11px] font-sans font-bold uppercase tracking-[0.25em] text-[#6B6B6B] hover:text-[#111111] transition-colors">Collections</Link>
+          <Link to="/workshop" className="text-[11px] font-sans font-bold uppercase tracking-[0.25em] text-[#6B6B6B] hover:text-[#8B0000] transition-colors">Workshop</Link>
+          <Link to="/gallery" className="text-[11px] font-sans font-bold uppercase tracking-[0.25em] text-[#6B6B6B] hover:text-[#8B0000] transition-colors">Gallery</Link>
+          <Link to="/products?category=Men" className="text-[11px] font-sans font-bold uppercase tracking-[0.25em] text-[#6B6B6B] hover:text-[#111111] transition-colors">Men</Link>
+          <Link to="/products?category=Women" className="text-[11px] font-sans font-bold uppercase tracking-[0.25em] text-[#6B6B6B] hover:text-[#111111] transition-colors">Women</Link>
+          <Link to="/service-centre" className="text-[11px] font-sans font-bold uppercase tracking-[0.25em] text-[#6B6B6B] hover:text-[#111111] transition-colors flex items-center gap-2">
+             Offers
           </Link>
-
-          {isAdmin && (
-            <Link to="/admin" className="px-6 py-3 bg-white text-black rounded-full text-[10px] font-black uppercase tracking-[0.3em] hover:bg-blue-600 hover:text-white transition-all shadow-2xl">
-              Command
-            </Link>
-          )}
+          <Link to="/about" className="text-[11px] font-sans font-bold uppercase tracking-[0.25em] text-[#6B6B6B] hover:text-[#8B0000] transition-colors">About</Link>
         </div>
 
-        {/* ACTIONS */}
-        <div className="flex items-center gap-6 z-[110]">
-          <Link to="/cart" className="relative group p-2">
-            <div className="w-12 h-12 bg-white/5 rounded-2xl border border-white/10 flex items-center justify-center group-hover:bg-white/10 transition-all backdrop-blur-md">
-              <ShoppingBag className="text-white group-hover:text-blue-500 transition-colors" size={24} />
-            </div>
+        {/* Right Interactions */}
+        <div className="flex items-center gap-4 sm:gap-6 z-[110]">
+          <button className="text-[#111111] hover:text-[#8B0000] transition-colors p-2 hidden sm:block" aria-label="Search">
+            <Search size={20} />
+          </button>
+
+          <button className="text-[#111111] hover:text-[#8B0000] transition-colors p-2 hidden sm:block" aria-label="Wishlist">
+            <Heart size={20} />
+          </button>
+
+          <Link to="/cart" className="relative p-2 group" aria-label="Cart">
+            <ShoppingBag className="text-[#111111] group-hover:text-[#8B0000] transition-colors" size={21} />
             {cartCount > 0 && (
-              <span className="absolute -top-1 -right-1 w-6 h-6 bg-blue-600 text-white text-[10px] font-black rounded-full flex items-center justify-center border-2 border-[#050505] shadow-xl animate-pulse">
+              <span className="absolute top-0 right-0 w-4 h-4 bg-[#8B0000] text-white text-[9px] font-sans font-bold rounded-full flex items-center justify-center shadow-md">
                 {cartCount}
               </span>
             )}
@@ -72,55 +124,51 @@ const Navbar = () => {
                   setProfileOpen(!profileOpen);
                   setIsOpen(false);
                 }}
-                className="flex items-center gap-4 pl-4 py-2 pr-2 bg-white/5 rounded-2xl border border-white/10 hover:border-blue-500/50 transition-all backdrop-blur-md"
+                className="flex items-center gap-3 p-1 rounded-full border border-[#111111]/10 hover:border-[#111111] transition-all bg-white"
               >
-                <div className="hidden lg:flex flex-col items-end mr-2">
-                   <span className="text-[10px] font-black text-white uppercase tracking-tighter leading-none">{user.name}</span>
-                   <span className="text-[8px] font-bold text-slate-500 lowercase leading-none mt-1.5">{user.email}</span>
-                </div>
-                <div className="w-10 h-10 rounded-xl bg-blue-600/20 flex items-center justify-center text-blue-500 font-bold overflow-hidden border border-blue-500/30 shadow-sm no-blur">
+                <div className="w-8 h-8 rounded-full bg-[#8B0000]/10 flex items-center justify-center text-[#8B0000] font-bold overflow-hidden">
                    {user?.avatar ? (
                      <img
                        src={user.avatar}
                        alt="Profile"
-                       className="w-full h-full object-cover sharp-img"
-                       onError={(e) => { e.target.src = `https://ui-avatars.com/api/?name=${user.name}&background=2563eb&color=fff`; }}
+                       className="w-full h-full object-cover"
+                       onError={(e) => { e.target.src = `https://ui-avatars.com/api/?name=${user.name}&background=8B0000&color=fff`; }}
                      />
                    ) : (
-                     <span className="uppercase text-lg">{user?.name ? user.name[0] : 'U'}</span>
+                     <span className="uppercase text-xs">{user?.name ? user.name[0] : 'U'}</span>
                    )}
                 </div>
-                <ChevronDown size={14} className={`text-slate-500 transition-transform hidden sm:block ${profileOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown size={12} className={`text-[#6B6B6B] transition-transform mr-1 hidden sm:block ${profileOpen ? 'rotate-180' : ''}`} />
               </button>
 
-              {/* DESKTOP DROPDOWN */}
               {profileOpen && (
-                <div className="absolute right-0 mt-6 w-72 bg-[#111] backdrop-blur-3xl rounded-[2.5rem] border border-white/10 shadow-[0_40px_80px_rgba(0,0,0,0.5)] p-4 animate-in fade-in slide-in-from-top-4 z-[120]">
-                  <div className="p-5 mb-3 border-b border-white/5 lg:hidden">
-                    <p className="text-[11px] font-black text-white uppercase tracking-widest">{user.name}</p>
-                    <p className="text-[9px] font-bold text-slate-500 mt-1">{user.email}</p>
+                <div className="absolute right-0 mt-4 w-64 bg-white rounded-2xl border border-[#111111]/10 shadow-xl p-3 z-[120] animate-in fade-in slide-in-from-top-2">
+                  <div className="p-3 border-b border-[#111111]/5">
+                    <p className="text-xs font-bold text-[#111111] uppercase tracking-wider">{user.name}</p>
+                    <p className="text-[10px] text-[#6B6B6B] truncate">{user.email}</p>
                   </div>
-                  <Link to="/profile" onClick={() => setProfileOpen(false)} className="flex items-center gap-5 p-5 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:bg-white/5 hover:text-white rounded-[1.5rem] transition-all">
-                    <User size={18} className="text-blue-500" /> Profile Dashboard
+                  <Link to="/profile" onClick={() => setProfileOpen(false)} className="flex items-center gap-3 p-3 text-[11px] font-bold uppercase tracking-wider text-[#6B6B6B] hover:bg-[#F7F5F0] hover:text-[#111111] rounded-xl transition-all">
+                    <User size={16} /> My Showroom
                   </Link>
-                  <Link to="/my-orders" onClick={() => setProfileOpen(false)} className="flex items-center gap-5 p-5 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:bg-white/5 hover:text-white rounded-[1.5rem] transition-all">
-                    <Package size={18} className="text-indigo-500" /> Order History
+                  <Link to="/my-orders" onClick={() => setProfileOpen(false)} className="flex items-center gap-3 p-3 text-[11px] font-bold uppercase tracking-wider text-[#6B6B6B] hover:bg-[#F7F5F0] hover:text-[#111111] rounded-xl transition-all">
+                    <Package size={16} /> Order Journal
                   </Link>
-                  <Link to="/identity" onClick={() => setProfileOpen(false)} className="flex items-center gap-5 p-5 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:bg-white/5 hover:text-white rounded-[1.5rem] transition-all">
-                    <ShieldCheck size={18} className="text-emerald-500" /> Identity Sync
-                  </Link>
-                  <div className="h-px bg-white/5 my-3 mx-5"></div>
-                  <button onClick={handleLogout} className="flex items-center gap-5 p-5 text-[10px] font-black uppercase tracking-widest text-rose-500 hover:bg-rose-500/10 w-full rounded-[1.5rem] transition-all text-left">
-                    <LogOut size={18} /> Terminate Session
+                  {isAdmin && (
+                    <Link to="/admin" onClick={() => setProfileOpen(false)} className="flex items-center gap-3 p-3 text-[11px] font-bold uppercase tracking-wider text-[#8B0000] hover:bg-[#8B0000]/5 rounded-xl transition-all">
+                      <LayoutDashboard size={16} /> Master Command
+                    </Link>
+                  )}
+                  <div className="h-px bg-[#111111]/5 my-2"></div>
+                  <button onClick={handleLogout} className="flex items-center gap-3 p-3 text-[11px] font-bold uppercase tracking-wider text-rose-600 hover:bg-rose-50 w-full rounded-xl transition-all text-left">
+                    <LogOut size={16} /> Leave Session
                   </button>
                 </div>
               )}
             </div>
           ) : (
-            <div className="hidden md:flex items-center gap-6">
-              <Link to="/login" className="text-[10px] font-black text-slate-500 uppercase tracking-widest hover:text-white transition-colors">Login</Link>
-              <Link to="/identity" className="px-8 py-4 bg-white text-black rounded-full text-[10px] font-black uppercase tracking-widest shadow-2xl hover:bg-blue-600 hover:text-white hover:-translate-y-1 transition-all">Sync Identity</Link>
-            </div>
+            <Link to="/login" className="hidden lg:flex items-center justify-center w-10 h-10 rounded-full border border-[#111111]/10 text-[#111111] hover:bg-[#111111] hover:text-white transition-all" aria-label="Account">
+              <User size={18} />
+            </Link>
           )}
 
           <button
@@ -128,82 +176,51 @@ const Navbar = () => {
               setIsOpen(!isOpen);
               setProfileOpen(false);
             }}
-            className="md:hidden w-12 h-12 flex items-center justify-center text-white bg-white/5 rounded-2xl border border-white/10 transition-colors"
+            className="lg:hidden w-10 h-10 flex items-center justify-center text-[#111111] hover:bg-[#111111]/5 rounded-xl transition-colors"
+            aria-label="Toggle Menu"
           >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
+            {isOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
       </div>
 
-      {/* MOBILE MENU OVERLAY */}
+      {/* Modern Animated Fullscreen Mobile Navigation */}
       {isOpen && (
-        <div className="fixed inset-0 top-24 bg-[#050505] z-[90] md:hidden animate-in fade-in slide-in-from-right overflow-y-auto no-blur">
-          <div className="p-8 space-y-6">
-            <Link to="/" onClick={() => setIsOpen(false)} className="flex items-center justify-between p-8 bg-white/5 rounded-[2.5rem] border border-white/5 group">
-              <div className="flex items-center gap-5">
-                <div className="w-12 h-12 bg-blue-600/20 rounded-2xl flex items-center justify-center text-blue-500 shadow-sm"><Home size={24} /></div>
-                <span className="text-sm font-black uppercase tracking-[0.2em] text-white">Home</span>
-              </div>
-              <ChevronDown className="-rotate-90 text-slate-700" size={20} />
-            </Link>
-
-            <Link to="/products" onClick={() => setIsOpen(false)} className="flex items-center justify-between p-8 bg-white/5 rounded-[2.5rem] border border-white/5 group">
-              <div className="flex items-center gap-5">
-                <div className="w-12 h-12 bg-indigo-600/20 rounded-2xl flex items-center justify-center text-indigo-500 shadow-sm"><ShoppingCart size={24} /></div>
-                <span className="text-sm font-black uppercase tracking-[0.2em] text-white">The Vault</span>
-              </div>
-              <ChevronDown className="-rotate-90 text-slate-700" size={20} />
-            </Link>
-
-            <Link to="/service-centre" onClick={() => setIsOpen(false)} className="flex items-center justify-between p-8 bg-white/5 rounded-[2.5rem] border border-white/5 group">
-              <div className="flex items-center gap-5">
-                <div className="w-12 h-12 bg-emerald-600/20 rounded-2xl flex items-center justify-center text-emerald-500 shadow-sm"><Wrench size={24} /></div>
-                <span className="text-sm font-black uppercase tracking-[0.2em] text-white">Service Hub</span>
-              </div>
-              <ChevronDown className="-rotate-90 text-slate-700" size={20} />
-            </Link>
+        <div className="fixed inset-0 top-24 bg-[#F7F5F0] z-[90] lg:hidden flex flex-col justify-between p-8 overflow-y-auto animate-in fade-in slide-in-from-right duration-300">
+          <div className="flex flex-col gap-4 pt-4">
+            {[
+              { label: 'Home Axis', path: '/' },
+              { label: 'The Workshop (Atelier)', path: '/workshop' },
+              { label: 'Artisanal Gallery', path: '/gallery' },
+              { label: 'The Catalog', path: '/products' },
+              { label: 'Men Campaign', path: '/products?category=Men' },
+              { label: 'Women Collection', path: '/products?category=Women' },
+              { label: 'Kids Edition', path: '/products?category=Kids' },
+              { label: 'Exclusive Offers', path: '/service-centre' },
+              { label: 'About Samadhan & Dev', path: '/about' },
+              { label: 'My Showroom / Profile', path: '/profile' }
+            ].map((item, idx) => (
+              <Link
+                key={idx}
+                to={item.path}
+                onClick={() => setIsOpen(false)}
+                className="mobile-nav-link flex items-center justify-between p-6 bg-white rounded-2xl border border-[#111111]/5 shadow-sm hover:border-[#8B0000]/20 transition-all"
+              >
+                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#111111]">{item.label}</span>
+                <ArrowRight size={16} className="text-[#6B6B6B]" />
+              </Link>
+            ))}
 
             {!user && (
-              <div className="grid grid-cols-2 gap-6 pt-4">
-                <Link to="/login" onClick={() => setIsOpen(false)} className="py-6 text-center bg-white/5 text-white rounded-[2rem] text-[10px] font-black uppercase tracking-widest border border-white/5">Login</Link>
-                <Link to="/identity" onClick={() => setIsOpen(false)} className="py-6 text-center bg-white text-black rounded-[2rem] text-[10px] font-black uppercase tracking-widest shadow-2xl">Sync Identity</Link>
-              </div>
-            )}
-
-            {isAdmin && (
-               <Link to="/admin" onClick={() => setIsOpen(false)} className="flex items-center justify-center p-8 bg-blue-600 text-white rounded-[2.5rem] gap-5">
-                  <LayoutDashboard size={20} />
-                  <span className="text-xs font-black uppercase tracking-widest">Store Command</span>
-               </Link>
-            )}
-
-            {user && (
-              <div className="space-y-6">
-                <div className="h-px bg-white/5 mx-6"></div>
-                <p className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] px-8">Account Management</p>
-                <Link to="/profile" onClick={() => setIsOpen(false)} className="flex items-center justify-between p-8 bg-white/5 rounded-[2.5rem] border border-white/5 group">
-                  <div className="flex items-center gap-5">
-                    <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center text-blue-500 border border-white/5"><User size={24} /></div>
-                    <span className="text-sm font-black uppercase tracking-[0.2em] text-white">Profile Dashboard</span>
-                  </div>
-                  <ChevronDown className="-rotate-90 text-slate-700" size={20} />
-                </Link>
-                <Link to="/my-orders" onClick={() => setIsOpen(false)} className="flex items-center justify-between p-8 bg-white/5 rounded-[2.5rem] border border-white/5 group">
-                  <div className="flex items-center gap-5">
-                    <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center text-indigo-500 border border-white/5"><Package size={24} /></div>
-                    <span className="text-sm font-black uppercase tracking-[0.2em] text-white">Order History</span>
-                  </div>
-                  <ChevronDown className="-rotate-90 text-slate-700" size={20} />
-                </Link>
-                <button onClick={handleLogout} className="w-full flex items-center justify-center p-8 bg-rose-500/10 text-rose-500 rounded-[2.5rem] gap-5 font-black uppercase tracking-widest text-[10px] border border-rose-500/20">
-                  <LogOut size={20} /> Terminate Session
-                </button>
+              <div className="grid grid-cols-2 gap-4 pt-4 mobile-nav-link">
+                <Link to="/login" onClick={() => setIsOpen(false)} className="py-4 text-center bg-white text-[#111111] rounded-xl text-[11px] font-bold uppercase tracking-wider border border-[#111111]/10">Login</Link>
+                <Link to="/identity" onClick={() => setIsOpen(false)} className="py-4 text-center bg-[#111111] text-white rounded-xl text-[11px] font-bold uppercase tracking-wider shadow-md">Join Us</Link>
               </div>
             )}
           </div>
 
-          <div className="p-10 mt-auto border-t border-white/5">
-             <p className="text-[9px] font-black text-slate-600 uppercase tracking-[0.5em] text-center">New Samadhan Shoe Mart © 2026</p>
+          <div className="pt-8 border-t border-[#111111]/5 text-center">
+             <p className="text-[9px] font-sans font-bold text-[#6B6B6B] uppercase tracking-[0.4em]">NEW SAMADHAN SHOE MART © 2026</p>
           </div>
         </div>
       )}
@@ -212,4 +229,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-

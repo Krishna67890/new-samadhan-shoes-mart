@@ -16,11 +16,15 @@ import EditProfilePage from './pages/EditProfilePage';
 import AdminDashboard from './pages/AdminDashboard';
 import CheckoutPage from './pages/CheckoutPage';
 import ServiceCentrePage from './pages/ServiceCentrePage';
+import WorkshopPage from './pages/WorkshopPage';
+import GalleryPage from './pages/GalleryPage';
+import AboutPage from './pages/AboutPage';
 import PageWrapper from './components/PageWrapper';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
 import { useAuth } from './context/AuthContext';
 import AIGuide from './components/AIGuide';
+import CustomCursor from './components/CustomCursor';
 
 function App() {
   const { user } = useAuth();
@@ -34,6 +38,7 @@ function App() {
 
   return (
     <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <CustomCursor />
       <Navbar />
       <AIGuide />
       <main className="min-h-screen">
@@ -43,11 +48,15 @@ function App() {
           <Route path="/products" element={<PageWrapper><ProductsPage /></PageWrapper>} />
           <Route path="/shop" element={<PageWrapper><ShopListing /></PageWrapper>} />
           <Route path="/shop/:id" element={<PageWrapper><ShopProfile /></PageWrapper>} />
-          <Route path="/product/:id" element={<ProtectedRoute><PageWrapper><ProductDetails /></PageWrapper></ProtectedRoute>} />
+          <Route path="/product/:id" element={<PageWrapper><ProductDetails /></PageWrapper>} />
           <Route path="/login" element={<PageWrapper><LoginPage /></PageWrapper>} />
           <Route path="/identity" element={<ProtectedRoute><PageWrapper><IdentityPage /></PageWrapper></ProtectedRoute>} />
           <Route path="/service-centre" element={<PageWrapper><ServiceCentrePage /></PageWrapper>} />
           <Route path="/service" element={<Navigate to="/service-centre" replace />} />
+          <Route path="/workshop" element={<PageWrapper><WorkshopPage /></PageWrapper>} />
+          <Route path="/atelier" element={<Navigate to="/workshop" replace />} />
+          <Route path="/gallery" element={<PageWrapper><GalleryPage /></PageWrapper>} />
+          <Route path="/about" element={<PageWrapper><AboutPage /></PageWrapper>} />
 
           {/* User Protected Routes */}
           <Route path="/cart" element={<ProtectedRoute><PageWrapper><CartPage /></PageWrapper></ProtectedRoute>} />

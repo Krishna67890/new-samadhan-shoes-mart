@@ -1,31 +1,45 @@
-const brands = ['Nike', 'Adidas', 'Jordan', 'Puma', 'New Balance', 'Reebok', 'Converse', 'Yeezy', 'Balenciaga', 'Gucci'];
-const models = ['Air Max', 'Ultra Boost', 'Retro High', 'RS-X', '990v5', 'Classic Leather', 'Chuck 70', 'Boost 350', 'Triple S', 'Ace Sneaker', 'Dunk Low', 'Forum Low', 'Club C', 'Sk8-Hi', 'Old Skool', 'Gazelle', 'Samba', 'Air Force 1', 'Zoom Freak', 'LeBron 21'];
-const colors = ['Phantom White', 'Midnight Black', 'University Red', 'Royal Blue', 'Wolf Grey', 'Volt Green', 'Desert Sand', 'Triple Black', 'Hyper Violet', 'Solar Orange'];
+const brands = ['Nike', 'Adidas', 'Jordan', 'Puma', 'New Balance', 'Samadhan Atelier', 'Reebok', 'Converse', 'Yeezy'];
+const categories = ['Men', 'Women', 'Kids', 'Formal', 'Sneakers'];
+
+const modelsByCategory = {
+  Men: ['Air Max Elite', 'Retro High Leather', 'RS-X Runner', 'Tuscan Chelsea', 'Derby Brogue'],
+  Women: ['Velvet Stiletto Heel', 'Quilted Ballet Flat', 'Ultraboost Pastel', 'Verona Ankle Boot', 'Suede Platform'],
+  Kids: ['Air Force 1 Junior', 'Superstar Strap Kids', 'Nashik Academy School Derby', 'Speed Runner Flex', 'Courier Retro'],
+  Formal: ['Monarch Derby', 'Imperial Oxford', 'Bespoke Brogue', 'Double Monk Strap', 'Penny Loafer'],
+  Sneakers: ['Boost 350', 'Court Classic', 'Retro Mid 1', 'Volt Street Runner', 'Air Zoom Flight']
+};
+
+const colors = ['Phantom White', 'Midnight Black', 'University Red', 'Royal Blue', 'Caramel Tan', 'Burgundy Wine', 'Rose Gold', 'Triple Black'];
 
 const generateProducts = () => {
   const products = [];
-  for (let i = 1; i <= 100; i++) {
+  for (let i = 1; i <= 60; i++) {
+    const category = categories[i % categories.length];
+    const categoryModels = modelsByCategory[category];
+    const model = categoryModels[Math.floor(Math.random() * categoryModels.length)];
     const brand = brands[Math.floor(Math.random() * brands.length)];
-    const model = models[Math.floor(Math.random() * models.length)];
     const color = colors[Math.floor(Math.random() * colors.length)];
-    const price = Math.floor(Math.random() * (18000 - 3000 + 1) + 3000);
-    const rating = (Math.random() * (5 - 3.5) + 3.5).toFixed(1);
-    const reviews = Math.floor(Math.random() * 500) + 50;
+    const price = category === 'Kids' ? Math.floor(Math.random() * (4500 - 1999 + 1) + 1999) : Math.floor(Math.random() * (18000 - 3499 + 1) + 3499);
+    const rating = (Math.random() * (5 - 4.2) + 4.2).toFixed(1);
+    const reviews = Math.floor(Math.random() * 400) + 30;
+
+    const sizes = category === 'Kids' ? [1, 2, 3, 4, 5, 6] : (category === 'Women' ? [5, 6, 7, 8, 9] : [7, 8, 9, 10, 11]);
 
     products.push({
       name: `${brand} ${model} ${color}`,
       images: [
-        `https://images.unsplash.com/photo-${1542291026 + i}-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80`,
-        `https://images.unsplash.com/photo-${1560769629 + i}-9b91b8696ebf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80`
+        `/Shoes.png`,
+        `https://images.unsplash.com/photo-${1542291026 + i}-7eec264c27ff?auto=format&fit=crop&w=1000&q=80`
       ],
-      description: `The ${brand} ${model} in ${color} represents the pinnacle of premium footwear engineering. Crafted for those who demand both style and performance, these grails offer unparalleled comfort and a head-turning silhouette.`,
+      description: `Premium handcrafted footwear from New Samadhan Shoe Mart atelier. Designed with ergonomic perfection and certified durable soles for unmatched daily comfort.`,
       brand: brand,
-      category: 'Sneakers',
+      category: category,
+      targetGender: category === 'Women' ? 'Women' : (category === 'Kids' ? 'Kids' : 'Men'),
       price: price,
-      countInStock: Math.floor(Math.random() * 20),
+      countInStock: Math.floor(Math.random() * 20) + 5,
       rating: parseFloat(rating),
       numReviews: reviews,
-      sizes: [7, 8, 9, 10, 11]
+      sizes: sizes
     });
   }
   return products;

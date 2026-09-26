@@ -97,29 +97,29 @@ const CartPage = () => {
   };
 
   return (
-    <div className="bg-[#050505] min-h-screen pt-32 pb-24 relative overflow-hidden">
+    <div className="bg-[#F7F5F0] min-h-screen pt-32 pb-24 relative overflow-hidden text-[#111111]">
       {/* Background Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-blue-600/10 blur-[120px] rounded-full"></div>
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-[#8B0000]/5 blur-[120px] rounded-full"></div>
 
       <div className="container mx-auto px-6 max-w-7xl relative z-10">
         <div className="flex items-center gap-6 mb-16 reveal-item">
-          <div className="w-16 h-16 bg-blue-600 rounded-[2rem] flex items-center justify-center text-white shadow-[0_0_30px_rgba(37,99,235,0.3)]">
+          <div className="w-16 h-16 bg-[#8B0000] rounded-[2rem] flex items-center justify-center text-white shadow-lg">
             <ShoppingBag size={28} />
           </div>
           <div>
-            <h1 className="text-5xl font-black text-white tracking-tighter uppercase leading-none">The Vault</h1>
-            <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.4em] mt-2 italic">Secured Collection</p>
+            <h1 className="text-5xl font-editorial font-black text-[#111111] tracking-tighter uppercase leading-none">The Vault</h1>
+            <p className="text-[#6B6B6B] text-[10px] font-bold uppercase tracking-[0.4em] mt-2 italic">Secured Collection</p>
           </div>
         </div>
 
         {cartItems.length === 0 ? (
-          <div className="bg-white/5 backdrop-blur-3xl p-24 rounded-[4rem] text-center max-w-3xl mx-auto border border-white/10 shadow-2xl">
-            <div className="w-32 h-32 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-10 border border-white/5">
-              <ShoppingBag size={56} className="text-slate-700" />
+          <div className="bg-white p-24 rounded-[4rem] text-center max-w-3xl mx-auto border border-[#111111]/5 shadow-xl">
+            <div className="w-32 h-32 bg-[#F7F5F0] rounded-full flex items-center justify-center mx-auto mb-10 border border-[#111111]/5">
+              <ShoppingBag size={56} className="text-[#6B6B6B]" />
             </div>
-            <h2 className="text-4xl font-black text-white mb-6 uppercase tracking-tight">Vault is Empty</h2>
-            <p className="text-slate-500 mb-12 text-lg font-bold italic">"Your elite collection starts with a single pair."</p>
-            <Link to="/products" className="bg-white text-black px-12 py-6 rounded-[2rem] font-black uppercase tracking-[0.2em] text-xs inline-flex items-center gap-4 hover:bg-blue-600 hover:text-white transition-all shadow-2xl">
+            <h2 className="text-4xl font-editorial font-bold text-[#111111] mb-6 uppercase tracking-tight">Vault is Empty</h2>
+            <p className="text-[#6B6B6B] mb-12 text-lg font-medium italic">"Your elite collection starts with a single pair."</p>
+            <Link to="/products" className="bg-[#111111] text-white px-12 py-6 rounded-[2rem] font-bold uppercase tracking-[0.2em] text-xs inline-flex items-center gap-4 hover:bg-[#8B0000] transition-all shadow-md">
               Browse Trends <ArrowRight size={20} />
             </Link>
           </div>
@@ -128,32 +128,32 @@ const CartPage = () => {
             {/* Items List */}
             <div className="lg:col-span-8 space-y-8">
               {cartItems.map((item) => (
-                <div key={`${item._id}-${item.size}`} className="group relative bg-white/[0.03] backdrop-blur-xl p-8 rounded-[3.5rem] border border-white/5 hover:border-white/20 transition-all duration-500 flex flex-col sm:flex-row items-center gap-10 overflow-hidden shadow-2xl">
-                  <div className="w-40 h-40 bg-[#111] rounded-[2.5rem] overflow-hidden shrink-0 border border-white/5 shadow-inner">
-                    <img src={item.images[0]} alt={item.name} className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
+                <div key={`${item._id}-${item.size}`} className="group relative bg-white p-8 rounded-[3.5rem] border border-[#111111]/5 hover:border-[#8B0000]/20 transition-all duration-500 flex flex-col sm:flex-row items-center gap-10 shadow-lg">
+                  <div className="w-40 h-40 bg-[#F7F5F0] rounded-[2.5rem] overflow-hidden shrink-0 border border-[#111111]/5 flex items-center justify-center p-4">
+                    <img src={item.images[0]} alt={item.name} className="w-full h-full object-contain" />
                   </div>
 
                   <div className="flex-grow text-center sm:text-left">
                     <div className="flex items-center justify-center sm:justify-start gap-4 mb-4">
-                      <span className="px-4 py-1 bg-blue-600/10 border border-blue-600/20 rounded-full text-[9px] font-black text-blue-500 uppercase tracking-widest">{item.brand}</span>
-                      <span className="px-4 py-1 bg-white/5 border border-white/10 rounded-full text-[9px] font-black text-slate-400 uppercase tracking-widest text-white/50">Size: {item.size}</span>
+                      <span className="px-4 py-1 bg-[#8B0000]/10 border border-[#8B0000]/20 rounded-full text-[9px] font-bold text-[#8B0000] uppercase tracking-widest">{item.brand}</span>
+                      <span className="px-4 py-1 bg-[#111111]/5 border border-[#111111]/10 rounded-full text-[9px] font-bold text-[#6B6B6B] uppercase tracking-widest">Size: {item.size}</span>
                     </div>
-                    <h3 className="text-2xl font-black text-white mb-4 tracking-tight uppercase leading-none">{item.name}</h3>
-                    <div className="text-3xl font-black text-white tracking-tighter">₹{item.price.toLocaleString()}</div>
+                    <h3 className="text-2xl font-editorial font-bold text-[#111111] mb-4 tracking-tight uppercase leading-none">{item.name}</h3>
+                    <div className="text-3xl font-black text-[#111111] tracking-tighter tabular-nums">₹{item.price.toLocaleString()}</div>
                   </div>
 
                   <div className="flex flex-col items-center sm:items-end gap-6">
-                    <div className="flex items-center bg-white/5 p-2 rounded-2xl border border-white/5 backdrop-blur-md">
-                      <button onClick={() => addToCart(item, -1, item.size)} className="w-10 h-10 font-black text-white hover:text-blue-500 transition-colors">-</button>
-                      <span className="w-12 text-center font-black text-white text-lg">{item.qty}</span>
-                      <button onClick={() => addToCart(item, 1, item.size)} className="w-10 h-10 font-black text-white hover:text-blue-500 transition-colors">+</button>
+                    <div className="flex items-center bg-[#F7F5F0] p-2 rounded-2xl border border-[#111111]/5">
+                      <button onClick={() => addToCart(item, -1, item.size)} className="w-10 h-10 font-bold text-[#111111] hover:text-[#8B0000] transition-colors">-</button>
+                      <span className="w-12 text-center font-bold text-[#111111] text-lg">{item.qty}</span>
+                      <button onClick={() => addToCart(item, 1, item.size)} className="w-10 h-10 font-bold text-[#111111] hover:text-[#8B0000] transition-colors">+</button>
                     </div>
                     <div className="text-right">
-                      <p className="text-xl font-black text-blue-500 tracking-tighter">₹{(item.price * item.qty).toLocaleString()}</p>
+                      <p className="text-xl font-black text-[#8B0000] tracking-tighter tabular-nums">₹{(item.price * item.qty).toLocaleString()}</p>
                     </div>
                   </div>
 
-                  <button onClick={() => removeFromCart(item._id, item.size)} className="absolute top-8 right-8 text-white/10 hover:text-rose-500 transition-all hover:scale-125">
+                  <button onClick={() => removeFromCart(item._id, item.size)} className="absolute top-8 right-8 text-[#111111]/20 hover:text-rose-600 transition-all hover:scale-125">
                     <Trash2 size={24} />
                   </button>
                 </div>
@@ -162,45 +162,44 @@ const CartPage = () => {
 
             {/* Checkout Summary */}
             <aside className="lg:col-span-4 lg:sticky lg:top-32">
-              <div className="bg-white/5 backdrop-blur-3xl p-12 rounded-[4rem] border border-white/10 shadow-2xl relative overflow-hidden">
+              <div className="bg-white p-12 rounded-[4rem] border border-[#111111]/5 shadow-xl relative overflow-hidden">
                 <div className="absolute top-0 right-0 p-8 opacity-5">
-                    <ShieldCheck size={120} className="text-white" />
+                    <ShieldCheck size={120} className="text-[#111111]" />
                 </div>
 
-                <h2 className="text-2xl font-black text-white mb-10 uppercase tracking-tighter relative z-10">Vault Summary</h2>
+                <h2 className="text-2xl font-editorial font-bold text-[#111111] mb-10 uppercase tracking-tighter relative z-10">Vault Summary</h2>
 
                 <div className="space-y-8 mb-12 relative z-10">
                   <div className="flex justify-between items-center">
-                    <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">Items Valuation</span>
-                    <span className="text-lg font-black text-white">₹{cartTotal.toLocaleString()}</span>
+                    <span className="text-[10px] font-bold text-[#6B6B6B] uppercase tracking-[0.3em]">Items Valuation</span>
+                    <span className="text-lg font-black text-[#111111] tabular-nums">₹{cartTotal.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">Elite Delivery</span>
-                    <span className="text-[10px] font-black text-emerald-500 uppercase tracking-widest bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">FREE</span>
+                    <span className="text-[10px] font-bold text-[#6B6B6B] uppercase tracking-[0.3em]">Elite Delivery</span>
+                    <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">FREE</span>
                   </div>
-                  <div className="pt-8 border-t border-white/10">
+                  <div className="pt-8 border-t border-[#111111]/5">
                     <div className="flex flex-col gap-2">
-                      <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em]">Total Commitment</span>
-                      <span className="text-5xl font-black text-blue-500 tracking-tighter">₹{cartTotal.toLocaleString()}</span>
+                      <span className="text-[10px] font-bold text-[#6B6B6B] uppercase tracking-[0.4em]">Total Commitment</span>
+                      <span className="text-5xl font-black text-[#8B0000] tracking-tighter tabular-nums">₹{cartTotal.toLocaleString()}</span>
                     </div>
                   </div>
                 </div>
 
                 <button
                   onClick={handleWhatsAppOrder}
-                  className="w-full bg-white text-black py-7 rounded-[2rem] font-black uppercase tracking-[0.3em] text-[11px] flex items-center justify-center gap-4 hover:bg-blue-600 hover:text-white transition-all shadow-[0_20px_40px_rgba(0,0,0,0.3)] group relative overflow-hidden mb-8"
+                  className="w-full bg-[#111111] text-white py-7 rounded-[2rem] font-bold uppercase tracking-[0.3em] text-[11px] flex items-center justify-center gap-4 hover:bg-[#8B0000] transition-all shadow-md group relative overflow-hidden mb-8"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
                   {isSent ? 'Order Transmitted' : 'Secure via WhatsApp'} <MessageCircle size={22} className="group-hover:scale-125 transition-transform" />
                 </button>
 
-                <div className="flex items-center gap-4 p-5 bg-white/5 rounded-[2rem] border border-white/5 backdrop-blur-md">
-                  <div className="w-10 h-10 bg-blue-600/20 rounded-xl flex items-center justify-center text-blue-500">
+                <div className="flex items-center gap-4 p-5 bg-[#F7F5F0] rounded-[2rem] border border-[#111111]/5">
+                  <div className="w-10 h-10 bg-[#8B0000]/10 rounded-xl flex items-center justify-center text-[#8B0000]">
                     <ShieldCheck size={20} />
                   </div>
                   <div>
-                    <p className="text-[9px] text-slate-500 font-black uppercase tracking-widest leading-none mb-1">Authenticated By</p>
-                    <p className="text-[10px] text-white font-black uppercase tracking-widest leading-none">{user?.name || 'Guest'}</p>
+                    <p className="text-[9px] text-[#6B6B6B] font-bold uppercase tracking-widest leading-none mb-1">Authenticated By</p>
+                    <p className="text-[10px] text-[#111111] font-bold uppercase tracking-widest leading-none">{user?.name || 'Guest'}</p>
                   </div>
                 </div>
               </div>

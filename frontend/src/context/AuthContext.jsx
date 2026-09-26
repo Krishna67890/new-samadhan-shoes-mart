@@ -52,6 +52,7 @@ export const AuthProvider = ({ children }) => {
       city: 'Nashik',
       state: 'Maharashtra',
       pincode: '',
+      gender: 'boy',
       identityVerified: false
     };
 
@@ -69,7 +70,8 @@ export const AuthProvider = ({ children }) => {
       role: 'user',
       isGuest: true,
       city: 'Nashik',
-      state: 'Maharashtra'
+      state: 'Maharashtra',
+      gender: 'boy'
     };
 
     setUser(guestData);
@@ -85,7 +87,8 @@ export const AuthProvider = ({ children }) => {
       email: email,
       role: 'user',
       city: 'Nashik',
-      state: 'Maharashtra'
+      state: 'Maharashtra',
+      gender: 'boy'
     };
     setUser(userData);
     setLoading(false);

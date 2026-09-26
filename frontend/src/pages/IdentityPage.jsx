@@ -185,13 +185,13 @@ const IdentityPage = () => {
                     onClick={() => setFormData({...formData, gender: 'boy'})}
                     className={`py-5 rounded-2xl text-[9px] font-black uppercase tracking-widest transition-all ${formData.gender === 'boy' ? 'bg-blue-600 text-white shadow-xl shadow-blue-500/20' : 'bg-white/5 text-slate-500 hover:bg-white/10 border border-white/5'}`}
                   >
-                    Masculine
+                    Men
                   </button>
                   <button
                     onClick={() => setFormData({...formData, gender: 'girl'})}
                     className={`py-5 rounded-2xl text-[9px] font-black uppercase tracking-widest transition-all ${formData.gender === 'girl' ? 'bg-rose-600 text-white shadow-xl shadow-rose-500/20' : 'bg-white/5 text-slate-500 hover:bg-white/10 border border-white/5'}`}
                   >
-                    Feminine
+                    Female
                   </button>
                 </div>
              </div>

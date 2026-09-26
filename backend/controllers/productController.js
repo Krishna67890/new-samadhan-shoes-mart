@@ -6,26 +6,54 @@ import products from '../data/products.js';
 // @access  Public
 const getProducts = async (req, res) => {
   try {
-    const productsFromDB = await Product.find({});
+    const { category } = req.query;
+    let query = {};
+    if (category && category !== 'All') {
+      if (category === 'Men') {
+        query = { $or: [{ category: 'Men' }, { targetGender: 'Men' }, { category: 'Formal' }] };
+      } else if (category === 'Women') {
+        query = { $or: [{ category: 'Women' }, { targetGender: 'Women' }] };
+      } else if (category === 'Kids') {
+        query = { $or: [{ category: 'Kids' }, { targetGender: 'Kids' }] };
+      } else {
+        query = { category };
+      }
+    }
 
-    // Architect Bypass: If DB is empty or offline (returns empty), show static data
+    const productsFromDB = await Product.find(query);
+
     if (productsFromDB && productsFromDB.length > 0) {
-      res.json(productsFromDB);
+      return res.json(productsFromDB);
     } else {
-      // Show curated static products so "The Vault" is never empty
-      const mockedProducts = products.map((p, index) => ({
+      let mockedProducts = products.map((p, index) => ({
         ...p,
         _id: `mock_id_${index}`,
       }));
-      res.json(mockedProducts);
+      if (category && category !== 'All') {
+        mockedProducts = mockedProducts.filter(p => {
+          if (category === 'Men') return p.category === 'Men' || p.targetGender === 'Men' || p.category === 'Formal';
+          if (category === 'Women') return p.category === 'Women' || p.targetGender === 'Women';
+          if (category === 'Kids') return p.category === 'Kids' || p.targetGender === 'Kids';
+          return p.category?.toLowerCase() === category.toLowerCase();
+        });
+      }
+      return res.json(mockedProducts);
     }
   } catch (error) {
-    // Fail-safe: Always show static data if DB connection fails
-    const mockedProducts = products.map((p, index) => ({
+    let mockedProducts = products.map((p, index) => ({
       ...p,
       _id: `mock_id_${index}`,
     }));
-    res.json(mockedProducts);
+    const { category } = req.query;
+    if (category && category !== 'All') {
+      mockedProducts = mockedProducts.filter(p => {
+        if (category === 'Men') return p.category === 'Men' || p.targetGender === 'Men' || p.category === 'Formal';
+        if (category === 'Women') return p.category === 'Women' || p.targetGender === 'Women';
+        if (category === 'Kids') return p.category === 'Kids' || p.targetGender === 'Kids';
+        return p.category?.toLowerCase() === category.toLowerCase();
+      });
+    }
+    return res.json(mockedProducts);
   }
 };
 

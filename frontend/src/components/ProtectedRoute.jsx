@@ -19,8 +19,8 @@ const ProtectedRoute = ({ children }) => {
     return <Navigate to="/login" replace />;
   }
 
-  // FORCE IDENTITY VERIFICATION FOR GUESTS/USERS (Excluding Admins)
-  if (user.role !== 'admin' && !user.identityVerified && location.pathname !== '/identity') {
+  // Gate checkout behind identity verification; allow profile, cart, and dashboard
+  if (user.role !== 'admin' && !user.identityVerified && location.pathname === '/checkout') {
     return <Navigate to="/identity" replace />;
   }
 

@@ -1,19 +1,22 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { AuthContext } from '../context/AuthContext';
 import useFetch from '../hooks/useFetch';
-import { Star, ChevronRight, Sparkles, ShoppingBag, MessageCircle } from 'lucide-react';
+import { Star, ChevronRight, Sparkles, ShoppingBag, MessageCircle, Filter, Check } from 'lucide-react';
 
 import localProducts from '../utils/localProducts';
+
+const CATEGORIES = ['All', 'Men', 'Women', 'Sneakers', 'Formal', 'Kids'];
 
 const ProductsPage = () => {
   const { user, isAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { loading, error, request } = useFetch();
   const [products, setProducts] = useState(localProducts);
 
-  const isVerified = user?.role === 'admin' || user?.identityVerified;
+  const activeCategory = searchParams.get('category') || 'All';
 
   // PRICE SANITIZER: Handles "₹ 18,500" or undefined
   const sanitizePrice = (rawPrice) => {
@@ -26,30 +29,13 @@ const ProductsPage = () => {
   };
 
   const handleProductClick = (productId) => {
-    if (!isAuthenticated) {
-      sessionStorage.setItem('redirectAfterLogin', `/product/${productId}`);
-      navigate('/login');
-    } else if (user?.role !== 'admin' && !user?.identityVerified) {
-      navigate('/identity');
-    } else {
-      navigate(`/product/${productId}`);
-    }
+    navigate(`/product/${productId}`);
   };
 
   const handleWhatsAppOrder = (product) => {
-    if (!isAuthenticated) {
-      sessionStorage.setItem('redirectAfterLogin', `/product/${product._id}`);
-      navigate('/login');
-      return;
-    }
-
-    if (user?.role !== 'admin' && !user?.identityVerified) {
-      navigate('/identity');
-      return;
-    }
-
     const cleanPrice = sanitizePrice(product?.price);
-    const message = `Hello New Samadhan Shoe Mart! 👋\n\nI want to order this Masterpiece:\n\n👟 *Product:* ${product?.name}\n🏷️ *Brand:* ${product?.brand}\n💰 *Price:* ₹${cleanPrice.toLocaleString()}\n📏 *Size:* To be confirmed\n📦 *Quantity:* 1\n\n--- CUSTOMER DETAILS ---\n👤 *Name:* ${user?.name || 'Guest'}\n📍 *Address:* ${user?.address || 'Not Provided'}\n🏙️ *City:* ${user?.city || 'Not Provided'}\n📮 *Pincode:* ${user?.pincode || 'Not Provided'}\n\n--- PAYMENT INTENT ---\nI am ready to proceed with the online payment via UPI/Bank Transfer. Please share the QR code or Payment Link.`;
+    const customerName = user?.name || 'Valued Shopper';
+    const message = `Hello New Samadhan Shoe Mart! 👋\n\nI want to order this Masterpiece:\n\n👟 *Product:* ${product?.name}\n🏷️ *Brand:* ${product?.brand || 'New Samadhan'}\n💰 *Price:* ₹${cleanPrice.toLocaleString()}\n📏 *Size:* To be confirmed\n📦 *Quantity:* 1\n\n--- CUSTOMER DETAILS ---\n👤 *Name:* ${customerName}\n📞 *Phone:* ${user?.phone || 'Not Provided'}\n📍 *Address:* ${user?.address || 'Nashik Store Pickup / Delivery'}\n🏙️ *City:* ${user?.city || 'Nashik'}\n📮 *Pincode:* ${user?.pincode || '422003'}\n\n--- PAYMENT INTENT ---\nI am ready to proceed with online payment or UPI. Please confirm availability and share the payment details.`;
 
     // Dual Shopkeeper Protocol
     window.open(`https://wa.me/919423228843?text=${encodeURIComponent(message)}`, '_blank');
@@ -63,105 +49,185 @@ const ProductsPage = () => {
       try {
         const data = await request('/api/products');
         if (data && data.length > 0) {
-          setProducts(data);
+          // Verify if backend provides Women & Kids products
+          const hasWomen = data.some(p => p.category === 'Women' || p.targetGender === 'Women');
+          const hasKids = data.some(p => p.category === 'Kids' || p.targetGender === 'Kids');
+
+          if (!hasWomen || !hasKids) {
+            // Append local curated Women and Kids footwear to guarantee a rich catalog
+            const extraItems = localProducts.filter(lp => lp.category === 'Women' || lp.category === 'Kids' || lp.targetGender === 'Women' || lp.targetGender === 'Kids');
+            setProducts([...data, ...extraItems]);
+          } else {
+            setProducts(data);
+          }
         } else {
           setProducts(localProducts);
         }
-
-        setTimeout(() => {
-          gsap.fromTo('.product-card',
-            { y: 50, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: 'power3.out' }
-          );
-        }, 100);
       } catch (err) {
-        console.error("Fetch Error:", err);
+        console.warn("Using local product catalog:", err);
         setProducts(localProducts);
       }
     };
     fetchProducts();
   }, [request]);
 
+  useEffect(() => {
+    gsap.fromTo('.product-card',
+      { y: 40, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.6, stagger: 0.08, ease: 'power3.out' }
+    );
+  }, [activeCategory, products]);
+
+  // Comprehensive category filtering
+  const filteredProducts = products.filter(p => {
+    if (activeCategory === 'All') return true;
+    const cat = (p.category || '').toLowerCase();
+    const gender = (p.targetGender || '').toLowerCase();
+    const name = (p.name || '').toLowerCase();
+
+    if (activeCategory === 'Men') {
+      return cat === 'men' || gender === 'men' || cat === 'formal' || (cat === 'sneakers' && gender !== 'women' && gender !== 'kids');
+    }
+    if (activeCategory === 'Women') {
+      return cat === 'women' || gender === 'women' || name.includes('women') || name.includes('stiletto') || name.includes('ballet') || name.includes('femme') || name.includes('lady');
+    }
+    if (activeCategory === 'Kids') {
+      return cat === 'kids' || gender === 'kids' || name.includes('kid') || name.includes('junior') || name.includes('youth') || name.includes('child');
+    }
+    if (activeCategory === 'Sneakers') {
+      return cat === 'sneakers' || name.includes('boost') || name.includes('sneaker') || name.includes('jordan') || name.includes('air max');
+    }
+    if (activeCategory === 'Formal') {
+      return cat === 'formal' || name.includes('derby') || name.includes('oxford') || name.includes('loafer');
+    }
+    return cat === activeCategory.toLowerCase();
+  });
+
   return (
-    <div className="bg-[#050505] min-h-screen pt-32 pb-24 relative overflow-hidden">
+    <div className="bg-[#F7F5F0] min-h-screen pt-32 pb-24 relative overflow-hidden">
       {/* Background Glow Effect */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-blue-600/10 blur-[120px] rounded-full"></div>
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-[#8B0000]/5 blur-[120px] rounded-full pointer-events-none"></div>
 
       <div className="container mx-auto px-6 max-w-7xl relative z-10">
 
         {/* Clean Luxury Header */}
-        <div className="mb-24 text-center">
+        <div className="mb-16 text-center">
           <div className="flex justify-center mb-6">
-            <div className="px-5 py-2 bg-white/5 border border-white/10 text-blue-400 text-[10px] font-black uppercase tracking-[0.4em] rounded-full flex items-center gap-2 shadow-2xl backdrop-blur-md">
-               <Sparkles size={12} /> Established Vision 2026
+            <div className="px-5 py-2 bg-white/70 border border-[#111111]/5 text-[#8B0000] text-[10px] font-black uppercase tracking-[0.4em] rounded-full flex items-center gap-2 shadow-sm backdrop-blur-md">
+               <Sparkles size={12} /> Established 1990 · Nashik Atelier
             </div>
           </div>
-          <h1 className="text-4xl sm:text-7xl md:text-9xl font-black text-white mb-8 tracking-tighter uppercase leading-none mix-blend-difference">The Vault.</h1>
-          <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.6em] max-w-xl mx-auto leading-loose italic">
-            "Curated Artisanal Footwear for the Elite Member"
+          <h1 className="text-4xl sm:text-7xl md:text-8xl font-editorial font-black text-[#111111] mb-6 tracking-tighter uppercase leading-none">
+            The Collection.
+          </h1>
+          <p className="text-[#6B6B6B] text-[11px] font-bold uppercase tracking-[0.5em] max-w-xl mx-auto leading-loose italic">
+            "Artisanal Footwear Crafted with 34 Years of Dedication"
           </p>
+
+          {/* Interactive Category Filter Bar */}
+          <div className="flex items-center justify-center gap-2 sm:gap-3 mt-10 flex-wrap">
+            {CATEGORIES.map(cat => {
+              const isActive = (cat === 'All' && !searchParams.get('category')) || activeCategory === cat;
+              return (
+                <button
+                  key={cat}
+                  onClick={() => {
+                    if (cat === 'All') {
+                      searchParams.delete('category');
+                      setSearchParams(searchParams);
+                    } else {
+                      setSearchParams({ category: cat });
+                    }
+                  }}
+                  className={`px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
+                    isActive
+                      ? 'bg-[#111111] text-white shadow-lg scale-105'
+                      : 'bg-white/80 text-[#6B6B6B] hover:text-[#111111] border border-[#111111]/10 hover:border-[#8B0000]/30'
+                  }`}
+                >
+                  {cat}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {loading ? (
           <div className="flex flex-col items-center justify-center py-40">
-             <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-8 shadow-[0_0_30px_rgba(37,99,235,0.3)]"></div>
-             <p className="text-slate-500 font-black tracking-[0.5em] uppercase text-[10px]">Accessing Secure Server...</p>
+             <div className="w-16 h-16 border-4 border-[#8B0000] border-t-transparent rounded-full animate-spin mb-8 shadow-[0_0_30px_rgba(139,0,0,0.1)]"></div>
+             <p className="text-[#6B6B6B] font-bold tracking-[0.5em] uppercase text-[10px]">Accessing Vault Catalog...</p>
           </div>
-        ) : (products && products.length > 0) ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
-            {products.map((product) => {
+        ) : (filteredProducts && filteredProducts.length > 0) ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            {filteredProducts.map((product) => {
               const cleanPrice = sanitizePrice(product?.price);
+              const prodId = product._id || product.id;
+              const prodImage = product?.images?.[0] || product?.image || '/Shoes.png';
+
               return (
                 <div
-                  key={product._id}
-                  className="product-card group bg-white/[0.03] backdrop-blur-xl rounded-[3rem] overflow-hidden border border-white/5 hover:border-white/20 hover:bg-white/[0.07] transition-all duration-700 shadow-2xl"
+                  key={prodId}
+                  className="product-card group bg-white p-5 rounded-[2.5rem] overflow-hidden border border-[#111111]/5 hover:border-[#8B0000]/30 transition-all duration-500 shadow-md hover:shadow-2xl flex flex-col justify-between"
                 >
                   <div
-                    className="relative overflow-hidden aspect-square m-3 rounded-[2.5rem] cursor-pointer bg-[#111]"
-                    onClick={() => handleProductClick(product._id)}
+                    className="relative overflow-hidden aspect-square rounded-[2rem] cursor-pointer bg-[#F7F5F0] flex items-center justify-center p-6"
+                    onClick={() => handleProductClick(prodId)}
                   >
-                      <img
-                        src={product?.images?.[0] || 'https://via.placeholder.com/400'}
-                        alt={product?.name}
-                        className="w-full h-full object-cover transform scale-100 group-hover:scale-110 transition-transform duration-1000 opacity-90 group-hover:opacity-100"
-                      />
-                    <div className="absolute top-5 left-5">
-                      <div className="bg-black/60 backdrop-blur-md px-4 py-1.5 rounded-full text-[8px] font-black text-white shadow-xl uppercase tracking-widest border border-white/10">
-                         {product?.brand}
+                    <img
+                      src={prodImage}
+                      alt={product?.name}
+                      className="w-full h-full object-contain transform scale-95 group-hover:scale-110 transition-transform duration-700"
+                      onError={(e) => { e.target.src = '/Shoes.png'; }}
+                    />
+                    <div className="absolute top-4 left-4">
+                      <div className="bg-white/95 backdrop-blur-md px-3.5 py-1 rounded-full text-[9px] font-bold text-[#111111] shadow-sm uppercase tracking-widest border border-[#111111]/5">
+                         {product?.brand || 'Samadhan'}
                       </div>
                     </div>
+                    {product?.category && (
+                      <div className="absolute bottom-4 right-4">
+                        <div className="bg-[#111111]/80 backdrop-blur-md px-3 py-1 rounded-full text-[8px] font-bold text-white shadow-sm uppercase tracking-wider">
+                           {product.category}
+                        </div>
+                      </div>
+                    )}
                   </div>
 
-                  <div className="px-10 py-8">
+                  <div className="pt-6 pb-2">
                     <h3
-                      onClick={() => handleProductClick(product?._id)}
-                      className="text-lg font-black text-white/90 hover:text-blue-400 transition-colors mb-4 line-clamp-1 uppercase tracking-tight cursor-pointer"
+                      onClick={() => handleProductClick(prodId)}
+                      className="text-base font-editorial font-bold text-[#111111] hover:text-[#8B0000] transition-colors mb-2 line-clamp-1 uppercase tracking-tight cursor-pointer"
                     >
                       {product?.name}
                     </h3>
 
-                    <div className="flex items-center gap-1 mb-8 opacity-50">
+                    <div className="flex items-center gap-1 mb-4 opacity-75">
                       {[...Array(5)].map((_, i) => (
-                        <Star key={i} size={10} className={`${i < product?.rating ? 'fill-blue-500 text-blue-500' : 'text-white/10'}`} />
+                        <Star key={i} size={11} className={`${i < Math.floor(product?.rating || 5) ? 'fill-[#8B0000] text-[#8B0000]' : 'text-[#111111]/15'}`} />
                       ))}
+                      <span className="text-[10px] text-[#6B6B6B] font-bold ml-2">({product?.rating || '4.9'})</span>
                     </div>
 
-                    <div className="flex justify-between items-center pt-6 border-t border-white/5">
+                    <div className="flex justify-between items-center pt-4 border-t border-[#111111]/5">
                       <div className="flex flex-col">
-                        <span className="text-[8px] font-black text-slate-500 uppercase tracking-[0.3em] mb-1">Elite Valuation</span>
-                        <span className="text-2xl font-black text-white tracking-tighter">₹{cleanPrice.toLocaleString()}</span>
+                        <span className="text-[8px] font-bold text-[#6B6B6B] uppercase tracking-[0.25em] mb-0.5">Price</span>
+                        <span className="text-xl font-black text-[#111111] tracking-tight tabular-nums">₹{cleanPrice.toLocaleString()}</span>
                       </div>
                       <div className="flex gap-2">
                         <button
-                          onClick={() => handleWhatsAppOrder(product)}
-                          className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all shadow-lg ${isVerified ? 'bg-emerald-500/20 text-emerald-500 border border-emerald-500/30 hover:bg-emerald-500 hover:text-white' : 'bg-white/5 text-white/10 cursor-not-allowed border border-white/5'}`}
-                          title={isVerified ? "WhatsApp Order" : "Verify Identity to Order"}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleWhatsAppOrder(product);
+                          }}
+                          className="w-11 h-11 rounded-xl flex items-center justify-center transition-all shadow-sm bg-emerald-500/10 text-emerald-600 hover:bg-emerald-600 hover:text-white border border-emerald-500/20 active:scale-95"
+                          title="Instant WhatsApp Order"
                         >
-                           <MessageCircle size={18} />
+                          <MessageCircle size={18} />
                         </button>
                         <button
-                          onClick={() => handleProductClick(product?._id)}
-                          className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all shadow-lg ${isVerified ? 'bg-white text-black hover:bg-blue-600 hover:text-white' : 'bg-white/5 text-white/10 cursor-not-allowed border border-white/5'}`}
+                          onClick={() => handleProductClick(prodId)}
+                          className="w-11 h-11 rounded-xl flex items-center justify-center transition-all shadow-sm bg-[#111111] text-white hover:bg-[#8B0000] active:scale-95"
+                          title="View Product"
                         >
                           <ChevronRight size={18} />
                         </button>
@@ -173,8 +239,17 @@ const ProductsPage = () => {
             })}
           </div>
         ) : (
-          <div className="text-center py-40">
-            <p className="text-slate-600 font-black tracking-widest uppercase text-xs">No Artifacts Found in the Vault.</p>
+          <div className="text-center py-40 bg-white rounded-3xl border border-[#111111]/5 p-12">
+            <p className="text-[#6B6B6B] font-bold tracking-widest uppercase text-sm mb-4">No Footwear Found for "{activeCategory}".</p>
+            <button
+              onClick={() => {
+                searchParams.delete('category');
+                setSearchParams(searchParams);
+              }}
+              className="px-6 py-3 bg-[#111111] text-white rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-[#8B0000] transition-colors"
+            >
+              View All Collections
+            </button>
           </div>
         )}
       </div>
