@@ -19,9 +19,14 @@ const DashboardPage = () => {
     const fetchOrders = async () => {
       try {
         const data = await request('/api/orders/myorders');
-        setOrders(data || []);
+        if (data && Array.isArray(data)) {
+          setOrders(data);
+        } else {
+          setOrders([]);
+        }
       } catch (err) {
         console.error(err);
+        setOrders([]);
       }
     };
     fetchOrders();
@@ -41,8 +46,9 @@ const DashboardPage = () => {
 
   if (!user) return null;
 
-  const confirmedOrders = orders.filter(o => o.isPaid || true); // Default true for display fallback if needed
-  const pendingDelivery = orders.filter(o => !o.isDelivered);
+  const safeOrders = Array.isArray(orders) ? orders : [];
+  const confirmedOrders = safeOrders.filter(o => o.isPaid || true); // Default true for display fallback if needed
+  const pendingDelivery = safeOrders.filter(o => !o.isDelivered);
 
   return (
     <div className="min-h-screen bg-[#F7F5F0] text-[#111111] pt-36 pb-24 px-4 sm:px-8 lg:px-16" ref={containerRef}>
@@ -89,7 +95,7 @@ const DashboardPage = () => {
           {[
             { label: 'ACQUISITIONS', value: confirmedOrders.length, icon: CheckCircle2, color: 'text-emerald-700', bg: 'bg-emerald-50' },
             { label: 'LOGISTICS EN ROUTE', value: pendingDelivery.length, icon: Truck, color: 'text-[#8B0000]', bg: 'bg-[#8B0000]/5' },
-            { label: 'VAULT VALUE', value: '₹' + orders.reduce((acc, o) => acc + o.totalPrice, 0).toLocaleString(), icon: TrendingUp, color: 'text-[#111111]', bg: 'bg-white' },
+            { label: 'VAULT VALUE', value: '₹' + safeOrders.reduce((acc, o) => acc + (o.totalPrice || 0), 0).toLocaleString(), icon: TrendingUp, color: 'text-[#111111]', bg: 'bg-white' },
             { label: 'LOYALTY RECOGNITION', value: '3,840 PTS', icon: Zap, color: 'text-amber-700', bg: 'bg-amber-50' }
           ].map((stat, i) => (
             <div key={i} className="bg-white p-8 rounded-[2rem] border border-[#111111]/5 shadow-[0_30px_60px_rgba(0,0,0,0.015)] hover:shadow-2xl transition-all duration-500 group dash-reveal">
@@ -112,7 +118,7 @@ const DashboardPage = () => {
                   <Box className="text-[#8B0000]" size={22} /> VERIFIED ACQUISITIONS
                 </h2>
                 <div className="px-4 py-2 bg-[#F7F5F0] rounded-full text-[9px] font-sans font-bold text-[#111111]/40 uppercase tracking-widest">
-                  {orders.length} TOTAL ARCHIVES
+                  {safeOrders.length} TOTAL ARCHIVES
                 </div>
               </div>
 
@@ -121,7 +127,7 @@ const DashboardPage = () => {
                    <div className="w-8 h-8 border-2 border-[#8B0000] border-t-transparent rounded-full animate-spin"></div>
                    <p className="text-[10px] font-sans font-bold text-[#111111]/40 uppercase tracking-widest">Querying Secure Protocol...</p>
                 </div>
-              ) : orders.length === 0 ? (
+              ) : safeOrders.length === 0 ? (
                 <div className="text-center py-24 bg-[#F7F5F0] rounded-2xl border border-dashed border-[#111111]/10">
                   <Package className="w-12 h-12 text-[#111111]/20 mx-auto mb-4" />
                   <p className="text-[#111111]/40 text-xs font-medium mb-6 italic">No luxury items registered in this sequence.</p>
@@ -131,7 +137,7 @@ const DashboardPage = () => {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {orders.map((order) => (
+                  {safeOrders.map((order) => (
                     <div key={order._id} className="group relative bg-[#F7F5F0] rounded-2xl overflow-hidden border border-transparent hover:border-[#8B0000]/10 hover:bg-white hover:shadow-xl transition-all duration-500">
                       <div className="p-6 flex flex-col md:flex-row gap-6 items-center">
                         {/* Order Preview Images */}

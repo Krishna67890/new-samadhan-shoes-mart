@@ -42,10 +42,15 @@ const ProfilePage = () => {
       try {
         // Optimized request handling for potential network drops
         const response = await request('/api/orders/myorders');
-        if (response) setOrders(response);
+        if (response && Array.isArray(response)) {
+          setOrders(response);
+        } else {
+          setOrders([]);
+        }
       } catch (err) {
         // Log locally but keep UI stable
         console.warn("Order Journal Sync: Operating in offline/cached mode.");
+        setOrders([]);
       }
     };
 
