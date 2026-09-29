@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Compass, Hammer, Scissors, Sparkles, CheckCircle2,
   Calendar, Clock, ShieldCheck, ArrowRight, UserCheck,
-  ChevronRight, Award, Footprints, Layers, Zap, Info, Wrench, MapPin, Loader2, Phone
+  ChevronRight, Award, Footprints, Layers, Zap, Info, Wrench, MapPin, Loader2, Phone, Play, Pause, ShoppingBag
 } from 'lucide-react';
+
+const WORKSHOP_MEDIA = [
+  { type: 'video', url: '/New-Samadhan-Shoe-Mart/VID-20260928-WA0279.mp4', title: 'Master Crafting Atelier' },
+  { type: 'video', url: '/New-Samadhan-Shoe-Mart/VID-20260928-WA0322.mp4', title: 'Premium Finishing Touch' },
+  { type: 'video', url: '/New-Samadhan-Shoe-Mart/VID-20260928-WA0333.mp4', title: 'Precision Goodyear Stitching' },
+  { type: 'video', url: '/New-Samadhan-Shoe-Mart/VID-20260928-WA0334.mp4', title: 'Rigorous Quality Inspection' },
+  { type: 'video', url: '/New-Samadhan-Shoe-Mart/VID-20260929-WA0001.mp4', title: 'Final Hand-Rubbed Shine' },
+];
 
 const WORKSHOP_STATIONS = [
   {
@@ -13,7 +21,7 @@ const WORKSHOP_STATIONS = [
     subtitle: 'Digitized Ergonomics & Hand-Carved Hardwood',
     desc: 'Every master silhouette starts with a solid hornbeam wood last, carved and proportioned to human foot kinetics. Over 32 anatomical points are measured to eliminate pressure points and ensure immediate glove-like fit.',
     specs: ['Hornbeam Hardwood', '32 Measure Points', 'Zero-Pressure Arch'],
-    image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=1000&q=80',
+    image: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0012.jpg',
     leadArtisan: 'Master Vitthal (28 yrs experience)',
   },
   {
@@ -22,7 +30,7 @@ const WORKSHOP_STATIONS = [
     subtitle: 'Grade-A Full Grain & Vegetable Tanning',
     desc: 'We store hand-curated hides from Florence and Maharashtra tanneries. Only top-grain skins with intact epidermal layers pass our tactile inspection. No synthetic coatings, allowing the leather to breathe and patina gracefully.',
     specs: ['Tuscan Full Grain', 'Natural Mimosa Extract', '1.8mm – 2.2mm Gauge'],
-    image: 'https://images.unsplash.com/photo-1512374382149-233c42b6a83b?auto=format&fit=crop&w=1000&q=80',
+    image: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0015.jpg',
     leadArtisan: 'Master Ramesh (22 yrs experience)',
   },
   {
@@ -31,7 +39,7 @@ const WORKSHOP_STATIONS = [
     subtitle: 'Artisanal Blade Work & Edge Tapering',
     desc: 'Using traditional clicker blades, patterns are hand-cut strictly parallel to the natural stretch grain of the leather. Edges are skived down to 0.4mm before assembly to produce seamless, blister-free junctions.',
     specs: ['Hand Clicker Blades', '0.4mm Edge Feathering', 'Grain-Aligned Cutting'],
-    image: 'https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?auto=format&fit=crop&w=1000&q=80',
+    image: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0022.jpg',
     leadArtisan: 'Artisan Anand (19 yrs experience)',
   },
   {
@@ -40,7 +48,7 @@ const WORKSHOP_STATIONS = [
     subtitle: '200+ Operations for True Lifetime Resoleability',
     desc: 'The gold standard of bootmaking. A sturdy leather welt is lockstitched directly through the upper and insole rib. The hollow cavity is packed with granulated Portuguese cork that slowly compresses to your personal foot imprint.',
     specs: ['Chain Lockstitch', 'Portuguese Granular Cork', 'Infinite Resoleability'],
-    image: 'https://images.unsplash.com/photo-1533867617858-e7b97e060509?auto=format&fit=crop&w=1000&q=80',
+    image: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0045.jpg',
     leadArtisan: 'Master Vitthal & Guild',
   },
   {
@@ -49,7 +57,7 @@ const WORKSHOP_STATIONS = [
     subtitle: 'Dual-Density Ortho Cushions & Vibram Grips',
     desc: 'Outsoles are placed under 80-bar pneumatic pressure with thermo-reactive eco adhesives, then channel-stitched. Natural leather heels are stacked layer upon layer, beveled with vintage glass scrapers and brass pegged.',
     specs: ['Vibram Arctic Soles', 'Solid Brass Pegging', '80-Bar Fusion'],
-    image: 'https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=1000&q=80',
+    image: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0062.jpg',
     leadArtisan: 'Artisan Ganesh (16 yrs experience)',
   },
   {
@@ -58,7 +66,7 @@ const WORKSHOP_STATIONS = [
     subtitle: 'Beeswax, Carnauba Glaze & Bone-Burnishing',
     desc: 'The finale of our craft. Raw leather is hand-rubbed with natural pigments, carnauba creams, and genuine deer bone to close the leather pores. A 24-hour buffing process yields a museum-worthy mirror gloss with multidimensional depth.',
     specs: ['Organic Carnauba', 'Deer Bone Polishing', '24-Hour Hand Buff'],
-    image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1000&q=80',
+    image: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0088.jpg',
     leadArtisan: 'Patina Master Dnyanesh (14 yrs experience)',
   },
 ];
@@ -87,10 +95,96 @@ const MASTER_COBBLERS = [
   },
 ];
 
+const CATEGORY_CATALOG = [
+  {
+    title: 'Men Collection',
+    subtitle: 'Bold, Refined & Structured Architecture',
+    desc: 'Engineered for presence and ultimate durability. Featuring hand-burnished traditional silhouettes, heavy-duty arch support, and zero-fatigue fitments perfect for elite lifestyles.',
+    image: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0008.jpg',
+    tag: 'MEN'
+  },
+  {
+    title: 'Women Collection',
+    subtitle: 'Artisanal Grace, Elegance & Soft Cushionbeds',
+    desc: 'Where heritage look merges seamlessly with all-day ergonomic wellness. Crafted with ultra-soft flexible full-grain leathers and lightweight multi-layered orthotic shock absorption.',
+    image: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0011.jpg',
+    tag: 'WOMEN'
+  },
+  {
+    title: 'Kids Collection',
+    subtitle: 'Playful Comfort & High-Flex Growth Support',
+    desc: 'Specially constructed for dynamic growing feet. Equipped with scuff-resistant reinforced safety toes, flexible non-slip soles, and breathable organic anti-bacterial linings.',
+    image: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0015.jpg',
+    tag: 'KIDS'
+  },
+  {
+    title: 'Sneakers Collection',
+    subtitle: 'Urban Legacy, Freedom & Responsive Stride Core',
+    desc: 'Reimagining street style through premium material integrity. Featuring hyper-flexible cushioned cores, lightweight athletic builds, and hand-lasted premium calfskin uppers.',
+    image: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0006.jpg',
+    tag: 'SNEAKERS'
+  }
+];
+
+const WORKSHOP_GALLERY = [
+  // Heritage & Human Assets (Family/Masters)
+  { url: '/New-Samadhan-Shoe-Mart/Family 1.jpg', category: 'Heritage', title: 'The Founding Guild' },
+  { url: '/New-Samadhan-Shoe-Mart/Family 2.jpg', category: 'Heritage', title: 'Generational Craft Secrets' },
+  { url: '/New-Samadhan-Shoe-Mart/Satkar 1.jpg', category: 'Heritage', title: 'Master Artisan Recognition' },
+  { url: '/New-Samadhan-Shoe-Mart/Satkar-5.jpg', category: 'Heritage', title: 'Industry Leadership Award' },
+  { url: '/New-Samadhan-Shoe-Mart/Family 4.jpg', category: 'Heritage', title: 'The Heart of Nashik Workshop' },
+
+  // Men's Catalog & Ad Shots
+  { url: '/New-Samadhan-Shoe-Mart/Shoes-Black-men-1.jpg', category: 'Men', title: 'Premium Goat Leather Oxford' },
+  { url: '/New-Samadhan-Shoe-Mart/Slippers-men-1.jpg', category: 'Men', title: 'ART 1401 Elite Lounge' },
+  { url: '/New-Samadhan-Shoe-Mart/Shoes-grey-men-1.jpg', category: 'Men', title: 'Textured Heritage Loafer' },
+
+  // Women's Catalog & Ad Shots
+  { url: '/New-Samadhan-Shoe-Mart/Sandles-women-front-1.jpg', category: 'Women', title: 'Artisanal Grace Sandal' },
+  { url: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0011.jpg', category: 'Women', title: 'Hand-Burnished Elegance' },
+
+  // Kids' Catalog & Ad Shots
+  { url: '/New-Samadhan-Shoe-Mart/Shoes-Front-kids-8.jpg', category: 'Kids', title: 'Ergonomic Growth Support' },
+  { url: '/New-Samadhan-Shoe-Mart/Shoes-kids-black-left-7.jpg', category: 'Kids', title: 'Sturdy Adventure Build' },
+
+  // Sneakers / Casual Catalog & Ad Shots
+  { url: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0006.jpg', category: 'Sneakers', title: 'Urban Heritage Runner' },
+  { url: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0007.jpg', category: 'Sneakers', title: 'Responsive Stride Core' },
+  { url: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0032.jpg', category: 'Men', title: 'ART 1401 GOAT LEATHER TPR SOLE' },
+];
+
 const WorkshopPage = () => {
   const navigate = useNavigate();
   const [selectedStation, setSelectedStation] = useState(0);
   const [bookingStatus, setBookingStatus] = useState(null);
+  const [currentMediaIdx, setCurrentMediaIdx] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [activeGalleryTab, setActiveGalleryTab] = useState('All');
+  const videoRefs = useRef([]);
+
+  useEffect(() => {
+    let interval;
+    if (isAutoPlaying) {
+      interval = setInterval(() => {
+        setCurrentMediaIdx((prev) => (prev + 1) % WORKSHOP_MEDIA.length);
+      }, 5000);
+    }
+    return () => clearInterval(interval);
+  }, [isAutoPlaying]);
+
+  useEffect(() => {
+    videoRefs.current.forEach((video, idx) => {
+      if (video) {
+        if (idx === currentMediaIdx) {
+          video.play().catch(() => console.log("Auto-play prevented"));
+        } else {
+          video.pause();
+          video.currentTime = 0;
+        }
+      }
+    });
+  }, [currentMediaIdx]);
+
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -110,7 +204,6 @@ const WorkshopPage = () => {
     e.preventDefault();
     setBookingStatus('submitting');
 
-    // WhatsApp Integration
     const phoneNumber = "918888644021";
     const message = `*Workshop Appointment Request*
 --------------------------
@@ -125,8 +218,6 @@ const WorkshopPage = () => {
 Requested via New Samadhan Shoes Website`;
 
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-
-    // Direct redirection to avoid popup blockers
     window.location.href = whatsappUrl;
     setBookingStatus('confirmed');
   };
@@ -134,52 +225,62 @@ Requested via New Samadhan Shoes Website`;
   return (
     <div className="bg-[#F7F5F0] text-[#111111] min-h-screen pt-28 pb-20 font-sans selection:bg-[#8B0000] selection:text-white">
 
-      {/* Hero Section */}
-      <section className="relative px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-12 md:py-20">
-        <div className="flex flex-col gap-6 max-w-4xl">
+      {/* Hero Section with Front-Banner.jpg strictly integrated as primary background hero */}
+      <section className="relative min-h-[75vh] flex items-center px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto rounded-[3rem] overflow-hidden my-6 shadow-xl">
+        <div className="absolute inset-0 z-0">
+          <img
+            src="/New-Samadhan-Shoe-Mart/Front-Banner.jpg"
+            alt="New Samadhan Master Atelier Banner"
+            className="w-full h-full object-cover filter brightness-[0.35] contrast-[1.1]"
+          />
+        </div>
+
+        <div className="relative z-10 flex flex-col gap-6 max-w-4xl text-white">
           <div className="inline-flex items-center gap-3">
-            <span className="w-8 h-[2px] bg-[#8B0000]"></span>
-            <span className="text-[11px] font-bold uppercase tracking-[0.4em] text-[#8B0000]">
-              The Artisanal Atelier · Nashik
+            <span className="w-8 h-[2px] bg-[#ff4d4d]"></span>
+            <span className="text-[11px] font-black uppercase tracking-[0.4em] text-[#ff4d4d]">
+              The High-Fidelity Atelier · Nashik Heritage
             </span>
           </div>
 
-          <h1 className="font-editorial text-4xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight leading-[0.92]">
+          <h1 className="font-editorial text-4xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white">
             Where Heritage Meets <br />
-            <span className="italic font-light text-[#8B0000]">Living Mastery.</span>
+            <span className="italic font-light text-[#ff4d4d]">Living Mastery.</span>
           </h1>
 
-          <p className="text-base sm:text-lg text-[#6B6B6B] max-w-2xl leading-relaxed">
+          <p className="text-base sm:text-lg text-white/80 max-w-2xl leading-relaxed">
             Welcome inside the heart of New Samadhan Shoe Mart. Since 1990, every pair has been brought to life right here in Nashik through 200+ distinct handcrafting steps — marrying time-tested cobbler tradition with modern ergonomic longevity.
           </p>
 
           <div className="flex flex-wrap items-center gap-4 pt-4">
             <a
               href="#booking"
-              className="bg-[#111111] text-white px-8 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.25em] hover:bg-[#8B0000] transition-colors inline-flex items-center gap-3 shadow-lg"
+              className="bg-[#8B0000] text-white px-8 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.25em] hover:bg-white hover:text-[#111111] transition-all inline-flex items-center gap-3 shadow-lg"
             >
               Book Atelier Visit <Calendar size={16} />
             </a>
             <Link
               to="/gallery"
-              className="bg-white border border-[#111111]/15 text-[#111111] px-8 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.25em] hover:border-[#111111] transition-colors inline-flex items-center gap-3"
+              className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.25em] hover:bg-white hover:text-[#111111] transition-all inline-flex items-center gap-3"
             >
               View Finished Gallery <ArrowRight size={16} />
             </Link>
           </div>
         </div>
 
-        {/* Floating Hero Image - Shoes.png */}
-        <div className="absolute top-1/2 right-0 -translate-y-1/2 w-full max-w-2xl opacity-10 pointer-events-none hidden lg:block select-none">
+        {/* Floating Hero Image - Shoes.png with custom preview zIndex */}
+        <div className="absolute top-1/2 right-0 -translate-y-1/2 w-full max-w-2xl opacity-20 pointer-events-none hidden lg:block select-none z-10">
            <img
             src="/Shoes.png"
             alt="New Samadhan Shoes"
             className="w-full h-auto object-contain transform rotate-[-12deg] scale-125 translate-x-1/4"
            />
         </div>
+      </section>
 
-        {/* Live Workshop Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16 pt-10 border-t border-[#111111]/10">
+      {/* Live Workshop Stats */}
+      <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 py-8 border-b border-[#111111]/10">
           {[
             { value: '34+', label: 'Years in Nashik', sub: 'Generational Guild' },
             { value: '200+', label: 'Handmade Steps', sub: 'Per Individual Pair' },
@@ -201,8 +302,112 @@ Requested via New Samadhan Shoes Website`;
         </div>
       </section>
 
+      {/* Advanced Multi-Media Auto-Scrolling Slideshow */}
+      <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-8">
+        <div className="relative h-[300px] sm:h-[500px] rounded-[3rem] overflow-hidden group shadow-2xl bg-[#111111]">
+          {WORKSHOP_MEDIA.map((media, idx) => (
+            <div
+              key={idx}
+              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+                idx === currentMediaIdx ? 'opacity-100 z-10' : 'opacity-0 z-0'
+              }`}
+            >
+              {media.type === 'video' && (
+                <video
+                  ref={(el) => (videoRefs.current[idx] = el)}
+                  src={media.url}
+                  muted
+                  loop
+                  playsInline
+                  className="w-full h-full object-cover"
+                />
+              )}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+              <div className="absolute bottom-10 left-10 text-white">
+                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#ff4d4d] block mb-2">Live Atelier Stream</span>
+                <h3 className="text-3xl font-editorial font-black uppercase tracking-tight">{media.title}</h3>
+              </div>
+            </div>
+          ))}
+
+          {/* Controls */}
+          <div className="absolute bottom-10 right-10 z-20 flex items-center gap-4">
+             <button
+              onClick={() => setIsAutoPlaying(!isAutoPlaying)}
+              className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-[#8B0000] transition-all"
+             >
+               {isAutoPlaying ? <Pause size={20} /> : <Play size={20} />}
+             </button>
+             <div className="flex gap-2">
+                {WORKSHOP_MEDIA.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setCurrentMediaIdx(idx)}
+                    className={`h-1.5 transition-all rounded-full ${
+                      idx === currentMediaIdx ? 'w-8 bg-[#8B0000]' : 'w-2 bg-white/30 hover:bg-white/50'
+                    }`}
+                  />
+                ))}
+             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Expanded Workshop Scope: Full Product Catalog Categories Showcase */}
+      <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-16 bg-white/50 backdrop-blur-md rounded-[3rem] my-12 border border-[#111111]/5">
+        <div className="max-w-3xl mb-12">
+          <span className="text-[10px] font-black uppercase tracking-[0.35em] text-[#8B0000] block mb-2">
+            Expanded Atelier Scope
+          </span>
+          <h2 className="font-editorial text-3xl sm:text-5xl font-black uppercase tracking-tight">
+            The Full Product Catalog Core
+          </h2>
+          <p className="text-sm text-[#6B6B6B] mt-2 leading-relaxed">
+            Every category passes through our specialized Nashik workshop lanes. From highly flexible casual runners to heavy structured leather oxfords and custom orthotic children shoes.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {CATEGORY_CATALOG.map((cat, idx) => (
+            <div
+              key={idx}
+              onClick={() => navigate(`/products?category=${cat.tag === 'SNEAKERS' ? 'Sneakers' : cat.tag.charAt(0) + cat.tag.slice(1).toLowerCase()}`)}
+              className="bg-white rounded-3xl overflow-hidden border border-[#111111]/10 shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer flex flex-col justify-between"
+            >
+              <div className="relative aspect-[4/3] overflow-hidden bg-[#F7F5F0]">
+                <img
+                  src={cat.image}
+                  alt={cat.title}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <span className="absolute top-4 left-4 bg-[#111111] text-white text-[9px] font-extrabold px-2.5 py-1 rounded-md tracking-widest">
+                  {cat.tag}
+                </span>
+              </div>
+              <div className="p-6 flex-1 flex flex-col justify-between">
+                <div>
+                  <h3 className="font-editorial text-xl font-black uppercase tracking-tight text-[#111111] mb-1">
+                    {cat.title}
+                  </h3>
+                  <span className="text-[11px] font-bold text-[#8B0000] block mb-3">
+                    {cat.subtitle}
+                  </span>
+                  <p className="text-xs text-[#6B6B6B] leading-relaxed mb-4">
+                    {cat.desc}
+                  </p>
+                </div>
+                <div className="pt-4 border-t border-[#111111]/5 flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[#111111] group-hover:text-[#8B0000] transition-colors">
+                  <span>Explore Guild Drops</span>
+                  <ChevronRight size={16} />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Interactive Workshop Blueprint & Stages */}
-      <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-16">
+      <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-12">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div>
             <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#8B0000] block mb-2">
@@ -230,7 +435,7 @@ Requested via New Samadhan Shoes Website`;
               }`}
             >
               <div className="flex items-center justify-between mb-2">
-                <span className={`text-[10px] font-mono font-bold ${selectedStation === i ? 'text-[#8B0000]' : 'text-[#8B0000]'}`}>
+                <span className="text-[10px] font-mono font-bold text-[#8B0000]">
                   {st.step}
                 </span>
                 <span className={`text-[9px] uppercase tracking-widest ${selectedStation === i ? 'text-white/60' : 'text-[#6B6B6B]'}`}>
@@ -246,7 +451,7 @@ Requested via New Samadhan Shoes Website`;
 
         {/* Active Station In-Depth Card */}
         {WORKSHOP_STATIONS[selectedStation] && (
-          <div className="bg-white rounded-3xl border border-[#111111]/10 overflow-hidden shadow-xl grid grid-cols-1 lg:grid-cols-12 animate-in fade-in duration-300">
+          <div className="bg-white rounded-3xl border border-[#111111]/10 overflow-hidden shadow-xl grid grid-cols-1 lg:grid-cols-12 tabs-content">
             {/* Visual Column */}
             <div className="lg:col-span-7 relative min-h-[360px] lg:min-h-[500px] overflow-hidden bg-[#111111]">
               <img
@@ -321,8 +526,101 @@ Requested via New Samadhan Shoes Website`;
         )}
       </section>
 
+      {/* High Quality Addition: Craftsmanship Narrative Section for ART 1401 GOAT LEATHER */}
+      <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-12">
+        <div className="bg-gradient-to-br from-[#111111] to-[#222222] text-white rounded-[3rem] p-8 sm:p-14 relative overflow-hidden shadow-2xl border border-white/5">
+          <div className="max-w-3xl relative z-10">
+            <div className="inline-flex items-center gap-2 bg-[#8B0000]/30 border border-[#8B0000]/60 px-3.5 py-1.5 rounded-full mb-6">
+              <Sparkles size={14} className="text-[#ff4d4d]" />
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#ff7373]">
+                Premium Leather Benchmark Focus
+              </span>
+            </div>
+
+            <h2 className="font-editorial text-3xl sm:text-5xl font-black uppercase tracking-tight leading-tight mb-6">
+              ART 1401 GOAT LEATHER <br />
+              <span className="italic font-light text-[#ff7373]">The Elite TPR Sole Standard.</span>
+            </h2>
+
+            <p className="text-sm text-white/70 leading-relaxed mb-6">
+              Our newest luxury design incorporates premium hand-selected full-grain goat leather—admired for its unmatched featherlight flexibility, rich organic grain definitions, and immediate softness. Complemented with a thermo-plastic rubber (TPR) performance outsole engineered strictly for elite all-weather grip and ergonomic anti-shock balance.
+            </p>
+
+            <div className="inline-flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-[#ff4d4d]">
+              <span>Mochi Brand Style Masterclass Architecture</span>
+              <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
+              <span>Guaranteed 5.0 Rating</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Advanced Workshop Gallery Archive: Integration of Humans, Advertisement & Product Categories */}
+      <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-20 bg-white rounded-[4rem] my-12 border border-[#111111]/5 shadow-2xl relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-96 h-96 bg-[#8B0000]/5 blur-[100px] rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16 relative z-10">
+          <div>
+            <div className="inline-flex items-center gap-2 bg-[#8B0000]/10 text-[#8B0000] px-3 py-1 rounded-full mb-4">
+              <Sparkles size={12} />
+              <span className="text-[9px] font-black uppercase tracking-[0.3em]">The Visual Archive</span>
+            </div>
+            <h2 className="font-editorial text-4xl sm:text-6xl font-black uppercase tracking-tight">
+              Workshop <span className="italic font-light text-[#8B0000]">Gallery.</span>
+            </h2>
+            <p className="text-sm text-[#6B6B6B] mt-4 max-w-xl leading-relaxed">
+              Explore the human heartbeat and advertisement heritage of New Samadhan. From our master guild family to the latest high-fidelity product launches across Men, Women, Kids, and Sneakers.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            {['All', 'Heritage', 'Men', 'Women', 'Kids', 'Sneakers'].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveGalleryTab(tab)}
+                className={`px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all border ${
+                  activeGalleryTab === tab
+                    ? 'bg-[#111111] text-white border-[#111111] shadow-lg scale-105'
+                    : 'bg-transparent text-[#111111] border-[#111111]/10 hover:border-[#8B0000]'
+                }`}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 relative z-10">
+          {WORKSHOP_GALLERY.filter(item => activeGalleryTab === 'All' || item.category === activeGalleryTab).map((item, idx) => (
+            <div
+              key={idx}
+              className="group relative aspect-[4/5] rounded-[2.5rem] overflow-hidden bg-[#F7F5F0] border border-[#111111]/5 shadow-sm hover:shadow-2xl transition-all duration-500"
+            >
+              <img
+                src={item.url}
+                alt={item.title}
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+                <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#ff4d4d] mb-2">{item.category}</span>
+                <h4 className="text-white text-lg font-editorial font-bold uppercase tracking-tight leading-tight">{item.title}</h4>
+                <div className="mt-4 pt-4 border-t border-white/20 flex items-center justify-between text-[9px] font-black text-white uppercase tracking-[0.2em]">
+                  <span>Explore Collection</span>
+                  <ArrowRight size={14} />
+                </div>
+              </div>
+
+              {/* Category Tag for non-hover state */}
+              <div className="absolute top-4 right-4 bg-white/80 backdrop-blur-md px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest text-[#111111] opacity-100 group-hover:opacity-0 transition-opacity">
+                {item.category}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* The Master Cobblers of New Samadhan */}
-      <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-16">
+      <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-12">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <span className="text-[10px] font-bold uppercase tracking-[0.35em] text-[#8B0000] block mb-3">
             The Living Hands
@@ -415,7 +713,7 @@ Requested via New Samadhan Shoes Website`;
       </section>
 
       {/* Advanced Service & Restoration Hub */}
-      <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-16">
+      <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-12">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 bg-[#8B0000]/5 border border-[#8B0000]/10 px-4 py-2 rounded-full mb-6">
             <Wrench size={14} className="text-[#8B0000]" />
@@ -470,15 +768,7 @@ Requested via New Samadhan Shoes Website`;
       </section>
 
       {/* Advanced Service Center & Restoration Laboratories */}
-      <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-20 bg-[#111111] text-white rounded-[4rem] my-16 shadow-2xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-full h-full opacity-5 pointer-events-none">
-           <div className="grid grid-cols-8 h-full">
-              {[...Array(64)].map((_, i) => (
-                <div key={i} className="border border-white/20"></div>
-              ))}
-           </div>
-        </div>
-
+      <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-20 bg-[#111111] text-white rounded-[4rem] my-12 shadow-2xl relative overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
           <div>
             <div className="inline-flex items-center gap-2 bg-[#8B0000]/20 border border-[#8B0000]/40 px-4 py-2 rounded-full mb-6">
@@ -537,9 +827,8 @@ Requested via New Samadhan Shoes Website`;
       </section>
 
       {/* Atelier Appointment & Custom Consultation Form */}
-      <section id="booking" className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-16 scroll-mt-24">
+      <section id="booking" className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-12 scroll-mt-24">
         <div className="bg-[#111111] rounded-[4rem] p-8 sm:p-20 shadow-2xl relative overflow-hidden">
-          {/* Background decorative elements */}
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#8B0000]/10 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2"></div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 relative z-10">

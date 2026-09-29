@@ -38,7 +38,7 @@ const ShopCard = ({ shop }) => {
       {/* --- IMAGE NODE --- */}
       <div className="md:w-1/3 aspect-[4/3] rounded-3xl overflow-hidden relative shrink-0 border border-[#111111]/5 bg-[#F7F5F0] flex items-center justify-center">
         <img
-          src={getImageUrl(shop.images[0]) || 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=500&q=80'}
+          src={getImageUrl(shop.images[0]) || '/Shoes.png'}
           alt={shop.name}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 opacity-90 group-hover:opacity-100"
         />

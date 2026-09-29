@@ -12,7 +12,7 @@ const staticServiceCenters = [
     numReviews: 1240,
     services: ['Deep Clean', 'Sole Repair', 'Color Restor'],
     workingHours: '10:00 AM - 09:00 PM',
-    image: 'https://images.unsplash.com/photo-1597075095400-0e76865231c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+    image: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0250.jpg',
     isVerified: true
   },
   {
@@ -26,7 +26,7 @@ const staticServiceCenters = [
     numReviews: 850,
     services: ['Sole Swap', 'Authentication', 'Full Restore'],
     workingHours: '11:00 AM - 10:00 PM',
-    image: 'https://images.unsplash.com/photo-1556906781-9a412961c28c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+    image: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0260.jpg',
     isVerified: true
   },
   {
@@ -40,7 +40,7 @@ const staticServiceCenters = [
     numReviews: 620,
     services: ['Custom Paint', 'Waterproofing', 'Odor Control'],
     workingHours: '09:00 AM - 08:00 PM',
-    image: 'https://images.unsplash.com/photo-1449247704656-13621df5ee70?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+    image: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0270.jpg',
     isVerified: true
   }
 ];

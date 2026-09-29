@@ -25,11 +25,21 @@ const generateProducts = () => {
 
     const sizes = category === 'Kids' ? [1, 2, 3, 4, 5, 6] : (category === 'Women' ? [5, 6, 7, 8, 9] : [7, 8, 9, 10, 11]);
 
+    // List of reliable local image numbers for various footwear options
+    const imgNumbers = [
+      '0006', '0007', '0008', '0009', '0010', '0011', '0012', '0013', '0014', '0015',
+      '0016', '0017', '0018', '0019', '0020', '0021', '0022', '0023', '0024', '0025',
+      '0026', '0027', '0028', '0029', '0030', '0040', '0045', '0050', '0060', '0070',
+      '0080', '0090', '0100', '0110', '0120', '0130', '0140', '0150', '0160', '0170',
+      '0180', '0190', '0200', '0210', '0220', '0230', '0240', '0250', '0260', '0270'
+    ];
+    const localImgName = `IMG-20260928-WA${imgNumbers[i % imgNumbers.length]}.jpg`;
+
     products.push({
       name: `${brand} ${model} ${color}`,
       images: [
         `/Shoes.png`,
-        `https://images.unsplash.com/photo-${1542291026 + i}-7eec264c27ff?auto=format&fit=crop&w=1000&q=80`
+        `/New-Samadhan-Shoe-Mart/${localImgName}`
       ],
       description: `Premium handcrafted footwear from New Samadhan Shoe Mart atelier. Designed with ergonomic perfection and certified durable soles for unmatched daily comfort.`,
       brand: brand,
