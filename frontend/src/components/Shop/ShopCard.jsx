@@ -48,7 +48,7 @@ const ShopCard = ({ shop }) => {
               <BadgeCheck size={14} />
             </div>
           )}
-          <div className="bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[8px] font-bold text-[#111111] uppercase tracking-widest border border-[#111111]/5 shadow-sm">
+          <div className="bg-white/95 px-3 py-1 rounded-full text-[8px] font-bold text-[#111111] uppercase tracking-widest border border-[#111111]/5 shadow-sm">
              Verified Dealer
           </div>
         </div>

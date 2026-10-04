@@ -70,12 +70,12 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#050505] flex items-center justify-center p-6 overflow-hidden relative" ref={containerRef}>
-      {/* Background Glow */}
-      <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-blue-600/5 blur-[120px] rounded-full"></div>
-      <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-indigo-600/5 blur-[120px] rounded-full"></div>
+    <div className="min-h-screen bg-[#050505] flex items-center justify-center p-6 overflow-hidden relative no-blur-zone" ref={containerRef}>
+      {/* Background Glow - Blur removed for clarity */}
+      <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-blue-600/5 rounded-full"></div>
+      <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-indigo-600/5 rounded-full"></div>
 
-      <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 bg-white/[0.02] backdrop-blur-3xl rounded-[4rem] overflow-hidden border border-white/10 shadow-2xl relative z-10">
+      <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 bg-white/[0.02] rounded-[4rem] overflow-hidden border border-white/10 shadow-2xl relative z-10">
 
         {/* LEFT SIDE: BRANDING */}
         <div className="hidden lg:flex flex-col justify-between p-24 bg-white/[0.03] border-r border-white/5 relative overflow-hidden" ref={leftSideRef}>
@@ -175,18 +175,12 @@ const LoginPage = () => {
                  disabled={loading || guestLoading}
                  className="py-6 rounded-[2rem] bg-white/5 border border-white/10 text-white text-[9px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all flex flex-col items-center justify-center gap-3"
                >
-                 <Sparkles size={18} /> Elite Guest
+                 <Sparkles size={18} /> Elite Guest Access
                </button>
                <button
                  type="button"
-                 onClick={async () => {
-                   setEmail('admin@samadhan.com');
-                   setPassword('admin123');
-                   const result = await login('admin@samadhan.com', 'admin123');
-                   if (result.success) window.location.href = '/admin';
-                 }}
-                 disabled={loading || guestLoading}
-                 className="py-6 rounded-[2rem] bg-blue-600/10 border border-blue-600/20 text-blue-500 text-[9px] font-black uppercase tracking-widest hover:bg-blue-600 hover:text-white transition-all flex flex-col items-center justify-center gap-3"
+                 onClick={() => navigate('/owner-login')}
+                 className="py-6 rounded-[2rem] bg-red-600/10 border border-red-600/20 text-red-500 text-[9px] font-black uppercase tracking-widest hover:bg-red-600 hover:text-white transition-all flex flex-col items-center justify-center gap-3"
                >
                  <ShieldCheck size={18} /> Command Authority
                </button>

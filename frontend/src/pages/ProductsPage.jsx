@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { AuthContext } from '../context/AuthContext';
 import useFetch from '../hooks/useFetch';
-import { Star, ChevronRight, Sparkles, ShoppingBag, MessageCircle, Filter, Check } from 'lucide-react';
+import { Star, ChevronRight, Sparkles, ShoppingBag, MessageCircle, Filter, Check, PlusCircle, Edit, Trash2 } from 'lucide-react';
 
 import localProducts from '../utils/localProducts';
 import { calculateProductStats } from '../utils/reviewService';
@@ -11,7 +11,7 @@ import { calculateProductStats } from '../utils/reviewService';
 const CATEGORIES = ['All', 'Men', 'Women', 'Sneakers', 'Formal', 'Kids'];
 
 const ProductsPage = () => {
-  const { user, isAuthenticated } = useContext(AuthContext);
+  const { user, isAuthenticated, isAdmin } = useContext(AuthContext);
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const { loading, error, request } = useFetch();
@@ -106,20 +106,30 @@ const ProductsPage = () => {
   return (
     <div className="bg-[#F7F5F0] min-h-screen pt-32 pb-24 relative overflow-hidden">
       {/* Background Glow Effect */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-[#8B0000]/5 blur-[120px] rounded-full pointer-events-none"></div>
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-[#8B0000]/5 rounded-full pointer-events-none"></div>
 
       <div className="container mx-auto px-6 max-w-7xl relative z-10">
 
         {/* Clean Luxury Header */}
         <div className="mb-16 text-center">
           <div className="flex justify-center mb-6">
-            <div className="px-5 py-2 bg-white/70 border border-[#111111]/5 text-[#8B0000] text-[10px] font-black uppercase tracking-[0.4em] rounded-full flex items-center gap-2 shadow-sm backdrop-blur-md">
+            <div className="px-5 py-2 bg-white/70 border border-[#111111]/5 text-[#8B0000] text-[10px] font-black uppercase tracking-[0.4em] rounded-full flex items-center gap-2 shadow-sm">
                <Sparkles size={12} /> Established 1990 · Nashik Atelier
             </div>
           </div>
           <h1 className="text-4xl sm:text-7xl md:text-8xl font-editorial font-black text-[#111111] mb-6 tracking-tighter uppercase leading-none">
             The Collection.
           </h1>
+          {isAdmin && (
+            <div className="flex justify-center mb-8">
+              <button
+                onClick={() => navigate(`/admin/product/new?category=${activeCategory !== 'All' ? activeCategory : 'Formal'}`)}
+                className="bg-[#8B0000] text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-black transition-all flex items-center shadow-xl shadow-red-100"
+              >
+                <PlusCircle className="w-4 h-4 mr-2" /> Add New {activeCategory !== 'All' ? activeCategory : 'Product'}
+              </button>
+            </div>
+          )}
           <p className="text-[#6B6B6B] text-[11px] font-bold uppercase tracking-[0.5em] max-w-xl mx-auto leading-loose italic">
             "Artisanal Footwear Crafted with 34 Years of Dedication"
           </p>
@@ -180,13 +190,13 @@ const ProductsPage = () => {
                       onError={(e) => { e.target.src = '/Shoes.png'; }}
                     />
                     <div className="absolute top-4 left-4">
-                      <div className="bg-white/95 backdrop-blur-md px-3.5 py-1 rounded-full text-[9px] font-bold text-[#111111] shadow-sm uppercase tracking-widest border border-[#111111]/5">
+                      <div className="bg-white/95 px-3.5 py-1 rounded-full text-[9px] font-bold text-[#111111] shadow-sm uppercase tracking-widest border border-[#111111]/5">
                          {product?.brand || 'Samadhan'}
                       </div>
                     </div>
                     {product?.category && (
                       <div className="absolute bottom-4 right-4">
-                        <div className="bg-[#111111]/80 backdrop-blur-md px-3 py-1 rounded-full text-[8px] font-bold text-white shadow-sm uppercase tracking-wider">
+                        <div className="bg-[#111111]/80 px-3 py-1 rounded-full text-[8px] font-bold text-white shadow-sm uppercase tracking-wider">
                            {product.category}
                         </div>
                       </div>
@@ -214,6 +224,37 @@ const ProductsPage = () => {
                         <span className="text-xl font-black text-[#111111] tracking-tight tabular-nums">₹{cleanPrice.toLocaleString()}</span>
                       </div>
                       <div className="flex gap-2">
+                        {isAdmin && (
+                          <>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                navigate(`/admin/product/${prodId}/edit`);
+                              }}
+                              className="w-11 h-11 rounded-xl flex items-center justify-center transition-all shadow-sm bg-blue-500/10 text-blue-600 hover:bg-blue-600 hover:text-white border border-blue-500/20 active:scale-95"
+                              title="Edit Product"
+                            >
+                              <Edit size={18} />
+                            </button>
+                            <button
+                              onClick={async (e) => {
+                                e.stopPropagation();
+                                if (window.confirm('Delete this masterpiece permanently?')) {
+                                  try {
+                                    await request(`/api/products/${prodId}`, 'DELETE');
+                                    setProducts(products.filter(p => (p._id || p.id) !== prodId));
+                                  } catch (err) {
+                                    alert('Failed to delete product.');
+                                  }
+                                }
+                              }}
+                              className="w-11 h-11 rounded-xl flex items-center justify-center transition-all shadow-sm bg-rose-500/10 text-rose-600 hover:bg-rose-600 hover:text-white border border-rose-500/20 active:scale-95"
+                              title="Delete Product"
+                            >
+                              <Trash2 size={18} />
+                            </button>
+                          </>
+                        )}
                         <button
                           onClick={(e) => {
                             e.stopPropagation();

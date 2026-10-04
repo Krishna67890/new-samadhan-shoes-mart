@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import ServiceCenterCard from '../components/ServiceCenterCard';
 import useFetch from '../hooks/useFetch';
+import localServiceCenters from '../utils/localServiceCenters';
 
 const ServiceCentrePage = () => {
   const [centers, setCenters] = useState([]);
@@ -21,10 +22,23 @@ const ServiceCentrePage = () => {
   const fetchCenters = async () => {
     try {
       const data = await request(`/api/service-centers?search=${searchTerm}&city=${cityFilter}`);
-      setCenters(Array.isArray(data) ? data : []);
+      if (data && Array.isArray(data) && data.length > 0) {
+        setCenters(data);
+      } else {
+        console.log("Using local fallback centers");
+        setCenters(localServiceCenters.filter(c =>
+          (c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+           c.city.toLowerCase().includes(searchTerm.toLowerCase())) &&
+          (cityFilter === '' || c.city === cityFilter)
+        ));
+      }
     } catch (err) {
-      console.error("Service Centers Fetch Error:", err);
-      setCenters([]);
+      console.error("Service Centers Fetch Error, using local data:", err);
+      setCenters(localServiceCenters.filter(c =>
+        (c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+         c.city.toLowerCase().includes(searchTerm.toLowerCase())) &&
+        (cityFilter === '' || c.city === cityFilter)
+      ));
     }
   };
 
@@ -97,7 +111,7 @@ const ServiceCentrePage = () => {
 
             {/* Visiting Card Display */}
             <div className="relative group max-w-sm w-full">
-               <div className="absolute -inset-2 bg-gradient-to-r from-[#8B0000] to-[#111111] rounded-[2rem] blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
+               <div className="absolute -inset-2 bg-gradient-to-r from-[#8B0000] to-[#111111] rounded-[2rem] opacity-20 group-hover:opacity-40 transition duration-1000"></div>
                <img
                  src="/New-Samadhan-Shoe-Mart/New-Card.jpg"
                  alt="New Samadhan Shoes Mart Visiting Card"
@@ -172,7 +186,7 @@ const ServiceCentrePage = () => {
         {/* --- BOOKING MODAL OVERLAY --- */}
         {selectedCenter && (
            <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
-              <div className="absolute inset-0 bg-[#111111]/90 backdrop-blur-sm transition-opacity" onClick={() => setSelectedCenter(null)}></div>
+              <div className="absolute inset-0 bg-[#111111]/90 transition-opacity" onClick={() => setSelectedCenter(null)}></div>
               <div className="bg-white w-full max-w-2xl rounded-[2.5rem] overflow-hidden relative z-10 shadow-2xl border border-[#111111]/5 animate-in slide-in-from-bottom-10 duration-700">
                  <button
                     onClick={() => setSelectedCenter(null)}

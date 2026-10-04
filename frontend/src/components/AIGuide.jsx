@@ -81,9 +81,9 @@ const AIGuide = () => {
       {/* Modal / Overlay */}
       {isOpen && (
         <div className="fixed inset-0 z-[300] flex items-center justify-center p-6 animate-in fade-in duration-300">
-           <div className="absolute inset-0 bg-slate-950/60 backdrop-blur-sm" onClick={() => setIsOpen(false)}></div>
+           <div className="absolute inset-0 bg-slate-950/80" onClick={() => setIsOpen(false)}></div>
 
-           <div className="bg-white w-full max-w-md rounded-[3rem] p-10 relative z-10 shadow-2xl border border-slate-100 no-blur">
+           <div className="bg-white w-full max-w-md rounded-[3rem] p-10 relative z-10 shadow-2xl border border-slate-100 no-blur-zone">
               <button
                 onClick={() => { setIsOpen(false); window.speechSynthesis.cancel(); }}
                 className="absolute top-6 right-6 p-2 text-slate-300 hover:text-slate-950 transition-colors"

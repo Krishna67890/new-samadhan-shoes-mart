@@ -70,7 +70,7 @@ const Navbar = () => {
   return (
     <nav
       ref={navRef}
-      className="fixed top-0 w-full z-[100] bg-[#F7F5F0]/90 backdrop-blur-md border-b border-[#111111]/5 transition-all duration-300 h-24 flex items-center"
+      className="fixed top-0 w-full z-[100] bg-[#F7F5F0]/95 border-b border-[#111111]/5 transition-all duration-300 h-24 flex items-center"
     >
       <div className="w-full max-w-[1440px] mx-auto px-6 md:px-12 flex items-center justify-between">
 
@@ -96,6 +96,9 @@ const Navbar = () => {
              Offers
           </Link>
           <Link to="/about" className="text-[11px] font-sans font-bold uppercase tracking-[0.25em] text-[#6B6B6B] hover:text-[#8B0000] transition-colors">About</Link>
+          {isAdmin && (
+            <Link to="/admin" className="text-[11px] font-sans font-bold uppercase tracking-[0.25em] text-[#8B0000] hover:text-[#111111] transition-colors">Owner</Link>
+          )}
         </div>
 
         {/* Right Interactions */}

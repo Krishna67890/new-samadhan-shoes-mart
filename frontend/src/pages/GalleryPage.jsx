@@ -301,12 +301,12 @@ const GalleryPage = () => {
                   onError={(e) => { e.target.src = '/Shoes.png'; }}
                 />
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <div className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-[#111111] shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform">
+                  <div className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center text-[#111111] shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform">
                     <ZoomIn size={20} />
                   </div>
                 </div>
                 <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1 rounded-full bg-black/75 backdrop-blur-md text-white text-[9px] font-bold uppercase tracking-widest border border-white/20">
+                  <span className="px-3 py-1 rounded-full bg-black/75 text-white text-[9px] font-bold uppercase tracking-widest border border-white/20">
                     {item.category}
                   </span>
                 </div>
@@ -360,7 +360,7 @@ const GalleryPage = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {PATINA_STAGES.map((st, i) => (
-              <div key={i} className="bg-white/5 border border-white/10 p-8 rounded-2xl backdrop-blur-sm flex flex-col justify-between">
+              <div key={i} className="bg-white/5 border border-white/10 p-8 rounded-2xl flex flex-col justify-between">
                 <div>
                   <span className="text-xs font-mono font-bold text-[#ff4d4d] block mb-2">
                     Phase {i + 1}
@@ -423,7 +423,7 @@ const GalleryPage = () => {
 
       {/* Lightbox / Modal */}
       {selectedItem && (
-        <div className="fixed inset-0 z-[10001] bg-black/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-[10001] bg-black/95 flex items-center justify-center p-4 sm:p-8 animate-in fade-in duration-200">
           <div className="bg-white rounded-3xl max-w-4xl w-full max-h-[92vh] overflow-y-auto border border-white/20 shadow-2xl relative grid grid-cols-1 md:grid-cols-12">
             {/* Close Button */}
             <button

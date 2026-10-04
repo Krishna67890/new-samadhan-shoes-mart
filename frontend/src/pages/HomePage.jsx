@@ -98,7 +98,6 @@ const HomePage = () => {
           y: -150,
           scale: 0.8,
           opacity: 0,
-          filter: "blur(20px)",
           duration: 1.5
         }, "<")
         .to(".luxury-bg", {
@@ -129,7 +128,6 @@ const HomePage = () => {
           },
           letterSpacing: "-0.5em",
           opacity: 0,
-          filter: "blur(20px)",
           duration: 1.5,
           ease: "expo.out"
         });
@@ -363,19 +361,19 @@ const HomePage = () => {
         <div className="category-labels absolute inset-0 z-30 pointer-events-none flex items-center justify-center">
           <button
             onClick={() => navigate('/products?category=Sneakers')}
-            className="absolute top-[20%] left-[20%] pointer-events-auto bg-white/80 backdrop-blur px-6 py-2 rounded-full text-xs font-bold border border-gray-100 shadow-lg uppercase tracking-widest hover:bg-[#d4af37] hover:text-white transition-all transform hover:scale-110 active:scale-95"
+            className="absolute top-[20%] left-[20%] pointer-events-auto bg-white/95 px-6 py-2 rounded-full text-xs font-bold border border-gray-100 shadow-lg uppercase tracking-widest hover:bg-[#d4af37] hover:text-white transition-all transform hover:scale-110 active:scale-95"
           >
             Sneakers
           </button>
           <button
             onClick={() => navigate('/products?category=Formal')}
-            className="absolute top-[30%] right-[25%] pointer-events-auto bg-white/80 backdrop-blur px-6 py-2 rounded-full text-xs font-bold border border-gray-100 shadow-lg uppercase tracking-widest hover:bg-[#d4af37] hover:text-white transition-all transform hover:scale-110 active:scale-95"
+            className="absolute top-[30%] right-[25%] pointer-events-auto bg-white/95 px-6 py-2 rounded-full text-xs font-bold border border-gray-100 shadow-lg uppercase tracking-widest hover:bg-[#d4af37] hover:text-white transition-all transform hover:scale-110 active:scale-95"
           >
             Formal
           </button>
           <button
             onClick={() => navigate('/products?category=Men')}
-            className="absolute bottom-[25%] left-[28%] pointer-events-auto bg-white/80 backdrop-blur px-6 py-2 rounded-full text-xs font-bold border border-gray-100 shadow-lg uppercase tracking-widest hover:bg-[#d4af37] hover:text-white transition-all transform hover:scale-110 active:scale-95"
+            className="absolute bottom-[25%] left-[28%] pointer-events-auto bg-white/95 px-6 py-2 rounded-full text-xs font-bold border border-gray-100 shadow-lg uppercase tracking-widest hover:bg-[#d4af37] hover:text-white transition-all transform hover:scale-110 active:scale-95"
           >
             Premium
           </button>
@@ -456,7 +454,7 @@ const HomePage = () => {
                   loading="lazy"
                   className="w-full h-auto drop-shadow-[0_40px_60px_rgba(0,0,0,0.1)] group-hover:scale-110 group-hover:-rotate-6 transition-transform duration-700"
                  />
-                 <div className="absolute bottom-12 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur px-8 py-3 rounded-full text-xs font-black uppercase tracking-[0.3em] border border-gray-100">
+                 <div className="absolute bottom-12 left-1/2 -translate-x-1/2 bg-white/90 px-8 py-3 rounded-full text-xs font-black uppercase tracking-[0.3em] border border-gray-100">
                     {product.category}
                  </div>
               </div>
@@ -550,7 +548,7 @@ const HomePage = () => {
               </div>
 
               <div className="relative">
-                 <div className="absolute inset-0 bg-[#d4af37]/20 blur-[150px] rounded-full" />
+                 <div className="absolute inset-0 bg-[#d4af37]/20 rounded-full" />
                  <img
                   src="/New-Samadhan-Shoe-Mart/Main-Shoe.png"
                   alt="3D View"
@@ -676,8 +674,8 @@ const HomePage = () => {
             </div>
           </div>
 
-          <div className="flex-1 perspective-2000">
-            <div className="visiting-card-container relative w-full aspect-[16/9]">
+          <div className="flex-1 perspective-2000 w-full max-w-2xl mx-auto lg:mx-0">
+            <div className="visiting-card-container relative w-full aspect-[16/9] md:aspect-[16/9] sm:aspect-[4/3] xs:aspect-[4/3]">
               <div
                 onClick={() => {
                   const newFlipped = !isCardFlipped;
@@ -689,15 +687,16 @@ const HomePage = () => {
                     ease: "back.out(1.2)"
                   });
                 }}
-                className="visiting-card-inner relative w-full h-full preserve-3d"
+                className="visiting-card-inner relative w-full h-full preserve-3d cursor-pointer"
               >
                 {/* Front Face */}
-                <div className="absolute inset-0 w-full h-full backface-hidden rounded-3xl overflow-hidden shadow-2xl border border-gray-200 group/card">
+                <div className="absolute inset-0 w-full h-full backface-hidden rounded-3xl overflow-hidden shadow-2xl border border-gray-200 group/card bg-white">
                   <img
                     src="/New-Samadhan-Shoe-Mart/New-Card.jpg"
                     alt="Visiting Card Front"
                     loading="lazy"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover md:object-fill"
+                    onError={(e) => { e.target.src = 'https://placehold.co/600x400/8B0000/FFF?text=New+Samadhan+Shoe+Mart'; }}
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover/card:bg-black/20 transition-all flex items-center justify-center opacity-0 group-hover/card:opacity-100">
                      <button
@@ -720,6 +719,7 @@ const HomePage = () => {
                     alt="Visiting Card Back"
                     loading="lazy"
                     className="w-full h-full object-contain rounded-2xl"
+                    onError={(e) => { e.target.src = 'https://placehold.co/600x400/8B0000/FFF?text=Scan+QR+to+Connect'; }}
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover/card:bg-black/20 transition-all flex items-center justify-center opacity-0 group-hover/card:opacity-100">
                      <button
@@ -743,7 +743,7 @@ const HomePage = () => {
       {/* Image Zoom Modal */}
       {isModalOpen && (
         <div
-          className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 md:p-12 animate-in fade-in duration-300"
+          className="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center p-4 md:p-12 animate-in fade-in duration-300"
           onClick={() => setIsModalOpen(false)}
         >
           <button

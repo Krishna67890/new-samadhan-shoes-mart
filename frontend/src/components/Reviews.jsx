@@ -268,7 +268,7 @@ const Reviews = ({ productId, isAdmin = false }) => {
               </button>
 
               {showSuccess && (
-                <div className="absolute inset-0 bg-white/95 backdrop-blur-sm rounded-[4rem] flex flex-col items-center justify-center text-center p-12 z-20 animate-in fade-in zoom-in duration-500">
+                <div className="absolute inset-0 bg-white/95 rounded-[4rem] flex flex-col items-center justify-center text-center p-12 z-20 animate-in fade-in zoom-in duration-500">
                   <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-6">
                     <ShieldCheck size={40} />
                   </div>

@@ -42,6 +42,25 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     setLoading(true);
+
+    // Check for Owner Credentials (Hardcoded as per request)
+    if (email === 'Samadhan@Shoe.com' && password === 'Samadhan@123') {
+      const ownerData = {
+        _id: 'owner_001',
+        name: 'Samadhan (Owner)',
+        email: email,
+        role: 'admin',
+        isOwner: true,
+        city: 'Nashik',
+        state: 'Maharashtra',
+        identityVerified: true,
+        avatar: '/New-Samadhan-Shoe-Mart/Main-Shoe.png'
+      };
+      setUser(ownerData);
+      setLoading(false);
+      return { success: true, role: 'admin' };
+    }
+
     const userData = {
       _id: 'user_' + Date.now(),
       name: 'Elite Member',

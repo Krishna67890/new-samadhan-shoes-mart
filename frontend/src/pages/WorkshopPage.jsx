@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { WORKSHOP_MEDIA, WORKSHOP_GALLERY } from '../utils/galleryData';
 import {
   Compass, Hammer, Scissors, Sparkles, CheckCircle2,
   Calendar, Clock, ShieldCheck, ArrowRight, UserCheck,
@@ -9,14 +10,6 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
-
-const WORKSHOP_MEDIA = [
-  { type: 'video', url: '/New-Samadhan-Shoe-Mart/VID-20260928-WA0279.mp4', title: 'Master Crafting Atelier' },
-  { type: 'video', url: '/New-Samadhan-Shoe-Mart/VID-20260928-WA0322.mp4', title: 'Premium Finishing Touch' },
-  { type: 'video', url: '/New-Samadhan-Shoe-Mart/VID-20260928-WA0333.mp4', title: 'Precision Goodyear Stitching' },
-  { type: 'video', url: '/New-Samadhan-Shoe-Mart/VID-20260928-WA0334.mp4', title: 'Rigorous Quality Inspection' },
-  { type: 'video', url: '/New-Samadhan-Shoe-Mart/VID-20260929-WA0001.mp4', title: 'Final Hand-Rubbed Shine' },
-];
 
 const WORKSHOP_STATIONS = [
   {
@@ -130,45 +123,6 @@ const CATEGORY_CATALOG = [
   }
 ];
 
-const WORKSHOP_GALLERY = [
-  // Heritage & Human Assets (Family/Masters)
-  { url: '/New-Samadhan-Shoe-Mart/Family 1.jpg', category: 'Heritage', title: 'The Founding Guild', price: 'Heritage Piece' },
-  { url: '/New-Samadhan-Shoe-Mart/Family 2.jpg', category: 'Heritage', title: 'Generational Craft Secrets', price: 'Heritage Piece' },
-  { url: '/New-Samadhan-Shoe-Mart/Family 3.jpg', category: 'Heritage', title: 'Ancestral Workshop', price: 'Heritage Piece' },
-  { url: '/New-Samadhan-Shoe-Mart/Family 4.jpg', category: 'Heritage', title: 'The Heart of Nashik Workshop', price: 'Heritage Piece' },
-  { url: '/New-Samadhan-Shoe-Mart/Satkar 1.jpg', category: 'Heritage', title: 'Master Artisan Recognition', price: 'Honorary' },
-  { url: '/New-Samadhan-Shoe-Mart/Satkar 2.jpg', category: 'Heritage', title: 'Community Excellence', price: 'Honorary' },
-  { url: '/New-Samadhan-Shoe-Mart/Satkar 3.jpg', category: 'Heritage', title: 'Craftsmanship Award', price: 'Honorary' },
-  { url: '/New-Samadhan-Shoe-Mart/Satkar 4.jpg', category: 'Heritage', title: 'Guild Leadership', price: 'Honorary' },
-  { url: '/New-Samadhan-Shoe-Mart/Satkar-5.jpg', category: 'Heritage', title: 'Industry Leadership Award', price: 'Honorary' },
-  { url: '/New-Samadhan-Shoe-Mart/Satkar-6.jpg', category: 'Heritage', title: 'Lifetime Achievement', price: 'Honorary' },
-
-  // Men's Catalog & Ad Shots
-  { url: '/New-Samadhan-Shoe-Mart/Shoes-Black-men-1.jpg', category: 'Men', title: 'Premium Goat Leather Oxford', price: '₹3,499' },
-  { url: '/New-Samadhan-Shoe-Mart/Slippers-men-1.jpg', category: 'Men', title: 'ART 1401 Elite Lounge', price: '₹1,899' },
-  { url: '/New-Samadhan-Shoe-Mart/Shoes-grey-men-1.jpg', category: 'Men', title: 'Textured Heritage Loafer', price: '₹2,999' },
-  { url: '/New-Samadhan-Shoe-Mart/Shoes-grey-men-2.jpg', category: 'Men', title: 'Urban Grey Suede', price: '₹2,799' },
-  { url: '/New-Samadhan-Shoe-Mart/Shoes-Black-Back-men-4.jpg', category: 'Men', title: 'Reinforced Heel Boot', price: '₹4,299' },
-  { url: '/New-Samadhan-Shoe-Mart/Shoes-Black-left-men-2.jpg', category: 'Men', title: 'Kinetic Motion Derbies', price: '₹3,199' },
-  { url: '/New-Samadhan-Shoe-Mart/Shoes-Black-left-men-5.jpg', category: 'Men', title: 'Structured Walkers', price: '₹2,599' },
-  { url: '/New-Samadhan-Shoe-Mart/Shoes-black-Front-men-6.jpg', category: 'Men', title: 'Classic Formal Guard', price: '₹3,899' },
-  { url: '/New-Samadhan-Shoe-Mart/Shoes-Black-men-right-3.jpg', category: 'Men', title: 'Lateral Support Oxfords', price: '₹3,299' },
-  { url: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0032.jpg', category: 'Men', title: 'ART 1401 GOAT LEATHER TPR SOLE', price: '₹4,999' },
-
-  // Women's Catalog & Ad Shots
-  { url: '/New-Samadhan-Shoe-Mart/Sandles-women-front-1.jpg', category: 'Women', title: 'Artisanal Grace Sandal', price: '₹1,599' },
-  { url: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0011.jpg', category: 'Women', title: 'Hand-Burnished Elegance', price: '₹2,899' },
-  { url: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0015.jpg', category: 'Women', title: 'Floral Accent Mules', price: '₹2,299' },
-
-  // Kids' Catalog & Ad Shots
-  { url: '/New-Samadhan-Shoe-Mart/Shoes-Front-kids-8.jpg', category: 'Kids', title: 'Ergonomic Growth Support', price: '₹1,299' },
-  { url: '/New-Samadhan-Shoe-Mart/Shoes-kids-black-left-7.jpg', category: 'Kids', title: 'Sturdy Adventure Build', price: '₹1,499' },
-
-  // Sneakers / Casual Catalog & Ad Shots
-  { url: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0006.jpg', category: 'Sneakers', title: 'Urban Heritage Runner', price: '₹2,499' },
-  { url: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0007.jpg', category: 'Sneakers', title: 'Responsive Stride Core', price: '₹2,699' },
-];
-
 const WorkshopPage = () => {
   const navigate = useNavigate();
   const [selectedStation, setSelectedStation] = useState(0);
@@ -197,7 +151,7 @@ const WorkshopPage = () => {
         y: "-=60",
         rotationY: "+=35",
         rotationX: "+=15",
-        filter: "brightness(1.2) contrast(1.1) blur(0px)",
+        filter: "brightness(1.2) contrast(1.1)",
         duration: 6,
         repeat: -1,
         yoyo: true,
@@ -328,7 +282,7 @@ Requested via New Samadhan Shoes Website`;
             </a>
             <Link
               to="/products"
-              className="bg-white/5 backdrop-blur-2xl border border-white/10 text-white px-12 py-7 rounded-2xl text-[10px] font-black uppercase tracking-[0.4em] hover:bg-[#8B0000] transition-all inline-flex items-center gap-6 group"
+              className="bg-white/10 border border-white/10 text-white px-12 py-7 rounded-2xl text-[10px] font-black uppercase tracking-[0.4em] hover:bg-[#8B0000] transition-all inline-flex items-center gap-6 group"
             >
               EXPLORE GUILD <ArrowRight size={18} className="group-hover:translate-x-3 transition-transform" />
             </Link>
@@ -363,7 +317,7 @@ Requested via New Samadhan Shoes Website`;
             { value: '100%', label: 'Goodyear Resoleable', sub: 'Zero Fast-Fashion' },
             { value: '12', label: 'Master Cobblers', sub: 'Over 280 Yrs Combined' },
           ].map((stat, idx) => (
-            <div key={idx} className="bg-white/70 backdrop-blur-sm p-6 rounded-2xl border border-[#111111]/5 shadow-sm">
+            <div key={idx} className="bg-white/90 p-6 rounded-2xl border border-[#111111]/5 shadow-sm">
               <span className="font-editorial text-3xl sm:text-4xl font-black text-[#8B0000] block mb-1">
                 {stat.value}
               </span>
@@ -410,7 +364,7 @@ Requested via New Samadhan Shoes Website`;
           <div className="absolute bottom-10 right-10 z-20 flex items-center gap-4">
              <button
               onClick={() => setIsAutoPlaying(!isAutoPlaying)}
-              className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-[#8B0000] transition-all"
+              className="w-12 h-12 rounded-full bg-white/20 border border-white/20 flex items-center justify-center text-white hover:bg-[#8B0000] transition-all"
              >
                {isAutoPlaying ? <Pause size={20} /> : <Play size={20} />}
              </button>
@@ -430,7 +384,7 @@ Requested via New Samadhan Shoes Website`;
       </section>
 
       {/* Expanded Workshop Scope: Full Product Catalog Categories Showcase */}
-      <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-16 bg-white/50 backdrop-blur-md rounded-[3rem] my-12 border border-[#111111]/5">
+      <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-16 bg-white/80 rounded-[3rem] my-12 border border-[#111111]/5">
         <div className="max-w-3xl mb-12">
           <span className="text-[10px] font-black uppercase tracking-[0.35em] text-[#8B0000] block mb-2">
             Expanded Atelier Scope
@@ -635,7 +589,7 @@ Requested via New Samadhan Shoes Website`;
 
       {/* Advanced Workshop Gallery Archive: Integration of Humans, Advertisement & Product Categories */}
       <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-20 bg-white rounded-[4rem] my-12 border border-[#111111]/5 shadow-2xl relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-[#8B0000]/5 blur-[100px] rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+        <div className="absolute top-0 left-0 w-96 h-96 bg-[#8B0000]/5 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
 
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16 relative z-10">
           <div>
@@ -693,7 +647,7 @@ Requested via New Samadhan Shoes Website`;
               </div>
 
               {/* Category Tag for non-hover state */}
-              <div className="absolute top-4 right-4 bg-white/80 backdrop-blur-md px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest text-[#111111] opacity-100 group-hover:opacity-0 transition-opacity">
+              <div className="absolute top-4 right-4 bg-white/90 px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest text-[#111111] opacity-100 group-hover:opacity-0 transition-opacity">
                 {item.category}
               </div>
             </div>
@@ -880,7 +834,7 @@ Requested via New Samadhan Shoes Website`;
             </div>
           </div>
 
-          <div className="bg-white/5 backdrop-blur-xl p-10 rounded-[3rem] border border-white/10 relative overflow-hidden">
+          <div className="bg-white/10 p-10 rounded-[3rem] border border-white/10 relative overflow-hidden">
             <h3 className="text-2xl font-editorial font-black uppercase mb-8 tracking-tight text-white">Active Maintenance Tiers</h3>
             <div className="space-y-6">
               {[
@@ -911,7 +865,7 @@ Requested via New Samadhan Shoes Website`;
       {/* Atelier Appointment & Custom Consultation Form */}
       <section id="booking" className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-12 scroll-mt-24">
         <div className="bg-[#111111] rounded-[4rem] p-8 sm:p-20 shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#8B0000]/10 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2"></div>
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#8B0000]/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 relative z-10">
             
@@ -929,7 +883,7 @@ Requested via New Samadhan Shoes Website`;
                 </p>
 
                 <div className="space-y-6">
-                  <div className="flex items-start gap-4 p-6 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md">
+                  <div className="flex items-start gap-4 p-6 rounded-3xl bg-white/10 border border-white/10">
                     <MapPin size={24} className="text-[#8B0000] shrink-0 mt-1" />
                     <div>
                       <span className="text-[10px] font-black uppercase tracking-widest text-white block mb-1">
@@ -941,7 +895,7 @@ Requested via New Samadhan Shoes Website`;
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-4 p-6 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md">
+                  <div className="flex items-start gap-4 p-6 rounded-3xl bg-white/10 border border-white/10">
                     <ShieldCheck size={24} className="text-[#8B0000] shrink-0 mt-1" />
                     <div>
                       <span className="text-[10px] font-black uppercase tracking-widest text-white block mb-1">

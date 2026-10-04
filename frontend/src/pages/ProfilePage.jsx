@@ -157,7 +157,7 @@ const ProfilePage = () => {
             </h1>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3 bg-white/50 backdrop-blur-md p-2 rounded-[2rem] border border-[#111111]/5 shadow-sm">
+          <div className="flex flex-wrap items-center gap-3 bg-white/95 p-2 rounded-[2rem] border border-[#111111]/5 shadow-sm">
              {['identity', 'orders', 'security'].map((tab) => (
                <button
                   key={tab}
@@ -231,7 +231,7 @@ const ProfilePage = () => {
 
              {/* ARCHITECT BADGE */}
              <div className="bg-[#111111] rounded-[3rem] p-8 text-white relative overflow-hidden shadow-2xl border border-white/5">
-                <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#8B0000]/20 rounded-full blur-[60px]"></div>
+                <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#8B0000]/20 rounded-full"></div>
                 <div className="flex items-center gap-4 mb-6 relative z-10">
                    <img
                      src="/Devloper.jpg"

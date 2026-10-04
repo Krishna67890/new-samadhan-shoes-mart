@@ -165,8 +165,8 @@ const ProductDetailsPage = () => {
                   scale: isDesktop ? 22 : 12,
                   opacity: 0,
                   filter: isDesktop
-                    ? 'blur(15px) brightness(2.5) contrast(1.6)'
-                    : 'blur(8px) brightness(1.8) contrast(1.4)',
+                    ? 'brightness(2.5) contrast(1.6)'
+                    : 'brightness(1.8) contrast(1.4)',
                   force3D: true,
                   ease: "power4.in"
               });
@@ -247,14 +247,14 @@ const ProductDetailsPage = () => {
 
         {/* Advanced Technical Nodes */}
         <div className="tech-node-1 absolute top-0 left-[-200px] opacity-0 translate-x-[-50px] transition-all duration-700">
-            <div className="bg-blue-600/20 backdrop-blur-md border border-blue-500/30 p-6 rounded-2xl">
+            <div className="bg-blue-600/90 border border-blue-500/30 p-6 rounded-2xl">
                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-400 block mb-2">Build Quality</span>
                 <p className="text-white text-xs font-bold uppercase leading-tight">Reinforced <br/> Side-Wall Stitching</p>
             </div>
         </div>
 
         <div className="tech-node-2 absolute bottom-[20%] right-[-100px] opacity-0 translate-x-[50px] transition-all duration-700">
-            <div className="bg-emerald-500/20 backdrop-blur-md border border-emerald-500/30 p-6 rounded-2xl">
+            <div className="bg-emerald-500/90 border border-emerald-500/30 p-6 rounded-2xl">
                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-emerald-400 block mb-2">Traction Tech</span>
                 <p className="text-white text-xs font-bold uppercase leading-tight">Industrial Grade <br/> Non-Slip Sole</p>
             </div>
@@ -262,7 +262,7 @@ const ProductDetailsPage = () => {
       </div>
 
       {/* Background Glow */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-600/5 blur-[120px] rounded-full"></div>
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-600/5 rounded-full"></div>
 
       <div className="container mx-auto px-6 max-w-7xl relative z-10">
 
@@ -272,12 +272,12 @@ const ProductDetailsPage = () => {
                 onClick={() => navigate(-1)}
                 className="group flex items-center gap-4 text-slate-500 hover:text-white transition-all"
             >
-                <div className="w-12 h-12 bg-white/5 rounded-2xl border border-white/10 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all backdrop-blur-md">
+                <div className="w-12 h-12 bg-white/10 rounded-2xl border border-white/10 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all">
                     <ArrowLeft size={20} />
                 </div>
                 <span className="font-black text-[10px] uppercase tracking-[0.3em]">Back to Vault</span>
             </button>
-            <div className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-full border border-white/10 shadow-sm text-[9px] font-black text-slate-400 uppercase tracking-widest backdrop-blur-md">
+            <div className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full border border-white/10 shadow-sm text-[9px] font-black text-slate-400 uppercase tracking-widest">
                <ShieldCheck size={14} className="text-emerald-500" /> Authenticity Verified By New Samadhan Shoe Mart
             </div>
         </div>
@@ -315,7 +315,7 @@ const ProductDetailsPage = () => {
             ) : null}
 
             {/* PRODUCT PATTERNS & TECH */}
-            <div className="bg-white/5 backdrop-blur-xl rounded-[3.5rem] p-12 border border-white/5 shadow-sm">
+            <div className="bg-white/10 rounded-[3.5rem] p-12 border border-white/5 shadow-sm">
                 <h3 className="text-2xl font-black text-white mb-8 tracking-tighter uppercase">Pattern & Construction</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-4">
@@ -338,7 +338,7 @@ const ProductDetailsPage = () => {
 
           {/* --- RIGHT: PURCHASE ACTIONS & EXPLANATION --- */}
           <div className="lg:col-span-5 space-y-10 reveal-item">
-            <div className="bg-white/5 backdrop-blur-3xl p-12 rounded-[4rem] border border-white/10 shadow-2xl">
+            <div className="bg-white/10 p-12 rounded-[4rem] border border-white/10 shadow-2xl">
               <div className="flex items-center gap-4 mb-6">
                 <span className="px-5 py-2 bg-blue-600 text-white rounded-full text-[9px] font-black uppercase tracking-[0.3em] shadow-lg shadow-blue-500/20">
                   {product?.brand}
@@ -359,7 +359,7 @@ const ProductDetailsPage = () => {
               </div>
 
               {/* RATING DISPLAY */}
-              <div className="flex items-center gap-4 mb-12 p-4 bg-white/5 rounded-2xl border border-white/5 backdrop-blur-md">
+              <div className="flex items-center gap-4 mb-12 p-4 bg-white/10 rounded-2xl border border-white/5">
                   <div className="flex text-amber-500">
                     {[...Array(5)].map((_, i) => (
                       <Star key={i} size={18} className={i < product?.rating ? 'fill-current' : 'text-white/10'} />
@@ -381,7 +381,7 @@ const ProductDetailsPage = () => {
                     <button
                       key={size}
                       onClick={() => setSelectedSize(size)}
-                      className={`w-16 h-16 flex items-center justify-center rounded-2xl border-4 font-black transition-all text-lg backdrop-blur-md
+                      className={`w-16 h-16 flex items-center justify-center rounded-2xl border-4 font-black transition-all text-lg
                         ${selectedSize === size
                           ? 'border-blue-600 bg-blue-600 text-white shadow-xl shadow-blue-500/20 scale-110'
                           : 'border-white/5 bg-white/5 hover:border-white/20 text-slate-500'}`}
@@ -394,7 +394,7 @@ const ProductDetailsPage = () => {
 
               {/* QUANTITY & ADD */}
               <div className="flex flex-col sm:flex-row items-center gap-6 mb-8">
-                <div className="flex items-center bg-white/5 border border-white/5 rounded-2xl p-2 backdrop-blur-md">
+                <div className="flex items-center bg-white/10 border border-white/5 rounded-2xl p-2">
                   <button
                     onClick={() => setQty(Math.max(1, qty - 1))}
                     className="w-12 h-12 flex items-center justify-center hover:bg-white/10 text-xl font-black rounded-xl text-slate-500 hover:text-white transition-all"
@@ -424,7 +424,7 @@ const ProductDetailsPage = () => {
               {/* WHATSAPP ACTION */}
               <button
                 onClick={handleWhatsAppOrder}
-                className="w-full flex items-center justify-center gap-4 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 py-6 rounded-[2rem] font-black uppercase tracking-[0.2em] transition-all hover:bg-emerald-500 hover:text-white shadow-lg shadow-emerald-500/10 text-xs backdrop-blur-md"
+                className="w-full flex items-center justify-center gap-4 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 py-6 rounded-[2rem] font-black uppercase tracking-[0.2em] transition-all hover:bg-emerald-500 hover:text-white shadow-lg shadow-emerald-500/10 text-xs"
               >
                 <MessageCircle size={22} />
                 <span>Order via WhatsApp</span>
@@ -432,7 +432,7 @@ const ProductDetailsPage = () => {
             </div>
 
             {/* --- PAYMENT EXPLANATION --- */}
-            <div className="bg-white/5 rounded-[4rem] p-12 text-white relative overflow-hidden shadow-2xl border border-white/10 backdrop-blur-xl">
+            <div className="bg-white/10 rounded-[4rem] p-12 text-white relative overflow-hidden shadow-2xl border border-white/10">
                 <div className="absolute top-0 right-0 p-8 opacity-5">
                     <CreditCard size={120} />
                 </div>

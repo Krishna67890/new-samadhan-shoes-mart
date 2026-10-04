@@ -91,7 +91,7 @@ const ShopProfile = () => {
                   <div className="space-y-4">
                      <div className="flex flex-wrap items-center gap-3">
                         <span className="px-4 py-1.5 bg-[#8B0000] text-white text-[9px] font-sans font-bold rounded-full uppercase tracking-widest shadow-md">Verified Partner</span>
-                        <div className="flex items-center gap-1.5 px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-white text-[9px] font-sans font-bold uppercase tracking-widest border border-white/20">
+                        <div className="flex items-center gap-1.5 px-3 py-1 bg-white/20 rounded-full text-white text-[9px] font-sans font-bold uppercase tracking-widest border border-white/20">
                            <Star size={12} className="fill-white text-white" /> {shop.rating || '4.8'} Elite Score
                         </div>
                      </div>
@@ -105,10 +105,10 @@ const ShopProfile = () => {
                   </div>
 
                   <div className="flex gap-4">
-                     <button className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white hover:bg-[#8B0000] hover:border-transparent transition-all border border-white/20 shadow-md">
+                     <button className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center text-white hover:bg-[#8B0000] hover:border-transparent transition-all border border-white/20 shadow-md">
                         <Heart size={20} />
                      </button>
-                     <button className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white hover:bg-[#8B0000] hover:border-transparent transition-all border border-white/20 shadow-md">
+                     <button className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center text-white hover:bg-[#8B0000] hover:border-transparent transition-all border border-white/20 shadow-md">
                         <Share2 size={20} />
                      </button>
                   </div>

@@ -61,7 +61,12 @@ const useFetch = () => {
         return data;
       } catch (err) {
         setLoading(false);
-        setError(err.message);
+        // Categorize Fetch Errors for Demo Persistence
+        if (err.message === 'Failed to fetch' || err.name === 'TypeError') {
+            setError('OFFLINE_MODE');
+        } else {
+            setError(err.message);
+        }
         throw err;
       }
     },

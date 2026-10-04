@@ -172,7 +172,7 @@ const EditProfilePage = () => {
             </div>
 
             <div className="bg-[#111111] rounded-[2rem] p-8 text-white relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-24 h-24 bg-[#8B0000]/10 rounded-full blur-2xl"></div>
+              <div className="absolute top-0 right-0 w-24 h-24 bg-[#8B0000]/10 rounded-full"></div>
               <div className="flex items-center gap-3 mb-4">
                 <ShieldCheck size={16} className="text-[#8B0000]" />
                 <span className="text-[9px] font-sans font-bold uppercase tracking-widest text-[#F7F5F0]/80">Local-First Architecture</span>

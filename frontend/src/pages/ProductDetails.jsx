@@ -29,13 +29,10 @@ const ProductDetails = () => {
   const { loading, request } = useFetch();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  // Simple Image Selection Logic
   const [activeImage, setActiveImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState(null);
   const [added, setAdded] = useState(false);
-
-  const viewerRef = useRef(null);
-  const shoeRef = useRef(null);
-  const shadowRef = useRef(null);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -75,117 +72,6 @@ const ProductDetails = () => {
       });
     }
   }, [product]);
-
-  // ADVANCED 3D INTERACTION LOGIC (Drag & Move Around)
-  const [isDragging, setIsDragging] = useState(false);
-  const [rotation, setRotation] = useState({ x: 0, y: 0 });
-  const lastMousePos = useRef({ x: 0, y: 0 });
-
-  const handleMouseDown = (e) => {
-    setIsDragging(true);
-    lastMousePos.current = { x: e.clientX, y: e.clientY };
-  };
-
-  const handleTouchStart = (e) => {
-    setIsDragging(true);
-    lastMousePos.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-  };
-
-  const handleMouseMove = (e) => {
-    if (!viewerRef.current || !shoeRef.current) return;
-
-    if (isDragging) {
-      const deltaX = e.clientX - lastMousePos.current.x;
-      const deltaY = e.clientY - lastMousePos.current.y;
-
-      const newRotY = rotation.y + deltaX * 0.8;
-      const newRotX = rotation.x - deltaY * 0.8;
-
-      setRotation({ x: newRotX, y: newRotY });
-      lastMousePos.current = { x: e.clientX, y: e.clientY };
-
-      gsap.to(shoeRef.current, {
-        rotationX: newRotX,
-        rotationY: newRotY,
-        duration: 0.1,
-        ease: "none"
-      });
-
-      gsap.to(shadowRef.current, {
-        x: newRotY * 0.3,
-        scale: 1 - (Math.abs(newRotX) / 500),
-        duration: 0.1
-      });
-    } else {
-      // Subtle parallax when just hovering
-      const rect = viewerRef.current.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-
-      const hoverX = (y - centerY) / 20;
-      const hoverY = (centerX - x) / 20;
-
-      gsap.to(shoeRef.current, {
-        x: (x - centerX) / 20,
-        y: (y - centerY) / 20,
-        rotationX: rotation.x + hoverX,
-        rotationY: rotation.y + hoverY,
-        duration: 0.8,
-        ease: "power2.out"
-      });
-    }
-  };
-
-  const handleTouchMove = (e) => {
-    if (!viewerRef.current || !shoeRef.current || !isDragging) return;
-
-    const deltaX = e.touches[0].clientX - lastMousePos.current.x;
-    const deltaY = e.touches[0].clientY - lastMousePos.current.y;
-
-    const newRotY = rotation.y + deltaX * 0.8;
-    const newRotX = rotation.x - deltaY * 0.8;
-
-    setRotation({ x: newRotX, y: newRotY });
-    lastMousePos.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-
-    gsap.to(shoeRef.current, {
-      rotationX: newRotX,
-      rotationY: newRotY,
-      duration: 0.1,
-      ease: "none"
-    });
-
-    gsap.to(shadowRef.current, {
-      x: newRotY * 0.3,
-      scale: 1 - (Math.abs(newRotX) / 500),
-      duration: 0.1
-    });
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  const handleTouchEnd = () => {
-    setIsDragging(false);
-  };
-
-  const handleMouseLeave = () => {
-    setIsDragging(false);
-    gsap.to([shoeRef.current, shadowRef.current], {
-      rotationX: 0,
-      rotationY: 0,
-      x: 0,
-      y: 0,
-      scale: 1,
-      opacity: 0.4,
-      duration: 1.5,
-      ease: "elastic.out(1, 0.6)"
-    });
-    setRotation({ x: 0, y: 0 });
-  };
 
   const handleAddToCart = () => {
     if (!selectedSize) {
@@ -253,129 +139,92 @@ const ProductDetails = () => {
           Back to Catalog
         </button>
 
-        <div className="grid lg:grid-cols-12 gap-16 xl:gap-24 items-start">
+        <div className="grid lg:grid-cols-12 gap-8 md:gap-16 xl:gap-24 items-start">
 
-          {/* LEFT: 3D INTERACTIVE VIEWER */}
-          <div className="lg:col-span-7 reveal-item">
+          {/* LEFT: STATIC IMAGE VIEWER (RESPONSIVE) */}
+          <div className="lg:col-span-7 reveal-item w-full">
             <div
-              ref={viewerRef}
-              onMouseDown={handleMouseDown}
-              onMouseMove={handleMouseMove}
-              onMouseUp={handleMouseUp}
-              onMouseLeave={handleMouseLeave}
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-              className={`relative aspect-square md:aspect-[4/3] bg-white rounded-[4rem] overflow-hidden border border-[#111111]/5 shadow-2xl flex items-center justify-center p-12 group transition-all duration-500 ${isDragging ? 'cursor-grabbing scale-[1.02]' : 'cursor-grab'} touch-none`}
-              style={{ perspective: '2000px' }}
+              className="relative aspect-square md:aspect-[4/3] bg-white rounded-2xl md:rounded-[4rem] overflow-hidden border border-[#111111]/5 shadow-xl flex items-center justify-center p-4 md:p-12 transition-all duration-500"
             >
               {/* Luxury HUD elements */}
-              <div className="absolute top-10 left-10 z-20">
-                <span className="bg-[#8B0000] text-white px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg">
+              <div className="absolute top-6 left-6 md:top-10 md:left-10 z-20">
+                <span className="bg-[#8B0000] text-white px-4 py-1 md:px-6 md:py-2 rounded-full text-[8px] md:text-[10px] font-black uppercase tracking-widest shadow-lg">
                   {product?.category || 'Premium'}
                 </span>
               </div>
-              <div className="absolute top-10 right-10 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
-                <div className="p-4 bg-[#F7F5F0] rounded-2xl border border-[#111]/5 text-[#6B6B6B]">
-                  <Maximize2 size={18} />
-                </div>
-              </div>
 
-              {/* 3D SHOE STAGE */}
-              <div className="relative w-full h-full flex items-center justify-center pointer-events-none">
-                {/* Dynamic Shadow */}
-                <div
-                  ref={shadowRef}
-                  className="absolute bottom-[10%] w-[60%] h-[40px] bg-black/40 blur-[40px] rounded-full opacity-40 transition-transform duration-300"
-                />
-
-                {/* The Shoe Asset */}
-                <div
-                  ref={shoeRef}
-                  className="relative w-full flex items-center justify-center will-change-transform transform-gpu"
-                  style={{ transformStyle: 'preserve-3d' }}
-                >
-                  {/* Gloss Overlay */}
-                  <div className="absolute inset-0 z-10 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000 mix-blend-overlay" />
-
+              {/* Static Image Display */}
+              <div className="relative w-full h-full flex items-center justify-center">
                   <img
                     src={displayImages[activeImage]}
                     alt={product?.name}
                     loading="lazy"
-                    className="w-[85%] h-auto object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.1)] brightness-105 contrast-105"
+                    className="w-[90%] md:w-[85%] h-auto object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.1)] transition-transform duration-500 hover:scale-105"
                   />
-                </div>
-              </div>
-
-              {/* Interactive Prompt */}
-              <div className={`absolute bottom-10 left-1/2 -translate-x-1/2 flex items-center gap-3 transition-opacity duration-500 ${isDragging ? 'opacity-0' : 'opacity-30 group-hover:opacity-60'}`}>
-                <Box size={14} className="animate-bounce" />
-                <span className="text-[10px] font-black uppercase tracking-widest">Click & Drag to Rotate</span>
               </div>
             </div>
 
-            {/* THUMBNAILS */}
-            {displayImages.length > 1 && (
-              <div className="mt-10 flex gap-6 overflow-x-auto pb-4 scrollbar-hide">
-                {displayImages.map((img, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setActiveImage(i)}
-                    className={`shrink-0 w-24 h-24 rounded-3xl overflow-hidden border-2 transition-all p-2 bg-white ${activeImage === i ? 'border-[#8B0000] shadow-xl scale-105' : 'border-[#111111]/5 opacity-60 hover:opacity-100'}`}
-                  >
-                    <img src={img} alt={`View ${i}`} className="w-full h-full object-contain rounded-2xl" />
-                  </button>
-                ))}
-              </div>
-            )}
+            {/* THUMBNAILS (Always 4 or more simple display) */}
+            <div className="mt-6 md:mt-10 flex gap-3 md:gap-6 overflow-x-auto pb-4 scrollbar-hide snap-x">
+              {displayImages.map((img, i) => (
+                <button
+                  key={i}
+                  onClick={() => setActiveImage(i)}
+                  className={`shrink-0 w-16 h-16 md:w-24 md:h-24 rounded-xl md:rounded-3xl overflow-hidden border-2 transition-all p-1 md:p-2 bg-white snap-center ${activeImage === i ? 'border-[#8B0000] shadow-xl scale-105' : 'border-[#111111]/5 opacity-60 hover:opacity-100'}`}
+                >
+                  <img src={img} alt={`View ${i}`} className="w-full h-full object-contain rounded-lg md:rounded-2xl" />
+                </button>
+              ))}
+              {/* If fewer than 4 images, repeat first as placeholder to ensure "4 photos" look if needed, or just let it be */}
+            </div>
           </div>
 
           {/* RIGHT: PRODUCT INFO */}
-          <div className="lg:col-span-5 space-y-10 reveal-item">
-            <div className="bg-white/80 backdrop-blur-xl p-10 md:p-16 rounded-[4rem] border border-[#111111]/5 shadow-2xl">
-              <div className="flex items-center gap-2 mb-8">
+          <div className="lg:col-span-5 space-y-6 md:space-y-10 reveal-item w-full">
+            <div className="bg-white/95 p-6 md:p-16 rounded-3xl md:rounded-[4rem] border border-[#111111]/5 shadow-xl">
+              <div className="flex items-center gap-2 mb-4 md:mb-8">
                  <div className="flex text-[#8B0000]">
-                    {[...Array(5)].map((_, i) => <Star key={i} size={14} fill={i < Math.floor(product?.rating || 5) ? "currentColor" : "none"} />)}
+                    {[...Array(5)].map((_, i) => <Star key={i} size={12} md:size={14} fill={i < Math.floor(product?.rating || 5) ? "currentColor" : "none"} />)}
                  </div>
-                 <span className="text-[#6B6B6B] font-bold text-[10px] ml-4 uppercase tracking-[0.2em]">{product?.rating || '5.0'} / 5.0 Elite Score</span>
+                 <span className="text-[#6B6B6B] font-bold text-[8px] md:text-[10px] ml-2 md:ml-4 uppercase tracking-[0.2em]">{product?.rating || '5.0'} / 5.0 Elite Score</span>
               </div>
 
-              <h1 className="text-5xl md:text-6xl font-editorial font-black text-[#111111] mb-8 tracking-tighter uppercase leading-[0.9]">
+              <h1 className="text-3xl md:text-6xl font-editorial font-black text-[#111111] mb-4 md:mb-8 tracking-tighter uppercase leading-[0.9]">
                 {product?.name}
               </h1>
 
-              <p className="text-[#6B6B6B] font-medium leading-relaxed text-lg italic border-l-4 border-[#8B0000] pl-6 mb-12">
+              <p className="text-[#6B6B6B] font-medium leading-relaxed text-sm md:text-lg italic border-l-4 border-[#8B0000] pl-4 md:pl-6 mb-8 md:mb-12">
                 "{product?.description}"
               </p>
 
-              <div className="space-y-12 mb-16 pt-10 border-t border-[#111111]/5">
-                 <div className="flex flex-wrap items-end gap-12">
+              <div className="space-y-8 md:space-y-12 mb-8 md:mb-16 pt-6 md:pt-10 border-t border-[#111111]/5">
+                 <div className="flex flex-col sm:flex-row sm:items-end gap-6 md:gap-12">
                     <div className="flex flex-col">
-                       <span className="text-[9px] font-black text-[#6B6B6B] uppercase tracking-[0.3em] mb-3">Market Valuation</span>
-                       <span className="text-5xl font-black text-[#111111] tracking-tighter tabular-nums">₹{(sanitizePrice(product?.price) * quantity).toLocaleString()}</span>
+                       <span className="text-[8px] md:text-[9px] font-black text-[#6B6B6B] uppercase tracking-[0.3em] mb-2 md:mb-3">Market Valuation</span>
+                       <span className="text-3xl md:text-5xl font-black text-[#111111] tracking-tighter tabular-nums">₹{(sanitizePrice(product?.price) * quantity).toLocaleString()}</span>
                     </div>
 
                     <div className="flex flex-col">
-                        <span className="text-[9px] font-black text-[#6B6B6B] uppercase tracking-[0.3em] mb-3">Quantity</span>
-                        <div className="flex items-center border-2 border-[#111111]/5 rounded-2xl overflow-hidden bg-[#F7F5F0]">
-                           <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="px-6 py-3 hover:bg-[#111111] hover:text-white text-[#111111] font-bold text-xl transition-colors">-</button>
-                           <span className="px-6 py-3 font-bold text-xl border-x-2 border-[#111111]/5 min-w-[70px] text-center text-[#111111]">{quantity}</span>
-                           <button onClick={() => setQuantity(quantity + 1)} className="px-6 py-3 hover:bg-[#111111] hover:text-white text-[#111111] font-bold text-xl transition-colors">+</button>
+                        <span className="text-[8px] md:text-[9px] font-black text-[#6B6B6B] uppercase tracking-[0.3em] mb-2 md:mb-3">Quantity</span>
+                        <div className="flex items-center border-2 border-[#111111]/5 rounded-xl md:rounded-2xl overflow-hidden bg-[#F7F5F0] w-fit">
+                           <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="px-4 py-2 md:px-6 md:py-3 hover:bg-[#111111] hover:text-white text-[#111111] font-bold text-lg md:text-xl transition-colors">-</button>
+                           <span className="px-4 py-2 md:px-6 md:py-3 font-bold text-lg md:text-xl border-x-2 border-[#111111]/5 min-w-[50px] md:min-w-[70px] text-center text-[#111111]">{quantity}</span>
+                           <button onClick={() => setQuantity(quantity + 1)} className="px-4 py-2 md:px-6 md:py-3 hover:bg-[#111111] hover:text-white text-[#111111] font-bold text-lg md:text-xl transition-colors">+</button>
                         </div>
                     </div>
                  </div>
 
-                 <div className="flex flex-col gap-6">
+                 <div className="flex flex-col gap-4 md:gap-6">
                     <div className="flex justify-between items-center">
-                       <span className="text-[9px] font-black text-[#6B6B6B] uppercase tracking-[0.3em]">Vault Fit (UK/IN)</span>
-                       <span className="text-[9px] font-bold text-[#8B0000] underline uppercase cursor-help">Size Guide</span>
+                       <span className="text-[8px] md:text-[9px] font-black text-[#6B6B6B] uppercase tracking-[0.3em]">Vault Fit (UK/IN)</span>
+                       <span className="text-[8px] md:text-[9px] font-bold text-[#8B0000] underline uppercase cursor-help">Size Guide</span>
                     </div>
-                    <div className="flex flex-wrap gap-4">
+                    <div className="flex flex-wrap gap-2 md:gap-4">
                        {product?.sizes?.map((size) => (
                           <button
                              key={size}
                              onClick={() => setSelectedSize(size)}
-                             className={`w-14 h-14 rounded-2xl font-black text-sm border-2 transition-all ${selectedSize === size ? 'bg-[#111111] text-white border-[#111111] shadow-xl scale-110' : 'bg-white text-[#6B6B6B] border-[#111111]/5 hover:border-[#8B0000]/30'}`}
+                             className={`w-10 h-10 md:w-14 md:h-14 rounded-lg md:rounded-2xl font-black text-xs md:text-sm border-2 transition-all ${selectedSize === size ? 'bg-[#111111] text-white border-[#111111] shadow-xl scale-110' : 'bg-white text-[#6B6B6B] border-[#111111]/5 hover:border-[#8B0000]/30'}`}
                           >
                              {size}
                           </button>
@@ -384,37 +233,37 @@ const ProductDetails = () => {
                  </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                  <button
                    onClick={handleAddToCart}
-                   className={`py-8 rounded-3xl text-[10px] font-black uppercase tracking-[0.3em] transition-all shadow-2xl flex items-center justify-center gap-4 group ${added ? 'bg-emerald-500 text-white' : 'bg-[#111111] text-white hover:bg-[#8B0000]'}`}
+                   className={`py-6 md:py-8 rounded-2xl md:rounded-3xl text-[8px] md:text-[10px] font-black uppercase tracking-[0.3em] transition-all shadow-xl flex items-center justify-center gap-3 md:gap-4 group ${added ? 'bg-emerald-500 text-white' : 'bg-[#111111] text-white hover:bg-[#8B0000]'}`}
                  >
-                    {added ? <Check size={20} /> : <ShoppingBag size={20} />} {added ? 'Secured' : 'Add to Collection'}
+                    {added ? <Check size={18} /> : <ShoppingBag size={18} />} {added ? 'Secured' : 'Add to Collection'}
                  </button>
                  <button
                    onClick={handleWhatsAppOrder}
-                   className="bg-emerald-500/10 text-emerald-600 border-2 border-emerald-500/20 py-8 rounded-3xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-emerald-500 hover:text-white transition-all shadow-lg flex items-center justify-center gap-4 group backdrop-blur-md"
+                   className="bg-emerald-500/10 text-emerald-600 border-2 border-emerald-500/20 py-6 md:py-8 rounded-2xl md:rounded-3xl text-[8px] md:text-[10px] font-black uppercase tracking-[0.3em] hover:bg-emerald-500 hover:text-white transition-all shadow-lg flex items-center justify-center gap-3 md:gap-4 group"
                  >
-                    <MessageCircle size={20} /> Pay via WhatsApp
+                    <MessageCircle size={18} /> Pay via WhatsApp
                  </button>
               </div>
             </div>
           </div>
         </div>
 
-        {/* SECTION: TECH SPECS */}
-        <div className="mt-32 grid md:grid-cols-3 gap-10 reveal-item">
+        {/* SECTION: TECH SPECS (RESPONSIVE) */}
+        <div className="mt-16 md:mt-32 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 reveal-item">
           {[
             { icon: ShieldCheck, title: "Authentic Heritage", text: "Direct from the Nashik workshop. We use only selected full-grain hides." },
             { icon: Layers, title: "Dual-Density Sole", text: "Engineered for 18-hour deployment. Multi-layered shock absorption." },
             { icon: RefreshCw, title: "Lifetime Polish", text: "Complimentary refurbishing service for all premium leather collections." }
           ].map((item, i) => (
-            <div key={i} className="bg-white p-12 rounded-[3rem] border border-[#111]/5 hover:shadow-xl transition-all group">
-              <div className="w-16 h-16 bg-[#8B0000]/10 rounded-2xl flex items-center justify-center text-[#8B0000] mb-8 group-hover:bg-[#8B0000] group-hover:text-white transition-all">
-                <item.icon size={28} />
+            <div key={i} className="bg-white p-8 md:p-12 rounded-3xl md:rounded-[3rem] border border-[#111]/5 hover:shadow-xl transition-all group">
+              <div className="w-12 h-12 md:w-16 md:h-16 bg-[#8B0000]/10 rounded-xl md:rounded-2xl flex items-center justify-center text-[#8B0000] mb-6 md:mb-8 group-hover:bg-[#8B0000] group-hover:text-white transition-all">
+                <item.icon size={24} />
               </div>
-              <h4 className="text-xl font-editorial font-black uppercase tracking-tight mb-4">{item.title}</h4>
-              <p className="text-sm text-[#6B6B6B] leading-relaxed font-medium">{item.text}</p>
+              <h4 className="text-lg md:text-xl font-editorial font-black uppercase tracking-tight mb-3 md:mb-4">{item.title}</h4>
+              <p className="text-xs md:text-sm text-[#6B6B6B] leading-relaxed font-medium">{item.text}</p>
             </div>
           ))}
         </div>

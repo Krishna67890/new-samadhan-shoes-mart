@@ -29,10 +29,10 @@ const Footer = () => {
               Crafting premium movement and unmatched resilience since generations. Your premier high-end shoe destination in Nashik.
             </p>
             <div className="flex items-center gap-4 pt-2">
-              <a href="#" className="w-9 h-9 border border-[#111111]/10 rounded-full flex items-center justify-center text-[#6B6B6B] hover:text-[#8B0000] hover:border-[#8B0000] transition-colors" aria-label="Facebook">
+              <a href="https://www.facebook.com/people/New-Samadhan-Shoes-Mart/61555891316279/" target="_blank" rel="noreferrer" className="w-9 h-9 border border-[#111111]/10 rounded-full flex items-center justify-center text-[#6B6B6B] hover:text-[#8B0000] hover:border-[#8B0000] transition-colors" aria-label="Facebook">
                 <Facebook size={16} />
               </a>
-              <a href="#" className="w-9 h-9 border border-[#111111]/10 rounded-full flex items-center justify-center text-[#6B6B6B] hover:text-[#8B0000] hover:border-[#8B0000] transition-colors" aria-label="Instagram">
+              <a href="https://www.instagram.com/newsamadhanshoe?stkn=MTJheDd5ODduejZzYQ==" target="_blank" rel="noreferrer" className="w-9 h-9 border border-[#111111]/10 rounded-full flex items-center justify-center text-[#6B6B6B] hover:text-[#8B0000] hover:border-[#8B0000] transition-colors" aria-label="Instagram">
                 <Instagram size={16} />
               </a>
               <a href="#" className="w-9 h-9 border border-[#111111]/10 rounded-full flex items-center justify-center text-[#6B6B6B] hover:text-[#8B0000] hover:border-[#8B0000] transition-colors" aria-label="Twitter">
@@ -72,9 +72,10 @@ const Footer = () => {
                     onError={(e) => { e.target.src = 'https://ui-avatars.com/api/?name=Krishna&background=8B0000&color=fff'; }}
                   />
                   <div>
-                    <span className="text-[9px] font-bold uppercase tracking-widest text-[#6B6B6B] block">Technical Architect</span>
-                    <a href="https://wa.me/918080690631" target="_blank" rel="noreferrer" className="text-[11px] font-black text-[#111111] hover:text-[#8B0000] transition-colors flex items-center gap-1">
-                      Krishna Rajput <span className="text-[#8B0000] font-bold">(Developer Support)</span>
+                    <span className="text-[9px] font-bold uppercase tracking-widest text-[#6B6B6B] block">Website Developer & Designer</span>
+                    <a href="https://www.instagram.com/krish_root_labs?stkn=YWczM2t3amUyZ3lp" target="_blank" rel="noreferrer" className="text-[11px] font-black text-[#111111] hover:text-[#8B0000] transition-colors flex flex-col">
+                      <span>Krishna Patil Rajput</span>
+                      <span>Krishna Ajaysing Patil</span>
                     </a>
                   </div>
                 </div>
@@ -117,7 +118,7 @@ const Footer = () => {
         {/* Footer Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row justify-between items-center gap-6">
           <p className="text-xs font-medium text-[#6B6B6B] text-center sm:text-left">
-            &copy; {new Date().getFullYear()} New Samadhan Shoe Mart. All Rights Reserved. Crafted with Precision · <Link to="/about" className="text-[#111111] font-bold hover:text-[#8B0000] transition-colors">Architected by Krishna</Link> (<a href="https://krishna-patil-rajput.vercel.app/" target="_blank" rel="noreferrer" className="text-[#8B0000] font-semibold hover:underline">Portfolio</a> | <a href="https://krishnablogy.blogspot.com/" target="_blank" rel="noreferrer" className="text-[#8B0000] font-semibold hover:underline">Website</a> | <a href="https://wa.me/918080690631" target="_blank" rel="noreferrer" className="text-[#8B0000] font-semibold hover:underline">Support</a>)
+            &copy; {new Date().getFullYear()} New Samadhan Shoe Mart. All Rights Reserved. Crafted with Precision · <Link to="/about" className="text-[#111111] font-bold hover:text-[#8B0000] transition-colors">Architected by Krishna Patil Rajput</Link> (<a href="https://www.instagram.com/krish_root_labs?stkn=YWczM2t3amUyZ3lp" target="_blank" rel="noreferrer" className="text-[#8B0000] font-semibold hover:underline">Instagram</a> | <a href="https://krishnablogy.blogspot.com/" target="_blank" rel="noreferrer" className="text-[#8B0000] font-semibold hover:underline">Website</a> | <a href="https://wa.me/918080690631" target="_blank" rel="noreferrer" className="text-[#8B0000] font-semibold hover:underline">Support</a>)
           </p>
 
           <div className="flex items-center gap-6">

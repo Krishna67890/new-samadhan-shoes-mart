@@ -120,9 +120,9 @@ const IdentityPage = () => {
   };
 
   return (
-    <div className="bg-[#050505] min-h-screen pt-32 pb-24 px-6 relative overflow-hidden" ref={containerRef}>
+    <div className="bg-[#050505] min-h-screen pt-32 pb-24 px-6 relative overflow-hidden no-blur-zone" ref={containerRef}>
       {/* Background Glow */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-600/5 blur-[120px] rounded-full"></div>
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-600/5 rounded-full"></div>
 
       <div className="max-w-4xl mx-auto relative z-10">
 
@@ -148,7 +148,7 @@ const IdentityPage = () => {
            </div>
            <button
              onClick={playGuide}
-             className="px-8 py-4 bg-white/5 rounded-2xl text-blue-500 hover:bg-blue-600 hover:text-white transition-all border border-white/5 backdrop-blur-md flex items-center gap-4 text-[10px] font-black uppercase tracking-widest"
+             className="px-8 py-4 bg-white/5 rounded-2xl text-blue-500 hover:bg-blue-600 hover:text-white transition-all border border-white/5 flex items-center gap-4 text-[10px] font-black uppercase tracking-widest"
            >
              <Volume2 size={18} /> Audio Protocol
            </button>
@@ -164,7 +164,7 @@ const IdentityPage = () => {
 
           {/* LEFT: VISUALS & GENDER */}
           <div className="lg:col-span-4 space-y-8 identity-reveal">
-             <div className="bg-white/5 backdrop-blur-3xl p-10 rounded-[4rem] border border-white/10 shadow-2xl flex flex-col items-center">
+             <div className="bg-white/5 p-10 rounded-[4rem] border border-white/10 shadow-2xl flex flex-col items-center">
                 <div
                   onClick={() => fileInputRef.current.click()}
                   className="w-48 h-48 rounded-[3rem] bg-[#111] border-2 border-dashed border-white/10 flex items-center justify-center cursor-pointer overflow-hidden group hover:border-blue-500/50 transition-all mb-10 relative"
@@ -196,7 +196,7 @@ const IdentityPage = () => {
                 </div>
              </div>
 
-             <div className="bg-blue-600/5 backdrop-blur-md p-8 rounded-[2.5rem] border border-blue-500/10">
+             <div className="bg-blue-600/5 p-8 rounded-[2.5rem] border border-blue-500/10">
                 <div className="flex items-center gap-4 text-blue-500 mb-4">
                    <Zap size={20} />
                    <span className="text-[10px] font-black uppercase tracking-widest">Security Protocol</span>
@@ -209,7 +209,7 @@ const IdentityPage = () => {
 
           {/* RIGHT: DATA FORM */}
           <div className="lg:col-span-8 space-y-8 identity-reveal">
-            <div className="bg-white/5 backdrop-blur-3xl p-12 rounded-[4rem] border border-white/10 shadow-2xl">
+            <div className="bg-white/5 p-12 rounded-[4rem] border border-white/10 shadow-2xl">
                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
                   <div className="space-y-4">
                      <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-6">Legal Designation</label>

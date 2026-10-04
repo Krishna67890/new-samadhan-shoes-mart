@@ -5,7 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
   Award, Heart, Hammer, Footprints, ShieldCheck, MapPin, Phone, Mail,
   ArrowRight, Sparkles, Star, Users, Clock, Code2, Globe,
-  Zap, Layers, ChevronRight, ExternalLink, Cpu, Activity, MessageCircle
+  Zap, Layers, ChevronRight, ExternalLink, Cpu, Activity, MessageCircle, Instagram
 } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -75,7 +75,7 @@ const AboutPage = () => {
         z: 5500,
         scale: 6,
         opacity: 0,
-        filter: 'blur(15px) brightness(2)',
+        filter: 'brightness(2)',
         scrollTrigger: {
           trigger: ".about-shoe-trigger",
           start: "top center",
@@ -220,7 +220,7 @@ const AboutPage = () => {
             <div style={{ width: '100%', aspectRatio: '4/5', background: 'linear-gradient(135deg, #1a0a0a 0%, #2d0d0d 40%, #111 100%)', borderRadius: '28px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', position: 'relative', boxShadow: '0 40px 80px rgba(0,0,0,0.15)' }}>
               <img src="/Shoes.png" alt="New Samadhan Handcrafted Shoe" style={{ width: '85%', objectFit: 'contain', filter: 'none' }} />
               <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 30%, rgba(139,0,0,0.22) 0%, transparent 65%)', pointerEvents: 'none' }} />
-              <div style={{ position: 'absolute', bottom: '28px', left: '28px', background: 'rgba(247,245,240,0.95)', backdropFilter: 'blur(12px)', padding: '14px 20px', borderRadius: '16px', boxShadow: '0 16px 40px rgba(0,0,0,0.2)' }}>
+              <div style={{ position: 'absolute', bottom: '28px', left: '28px', background: 'rgba(247,245,240,0.95)', padding: '14px 20px', borderRadius: '16px', boxShadow: '0 16px 40px rgba(0,0,0,0.2)' }}>
                 <div style={{ fontSize: '9px', fontWeight: 800, letterSpacing: '0.3em', color: '#8B0000', textTransform: 'uppercase', marginBottom: '4px' }}>Certified Mastercraft</div>
                 <div style={{ fontSize: '13px', fontWeight: 700, color: '#111' }}>Goodyear Welted</div>
               </div>
@@ -316,8 +316,8 @@ const AboutPage = () => {
                 </div>
                 <div style={{ padding: '28px 32px' }}>
                   <div style={{ ...S.label, marginBottom: '8px', display: 'block' }}>Website Developer &amp; Designer</div>
-                  <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '26px', fontWeight: 900, color: '#F7F5F0', textTransform: 'uppercase' }}>Krishna</div>
-                  <div style={{ fontSize: '12px', color: 'rgba(247,245,240,0.45)', marginTop: '6px' }}>New Samadhan Shoe Mart · Digital Architect</div>
+                  <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '26px', fontWeight: 900, color: '#F7F5F0', textTransform: 'uppercase' }}>Krishna Patil Rajput</div>
+                  <div style={{ fontSize: '12px', color: 'rgba(247,245,240,0.45)', marginTop: '6px' }}>Krishna Ajaysing Patil</div>
                   <div style={{ display: 'flex', gap: '8px', marginTop: '16px', flexWrap: 'wrap' }}>
                     {['React.js', 'Node.js', 'GSAP', 'MongoDB', 'TailwindCSS'].map(tech => (
                       <span key={tech} style={{ padding: '5px 12px', background: 'rgba(139,0,0,0.15)', border: '1px solid rgba(139,0,0,0.3)', borderRadius: '8px', fontSize: '9px', fontWeight: 700, letterSpacing: '0.1em', color: '#ff6b6b', textTransform: 'uppercase' }}>{tech}</span>
@@ -327,7 +327,7 @@ const AboutPage = () => {
                   {/* Direct Portfolio & Website Links */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '22px', paddingTop: '18px', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
                     <a
-                      href="https://krishna-patil-rajput.vercel.app/"
+                      href="https://www.instagram.com/krish_root_labs?stkn=YWczM2t3amUyZ3lp"
                       target="_blank"
                       rel="noreferrer"
                       style={{
@@ -350,7 +350,33 @@ const AboutPage = () => {
                       onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
                       onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
                     >
-                      <ExternalLink size={14} /> Visit Developer Portfolio
+                      <Instagram size={14} /> Developer Instagram
+                    </a>
+                    <a
+                      href="https://krishna-patil-rajput.vercel.app/"
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{
+                        background: 'rgba(255,255,255,0.08)',
+                        color: '#F7F5F0',
+                        border: '1px solid rgba(255,255,255,0.15)',
+                        padding: '12px 18px',
+                        borderRadius: '12px',
+                        fontSize: '10px',
+                        fontWeight: 700,
+                        letterSpacing: '0.15em',
+                        textTransform: 'uppercase',
+                        textDecoration: 'none',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '8px',
+                        transition: 'background 0.2s',
+                      }}
+                      onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.14)'}
+                      onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.08)'}
+                    >
+                      <ExternalLink size={14} /> View Portfolio
                     </a>
                     <a
                       href="https://krishnablogy.blogspot.com/"
@@ -412,7 +438,7 @@ const AboutPage = () => {
               </div>
               <div className="dev-info-item" style={{ marginTop: '36px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
                 <a
-                  href="https://krishna-patil-rajput.vercel.app/"
+                  href="https://www.instagram.com/krish_root_labs?stkn=YWczM2t3amUyZ3lp"
                   target="_blank"
                   rel="noreferrer"
                   style={{
@@ -431,7 +457,7 @@ const AboutPage = () => {
                     boxShadow: '0 8px 20px rgba(139,0,0,0.3)',
                   }}
                 >
-                  <ExternalLink size={14} /> Portfolio
+                  <Instagram size={14} /> Instagram
                 </a>
                 <a
                   href="https://krishnablogy.blogspot.com/"

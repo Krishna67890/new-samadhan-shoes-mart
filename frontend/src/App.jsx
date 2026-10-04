@@ -13,7 +13,11 @@ import IdentityPage from './pages/IdentityPage';
 import DashboardPage from './pages/DashboardPage';
 import ProfilePage from './pages/ProfilePage';
 import EditProfilePage from './pages/EditProfilePage';
+import OwnerLoginPage from './pages/OwnerLoginPage';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminProductList from './pages/AdminProductList';
+import AdminProductEdit from './pages/AdminProductEdit';
+import AdminGalleryManager from './pages/AdminGalleryManager';
 import AdminReviewDashboard from './pages/AdminReviewDashboard';
 import CheckoutPage from './pages/CheckoutPage';
 import ServiceCentrePage from './pages/ServiceCentrePage';
@@ -51,6 +55,7 @@ function App() {
           <Route path="/shop/:id" element={<PageWrapper><ShopProfile /></PageWrapper>} />
           <Route path="/product/:id" element={<PageWrapper><ProductDetails /></PageWrapper>} />
           <Route path="/login" element={<PageWrapper><LoginPage /></PageWrapper>} />
+          <Route path="/owner-login" element={<PageWrapper><OwnerLoginPage /></PageWrapper>} />
           <Route path="/identity" element={<ProtectedRoute><PageWrapper><IdentityPage /></PageWrapper></ProtectedRoute>} />
           <Route path="/service-centre" element={<PageWrapper><ServiceCentrePage /></PageWrapper>} />
           <Route path="/service" element={<Navigate to="/service-centre" replace />} />
@@ -69,7 +74,11 @@ function App() {
           <Route path="/my-orders" element={<ProtectedRoute><PageWrapper><DashboardPage /></PageWrapper></ProtectedRoute>} />
 
           {/* Admin Protected Routes */}
-          <Route path="/admin/*" element={<AdminRoute><PageWrapper><AdminDashboard /></PageWrapper></AdminRoute>} />
+          <Route path="/admin" element={<AdminRoute><PageWrapper><AdminDashboard /></PageWrapper></AdminRoute>} />
+          <Route path="/admin/products" element={<AdminRoute><PageWrapper><AdminProductList /></PageWrapper></AdminRoute>} />
+          <Route path="/admin/product/new" element={<AdminRoute><PageWrapper><AdminProductEdit /></PageWrapper></AdminRoute>} />
+          <Route path="/admin/product/:id/edit" element={<AdminRoute><PageWrapper><AdminProductEdit /></PageWrapper></AdminRoute>} />
+          <Route path="/admin/gallery" element={<AdminRoute><PageWrapper><AdminGalleryManager /></PageWrapper></AdminRoute>} />
           <Route path="/admin/reviews" element={<AdminRoute><PageWrapper><AdminReviewDashboard /></PageWrapper></AdminRoute>} />
         </Routes>
       </main>
