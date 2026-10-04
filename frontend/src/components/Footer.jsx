@@ -74,7 +74,7 @@ const Footer = () => {
                   <div>
                     <span className="text-[9px] font-bold uppercase tracking-widest text-[#6B6B6B] block">Technical Architect</span>
                     <a href="https://wa.me/918080690631" target="_blank" rel="noreferrer" className="text-[11px] font-black text-[#111111] hover:text-[#8B0000] transition-colors flex items-center gap-1">
-                      Krishna Rajput <span className="text-[#8B0000] font-bold">(8080690631)</span>
+                      Krishna Rajput <span className="text-[#8B0000] font-bold">(Developer Support)</span>
                     </a>
                   </div>
                 </div>
@@ -95,7 +95,15 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-3">
                 <Phone size={16} className="text-[#8B0000] shrink-0" />
-                <span>+91 9423228843 / 8888644021</span>
+                <button
+                  onClick={() => {
+                    const num = Math.random() > 0.5 ? '9423228843' : '8888644021';
+                    window.location.href = `tel:+91${num}`;
+                  }}
+                  className="bg-transparent border-none p-0 text-sm text-[#6B6B6B] font-medium hover:text-[#111111] cursor-pointer"
+                >
+                  +91 94232 28843 / 88886 44021
+                </button>
               </li>
               <li className="flex items-center gap-3">
                 <Mail size={16} className="text-[#8B0000] shrink-0" />
@@ -109,7 +117,7 @@ const Footer = () => {
         {/* Footer Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row justify-between items-center gap-6">
           <p className="text-xs font-medium text-[#6B6B6B] text-center sm:text-left">
-            &copy; {new Date().getFullYear()} New Samadhan Shoe Mart. All Rights Reserved. Crafted with Precision · <Link to="/about" className="text-[#111111] font-bold hover:text-[#8B0000] transition-colors">Architected by Krishna</Link> (<a href="https://krishna-patil-rajput.vercel.app/" target="_blank" rel="noreferrer" className="text-[#8B0000] font-semibold hover:underline">Portfolio</a> | <a href="https://krishnablogy.blogspot.com/" target="_blank" rel="noreferrer" className="text-[#8B0000] font-semibold hover:underline">Website</a> | <a href="https://wa.me/918080690631" target="_blank" rel="noreferrer" className="text-[#8B0000] font-semibold hover:underline">WhatsApp</a>)
+            &copy; {new Date().getFullYear()} New Samadhan Shoe Mart. All Rights Reserved. Crafted with Precision · <Link to="/about" className="text-[#111111] font-bold hover:text-[#8B0000] transition-colors">Architected by Krishna</Link> (<a href="https://krishna-patil-rajput.vercel.app/" target="_blank" rel="noreferrer" className="text-[#8B0000] font-semibold hover:underline">Portfolio</a> | <a href="https://krishnablogy.blogspot.com/" target="_blank" rel="noreferrer" className="text-[#8B0000] font-semibold hover:underline">Website</a> | <a href="https://wa.me/918080690631" target="_blank" rel="noreferrer" className="text-[#8B0000] font-semibold hover:underline">Support</a>)
           </p>
 
           <div className="flex items-center gap-6">

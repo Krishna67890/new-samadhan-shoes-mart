@@ -11,7 +11,8 @@ import {
   PlusCircle,
   List,
   Truck,
-  Loader2
+  Loader2,
+  MessageSquare
 } from 'lucide-react';
 
 const AdminDashboard = () => {
@@ -90,7 +91,7 @@ const AdminDashboard = () => {
             ))}
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             <div className="bg-white p-10 rounded-[3.5rem] border border-slate-100 shadow-sm">
                <h3 className="text-2xl font-black text-slate-950 mb-8 tracking-tighter uppercase flex items-center gap-4">
                   <Package className="w-8 h-8 text-blue-600" /> Catalog Control
@@ -115,6 +116,20 @@ const AdminDashboard = () => {
                   </p>
                   <Link to="/admin/orders" className="inline-flex items-center text-blue-600 font-black uppercase tracking-widest text-[10px] hover:gap-4 transition-all">
                      Launch Order Stream <List className="ml-2 w-4 h-4" />
+                  </Link>
+               </div>
+            </div>
+
+            <div className="bg-white p-10 rounded-[3.5rem] border border-slate-100 shadow-sm">
+               <h3 className="text-2xl font-black text-slate-950 mb-8 tracking-tighter uppercase flex items-center gap-4">
+                  <MessageSquare className="w-8 h-8 text-amber-500" /> Feedback Review
+               </h3>
+               <div className="space-y-6">
+                  <p className="text-slate-500 font-medium leading-relaxed italic uppercase text-[11px] tracking-widest">
+                    Moderate customer testimonials, filter interactions, and maintain brand reputation.
+                  </p>
+                  <Link to="/admin/reviews" className="inline-flex items-center text-amber-600 font-black uppercase tracking-widest text-[10px] hover:gap-4 transition-all">
+                     Audit Reviews <List className="ml-2 w-4 h-4" />
                   </Link>
                </div>
             </div>

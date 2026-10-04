@@ -61,6 +61,12 @@ body {
   transition: transform 0.1s ease;
 }
 
+/* Shine Animation */
+@keyframes shine {
+  0% { background-position: -200% -200%; }
+  100% { background-position: 200% 200%; }
+}
+
 /* Accessibility: Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
   * {

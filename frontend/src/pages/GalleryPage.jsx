@@ -407,14 +407,16 @@ const GalleryPage = () => {
             >
               Consult an Artisan
             </Link>
-            <a
-              href="https://wa.me/918888644021?text=Hello%20New%20Samadhan%20Shoe%20Mart,%20I%20am%20interested%20in%20a%20bespoke%20shoe%20order"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={() => {
+                const message = "Hello New Samadhan Shoe Mart, I am interested in a bespoke shoe order";
+                const targetNum = Math.random() > 0.5 ? '9423228843' : '8888644021';
+                window.open(`https://wa.me/91${targetNum}?text=${encodeURIComponent(message)}`, '_blank');
+              }}
               className="bg-[#25D366] text-white px-6 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em] hover:bg-[#1EBE5D] transition-colors inline-flex items-center gap-2 shadow-lg"
             >
               <MessageSquare size={16} /> WhatsApp Us
-            </a>
+            </button>
           </div>
         </div>
       </section>
@@ -493,14 +495,16 @@ const GalleryPage = () => {
                 >
                   Explore in Catalog
                 </Link>
-                <a
-                  href={`https://wa.me/918888644021?text=Hello%20New%20Samadhan,%20I%20am%20inquiring%20about%20the%20${encodeURIComponent(selectedItem.title)}%20from%20your%20Gallery`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  onClick={() => {
+                    const message = `Hello New Samadhan, I am inquiring about the ${selectedItem.title} from your Gallery`;
+                    const targetNum = Math.random() > 0.5 ? '9423228843' : '8888644021';
+                    window.open(`https://wa.me/91${targetNum}?text=${encodeURIComponent(message)}`, '_blank');
+                  }}
                   className="w-full bg-emerald-600 text-white py-3 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-emerald-700 transition-colors text-center inline-flex items-center justify-center gap-2"
                 >
                   <MessageSquare size={14} /> Inquire On WhatsApp
-                </a>
+                </button>
               </div>
             </div>
 

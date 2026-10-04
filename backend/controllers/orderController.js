@@ -35,6 +35,11 @@ const addOrderItems = async (req, res) => {
 
       const createdOrder = await order.save();
 
+      // Dual Shopkeeper Logic for WhatsApp Payment Link
+      const shopNumbers = ['919423228843', '918888644021'];
+      const selectedNumber = shopNumbers[Math.floor(Math.random() * shopNumbers.length)];
+      const whatsappPayLink = `https://wa.me/${selectedNumber}?text=Order%20Payment%20Reference:%20${createdOrder._id}`;
+
       // Send Confirmation Email
       try {
         const orderList = orderItems.map(item => `${item.name} (Qty: ${item.qty})`).join(', ');
@@ -52,7 +57,7 @@ const addOrderItems = async (req, res) => {
                 <p><strong>Total Amount:</strong> ₹${totalPrice}</p>
               </div>
               <p>Please complete your payment through WhatsApp to initiate shipping.</p>
-              <a href="https://wa.me/919876543210" style="display: inline-block; padding: 10px 20px; background: #10b981; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">Pay via WhatsApp</a>
+              <a href="${whatsappPayLink}" style="display: inline-block; padding: 10px 20px; background: #10b981; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">Pay via WhatsApp</a>
             </div>
           `
         });

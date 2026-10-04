@@ -94,9 +94,19 @@ const ServiceCentrePage = () => {
                 <span className="italic font-light text-[#8B0000]">RESTORATION.</span>
               </h1>
             </div>
-            <p className="text-[#111111]/40 font-sans font-bold text-[9px] max-w-xs uppercase tracking-[0.3em] border-l-2 border-[#111111]/5 pl-8 leading-loose italic">
-              "Preserving the integrity of your collection through advanced artisanal craftsmanship and molecular care."
-            </p>
+
+            {/* Visiting Card Display */}
+            <div className="relative group max-w-sm w-full">
+               <div className="absolute -inset-2 bg-gradient-to-r from-[#8B0000] to-[#111111] rounded-[2rem] blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
+               <img
+                 src="/New-Samadhan-Shoe-Mart/New-Card.jpg"
+                 alt="New Samadhan Shoes Mart Visiting Card"
+                 className="relative rounded-[1.5rem] border border-white/20 shadow-2xl w-full h-auto object-cover transform hover:scale-[1.02] transition-transform duration-500"
+               />
+               <div className="absolute top-4 right-4 bg-[#8B0000] text-white p-2 rounded-full shadow-lg">
+                  <ShieldCheck size={16} />
+               </div>
+            </div>
           </div>
         </section>
 
@@ -199,7 +209,11 @@ const ServiceCentrePage = () => {
 
                        <div className="grid grid-cols-2 gap-4">
                           <button
-                             onClick={() => window.location.href = `tel:${selectedCenter.phone}`}
+                             onClick={() => {
+                                // Rotate between primary business numbers
+                                const num = Math.random() > 0.5 ? '9423228843' : '8888644021';
+                                window.location.href = `tel:+91${num}`;
+                             }}
                              className="bg-[#111111] text-white py-5 rounded-xl text-[10px] font-sans font-bold uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-[#8B0000] transition-all shadow-md"
                           >
                              <Phone size={18} /> Call Node
@@ -207,7 +221,9 @@ const ServiceCentrePage = () => {
                           <button
                              onClick={() => {
                                 const message = `*ELITE RESTORATION REQUEST*\n\nNode: ${selectedCenter.name}\nProtocol: Diamond Restoration\n\nI need a professional service for my footwear. Please confirm the security clearance for a visit.`;
-                                window.location.href = `https://wa.me/${selectedCenter.whatsappNumber}?text=${encodeURIComponent(message)}`;
+                                // Dual number protocol - ensures one of the store owners sees it
+                                const targetNum = Math.random() > 0.5 ? '9423228843' : '8888644021';
+                                window.open(`https://wa.me/91${targetNum}?text=${encodeURIComponent(message)}`, '_blank');
                              }}
                              className="bg-emerald-600 text-white py-5 rounded-xl text-[10px] font-sans font-bold uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-emerald-700 transition-all shadow-md"
                           >

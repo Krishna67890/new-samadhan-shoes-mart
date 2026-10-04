@@ -4,6 +4,9 @@ import useFetch from '../hooks/useFetch';
 import { useCart } from '../context/CartContext';
 import { AuthContext } from '../context/AuthContext';
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 import {
   Star, ShoppingCart, MessageCircle, ArrowLeft, CheckCircle,
   Shield, Truck, RefreshCw, CreditCard, Box, Zap, Info,
@@ -17,6 +20,7 @@ const ProductDetailsPage = () => {
   const { loading, error, request } = useFetch();
   const { addToCart } = useCart();
   const containerRef = useRef(null);
+  const mainShoeRef = useRef(null);
 
   const [product, setProduct] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
@@ -49,18 +53,134 @@ const ProductDetailsPage = () => {
     fetchProduct();
   }, [id, request]);
 
-  // Entrance Animation
+  // Entrance Animation & ScrollTrigger for Main-Shoe.png
   useEffect(() => {
     if (product) {
-        gsap.from('.reveal-item', {
-            y: 30,
-            opacity: 0,
-            duration: 0.8,
-            stagger: 0.1,
-            ease: 'power3.out'
-        });
+        const mm = gsap.matchMedia();
+        const ctx = gsap.context(() => {
+            // Existing entrance for content
+            gsap.from('.reveal-item', {
+                y: 30,
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.1,
+                ease: 'power3.out'
+            });
+
+            // 1. Initial Main Shoe Reveal - High-End "Macro-to-Micro" Entrance
+            gsap.from(mainShoeRef.current, {
+                x: 2000,
+                y: -500,
+                rotationY: -180,
+                rotationX: 45,
+                rotationZ: -30,
+                z: -5000,
+                opacity: 0,
+                duration: 4,
+                ease: "expo.out"
+            });
+
+            // 2. Ambient Floating - Organic "Breath" Motion
+            const ambientTl = gsap.timeline({ repeat: -1, yoyo: true });
+            ambientTl.to(mainShoeRef.current, {
+                y: "+=25",
+                x: "+=15",
+                rotationZ: "+=2",
+                rotationY: "+=6",
+                rotationX: "+=3",
+                duration: 5,
+                ease: "sine.inOut"
+            });
+
+            // 3. ADVANCED SCROLL SEQUENCE - Hyper-Realistic 3D Scan
+            mm.add({
+              isDesktop: "(min-width: 1024px)",
+              isMobile: "(max-width: 1023px)"
+            }, (context) => {
+              let { isDesktop } = context.conditions;
+
+              const tl = gsap.timeline({
+                  scrollTrigger: {
+                      trigger: containerRef.current,
+                      start: "top top",
+                      end: "bottom bottom",
+                      scrub: 2.2, // Higher scrub for ultra-smooth buttery feel
+                      toggleActions: "play none none reverse"
+                  }
+              });
+
+              tl
+              // PHASE 1: Straight Profile - The "Gallery" View
+              .to(mainShoeRef.current, {
+                  x: isDesktop ? '-42vw' : '0vw',
+                  y: isDesktop ? '5vh' : '10vh',
+                  rotationY: 0,
+                  rotationX: 0,
+                  rotationZ: 0,
+                  z: isDesktop ? 800 : 400,
+                  scale: isDesktop ? 1.2 : 1,
+                  opacity: 0.8,
+                  filter: `brightness(1.3) contrast(1.2) drop-shadow(0 ${isDesktop ? '150px 250px' : '80px 150px'} rgba(139,0,0,0.4))`,
+                  ease: "power2.inOut"
+              })
+              .to(".tech-node-1", { opacity: 1, x: 0, scale: 1, duration: 1 }, "-=0.8")
+
+              // PHASE 2: Sole & Traction - The "Inspection" View
+              .to(mainShoeRef.current, {
+                  x: isDesktop ? '15vw' : '0vw',
+                  y: isDesktop ? '35vh' : '20vh',
+                  rotationX: 170,
+                  rotationY: -15,
+                  rotationZ: 25,
+                  z: isDesktop ? 1200 : 600,
+                  scale: isDesktop ? 1.5 : 1.1,
+                  opacity: 0.7,
+                  filter: `brightness(0.9) contrast(1.4) drop-shadow(0 ${isDesktop ? '200px 300px' : '100px 200px'} rgba(0,0,0,0.8))`,
+                  ease: "expo.inOut"
+              })
+              .to(".tech-node-2", { opacity: 1, x: 0, scale: 1, duration: 1 }, "-=0.8")
+
+              // PHASE 3: Top-Down "Anatomy" View
+              .to(mainShoeRef.current, {
+                  x: isDesktop ? '-10vw' : '0vw',
+                  y: isDesktop ? '55vh' : '30vh',
+                  rotationX: 75,
+                  rotationY: 45,
+                  rotationZ: -10,
+                  z: isDesktop ? 400 : 200,
+                  scale: isDesktop ? 1.3 : 1,
+                  opacity: 0.9,
+                  filter: 'brightness(1.1) contrast(1.1) drop-shadow(0 50px 100px rgba(0,0,0,0.3))',
+                  ease: "power3.inOut"
+              })
+
+              // PHASE 4: Hyper-Macro Exit - The "Material" View
+              .to(mainShoeRef.current, {
+                  x: isDesktop ? '-25vw' : '0vw',
+                  y: isDesktop ? '90vh' : '80vh',
+                  rotationX: -30,
+                  rotationY: -60,
+                  rotationZ: 5,
+                  z: isDesktop ? 5500 : 3500,
+                  scale: isDesktop ? 22 : 12,
+                  opacity: 0,
+                  filter: isDesktop
+                    ? 'blur(15px) brightness(2.5) contrast(1.6)'
+                    : 'blur(8px) brightness(1.8) contrast(1.4)',
+                  force3D: true,
+                  ease: "power4.in"
+              });
+            });
+
+        }, containerRef);
+
+        return () => {
+          ctx.revert();
+          mm.revert();
+        };
     }
   }, [product]);
+
 
   const handleAddToCart = () => {
     if (!selectedSize) {
@@ -83,11 +203,9 @@ const ProductDetailsPage = () => {
     const message = `Hello New Samadhan Shoe Mart! 👋\n\nI want to order this Masterpiece:\n\n👟 *Product:* ${product?.name}\n🏷️ *Brand:* ${product?.brand}\n💰 *Price:* ₹${(cleanPrice * qty).toLocaleString()}\n📏 *Size:* ${selectedSize} (UK/IN)\n📦 *Quantity:* ${qty}\n🖼️ *Image:* ${product?.images?.[0]}\n\n--- CUSTOMER DETAILS ---\n👤 *Name:* ${user?.name || 'Guest'}\n📍 *Address:* ${user?.address || 'Not Provided'}\n🏙️ *City:* ${user?.city || 'Not Provided'}\n📮 *Pincode:* ${user?.pincode || 'Not Provided'}\n\n--- PAYMENT INTENT ---\nI am ready to proceed with the online payment via UPI/Bank Transfer. Please share the QR code or Payment Link.`;
     const encodedMessage = encodeURIComponent(message);
 
-    // Dual Shopkeeper Protocol
-    window.open(`https://wa.me/919423228843?text=${encodedMessage}`, '_blank');
-    setTimeout(() => {
-      window.open(`https://wa.me/918888644021?text=${encodedMessage}`, '_blank');
-    }, 600);
+    // Dual Shopkeeper Protocol - Use business numbers 9423228843 or 8888644021
+    const targetNum = Math.random() > 0.5 ? '9423228843' : '8888644021';
+    window.open(`https://wa.me/91${targetNum}?text=${encodedMessage}`, '_blank');
   };
 
   if (loading) return (
@@ -101,7 +219,48 @@ const ProductDetailsPage = () => {
   const cleanPrice = sanitizePrice(product?.price);
 
   return (
-    <div className="bg-[#050505] min-h-screen pt-32 pb-24 relative overflow-hidden" ref={containerRef}>
+    <div className="bg-[#050505] min-h-[300vh] pt-32 pb-24 relative overflow-hidden" ref={containerRef}>
+      {/* 3D FLOATING HERITAGE SHOE (Main-Shoe.png) */}
+      <div
+        ref={mainShoeRef}
+        className="fixed top-1/4 right-[5%] w-[45vw] max-w-[850px] pointer-events-none z-0 hidden lg:block"
+        style={{
+            perspective: '6000px',
+            transformStyle: 'preserve-3d',
+            willChange: 'transform, filter',
+            backfaceVisibility: 'hidden',
+            filter: 'drop-shadow(0 180px 350px rgba(0,0,0,0.6))'
+        }}
+      >
+        <div className="relative w-full h-full group transform-gpu">
+          {/* Virtual Shine Layer */}
+          <div className="absolute inset-0 z-10 opacity-0 group-hover:opacity-20 transition-opacity duration-1000 mix-blend-soft-light pointer-events-none"
+               style={{ background: 'linear-gradient(135deg, transparent 40%, white 50%, transparent 60%)', backgroundSize: '200% 200%', animation: 'shine 8s infinite linear' }}>
+          </div>
+
+          <img
+            src="/New-Samadhan-Shoe-Mart/Main-Shoe.png"
+            alt="New Samadhan Heritage"
+            className="w-full h-auto filter drop-shadow-[0_120px_250px_rgba(0,0,0,0.8)] opacity-60 brightness-115 contrast-110 transition-all duration-1000"
+          />
+        </div>
+
+        {/* Advanced Technical Nodes */}
+        <div className="tech-node-1 absolute top-0 left-[-200px] opacity-0 translate-x-[-50px] transition-all duration-700">
+            <div className="bg-blue-600/20 backdrop-blur-md border border-blue-500/30 p-6 rounded-2xl">
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-400 block mb-2">Build Quality</span>
+                <p className="text-white text-xs font-bold uppercase leading-tight">Reinforced <br/> Side-Wall Stitching</p>
+            </div>
+        </div>
+
+        <div className="tech-node-2 absolute bottom-[20%] right-[-100px] opacity-0 translate-x-[50px] transition-all duration-700">
+            <div className="bg-emerald-500/20 backdrop-blur-md border border-emerald-500/30 p-6 rounded-2xl">
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-emerald-400 block mb-2">Traction Tech</span>
+                <p className="text-white text-xs font-bold uppercase leading-tight">Industrial Grade <br/> Non-Slip Sole</p>
+            </div>
+        </div>
+      </div>
+
       {/* Background Glow */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-600/5 blur-[120px] rounded-full"></div>
 

@@ -14,6 +14,7 @@ import DashboardPage from './pages/DashboardPage';
 import ProfilePage from './pages/ProfilePage';
 import EditProfilePage from './pages/EditProfilePage';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminReviewDashboard from './pages/AdminReviewDashboard';
 import CheckoutPage from './pages/CheckoutPage';
 import ServiceCentrePage from './pages/ServiceCentrePage';
 import WorkshopPage from './pages/WorkshopPage';
@@ -69,6 +70,7 @@ function App() {
 
           {/* Admin Protected Routes */}
           <Route path="/admin/*" element={<AdminRoute><PageWrapper><AdminDashboard /></PageWrapper></AdminRoute>} />
+          <Route path="/admin/reviews" element={<AdminRoute><PageWrapper><AdminReviewDashboard /></PageWrapper></AdminRoute>} />
         </Routes>
       </main>
       <Footer />

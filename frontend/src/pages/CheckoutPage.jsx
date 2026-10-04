@@ -93,9 +93,9 @@ const CheckoutPage = () => {
       console.error("Database sync failed, proceeding with WhatsApp only:", err);
     }
 
-    // Updated Dual Shopkeeper Protocol Numbers
-    const shopkeeper1 = "919423228843";
-    const shopkeeper2 = "918888644021";
+    // Dual Shopkeeper Protocol - Load Balancing with Math.random()
+    const shopNumbers = ["919423228843", "918888644021"];
+    const targetNum = shopNumbers[Math.floor(Math.random() * shopNumbers.length)];
 
     let message = `🚀 *NEW ORDER RECEIVED - NEW SAMADHAN SHOE MART*\n`;
     message += `--------------------------------------\n`;
@@ -115,8 +115,8 @@ const CheckoutPage = () => {
 
     const encodedMsg = encodeURIComponent(message);
 
-    // Dual Shopkeeper Protocol
-    window.location.href = `https://wa.me/${shopkeeper1}?text=${encodedMsg}`;
+    // Dual Shopkeeper Protocol - Randomized Redirect
+    window.location.href = `https://wa.me/${targetNum}?text=${encodedMsg}`;
 
     // Note: window.location.href will navigate away, so we shouldn't attempt a second immediate redirect
     // unless the user comes back. For dual notification, usually a backend does this or we stick to one primary.

@@ -5,7 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
   Award, Heart, Hammer, Footprints, ShieldCheck, MapPin, Phone, Mail,
   ArrowRight, Sparkles, Star, Users, Clock, Code2, Globe,
-  Zap, Layers, ChevronRight, ExternalLink
+  Zap, Layers, ChevronRight, ExternalLink, Cpu, Activity, MessageCircle
 } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -45,17 +45,44 @@ const AboutPage = () => {
   const valuesRef = useRef(null);
   const timelineRef = useRef(null);
   const developerRef = useRef(null);
+  const containerRef = useRef(null);
+  const shoeRef = useRef(null);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.fromTo('.about-hero-word',
-        { y: '110%', opacity: 0 },
-        { y: '0%', opacity: 1, duration: 1.2, stagger: 0.15, ease: 'power4.out', delay: 0.2 }
-      );
-      gsap.fromTo('.about-hero-sub',
-        { y: 30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, delay: 0.9, ease: 'power3.out' }
-      );
+      // Technical HUD entry (Hard Mode)
+      gsap.from(".about-hud", {
+        opacity: 0,
+        stagger: 0.1,
+        duration: 1,
+        ease: "power2.out"
+      });
+
+      // Floating Shoe Ambient (Hard Mode)
+      gsap.to(shoeRef.current, {
+        y: "-=50",
+        rotationY: "+=30",
+        rotationX: "+=12",
+        filter: "brightness(1.2) contrast(1.1)",
+        duration: 6,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut"
+      });
+
+      // Z-Axis Plunge for Shoe on Scroll
+      gsap.to(shoeRef.current, {
+        z: 5500,
+        scale: 6,
+        opacity: 0,
+        filter: 'blur(15px) brightness(2)',
+        scrollTrigger: {
+          trigger: ".about-shoe-trigger",
+          start: "top center",
+          end: "bottom top",
+          scrub: 2.2
+        }
+      });
       gsap.fromTo('.stat-card',
         { y: 60, opacity: 0, scale: 0.94 },
         { y: 0, opacity: 1, scale: 1, duration: 0.9, stagger: 0.1, ease: 'power3.out',
@@ -91,16 +118,27 @@ const AboutPage = () => {
   }, []);
 
   return (
-    <div style={{ background: '#F7F5F0', color: '#111111', fontFamily: "'Inter', sans-serif", overflowX: 'hidden' }}>
+    <div ref={containerRef} style={{ background: '#F7F5F0', color: '#111111', fontFamily: "'Inter', sans-serif", overflowX: 'hidden' }}>
 
       {/* ── HERO ── */}
-      <section style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', padding: '120px 24px 80px', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', bottom: '5%', left: '-2vw', fontSize: '22vw', fontFamily: "'Playfair Display', serif", fontWeight: 900, color: 'rgba(17,17,17,0.03)', whiteSpace: 'nowrap', pointerEvents: 'none', letterSpacing: '-0.05em', userSelect: 'none' }}>SAMADHAN</div>
-        <div style={{ position: 'absolute', top: 0, right: 0, width: '1px', height: '100%', background: 'linear-gradient(to bottom, transparent, rgba(139,0,0,0.18), transparent)' }} />
-        <div style={{ maxWidth: '1280px', width: '100%', margin: '0 auto' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '7px 18px', background: 'rgba(139,0,0,0.07)', borderRadius: '24px', marginBottom: '36px', border: '1px solid rgba(139,0,0,0.12)' }}>
-            <Sparkles size={14} color="#8B0000" />
-            <span style={{ fontSize: '10px', fontWeight: 800, letterSpacing: '0.45em', color: '#8B0000', textTransform: 'uppercase' }}>Est. 1990 · Nashik, Maharashtra</span>
+      <section style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', padding: '120px 24px 80px', overflow: 'hidden', background: '#0a0a0a' }}>
+
+        {/* TECHNICAL OVERLAYS */}
+        <div className="absolute inset-0 pointer-events-none z-10">
+          <div className="about-hud absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle, rgba(139,0,0,0.15) 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
+          <div className="about-hud absolute top-10 left-10 w-20 h-20 border-t-2 border-l-2 border-[#8B0000]"></div>
+          <div className="about-hud absolute bottom-10 right-10 w-20 h-20 border-b-2 border-r-2 border-[#8B0000]"></div>
+          <div className="about-hud absolute top-12 left-32 font-mono text-[8px] text-[#8B0000] tracking-[0.4em]">
+            SYSTEM_TYPE: HERITAGE_CORE<br/>LOAD_VAL: 1990_STABLE
+          </div>
+        </div>
+
+        <div style={{ position: 'absolute', bottom: '5%', left: '-2vw', fontSize: '22vw', fontFamily: "'Playfair Display', serif", fontWeight: 900, color: 'rgba(139,0,0,0.05)', whiteSpace: 'nowrap', pointerEvents: 'none', letterSpacing: '-0.05em', userSelect: 'none' }}>SAMADHAN</div>
+
+        <div style={{ maxWidth: '1280px', width: '100%', margin: '0 auto', position: 'relative', zIndex: 20 }}>
+          <div className="about-hero-reveal" style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '7px 18px', background: 'rgba(139,0,0,0.1)', borderRadius: '24px', marginBottom: '36px', border: '1px solid rgba(139,0,0,0.2)' }}>
+            <Cpu size={14} color="#8B0000" />
+            <span style={{ fontSize: '10px', fontWeight: 800, letterSpacing: '0.45em', color: '#8B0000', textTransform: 'uppercase' }}>ESTABLISHED 1990 · NASHIK</span>
           </div>
           {[
             { text: 'ABOUT', italic: false },
@@ -108,24 +146,34 @@ const AboutPage = () => {
             { text: 'SAMADHAN', italic: true },
           ].map((w, i) => (
             <div key={i} style={{ overflow: 'hidden', marginBottom: i < 2 ? '12px' : '32px' }}>
-              <h1 style={{ margin: 0, fontFamily: "'Playfair Display', serif", fontWeight: w.italic ? 300 : 900, lineHeight: 0.9, letterSpacing: '-0.03em', textTransform: 'uppercase', fontSize: 'clamp(3rem, 9vw, 8rem)', fontStyle: w.italic ? 'italic' : 'normal', color: w.italic ? '#8B0000' : '#111' }}>
+              <h1 style={{ margin: 0, fontFamily: "'Playfair Display', serif", fontWeight: w.italic ? 300 : 900, lineHeight: 0.9, letterSpacing: '-0.03em', textTransform: 'uppercase', fontSize: 'clamp(3rem, 9vw, 10rem)', fontStyle: w.italic ? 'italic' : 'normal', color: w.italic ? '#8B0000' : 'white' }}>
                 <span className="about-hero-word" style={{ display: 'inline-block' }}>{w.text}</span>
               </h1>
             </div>
           ))}
           <div className="about-hero-sub" style={{ maxWidth: '620px' }}>
-            <p style={{ fontSize: '17px', lineHeight: 1.8, color: '#555', margin: 0 }}>
-              In Sanskrit and Marathi, <strong style={{ color: '#111' }}>"Samadhan"</strong> means <em>absolute inner contentment</em>. That philosophy is woven into every stitch, every welt, and every handcrafted pair we deliver.
+            <p style={{ fontSize: '18px', lineHeight: 1.8, color: 'rgba(255,255,255,0.6)', margin: 0, fontWeight: 500, fontStyle: 'italic' }}>
+              "In Sanskrit and Marathi, <strong style={{ color: 'white' }}>'Samadhan'</strong> means absolute inner contentment. This philosophy is the foundation of our high-fidelity cobbler guild."
             </p>
-            <div style={{ display: 'flex', gap: '14px', marginTop: '36px', flexWrap: 'wrap' }}>
-              <Link to="/products" style={{ background: '#111', color: 'white', padding: '18px 36px', borderRadius: '12px', fontSize: '11px', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '10px', boxShadow: '0 12px 30px rgba(0,0,0,0.15)' }}>
-                Shop The Collection <ArrowRight size={15} />
-              </Link>
-              <Link to="/workshop" style={{ background: 'white', color: '#111', padding: '18px 30px', borderRadius: '12px', fontSize: '11px', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px', border: '1px solid rgba(17,17,17,0.12)' }}>
-                Visit Workshop <ChevronRight size={15} />
+            <div style={{ display: 'flex', gap: '20px', marginTop: '48px', flexWrap: 'wrap' }}>
+              <Link to="/products" style={{ background: '#8B0000', color: 'white', padding: '20px 48px', borderRadius: '16px', fontSize: '11px', fontWeight: 900, letterSpacing: '0.4em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '14px', boxShadow: '0 20px 50px rgba(139,0,0,0.3)' }}>
+                EXPLORE COLLECTION <ArrowRight size={18} />
               </Link>
             </div>
           </div>
+        </div>
+
+        {/* 3D FLOATING ASSET */}
+        <div ref={shoeRef} className="about-shoe-trigger" style={{ position: 'absolute', right: '5%', top: '20%', width: '40vw', pointerEvents: 'none', zIndex: 15, perspective: '6000px', transformStyle: 'preserve-3d' }}>
+           <div className="relative w-full h-full transform-gpu">
+             <img src="/New-Samadhan-Shoe-Mart/Main-Shoe.png" alt="Handcrafted Excellence" style={{ width: '100%', filter: 'drop-shadow(0 50px 100px rgba(139,0,0,0.4))' }} />
+             {/* VIRTUAL SHINE LAYER */}
+             <div className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-40"
+                  style={{ background: 'linear-gradient(110deg, transparent 40%, rgba(255,255,255,0.8) 50%, transparent 60%)', backgroundSize: '200% 100%', animation: 'shine 4s infinite linear' }}>
+             </div>
+           </div>
+           {/* SCAN LINE */}
+           <div className="absolute top-0 left-0 w-full h-[2px] bg-[#8B0000] shadow-[0_0_20px_#8B0000] animate-scan-slow opacity-50"></div>
         </div>
       </section>
 
@@ -408,8 +456,18 @@ const AboutPage = () => {
                   <Globe size={14} /> Blog
                 </a>
                 <a href="https://wa.me/918080690631" target="_blank" rel="noreferrer" style={{ background: '#25D366', color: 'white', padding: '14px 24px', borderRadius: '12px', fontSize: '11px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px', boxShadow: '0 8px 20px rgba(37,211,102,0.3)' }}>
-                  <Phone size={14} /> WhatsApp Support
+                  <Phone size={14} /> Developer Support
                 </a>
+                <button
+                  onClick={() => {
+                    const msg = "Hello New Samadhan Shoe Mart, I am interested in your premium collection.";
+                    const num = Math.random() > 0.5 ? '9423228843' : '8888644021';
+                    window.open(`https://wa.me/91${num}?text=${encodeURIComponent(msg)}`, '_blank');
+                  }}
+                  style={{ background: '#8B0000', color: 'white', border: 'none', cursor: 'pointer', padding: '14px 24px', borderRadius: '12px', fontSize: '11px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px', boxShadow: '0 8px 20px rgba(139,0,0,0.3)' }}
+                >
+                  <MessageCircle size={14} /> Shop WhatsApp
+                </button>
                 <Link to="/products" style={{ background: '#111', color: 'white', padding: '14px 24px', borderRadius: '12px', fontSize: '11px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
                   <Footprints size={14} /> Shop Now
                 </Link>

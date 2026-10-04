@@ -54,11 +54,9 @@ const ShopProfile = () => {
 
     const encodedMsg = encodeURIComponent(message);
 
-    // Dual Shopkeeper Protocol
-    window.open(`https://wa.me/919423228843?text=${encodedMsg}`, '_blank');
-    setTimeout(() => {
-      window.open(`https://wa.me/918888644021?text=${encodedMsg}`, '_blank');
-    }, 600);
+    // Dual Shopkeeper Protocol - Use business numbers 9423228843 or 8888644021
+    const targetNum = Math.random() > 0.5 ? '9423228843' : '8888644021';
+    window.open(`https://wa.me/91${targetNum}?text=${encodedMsg}`, '_blank');
   };
 
   if (loading) return (

@@ -6,6 +6,7 @@ import useFetch from '../hooks/useFetch';
 import { Star, ChevronRight, Sparkles, ShoppingBag, MessageCircle, Filter, Check } from 'lucide-react';
 
 import localProducts from '../utils/localProducts';
+import { calculateProductStats } from '../utils/reviewService';
 
 const CATEGORIES = ['All', 'Men', 'Women', 'Sneakers', 'Formal', 'Kids'];
 
@@ -37,11 +38,9 @@ const ProductsPage = () => {
     const customerName = user?.name || 'Valued Shopper';
     const message = `Hello New Samadhan Shoe Mart! 👋\n\nI want to order this Masterpiece:\n\n👟 *Product:* ${product?.name}\n🏷️ *Brand:* ${product?.brand || 'New Samadhan'}\n💰 *Price:* ₹${cleanPrice.toLocaleString()}\n📏 *Size:* To be confirmed\n📦 *Quantity:* 1\n\n--- CUSTOMER DETAILS ---\n👤 *Name:* ${customerName}\n📞 *Phone:* ${user?.phone || 'Not Provided'}\n📍 *Address:* ${user?.address || 'Nashik Store Pickup / Delivery'}\n🏙️ *City:* ${user?.city || 'Nashik'}\n📮 *Pincode:* ${user?.pincode || '422003'}\n\n--- PAYMENT INTENT ---\nI am ready to proceed with online payment or UPI. Please confirm availability and share the payment details.`;
 
-    // Dual Shopkeeper Protocol
-    window.open(`https://wa.me/919423228843?text=${encodeURIComponent(message)}`, '_blank');
-    setTimeout(() => {
-      window.open(`https://wa.me/918888644021?text=${encodeURIComponent(message)}`, '_blank');
-    }, 600);
+    // Dual Shopkeeper Protocol - Use business numbers 9423228843 or 8888644021
+    const targetNum = Math.random() > 0.5 ? '9423228843' : '8888644021';
+    window.open(`https://wa.me/91${targetNum}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
   useEffect(() => {
@@ -72,9 +71,10 @@ const ProductsPage = () => {
   }, [request]);
 
   useEffect(() => {
+    // Only simple reveal animation for product grid
     gsap.fromTo('.product-card',
-      { y: 40, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.6, stagger: 0.08, ease: 'power3.out' }
+      { y: 30, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.5, stagger: 0.05, ease: 'power2.out' }
     );
   }, [activeCategory, products]);
 
@@ -203,9 +203,9 @@ const ProductsPage = () => {
 
                     <div className="flex items-center gap-1 mb-4 opacity-75">
                       {[...Array(5)].map((_, i) => (
-                        <Star key={i} size={11} className={`${i < Math.floor(product?.rating || 5) ? 'fill-[#8B0000] text-[#8B0000]' : 'text-[#111111]/15'}`} />
+                        <Star key={i} size={11} className={`${i < Math.floor(calculateProductStats(prodId).average || product?.rating || 5) ? 'fill-[#8B0000] text-[#8B0000]' : 'text-[#111111]/15'}`} />
                       ))}
-                      <span className="text-[10px] text-[#6B6B6B] font-bold ml-2">({product?.rating || '4.9'})</span>
+                      <span className="text-[10px] text-[#6B6B6B] font-bold ml-2">({calculateProductStats(prodId).average || product?.rating || '4.9'})</span>
                     </div>
 
                     <div className="flex justify-between items-center pt-4 border-t border-[#111111]/5">

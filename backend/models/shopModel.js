@@ -12,7 +12,7 @@ const shopSchema = mongoose.Schema({
   address: { type: String, required: true },
   city: { type: String, required: true },
   phone: { type: String, required: true },
-  whatsappNumber: { type: String, required: true, default: '918080690631' },
+  whatsappNumber: { type: String, required: true, default: '919423228843' },
   description: { type: String },
   category: { type: String, default: 'Shoe Dealer' },
   rating: { type: Number, default: 0 },

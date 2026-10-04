@@ -38,8 +38,8 @@ const generateProducts = () => {
     products.push({
       name: `${brand} ${model} ${color}`,
       images: [
-        `/Shoes.png`,
-        `/New-Samadhan-Shoe-Mart/${localImgName}`
+        `/New-Samadhan-Shoe-Mart/${localImgName}`,
+        `/Shoes.png`
       ],
       description: `Premium handcrafted footwear from New Samadhan Shoe Mart atelier. Designed with ergonomic perfection and certified durable soles for unmatched daily comfort.`,
       brand: brand,

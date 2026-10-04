@@ -67,17 +67,12 @@ const CartPage = () => {
 
     const encodedMsg = encodeURIComponent(message);
 
-    // 3. Strict Shopkeeper-Only Logic
-    const shopkeeper1 = `https://wa.me/919423228843?text=${encodedMsg}`;
-    const shopkeeper2 = `https://wa.me/918888644021?text=${encodedMsg}`;
+    // 3. Dual Shopkeeper Protocol - Load Balancing
+    const targetNum = Math.random() > 0.5 ? '9423228843' : '8888644021';
+    const shopkeeperUrl = `https://wa.me/91${targetNum}?text=${encodedMsg}`;
 
-    // Open Shopkeeper 1
-    window.open(shopkeeper1, '_blank');
-
-    // Open Shopkeeper 2 with delay to avoid popup blockers
-    setTimeout(() => {
-      window.open(shopkeeper2, '_blank');
-    }, 500);
+    // Open Selected Shopkeeper
+    window.open(shopkeeperUrl, '_blank');
 
     // 4. AI Voice & Feedback
     if ('speechSynthesis' in window) {

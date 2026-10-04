@@ -3,8 +3,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import {
   Compass, Hammer, Scissors, Sparkles, CheckCircle2,
   Calendar, Clock, ShieldCheck, ArrowRight, UserCheck,
-  ChevronRight, Award, Footprints, Layers, Zap, Info, Wrench, MapPin, Loader2, Phone, Play, Pause, ShoppingBag
+  ChevronRight, Award, Footprints, Layers, Zap, Info, Wrench, MapPin, Loader2, Phone, Play, Pause, ShoppingBag, Cpu, Activity
 } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const WORKSHOP_MEDIA = [
   { type: 'video', url: '/New-Samadhan-Shoe-Mart/VID-20260928-WA0279.mp4', title: 'Master Crafting Atelier' },
@@ -128,29 +132,41 @@ const CATEGORY_CATALOG = [
 
 const WORKSHOP_GALLERY = [
   // Heritage & Human Assets (Family/Masters)
-  { url: '/New-Samadhan-Shoe-Mart/Family 1.jpg', category: 'Heritage', title: 'The Founding Guild' },
-  { url: '/New-Samadhan-Shoe-Mart/Family 2.jpg', category: 'Heritage', title: 'Generational Craft Secrets' },
-  { url: '/New-Samadhan-Shoe-Mart/Satkar 1.jpg', category: 'Heritage', title: 'Master Artisan Recognition' },
-  { url: '/New-Samadhan-Shoe-Mart/Satkar-5.jpg', category: 'Heritage', title: 'Industry Leadership Award' },
-  { url: '/New-Samadhan-Shoe-Mart/Family 4.jpg', category: 'Heritage', title: 'The Heart of Nashik Workshop' },
+  { url: '/New-Samadhan-Shoe-Mart/Family 1.jpg', category: 'Heritage', title: 'The Founding Guild', price: 'Heritage Piece' },
+  { url: '/New-Samadhan-Shoe-Mart/Family 2.jpg', category: 'Heritage', title: 'Generational Craft Secrets', price: 'Heritage Piece' },
+  { url: '/New-Samadhan-Shoe-Mart/Family 3.jpg', category: 'Heritage', title: 'Ancestral Workshop', price: 'Heritage Piece' },
+  { url: '/New-Samadhan-Shoe-Mart/Family 4.jpg', category: 'Heritage', title: 'The Heart of Nashik Workshop', price: 'Heritage Piece' },
+  { url: '/New-Samadhan-Shoe-Mart/Satkar 1.jpg', category: 'Heritage', title: 'Master Artisan Recognition', price: 'Honorary' },
+  { url: '/New-Samadhan-Shoe-Mart/Satkar 2.jpg', category: 'Heritage', title: 'Community Excellence', price: 'Honorary' },
+  { url: '/New-Samadhan-Shoe-Mart/Satkar 3.jpg', category: 'Heritage', title: 'Craftsmanship Award', price: 'Honorary' },
+  { url: '/New-Samadhan-Shoe-Mart/Satkar 4.jpg', category: 'Heritage', title: 'Guild Leadership', price: 'Honorary' },
+  { url: '/New-Samadhan-Shoe-Mart/Satkar-5.jpg', category: 'Heritage', title: 'Industry Leadership Award', price: 'Honorary' },
+  { url: '/New-Samadhan-Shoe-Mart/Satkar-6.jpg', category: 'Heritage', title: 'Lifetime Achievement', price: 'Honorary' },
 
   // Men's Catalog & Ad Shots
-  { url: '/New-Samadhan-Shoe-Mart/Shoes-Black-men-1.jpg', category: 'Men', title: 'Premium Goat Leather Oxford' },
-  { url: '/New-Samadhan-Shoe-Mart/Slippers-men-1.jpg', category: 'Men', title: 'ART 1401 Elite Lounge' },
-  { url: '/New-Samadhan-Shoe-Mart/Shoes-grey-men-1.jpg', category: 'Men', title: 'Textured Heritage Loafer' },
+  { url: '/New-Samadhan-Shoe-Mart/Shoes-Black-men-1.jpg', category: 'Men', title: 'Premium Goat Leather Oxford', price: '₹3,499' },
+  { url: '/New-Samadhan-Shoe-Mart/Slippers-men-1.jpg', category: 'Men', title: 'ART 1401 Elite Lounge', price: '₹1,899' },
+  { url: '/New-Samadhan-Shoe-Mart/Shoes-grey-men-1.jpg', category: 'Men', title: 'Textured Heritage Loafer', price: '₹2,999' },
+  { url: '/New-Samadhan-Shoe-Mart/Shoes-grey-men-2.jpg', category: 'Men', title: 'Urban Grey Suede', price: '₹2,799' },
+  { url: '/New-Samadhan-Shoe-Mart/Shoes-Black-Back-men-4.jpg', category: 'Men', title: 'Reinforced Heel Boot', price: '₹4,299' },
+  { url: '/New-Samadhan-Shoe-Mart/Shoes-Black-left-men-2.jpg', category: 'Men', title: 'Kinetic Motion Derbies', price: '₹3,199' },
+  { url: '/New-Samadhan-Shoe-Mart/Shoes-Black-left-men-5.jpg', category: 'Men', title: 'Structured Walkers', price: '₹2,599' },
+  { url: '/New-Samadhan-Shoe-Mart/Shoes-black-Front-men-6.jpg', category: 'Men', title: 'Classic Formal Guard', price: '₹3,899' },
+  { url: '/New-Samadhan-Shoe-Mart/Shoes-Black-men-right-3.jpg', category: 'Men', title: 'Lateral Support Oxfords', price: '₹3,299' },
+  { url: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0032.jpg', category: 'Men', title: 'ART 1401 GOAT LEATHER TPR SOLE', price: '₹4,999' },
 
   // Women's Catalog & Ad Shots
-  { url: '/New-Samadhan-Shoe-Mart/Sandles-women-front-1.jpg', category: 'Women', title: 'Artisanal Grace Sandal' },
-  { url: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0011.jpg', category: 'Women', title: 'Hand-Burnished Elegance' },
+  { url: '/New-Samadhan-Shoe-Mart/Sandles-women-front-1.jpg', category: 'Women', title: 'Artisanal Grace Sandal', price: '₹1,599' },
+  { url: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0011.jpg', category: 'Women', title: 'Hand-Burnished Elegance', price: '₹2,899' },
+  { url: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0015.jpg', category: 'Women', title: 'Floral Accent Mules', price: '₹2,299' },
 
   // Kids' Catalog & Ad Shots
-  { url: '/New-Samadhan-Shoe-Mart/Shoes-Front-kids-8.jpg', category: 'Kids', title: 'Ergonomic Growth Support' },
-  { url: '/New-Samadhan-Shoe-Mart/Shoes-kids-black-left-7.jpg', category: 'Kids', title: 'Sturdy Adventure Build' },
+  { url: '/New-Samadhan-Shoe-Mart/Shoes-Front-kids-8.jpg', category: 'Kids', title: 'Ergonomic Growth Support', price: '₹1,299' },
+  { url: '/New-Samadhan-Shoe-Mart/Shoes-kids-black-left-7.jpg', category: 'Kids', title: 'Sturdy Adventure Build', price: '₹1,499' },
 
   // Sneakers / Casual Catalog & Ad Shots
-  { url: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0006.jpg', category: 'Sneakers', title: 'Urban Heritage Runner' },
-  { url: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0007.jpg', category: 'Sneakers', title: 'Responsive Stride Core' },
-  { url: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0032.jpg', category: 'Men', title: 'ART 1401 GOAT LEATHER TPR SOLE' },
+  { url: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0006.jpg', category: 'Sneakers', title: 'Urban Heritage Runner', price: '₹2,499' },
+  { url: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0007.jpg', category: 'Sneakers', title: 'Responsive Stride Core', price: '₹2,699' },
 ];
 
 const WorkshopPage = () => {
@@ -161,6 +177,47 @@ const WorkshopPage = () => {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [activeGalleryTab, setActiveGalleryTab] = useState('All');
   const videoRefs = useRef([]);
+  const containerRef = useRef(null);
+  const workshopHeroRef = useRef(null);
+  const floatingShoeRef = useRef(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Hero Entrance
+      gsap.from(".workshop-hero-reveal", {
+        y: 60,
+        opacity: 0,
+        duration: 1.2,
+        stagger: 0.15,
+        ease: "power4.out"
+      });
+
+      // Floating Shoe Animation (Cinematic 3D)
+      gsap.to(floatingShoeRef.current, {
+        y: "-=60",
+        rotationY: "+=35",
+        rotationX: "+=15",
+        filter: "brightness(1.2) contrast(1.1) blur(0px)",
+        duration: 6,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut"
+      });
+
+      // Technical HUD entry
+      gsap.to(".workshop-hud", {
+        opacity: 0.8,
+        stagger: 0.1,
+        duration: 1.5,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: workshopHeroRef.current,
+          start: "top center"
+        }
+      });
+    }, containerRef);
+    return () => ctx.revert();
+  }, []);
 
   useEffect(() => {
     let interval;
@@ -204,7 +261,8 @@ const WorkshopPage = () => {
     e.preventDefault();
     setBookingStatus('submitting');
 
-    const phoneNumber = "918888644021";
+    // Dual Shopkeeper Protocol - Use business numbers 9423228843 or 8888644021
+    const targetNum = Math.random() > 0.5 ? '9423228843' : '8888644021';
     const message = `*Workshop Appointment Request*
 --------------------------
 *Name:* ${formData.name}
@@ -217,64 +275,82 @@ const WorkshopPage = () => {
 --------------------------
 Requested via New Samadhan Shoes Website`;
 
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/91${targetNum}?text=${encodeURIComponent(message)}`;
     window.location.href = whatsappUrl;
     setBookingStatus('confirmed');
   };
 
   return (
-    <div className="bg-[#F7F5F0] text-[#111111] min-h-screen pt-28 pb-20 font-sans selection:bg-[#8B0000] selection:text-white">
+    <div ref={containerRef} className="bg-[#F7F5F0] text-[#111111] min-h-screen pt-28 pb-20 font-sans selection:bg-[#8B0000] selection:text-white overflow-x-hidden">
 
       {/* Hero Section with Front-Banner.jpg strictly integrated as primary background hero */}
-      <section className="relative min-h-[75vh] flex items-center px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto rounded-[3rem] overflow-hidden my-6 shadow-xl">
+      <section ref={workshopHeroRef} className="relative min-h-[85vh] flex items-center px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto rounded-[4rem] overflow-hidden my-6 shadow-2xl bg-[#050505]">
         <div className="absolute inset-0 z-0">
           <img
             src="/New-Samadhan-Shoe-Mart/Front-Banner.jpg"
             alt="New Samadhan Master Atelier Banner"
-            className="w-full h-full object-cover filter brightness-[0.35] contrast-[1.1]"
+            className="w-full h-full object-cover filter brightness-[0.3] contrast-[1.2]"
           />
+          {/* TECHNICAL HUD OVERLAYS */}
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="workshop-hud absolute inset-0 opacity-0" style={{ backgroundImage: 'radial-gradient(circle, rgba(139,0,0,0.15) 1px, transparent 1px)', backgroundSize: '60px 60px' }}></div>
+            <div className="workshop-hud absolute top-20 left-20 w-32 h-32 border-t-2 border-l-2 border-[#8B0000] opacity-0"></div>
+            <div className="workshop-hud absolute bottom-20 right-20 w-32 h-32 border-b-2 border-r-2 border-[#8B0000] opacity-0"></div>
+            <div className="workshop-hud absolute top-24 left-60 font-mono text-[9px] text-[#8B0000] tracking-[0.5em] opacity-0">
+               ATELIER_STATUS: OPERATIONAL<br/>UNIT_LOC: NASHIK_HQ
+            </div>
+          </div>
         </div>
 
-        <div className="relative z-10 flex flex-col gap-6 max-w-4xl text-white">
-          <div className="inline-flex items-center gap-3">
-            <span className="w-8 h-[2px] bg-[#ff4d4d]"></span>
-            <span className="text-[11px] font-black uppercase tracking-[0.4em] text-[#ff4d4d]">
-              The High-Fidelity Atelier · Nashik Heritage
+        <div className="relative z-10 flex flex-col gap-8 max-w-4xl text-white">
+          <div className="workshop-hero-reveal inline-flex items-center gap-4">
+            <div className="w-12 h-[3px] bg-[#8B0000]"></div>
+            <span className="text-[11px] font-black uppercase tracking-[0.6em] text-[#8B0000]">
+              THE HIGH-FIDELITY ATELIER
             </span>
           </div>
 
-          <h1 className="font-editorial text-4xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white">
-            Where Heritage Meets <br />
-            <span className="italic font-light text-[#ff4d4d]">Living Mastery.</span>
+          <h1 className="workshop-hero-reveal font-playfair text-5xl sm:text-7xl lg:text-[9rem] font-black uppercase tracking-tighter leading-[0.85] text-white">
+            MASTER <br />
+            <span className="italic font-light text-[#8B0000]">CRAFT.</span>
           </h1>
 
-          <p className="text-base sm:text-lg text-white/80 max-w-2xl leading-relaxed">
-            Welcome inside the heart of New Samadhan Shoe Mart. Since 1990, every pair has been brought to life right here in Nashik through 200+ distinct handcrafting steps — marrying time-tested cobbler tradition with modern ergonomic longevity.
+          <p className="workshop-hero-reveal text-lg sm:text-xl text-white/60 max-w-2xl leading-relaxed font-medium italic">
+            "Welcome to the engine room of Nashik's heritage. Since 1990, we have prioritized anatomical integrity and industrial-grade construction over fast-fashion trends."
           </p>
 
-          <div className="flex flex-wrap items-center gap-4 pt-4">
+          <div className="workshop-hero-reveal flex flex-wrap items-center gap-6 pt-6">
             <a
               href="#booking"
-              className="bg-[#8B0000] text-white px-8 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.25em] hover:bg-white hover:text-[#111111] transition-all inline-flex items-center gap-3 shadow-lg"
+              className="bg-[#8B0000] text-white px-12 py-7 rounded-2xl text-[10px] font-black uppercase tracking-[0.4em] hover:bg-white hover:text-[#111111] transition-all inline-flex items-center gap-6 shadow-2xl group"
             >
-              Book Atelier Visit <Calendar size={16} />
+              BOOK ATELIER VISIT <Calendar size={18} className="group-hover:rotate-12 transition-transform" />
             </a>
             <Link
-              to="/gallery"
-              className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.25em] hover:bg-white hover:text-[#111111] transition-all inline-flex items-center gap-3"
+              to="/products"
+              className="bg-white/5 backdrop-blur-2xl border border-white/10 text-white px-12 py-7 rounded-2xl text-[10px] font-black uppercase tracking-[0.4em] hover:bg-[#8B0000] transition-all inline-flex items-center gap-6 group"
             >
-              View Finished Gallery <ArrowRight size={16} />
+              EXPLORE GUILD <ArrowRight size={18} className="group-hover:translate-x-3 transition-transform" />
             </Link>
           </div>
         </div>
 
-        {/* Floating Hero Image - Shoes.png with custom preview zIndex */}
-        <div className="absolute top-1/2 right-0 -translate-y-1/2 w-full max-w-2xl opacity-20 pointer-events-none hidden lg:block select-none z-10">
-           <img
-            src="/Shoes.png"
-            alt="New Samadhan Shoes"
-            className="w-full h-auto object-contain transform rotate-[-12deg] scale-125 translate-x-1/4"
-           />
+        {/* Floating Hero Image - Main-Shoe.png with custom preview zIndex */}
+        <div ref={floatingShoeRef} className="absolute top-1/2 right-[-5%] -translate-y-1/2 w-full max-w-3xl opacity-60 pointer-events-none hidden xl:block select-none z-10" style={{ perspective: '6000px', transformStyle: 'preserve-3d' }}>
+           <div className="relative w-full h-full transform-gpu">
+             <img
+              src="/New-Samadhan-Shoe-Mart/Main-Shoe.png"
+              alt="New Samadhan Shoes"
+              className="w-full h-auto object-contain transform rotate-[-15deg] scale-110 drop-shadow-[0_100px_150px_rgba(139,0,0,0.3)]"
+             />
+             {/* VIRTUAL SHINE LAYER */}
+             <div className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-40"
+                  style={{ background: 'linear-gradient(110deg, transparent 40%, rgba(255,255,255,0.8) 50%, transparent 60%)', backgroundSize: '200% 100%', animation: 'shine 4s infinite linear' }}>
+             </div>
+           </div>
+           {/* IMAGE HOTSPOTS */}
+           <div className="absolute top-1/3 left-1/4 w-4 h-4 bg-[#8B0000] rounded-full animate-ping"></div>
+           <div className="absolute bottom-1/3 right-1/2 w-4 h-4 bg-[#8B0000] rounded-full animate-ping" style={{ animationDelay: '1s' }}></div>
         </div>
       </section>
 
@@ -378,6 +454,7 @@ Requested via New Samadhan Shoes Website`;
                 <img
                   src={cat.image}
                   alt={cat.title}
+                  loading="lazy"
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <span className="absolute top-4 left-4 bg-[#111111] text-white text-[9px] font-extrabold px-2.5 py-1 rounded-md tracking-widest">
@@ -457,6 +534,7 @@ Requested via New Samadhan Shoes Website`;
               <img
                 src={WORKSHOP_STATIONS[selectedStation].image}
                 alt={WORKSHOP_STATIONS[selectedStation].title}
+                loading="lazy"
                 className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8 text-white">
@@ -599,11 +677,15 @@ Requested via New Samadhan Shoes Website`;
               <img
                 src={item.url}
                 alt={item.title}
+                loading="lazy"
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
                 <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#ff4d4d] mb-2">{item.category}</span>
                 <h4 className="text-white text-lg font-editorial font-bold uppercase tracking-tight leading-tight">{item.title}</h4>
+                <div className="flex items-center justify-between mt-2">
+                   <span className="text-xs font-mono text-white/70">{item.price}</span>
+                </div>
                 <div className="mt-4 pt-4 border-t border-white/20 flex items-center justify-between text-[9px] font-black text-white uppercase tracking-[0.2em]">
                   <span>Explore Collection</span>
                   <ArrowRight size={14} />
