@@ -116,17 +116,31 @@ const AdminProductEdit = () => {
     };
 
     try {
+      let response;
       if (isNew) {
-        await request('/api/products', 'POST', productData);
+        response = await request('/api/products', 'POST', productData);
       } else {
-        await request(`/api/products/${id}`, 'PUT', productData);
+        response = await request(`/api/products/${id}`, 'PUT', productData);
       }
+
+      // If we reach here, it's saved to the GLOBAL DATABASE
+      console.log("Global Sync Successful:", response);
       setSuccess(true);
+
+      // Clear any local demo data for this product to avoid conflicts
+      const demoProducts = JSON.parse(localStorage.getItem('ssm_demo_products') || '[]');
+      const filtered = demoProducts.filter(p => p._id !== id && p.id !== id);
+      localStorage.setItem('ssm_demo_products', JSON.stringify(filtered));
+
       setTimeout(() => navigate('/admin/products'), 2000);
     } catch (err) {
-      console.error("Submission failed, performing Demo Persistence:", err);
+      console.error("Global Sync Failed:", err);
 
-      // PERSISTENCE FALLBACK: Save to localStorage so it's "visible to all devices/browsers" for this user
+      if (err.message === 'OFFLINE_MODE' || err.message.includes('fetch')) {
+        alert("CRITICAL: Backend Server is unreachable. Your changes will ONLY be saved on this device (Demo Mode). To show changes to everyone, ensure the Backend Server and MongoDB are running.");
+      }
+
+      // FALLBACK: Local Persistence (Only visible on this device)
       const demoProducts = JSON.parse(localStorage.getItem('ssm_demo_products') || '[]');
       if (isNew) {
         demoProducts.push(productData);

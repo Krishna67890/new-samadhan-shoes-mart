@@ -35,8 +35,20 @@ const upload = multer({
   },
 });
 
-router.post('/', upload.single('image'), (req, res) => {
-  res.send(`/${req.file.path}`);
+router.post('/', (req, res) => {
+  upload.single('image')(req, res, function (err) {
+    if (err instanceof multer.MulterError) {
+      return res.status(400).json({ message: `Multer Error: ${err.message}` });
+    } else if (err) {
+      return res.status(400).json({ message: err });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({ message: 'No file uploaded' });
+    }
+
+    res.status(200).json(`/${req.file.path.replace(/\\/g, '/')}`);
+  });
 });
 
 export default router;

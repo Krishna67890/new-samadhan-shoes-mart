@@ -52,14 +52,19 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
-  // Senior Architect: Predefined Admin Access (No Registration Needed)
-  if (email === 'admin@samadhan.com' && password === 'admin123') {
+  // Predefined Admin Access from .env OR Default
+  const ownerEmail = process.env.OWNER_EMAIL || 'Command@SamadhanShoe.com';
+  const ownerPassword = process.env.OWNER_PASSWORD || 'Samadhan_Security_2025_Elite';
+
+  if (email === ownerEmail && password === ownerPassword) {
+    // We use a valid-formatted MongoDB ObjectId string for the Mock Admin
+    const mockAdminId = '65a123456789012345678901';
     return res.json({
-      _id: 'admin_id_001',
-      name: 'System Architect',
-      email: 'admin@samadhan.com',
+      _id: mockAdminId,
+      name: 'Store Owner',
+      email: ownerEmail,
       role: 'admin',
-      token: generateToken('admin_id_001'),
+      token: generateToken(mockAdminId),
     });
   }
 

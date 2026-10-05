@@ -22,12 +22,15 @@ const getProducts = async (req, res) => {
 
     const productsFromDB = await Product.find(query);
 
+    // If owner has added ANY product, only show DB products to ensure sync across devices
     if (productsFromDB && productsFromDB.length > 0) {
       return res.json(productsFromDB);
     } else {
-      let mockedProducts = products.map((p, index) => ({
+      // Only show mock products if the DB is completely empty (initial state)
+      const mockedProducts = products.map((p, index) => ({
         ...p,
         _id: `mock_id_${index}`,
+        isMock: true
       }));
       if (category && category !== 'All') {
         mockedProducts = mockedProducts.filter(p => {

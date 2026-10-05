@@ -33,6 +33,12 @@ app.use('/api/service-centers', serviceCenterRoutes);
 app.use('/api/upload', uploadRoutes);
 
 const __dirname = path.resolve();
+
+// Fix: Serve uploads from the correct backend/uploads folder
+const uploadsPath = path.join(__dirname, 'backend', 'uploads');
+app.use('/uploads', express.static(uploadsPath));
+
+// Also serve root uploads if they exist for compatibility
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 if (process.env.NODE_ENV === 'production') {

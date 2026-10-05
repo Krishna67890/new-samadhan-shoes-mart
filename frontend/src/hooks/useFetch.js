@@ -12,10 +12,10 @@ const useFetch = () => {
       setError(null);
 
       try {
-        // Use relative URL in production to let Vercel handle proxying
+        // Use relative URL in production; use the current machine's IP in development for cross-device testing
         const baseUrl = import.meta.env.PROD
           ? ''
-          : 'http://localhost:5000';
+          : `http://${window.location.hostname}:5000`;
 
         const fullUrl = url.startsWith('http') ? url : `${baseUrl}${url}`;
 
