@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { resolveImageUrl } from '../utils/urlConfig';
 import { Trash2, ShoppingBag, ArrowRight, Minus, Plus, ShieldCheck, Truck, Zap, MessageCircle } from 'lucide-react';
 
 const CartPage = () => {
@@ -70,7 +71,7 @@ const CartPage = () => {
               {cartItems.map((item) => (
                 <div key={`${item._id}-${item.size}`} className="group relative bg-white p-6 sm:p-8 rounded-[2rem] sm:rounded-[3.5rem] border border-[#111111]/5 hover:border-[#8B0000]/20 transition-all duration-500 flex flex-col sm:flex-row items-center gap-6 sm:gap-10 shadow-lg">
                   <div className="w-32 h-32 sm:w-40 sm:h-40 bg-[#F7F5F0] rounded-[1.5rem] sm:rounded-[2.5rem] overflow-hidden shrink-0 border border-[#111111]/5 flex items-center justify-center p-4">
-                    <img src={item.images[0]} alt={item.name} className="w-full h-full object-contain" />
+                    <img src={resolveImageUrl(item.images[0])} alt={item.name} className="w-full h-full object-contain" />
                   </div>
 
                   <div className="flex-grow text-center sm:text-left">

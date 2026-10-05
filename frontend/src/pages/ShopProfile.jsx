@@ -6,7 +6,7 @@ import {
   Clock, ShieldCheck, Map, Heart, Share2,
   Info, Send
 } from 'lucide-react';
-import { getImageUrl } from '../utils/imagePath';
+import { resolveImageUrl } from '../utils/urlConfig';
 import useFetch from '../hooks/useFetch';
 
 const ShopProfile = () => {
@@ -81,7 +81,7 @@ const ShopProfile = () => {
       {/* --- HERO GALLERY SECTION --- */}
       <div className="h-[55vh] relative overflow-hidden group rounded-[2.5rem] border border-[#111111]/5 shadow-[0_40px_80px_rgba(0,0,0,0.03)] bg-white">
          <img
-            src={getImageUrl(shop.images[0]) || '/Shoes.png'}
+            src={resolveImageUrl(shop.images[0]) || '/Shoes.png'}
             alt={shop.name}
             className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-103 opacity-95"
          />

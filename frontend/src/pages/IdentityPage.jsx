@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { useAuth } from '../context/AuthContext';
 import { indiaData } from '../utils/indiaData';
+import { resolveImageUrl } from '../utils/urlConfig';
 import {
   Check,
   Camera,
@@ -170,7 +171,7 @@ const IdentityPage = () => {
                   className="w-48 h-48 rounded-[3rem] bg-[#111] border-2 border-dashed border-white/10 flex items-center justify-center cursor-pointer overflow-hidden group hover:border-blue-500/50 transition-all mb-10 relative"
                 >
                   {preview ? (
-                    <img src={preview} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" alt="Avatar" />
+                    <img src={resolveImageUrl(preview)} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" alt="Avatar" />
                   ) : (
                     <Camera className="text-slate-700 group-hover:text-blue-500 transition-colors" size={48} />
                   )}

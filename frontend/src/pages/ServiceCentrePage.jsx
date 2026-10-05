@@ -9,6 +9,7 @@ import {
 import ServiceCenterCard from '../components/ServiceCenterCard';
 import useFetch from '../hooks/useFetch';
 import localServiceCenters from '../utils/localServiceCenters';
+import { resolveImageUrl } from '../utils/urlConfig';
 
 const ServiceCentrePage = () => {
   const [centers, setCenters] = useState([]);
@@ -113,7 +114,7 @@ const ServiceCentrePage = () => {
             <div className="relative group max-w-sm w-full">
                <div className="absolute -inset-2 bg-gradient-to-r from-[#8B0000] to-[#111111] rounded-[2rem] opacity-20 group-hover:opacity-40 transition duration-1000"></div>
                <img
-                 src="/New-Samadhan-Shoe-Mart/New-Card.jpg"
+                 src={resolveImageUrl("/New-Samadhan-Shoe-Mart/New-Card.jpg")}
                  alt="New Samadhan Shoes Mart Visiting Card"
                  className="relative rounded-[1.5rem] border border-white/20 shadow-2xl w-full h-auto object-cover transform hover:scale-[1.02] transition-transform duration-500"
                />

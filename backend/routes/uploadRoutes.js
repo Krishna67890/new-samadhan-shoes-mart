@@ -1,12 +1,23 @@
 import path from 'path';
+import fs from 'fs';
 import express from 'express';
 import multer from 'multer';
+import { fileURLToPath } from 'url';
 
 const router = express.Router();
 
+// Get absolute path to the uploads directory relative to this file
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const uploadDir = path.join(__dirname, '..', 'uploads');
+
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, 'uploads/');
+    cb(null, uploadDir);
   },
   filename(req, file, cb) {
     cb(
@@ -36,18 +47,27 @@ const upload = multer({
 });
 
 router.post('/', (req, res) => {
+  console.log('📂 [Upload] Received upload request...');
+
   upload.single('image')(req, res, function (err) {
     if (err instanceof multer.MulterError) {
-      return res.status(400).json({ message: `Multer Error: ${err.message}` });
+      console.error('❌ [Upload] Multer Error:', err.message);
+      return res.status(400).json({ message: `Image Upload Error: ${err.message}` });
     } else if (err) {
-      return res.status(400).json({ message: err });
+      console.error('❌ [Upload] Custom Error:', err);
+      // Ensure we always return a message property for useFetch to catch
+      const errMsg = err.message || (typeof err === 'string' ? err : 'Server storage error');
+      return res.status(400).json({ message: errMsg });
     }
 
     if (!req.file) {
-      return res.status(400).json({ message: 'No file uploaded' });
+      console.error('❌ [Upload] No file in request');
+      return res.status(400).json({ message: 'No file was selected' });
     }
 
-    res.status(200).json(`/${req.file.path.replace(/\\/g, '/')}`);
+    console.log('✅ [Upload] Success:', req.file.filename);
+    const relativePath = `/uploads/${req.file.filename}`;
+    res.status(200).json(relativePath);
   });
 });
 

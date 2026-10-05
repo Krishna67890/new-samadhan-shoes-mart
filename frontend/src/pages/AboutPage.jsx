@@ -7,6 +7,7 @@ import {
   ArrowRight, Sparkles, Star, Users, Clock, Code2, Globe,
   Zap, Layers, ChevronRight, ExternalLink, Cpu, Activity, MessageCircle, Instagram
 } from 'lucide-react';
+import { resolveImageUrl } from '../utils/urlConfig';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -166,7 +167,7 @@ const AboutPage = () => {
         {/* 3D FLOATING ASSET */}
         <div ref={shoeRef} className="about-shoe-trigger" style={{ position: 'absolute', right: '5%', top: '20%', width: '40vw', pointerEvents: 'none', zIndex: 15, perspective: '6000px', transformStyle: 'preserve-3d' }}>
            <div className="relative w-full h-full transform-gpu">
-             <img src="/New-Samadhan-Shoe-Mart/Main-Shoe.png" alt="Handcrafted Excellence" style={{ width: '100%', filter: 'drop-shadow(0 50px 100px rgba(139,0,0,0.4))' }} />
+             <img src={resolveImageUrl("/New-Samadhan-Shoe-Mart/Main-Shoe.png")} alt="Handcrafted Excellence" style={{ width: '100%', filter: 'drop-shadow(0 50px 100px rgba(139,0,0,0.4))' }} />
              {/* VIRTUAL SHINE LAYER */}
              <div className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-40"
                   style={{ background: 'linear-gradient(110deg, transparent 40%, rgba(255,255,255,0.8) 50%, transparent 60%)', backgroundSize: '200% 100%', animation: 'shine 4s infinite linear' }}>
@@ -218,7 +219,7 @@ const AboutPage = () => {
           </div>
           <div style={{ position: 'relative' }}>
             <div style={{ width: '100%', aspectRatio: '4/5', background: 'linear-gradient(135deg, #1a0a0a 0%, #2d0d0d 40%, #111 100%)', borderRadius: '28px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', position: 'relative', boxShadow: '0 40px 80px rgba(0,0,0,0.15)' }}>
-              <img src="/Shoes.png" alt="New Samadhan Handcrafted Shoe" style={{ width: '85%', objectFit: 'contain', filter: 'none' }} />
+              <img src={resolveImageUrl("/Shoes.png")} alt="New Samadhan Handcrafted Shoe" style={{ width: '85%', objectFit: 'contain', filter: 'none' }} />
               <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 30%, rgba(139,0,0,0.22) 0%, transparent 65%)', pointerEvents: 'none' }} />
               <div style={{ position: 'absolute', bottom: '28px', left: '28px', background: 'rgba(247,245,240,0.95)', padding: '14px 20px', borderRadius: '16px', boxShadow: '0 16px 40px rgba(0,0,0,0.2)' }}>
                 <div style={{ fontSize: '9px', fontWeight: 800, letterSpacing: '0.3em', color: '#8B0000', textTransform: 'uppercase', marginBottom: '4px' }}>Certified Mastercraft</div>
@@ -304,7 +305,7 @@ const AboutPage = () => {
               <div style={{ borderRadius: '32px', overflow: 'hidden', background: '#0a0a0a', boxShadow: '0 40px 80px rgba(0,0,0,0.2), 0 0 0 1px rgba(139,0,0,0.12)' }}>
                 <div style={{ aspectRatio: '1/1', overflow: 'hidden', position: 'relative' }}>
                   <img
-                    src="/Devloper.jpg"
+                    src={resolveImageUrl("/Devloper.jpg")}
                     alt="Krishna - Developer, New Samadhan Shoe Mart"
                     style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                     onError={e => { e.target.src = 'https://ui-avatars.com/api/?name=KR&background=8B0000&color=fff&size=400'; }}

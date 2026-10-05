@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import useFetch from '../hooks/useFetch';
 import { gsap } from 'gsap';
+import { resolveImageUrl } from '../utils/urlConfig';
 import {
   User, Mail, Lock, ShieldCheck, Save, ArrowLeft,
   Camera, CheckCircle2, AlertCircle, RefreshCw, Phone, MapPin, Sparkles, Package, List, Settings, ChevronRight,
@@ -130,7 +131,7 @@ const ProfilePage = () => {
     setTimeout(() => setSuccess(false), 3000);
   };
 
-  const displayAvatar = user?.avatar || (gender === 'girl' ? '/girl.png' : '/boy.png');
+  const displayAvatar = resolveImageUrl(user?.avatar || (gender === 'girl' ? '/girl.png' : '/boy.png'));
 
   const stats = [
     { label: 'Rank', value: user?.isGuest ? 'Elite Guest' : 'Prime Member', icon: Award, color: 'text-amber-600', bg: 'bg-amber-50' },
@@ -234,7 +235,7 @@ const ProfilePage = () => {
                 <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#8B0000]/20 rounded-full"></div>
                 <div className="flex items-center gap-4 mb-6 relative z-10">
                    <img
-                     src="/Devloper.jpg"
+                     src={resolveImageUrl('/Devloper.jpg')}
                      alt="Architect"
                      className="w-14 h-14 rounded-[1.2rem] object-cover border-2 border-[#8B0000] shadow-xl"
                      onError={(e) => { e.target.src = 'https://ui-avatars.com/api/?name=KR&background=8B0000&color=fff'; }}
@@ -430,7 +431,7 @@ const ProfilePage = () => {
                              <div className="flex flex-col md:flex-row justify-between items-center gap-8">
                                 <div className="flex items-center gap-6">
                                    <div className="w-24 h-24 bg-white rounded-[2rem] p-3 border border-[#111111]/5 shadow-sm flex items-center justify-center group-hover:scale-105 transition-transform">
-                                      <img src={order.orderItems[0]?.image} alt="Asset" className="w-full h-full object-contain rounded-xl" />
+                                      <img src={resolveImageUrl(order.orderItems[0]?.image)} alt="Asset" className="w-full h-full object-contain rounded-xl" />
                                    </div>
                                    <div>
                                       <div className="flex items-center gap-3 mb-2">

@@ -4,6 +4,7 @@ import { gsap } from 'gsap';
 import { AuthContext } from '../context/AuthContext';
 import useFetch from '../hooks/useFetch';
 import { Star, ChevronRight, Sparkles, ShoppingBag, MessageCircle, Filter, Check, PlusCircle, Edit, Trash2 } from 'lucide-react';
+import { resolveImageUrl } from '../utils/urlConfig';
 
 import localProducts from '../utils/localProducts';
 import { getMergedProducts } from '../utils/productUtils';
@@ -176,7 +177,7 @@ const ProductsPage = () => {
                     onClick={() => handleProductClick(prodId)}
                   >
                     <img
-                      src={prodImage}
+                      src={resolveImageUrl(prodImage)}
                       alt={product?.name}
                       className="w-full h-full object-contain transform scale-95 group-hover:scale-110 transition-transform duration-700"
                       onError={(e) => { e.target.src = '/Shoes.png'; }}

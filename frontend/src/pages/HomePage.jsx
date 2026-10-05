@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { resolveImageUrl } from '../utils/urlConfig';
 import localProducts from '../utils/localProducts';
 import { calculateProductStats, getReviews } from '../utils/reviewService';
 
@@ -354,7 +355,7 @@ const HomePage = () => {
         {/* HERO SHOE */}
         <div ref={heroShoeRef} className="absolute z-20 pointer-events-none drop-shadow-[0_50px_80px_rgba(0,0,0,0.15)]">
           <img
-            src="/New-Samadhan-Shoe-Mart/Main-Shoe.png"
+            src={resolveImageUrl("/New-Samadhan-Shoe-Mart/Main-Shoe.png")}
             alt="Hero Shoe"
             className="w-[50vw] max-w-[700px] h-auto object-contain"
           />
@@ -417,7 +418,7 @@ const HomePage = () => {
               className="category-card group relative h-[500px] min-w-[300px] md:min-w-0 rounded-[3rem] overflow-hidden cursor-pointer shadow-2xl snap-center shrink-0"
             >
               <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60 z-10" />
-              <img src={item.img} alt={item.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+              <img src={resolveImageUrl(item.img)} alt={item.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
               <div className="absolute bottom-12 left-12 z-20 text-white">
                 <h3 className="text-4xl font-black uppercase italic tracking-tighter mb-2">{item.name}</h3>
                 <p className="text-white/60 font-medium mb-6">{item.desc}</p>
@@ -452,7 +453,7 @@ const HomePage = () => {
                     </button>
                  </div>
                  <img
-                  src={product.images ? product.images[0] : product.image}
+                  src={resolveImageUrl(product.images ? product.images[0] : product.image)}
                   alt={product.name}
                   loading="lazy"
                   className="w-full h-auto drop-shadow-[0_40px_60px_rgba(0,0,0,0.1)] group-hover:scale-110 group-hover:-rotate-6 transition-transform duration-700"
@@ -553,7 +554,7 @@ const HomePage = () => {
               <div className="relative">
                  <div className="absolute inset-0 bg-[#d4af37]/20 rounded-full" />
                  <img
-                  src="/New-Samadhan-Shoe-Mart/Main-Shoe.png"
+                  src={resolveImageUrl("/New-Samadhan-Shoe-Mart/Main-Shoe.png")}
                   alt="3D View"
                   className="immersive-shoe relative z-10 w-full h-auto drop-shadow-[0_80px_100px_rgba(0,0,0,0.5)] rotate-12 hover:rotate-0 transition-transform duration-1000 scale-125"
                  />
@@ -695,7 +696,7 @@ const HomePage = () => {
                 {/* Front Face */}
                 <div className="absolute inset-0 w-full h-full backface-hidden rounded-3xl overflow-hidden shadow-2xl border border-gray-200 group/card bg-white">
                   <img
-                    src="/New-Samadhan-Shoe-Mart/New-Card.jpg"
+                    src={resolveImageUrl("/New-Samadhan-Shoe-Mart/New-Card.jpg")}
                     alt="Visiting Card Front"
                     loading="lazy"
                     className="w-full h-full object-cover md:object-fill"
@@ -705,7 +706,7 @@ const HomePage = () => {
                      <button
                        onClick={(e) => {
                          e.stopPropagation();
-                         setModalImage('/New-Samadhan-Shoe-Mart/New-Card.jpg');
+                         setModalImage(resolveImageUrl('/New-Samadhan-Shoe-Mart/New-Card.jpg'));
                          setIsModalOpen(true);
                        }}
                        className="bg-white text-black p-4 rounded-full shadow-xl transform scale-75 group-hover/card:scale-100 transition-all hover:bg-[#d4af37] hover:text-white"
@@ -718,7 +719,7 @@ const HomePage = () => {
                 {/* Back Face */}
                 <div className="absolute inset-0 w-full h-full backface-hidden rounded-3xl overflow-hidden shadow-2xl border border-gray-200 rotate-y-180 bg-white p-2 group/card">
                   <img
-                    src="/New-Samadhan-Shoe-Mart/Screenshot_20260928_230702_Snapchat.jpg"
+                    src={resolveImageUrl("/New-Samadhan-Shoe-Mart/Screenshot_20260928_230702_Snapchat.jpg")}
                     alt="Visiting Card Back"
                     loading="lazy"
                     className="w-full h-full object-contain rounded-2xl"
@@ -728,7 +729,7 @@ const HomePage = () => {
                      <button
                        onClick={(e) => {
                          e.stopPropagation();
-                         setModalImage('/New-Samadhan-Shoe-Mart/Screenshot_20260928_230702_Snapchat.jpg');
+                         setModalImage(resolveImageUrl('/New-Samadhan-Shoe-Mart/Screenshot_20260928_230702_Snapchat.jpg'));
                          setIsModalOpen(true);
                        }}
                        className="bg-white text-black p-4 rounded-full shadow-xl transform scale-75 group-hover/card:scale-100 transition-all hover:bg-[#d4af37] hover:text-white"

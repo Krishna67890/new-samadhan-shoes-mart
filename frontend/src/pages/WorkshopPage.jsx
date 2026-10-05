@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { WORKSHOP_MEDIA, WORKSHOP_GALLERY } from '../utils/galleryData';
+import { resolveImageUrl } from '../utils/urlConfig';
 import {
   Compass, Hammer, Scissors, Sparkles, CheckCircle2,
   Calendar, Clock, ShieldCheck, ArrowRight, UserCheck,
@@ -18,7 +19,7 @@ const WORKSHOP_STATIONS = [
     subtitle: 'Digitized Ergonomics & Hand-Carved Hardwood',
     desc: 'Every master silhouette starts with a solid hornbeam wood last, carved and proportioned to human foot kinetics. Over 32 anatomical points are measured to eliminate pressure points and ensure immediate glove-like fit.',
     specs: ['Hornbeam Hardwood', '32 Measure Points', 'Zero-Pressure Arch'],
-    image: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0012.jpg',
+    image: resolveImageUrl('/New-Samadhan-Shoe-Mart/IMG-20260928-WA0012.jpg'),
     leadArtisan: 'Master Vitthal (28 yrs experience)',
   },
   {
@@ -27,7 +28,7 @@ const WORKSHOP_STATIONS = [
     subtitle: 'Grade-A Full Grain & Vegetable Tanning',
     desc: 'We store hand-curated hides from Florence and Maharashtra tanneries. Only top-grain skins with intact epidermal layers pass our tactile inspection. No synthetic coatings, allowing the leather to breathe and patina gracefully.',
     specs: ['Tuscan Full Grain', 'Natural Mimosa Extract', '1.8mm – 2.2mm Gauge'],
-    image: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0015.jpg',
+    image: resolveImageUrl('/New-Samadhan-Shoe-Mart/IMG-20260928-WA0015.jpg'),
     leadArtisan: 'Master Ramesh (22 yrs experience)',
   },
   {
@@ -36,7 +37,7 @@ const WORKSHOP_STATIONS = [
     subtitle: 'Artisanal Blade Work & Edge Tapering',
     desc: 'Using traditional clicker blades, patterns are hand-cut strictly parallel to the natural stretch grain of the leather. Edges are skived down to 0.4mm before assembly to produce seamless, blister-free junctions.',
     specs: ['Hand Clicker Blades', '0.4mm Edge Feathering', 'Grain-Aligned Cutting'],
-    image: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0022.jpg',
+    image: resolveImageUrl('/New-Samadhan-Shoe-Mart/IMG-20260928-WA0022.jpg'),
     leadArtisan: 'Artisan Anand (19 yrs experience)',
   },
   {
@@ -45,7 +46,7 @@ const WORKSHOP_STATIONS = [
     subtitle: '200+ Operations for True Lifetime Resoleability',
     desc: 'The gold standard of bootmaking. A sturdy leather welt is lockstitched directly through the upper and insole rib. The hollow cavity is packed with granulated Portuguese cork that slowly compresses to your personal foot imprint.',
     specs: ['Chain Lockstitch', 'Portuguese Granular Cork', 'Infinite Resoleability'],
-    image: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0045.jpg',
+    image: resolveImageUrl('/New-Samadhan-Shoe-Mart/IMG-20260928-WA0045.jpg'),
     leadArtisan: 'Master Vitthal & Guild',
   },
   {
@@ -54,7 +55,7 @@ const WORKSHOP_STATIONS = [
     subtitle: 'Dual-Density Ortho Cushions & Vibram Grips',
     desc: 'Outsoles are placed under 80-bar pneumatic pressure with thermo-reactive eco adhesives, then channel-stitched. Natural leather heels are stacked layer upon layer, beveled with vintage glass scrapers and brass pegged.',
     specs: ['Vibram Arctic Soles', 'Solid Brass Pegging', '80-Bar Fusion'],
-    image: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0062.jpg',
+    image: resolveImageUrl('/New-Samadhan-Shoe-Mart/IMG-20260928-WA0062.jpg'),
     leadArtisan: 'Artisan Ganesh (16 yrs experience)',
   },
   {
@@ -63,7 +64,7 @@ const WORKSHOP_STATIONS = [
     subtitle: 'Beeswax, Carnauba Glaze & Bone-Burnishing',
     desc: 'The finale of our craft. Raw leather is hand-rubbed with natural pigments, carnauba creams, and genuine deer bone to close the leather pores. A 24-hour buffing process yields a museum-worthy mirror gloss with multidimensional depth.',
     specs: ['Organic Carnauba', 'Deer Bone Polishing', '24-Hour Hand Buff'],
-    image: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0088.jpg',
+    image: resolveImageUrl('/New-Samadhan-Shoe-Mart/IMG-20260928-WA0088.jpg'),
     leadArtisan: 'Patina Master Dnyanesh (14 yrs experience)',
   },
 ];
@@ -97,28 +98,28 @@ const CATEGORY_CATALOG = [
     title: 'Men Collection',
     subtitle: 'Bold, Refined & Structured Architecture',
     desc: 'Engineered for presence and ultimate durability. Featuring hand-burnished traditional silhouettes, heavy-duty arch support, and zero-fatigue fitments perfect for elite lifestyles.',
-    image: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0008.jpg',
+    image: resolveImageUrl('/New-Samadhan-Shoe-Mart/IMG-20260928-WA0008.jpg'),
     tag: 'MEN'
   },
   {
     title: 'Women Collection',
     subtitle: 'Artisanal Grace, Elegance & Soft Cushionbeds',
     desc: 'Where heritage look merges seamlessly with all-day ergonomic wellness. Crafted with ultra-soft flexible full-grain leathers and lightweight multi-layered orthotic shock absorption.',
-    image: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0011.jpg',
+    image: resolveImageUrl('/New-Samadhan-Shoe-Mart/IMG-20260928-WA0011.jpg'),
     tag: 'WOMEN'
   },
   {
     title: 'Kids Collection',
     subtitle: 'Playful Comfort & High-Flex Growth Support',
     desc: 'Specially constructed for dynamic growing feet. Equipped with scuff-resistant reinforced safety toes, flexible non-slip soles, and breathable organic anti-bacterial linings.',
-    image: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0015.jpg',
+    image: resolveImageUrl('/New-Samadhan-Shoe-Mart/IMG-20260928-WA0015.jpg'),
     tag: 'KIDS'
   },
   {
     title: 'Sneakers Collection',
     subtitle: 'Urban Legacy, Freedom & Responsive Stride Core',
     desc: 'Reimagining street style through premium material integrity. Featuring hyper-flexible cushioned cores, lightweight athletic builds, and hand-lasted premium calfskin uppers.',
-    image: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0006.jpg',
+    image: resolveImageUrl('/New-Samadhan-Shoe-Mart/IMG-20260928-WA0006.jpg'),
     tag: 'SNEAKERS'
   }
 ];
@@ -251,7 +252,7 @@ Requested via New Samadhan Shoes Website`;
       <section ref={workshopHeroRef} className="relative min-h-[85vh] flex items-center px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto rounded-[4rem] overflow-hidden my-6 shadow-2xl bg-[#050505]">
         <div className="absolute inset-0 z-0">
           <img
-            src="/New-Samadhan-Shoe-Mart/Front-Banner.jpg"
+            src={resolveImageUrl("/New-Samadhan-Shoe-Mart/Front-Banner.jpg")}
             alt="New Samadhan Master Atelier Banner"
             className="w-full h-full object-cover filter brightness-[0.3] contrast-[1.2]"
           />
@@ -303,7 +304,7 @@ Requested via New Samadhan Shoes Website`;
         <div ref={floatingShoeRef} className="absolute top-1/2 right-[-5%] -translate-y-1/2 w-full max-w-3xl opacity-60 pointer-events-none hidden xl:block select-none z-10" style={{ perspective: '6000px', transformStyle: 'preserve-3d' }}>
            <div className="relative w-full h-full transform-gpu">
              <img
-              src="/New-Samadhan-Shoe-Mart/Main-Shoe.png"
+              src={resolveImageUrl("/New-Samadhan-Shoe-Mart/Main-Shoe.png")}
               alt="New Samadhan Shoes"
               className="w-full h-auto object-contain transform rotate-[-15deg] scale-110 drop-shadow-[0_100px_150px_rgba(139,0,0,0.3)]"
              />
@@ -639,7 +640,7 @@ Requested via New Samadhan Shoes Website`;
               className="group relative aspect-[4/5] rounded-[2.5rem] overflow-hidden bg-[#F7F5F0] border border-[#111111]/5 shadow-sm hover:shadow-2xl transition-all duration-500"
             >
               <img
-                src={item.url}
+                src={resolveImageUrl(item.url)}
                 alt={item.title}
                 loading="lazy"
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"

@@ -4,6 +4,7 @@ import { gsap } from 'gsap';
 import { Camera, Save, ArrowLeft, Loader2, ShieldCheck, Mail, Phone, MapPin, User, ShieldAlert, Volume2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { indiaData } from '../utils/indiaData';
+import { resolveImageUrl } from '../utils/urlConfig';
 
 const EditProfilePage = () => {
   const { user, updateProfile } = useAuth();
@@ -98,9 +99,9 @@ const EditProfilePage = () => {
     }
   };
 
-  const displayAvatar = avatarPreview || (user?.gender === 'girl'
-    ? 'https://cdn-icons-png.flaticon.com/512/6997/6997662.png'
-    : 'https://cdn-icons-png.flaticon.com/512/4140/4140048.png');
+  const displayAvatar = resolveImageUrl(avatarPreview || (user?.gender === 'girl'
+    ? '/girl.png'
+    : '/boy.png'));
 
   return (
     <div className="min-h-screen bg-[#F7F5F0] text-[#111111] pt-36 pb-24 px-4 sm:px-10 lg:px-20 relative overflow-x-hidden no-blur-zone" ref={containerRef}>

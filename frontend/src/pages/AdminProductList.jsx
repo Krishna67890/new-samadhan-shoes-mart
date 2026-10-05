@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
 import useFetch from '../hooks/useFetch';
 import { Edit, Trash2, Plus, ArrowLeft, Search, Loader2, AlertCircle, Package, Filter, ExternalLink } from 'lucide-react';
+import { resolveImageUrl } from '../utils/urlConfig';
 import localProducts from '../utils/localProducts';
 import { getMergedProducts } from '../utils/productUtils';
 
@@ -170,7 +171,7 @@ const AdminProductList = () => {
                 <div className="grid md:grid-cols-6 gap-8 items-center">
                   <div className="col-span-1">
                     <div className="w-24 h-24 rounded-2xl overflow-hidden border border-[#111]/5 shadow-inner bg-[#F7F5F0]">
-                      <img src={product.images[0]} alt="" className="w-full h-full object-cover" />
+                      <img src={resolveImageUrl(product.images[0])} alt="" className="w-full h-full object-cover" />
                     </div>
                   </div>
 

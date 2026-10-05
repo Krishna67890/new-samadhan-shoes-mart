@@ -1,8 +1,14 @@
 import path from 'path';
+import { fileURLToPath } from 'url';
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import mongoose from 'mongoose';
 import connectDB from './config/db.js';
+
+// Get absolute paths in ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Route Imports
 import productRoutes from './routes/productRoutes.js';
@@ -19,8 +25,13 @@ dotenv.config();
 const app = express();
 
 // Standard Middleware
-app.use(express.json());
-app.use(cors());
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
+app.use(cors({
+  origin: '*', // Allow all devices on the network
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 // --- ROUTES ---
 app.use('/api/auth', authRoutes);
@@ -32,31 +43,32 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/service-centers', serviceCenterRoutes);
 app.use('/api/upload', uploadRoutes);
 
-const __dirname = path.resolve();
-
-// Fix: Serve uploads from the correct backend/uploads folder
-const uploadsPath = path.join(__dirname, 'backend', 'uploads');
+// Fix: Serve uploads from the absolute backend/uploads folder
+const uploadsPath = path.join(__dirname, 'uploads');
 app.use('/uploads', express.static(uploadsPath));
 
-// Also serve root uploads if they exist for compatibility
-app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+// Also serve public assets if they are mirrored in backend (optional but helpful for local network testing)
+const publicAssetsPath = path.join(__dirname, 'public');
+app.use('/New-Samadhan-Shoe-Mart', express.static(path.join(publicAssetsPath, 'New-Samadhan-Shoe-Mart')));
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '/frontend/dist')));
-  app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html')));
-} else {
-  app.get('/', (req, res) => res.send('Identity Vault API is active. (Database status pending)'));
-}
+// Health check for Vercel/Render
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'active',
+    database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+    time: new Date()
+  });
+});
 
 const PORT = process.env.PORT || 5000;
 
-if (process.env.NODE_ENV !== 'production') {
+// Listen if not on Vercel (works for both Local Dev and Local Production)
+if (!process.env.VERCEL) {
   app.listen(PORT, () => {
     console.log(`🚀 [Server] New Samadhan Shoe Mart active on port ${PORT}`);
-    connectDB();
   });
 }
 
-connectDB(); // Ensure DB connects in production
+connectDB();
 
 export default app;

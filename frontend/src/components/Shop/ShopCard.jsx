@@ -6,7 +6,7 @@ import {
   ChevronRight, BadgeCheck, Share2,
   TrendingUp, Award, Calendar
 } from 'lucide-react';
-import { getImageUrl } from '../../utils/imagePath';
+import { resolveImageUrl } from '../../utils/urlConfig';
 
 const ShopCard = ({ shop }) => {
   const { isAuthenticated } = useContext(AuthContext);
@@ -38,7 +38,7 @@ const ShopCard = ({ shop }) => {
       {/* --- IMAGE NODE --- */}
       <div className="md:w-1/3 aspect-[4/3] rounded-3xl overflow-hidden relative shrink-0 border border-[#111111]/5 bg-[#F7F5F0] flex items-center justify-center">
         <img
-          src={getImageUrl(shop.images[0]) || '/Shoes.png'}
+          src={resolveImageUrl(shop.images[0]) || '/Shoes.png'}
           alt={shop.name}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 opacity-90 group-hover:opacity-100"
         />

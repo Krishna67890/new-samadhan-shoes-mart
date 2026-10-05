@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import useFetch from '../hooks/useFetch';
 import { indiaData } from '../utils/indiaData';
+import { resolveImageUrl } from '../utils/urlConfig';
 import {
   ShoppingBag,
   User,
@@ -73,7 +74,7 @@ const CheckoutPage = () => {
       orderItems: cartItems.map(item => ({
         name: item.name,
         qty: item.qty,
-        image: item.images[0],
+        image: item.images[0], // Keep original for DB, but use resolveImageUrl in UI
         price: item.price,
         product: item._id,
         size: item.size
@@ -310,7 +311,7 @@ const CheckoutPage = () => {
                   {cartItems.map((item, idx) => (
                     <div key={idx} className="flex gap-4 sm:gap-5 p-4 sm:p-5 bg-[#F7F5F0] rounded-[1.5rem] sm:rounded-[2rem] border border-[#111111]/5 group hover:border-[#8B0000]/20 transition-colors">
                        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl sm:rounded-2xl overflow-hidden bg-white shrink-0 border border-[#111111]/5 flex items-center justify-center p-2">
-                          <img src={item.images[0]} alt={item.name} className="w-full h-full object-contain" />
+                          <img src={resolveImageUrl(item.images[0])} alt={item.name} className="w-full h-full object-contain" />
                        </div>
                        <div className="flex-grow min-w-0">
                           <p className="text-[7px] sm:text-[8px] font-bold text-[#8B0000] uppercase tracking-[0.3em] mb-1">{item.brand}</p>

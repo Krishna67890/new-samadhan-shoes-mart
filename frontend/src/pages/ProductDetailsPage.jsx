@@ -12,6 +12,7 @@ import {
   Shield, Truck, RefreshCw, CreditCard, Box, Zap, Info,
   Search, ShieldCheck, MapPin, Smartphone, HelpCircle
 } from 'lucide-react';
+import { resolveImageUrl } from '../utils/urlConfig';
 
 const ProductDetailsPage = () => {
   const { id } = useParams();
@@ -288,7 +289,7 @@ const ProductDetailsPage = () => {
           <div className="lg:col-span-7 space-y-8 reveal-item">
             <div className="relative aspect-square bg-[#111] rounded-[4rem] overflow-hidden shadow-2xl border border-white/5 group">
               <img
-                src={product?.images?.[activeImg]}
+                src={resolveImageUrl(product?.images?.[activeImg])}
                 alt={product?.name}
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-90 group-hover:opacity-100"
               />
@@ -308,7 +309,7 @@ const ProductDetailsPage = () => {
                     className={`aspect-square bg-[#111] rounded-[2rem] overflow-hidden border-4 transition-all p-1
                       ${activeImg === index ? 'border-blue-600 shadow-xl shadow-blue-500/20 scale-105' : 'border-transparent opacity-50 hover:opacity-100'}`}
                   >
-                    <img src={img} alt={`${product.name} ${index}`} className="w-full h-full object-cover rounded-[1.5rem]" />
+                    <img src={resolveImageUrl(img)} alt={`${product.name} ${index}`} className="w-full h-full object-cover rounded-[1.5rem]" />
                   </button>
                 ))}
               </div>

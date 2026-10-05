@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { getApiBaseUrl } from '../utils/urlConfig';
 
 const useFetch = () => {
   const [loading, setLoading] = useState(false);
@@ -12,17 +13,7 @@ const useFetch = () => {
       setError(null);
 
       try {
-        // PRIORITY:
-        // 1. Environment Variable (VITE_API_URL) - Best for Vercel/Production
-        // 2. Relative path (if in Production and no env var)
-        // 3. Localhost (Development)
-
-        let baseUrl = import.meta.env.VITE_API_URL || '';
-
-        if (!baseUrl && !import.meta.env.PROD) {
-          baseUrl = `http://${window.location.hostname}:5000`;
-        }
-
+        const baseUrl = getApiBaseUrl();
         const fullUrl = url.startsWith('http') ? url : `${baseUrl}${url}`;
 
         const config = {

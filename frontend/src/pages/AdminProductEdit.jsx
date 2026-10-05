@@ -3,6 +3,7 @@ import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { gsap } from 'gsap';
 import useFetch from '../hooks/useFetch';
 import { ArrowLeft, Save, Upload, Loader2, Image as ImageIcon, CheckCircle, AlertCircle, PlusCircle, Sparkles } from 'lucide-react';
+import { resolveImageUrl } from '../utils/urlConfig';
 
 import localProducts from '../utils/localProducts';
 import { getProductById } from '../utils/productUtils';
@@ -85,7 +86,8 @@ const AdminProductEdit = () => {
     } catch (err) {
       console.error("Upload process failed:", err);
       setUploading(false);
-      alert("MEDIA UPLOAD FAILED: The images could not be saved to the server. Without a server upload, other devices will not be able to see these pictures. Please check your internet/backend connection.");
+      const errorMessage = err.message || "Unknown Server Error";
+      alert(`MEDIA UPLOAD FAILED: ${errorMessage}. \n\nTip: For global stability, use the "External URL" input below instead of uploading files.`);
     }
   };
 
@@ -356,7 +358,7 @@ const AdminProductEdit = () => {
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                      {images.map((img, idx) => (
                         <div key={idx} className="relative aspect-square rounded-2xl overflow-hidden border border-[#111]/5 bg-[#F7F5F0]">
-                           <img src={img} alt="" className="w-full h-full object-cover" />
+                           <img src={resolveImageUrl(img)} alt="" className="w-full h-full object-cover" />
                            <button
                              type="button"
                              onClick={() => setImages(images.filter((_, i) => i !== idx))}

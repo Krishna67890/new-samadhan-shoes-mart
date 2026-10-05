@@ -6,6 +6,7 @@ import { useCart } from '../context/CartContext';
 import useFetch from '../hooks/useFetch';
 import localProducts from '../utils/localProducts';
 import { getProductById } from '../utils/productUtils';
+import { resolveImageUrl } from '../utils/urlConfig';
 import Reviews from '../components/Reviews';
 import {
   Star,
@@ -155,7 +156,7 @@ const ProductDetails = () => {
               {/* Static Image Display */}
               <div className="relative w-full h-full flex items-center justify-center">
                   <img
-                    src={displayImages[activeImage]}
+                    src={resolveImageUrl(displayImages[activeImage])}
                     alt={product?.name}
                     loading="lazy"
                     className="w-[90%] md:w-[85%] h-auto object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.1)] transition-transform duration-500 hover:scale-105"
@@ -171,7 +172,7 @@ const ProductDetails = () => {
                   onClick={() => setActiveImage(i)}
                   className={`shrink-0 w-16 h-16 md:w-24 md:h-24 rounded-xl md:rounded-3xl overflow-hidden border-2 transition-all p-1 md:p-2 bg-white snap-center ${activeImage === i ? 'border-[#8B0000] shadow-xl scale-105' : 'border-[#111111]/5 opacity-60 hover:opacity-100'}`}
                 >
-                  <img src={img} alt={`View ${i}`} className="w-full h-full object-contain rounded-lg md:rounded-2xl" />
+                  <img src={resolveImageUrl(img)} alt={`View ${i}`} className="w-full h-full object-contain rounded-lg md:rounded-2xl" />
                 </button>
               ))}
               {/* If fewer than 4 images, repeat first as placeholder to ensure "4 photos" look if needed, or just let it be */}
