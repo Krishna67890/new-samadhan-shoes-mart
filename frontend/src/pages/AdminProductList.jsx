@@ -101,8 +101,8 @@ const AdminProductList = () => {
 
   const stats = {
     total: products.length,
-    lowStock: products.filter(p => p.stock < 5).length,
-    valuation: products.reduce((acc, p) => acc + (p.price * p.stock), 0)
+    lowStock: products.filter(p => (p.stock !== undefined ? p.stock : 12) < 5).length,
+    valuation: products.reduce((acc, p) => acc + (p.price * (p.stock !== undefined ? p.stock : 12)), 0)
   };
 
   return (
@@ -197,10 +197,10 @@ const AdminProductList = () => {
                   <div className="col-span-1">
                     <span className="text-[9px] font-black text-[#6B6B6B] uppercase tracking-widest block mb-2">Inventory</span>
                     <div className="flex items-center gap-2">
-                      <div className={`w-2 h-2 rounded-full ${product.stock > 10 ? 'bg-emerald-500' : 'bg-red-500 animate-pulse'}`}></div>
-                      <span className="text-[10px] font-black uppercase tracking-widest">{product.stock} Units</span>
+                      <div className={`w-2 h-2 rounded-full ${(product.stock !== undefined ? product.stock : 12) > 10 ? 'bg-emerald-500' : 'bg-red-500 animate-pulse'}`}></div>
+                      <span className="text-[10px] font-black uppercase tracking-widest">{product.stock !== undefined ? product.stock : 12} Units</span>
                     </div>
-                    {product.stock < 5 && <span className="text-[8px] text-red-600 font-bold uppercase block mt-1">Critical Low Stock</span>}
+                    {(product.stock !== undefined ? product.stock : 12) < 5 && <span className="text-[8px] text-red-600 font-bold uppercase block mt-1">Critical Low Stock</span>}
                   </div>
 
                   <div className="col-span-1 flex justify-end gap-3">

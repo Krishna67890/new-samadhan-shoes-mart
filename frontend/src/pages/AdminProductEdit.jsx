@@ -409,7 +409,8 @@ const AdminProductEdit = () => {
         </form>
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default AdminProductEdit;

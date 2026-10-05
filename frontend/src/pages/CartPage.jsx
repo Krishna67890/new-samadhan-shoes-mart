@@ -27,68 +27,12 @@ const CartPage = () => {
     }
   }, [cartItems.length]);
 
-  const handleWhatsAppOrder = () => {
-    if (!user || !user.identityVerified) {
-      alert("Please sync your identity in the Identity Sync section before placing an order.");
-      navigate('/identity');
+  const handleCheckoutNavigation = () => {
+    if (!user) {
+      navigate('/login');
       return;
     }
-
-    // 1. Technical Fixes: Quota & GSAP
-    try {
-      localStorage.removeItem('gsap_cache');
-      const keysToKeep = ['ssm_user_identity', 'cartItems', 'token'];
-      Object.keys(localStorage).forEach(key => {
-        if (!keysToKeep.includes(key)) localStorage.removeItem(key);
-      });
-      sessionStorage.clear();
-    } catch (e) { console.warn("Vault Cleanup failed"); }
-
-    // 2. Data Preparation
-    const userName = user.name || "Elite Customer";
-    const userPhone = user.phone || "Not Provided";
-    const userAddress = `${user.address}, ${user.city}, ${user.state} - ${user.pincode}`;
-    const total = cartTotal.toLocaleString();
-
-    let message = `🚀 *NEW ORDER RECEIVED - NEW SAMADHAN SHOE MART*\n`;
-    message += `--------------------------------------\n`;
-    message += `👤 *CUSTOMER:* ${userName.toUpperCase()}\n`;
-    message += `📞 *PHONE:* ${userPhone}\n`;
-    message += `📍 *SHIPPING ADDRESS:* ${userAddress}\n`;
-    message += `--------------------------------------\n`;
-    message += `👟 *PRODUCTS:*\n`;
-    cartItems.forEach(item => {
-      message += `  - ${item.name} (Size ${item.size}) x${item.qty}\n`;
-    });
-    message += `💰 *TOTAL AMOUNT:* ₹${total}\n`;
-    message += `🏢 *ORIGIN:* New Samadhan Shoe Mart Factory, Nashik\n`;
-    message += `--------------------------------------\n`;
-    message += `🏪 *SHOP CONTACTS: 9423228843 | 8888644021*`;
-
-    const encodedMsg = encodeURIComponent(message);
-
-    // 3. Dual Shopkeeper Protocol - Load Balancing
-    const targetNum = Math.random() > 0.5 ? '9423228843' : '8888644021';
-    const shopkeeperUrl = `https://wa.me/91${targetNum}?text=${encodedMsg}`;
-
-    // Open Selected Shopkeeper
-    window.open(shopkeeperUrl, '_blank');
-
-    // 4. AI Voice & Feedback
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const msg = new SpeechSynthesisUtterance(`Order total: ${total} rupees. I am sending your order details to our shopkeepers now. Please confirm the messages to finalize your delivery to Nashik.`);
-      msg.lang = 'en-IN';
-      msg.rate = 0.9;
-      window.speechSynthesis.speak(msg);
-    }
-
-    setIsSent(true);
-
-    // 5. Technical Cleanup
-    setTimeout(() => {
-      localStorage.removeItem('cartItems');
-    }, 2000);
+    navigate('/checkout');
   };
 
   return (
@@ -183,10 +127,10 @@ const CartPage = () => {
                 </div>
 
                 <button
-                  onClick={handleWhatsAppOrder}
+                  onClick={handleCheckoutNavigation}
                   className="w-full bg-[#111111] text-white py-5 sm:py-7 rounded-[1.5rem] sm:rounded-[2rem] font-bold uppercase tracking-[0.3em] text-[10px] sm:text-[11px] flex items-center justify-center gap-4 hover:bg-[#8B0000] transition-all shadow-md group relative overflow-hidden mb-6 sm:mb-8"
                 >
-                  {isSent ? 'Order Transmitted' : 'Secure via WhatsApp'} <MessageCircle size={20} className="group-hover:scale-125 transition-transform" />
+                  Initiate Protocol <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform" />
                 </button>
 
                 <div className="flex items-center gap-4 p-5 bg-[#F7F5F0] rounded-[2rem] border border-[#111111]/5">
