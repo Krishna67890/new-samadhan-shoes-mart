@@ -67,30 +67,40 @@ const CheckoutPage = () => {
     setLoading(true);
 
     const orderRef = `SSM-${Date.now()}`;
+    const newOrder = {
+      _id: 'ord_' + Date.now(),
+      user: { name: formData.name, email: formData.email },
+      orderItems: cartItems.map(item => ({
+        name: item.name,
+        qty: item.qty,
+        image: item.images[0],
+        price: item.price,
+        product: item._id,
+        size: item.size
+      })),
+      shippingAddress: {
+        address: formData.address,
+        city: formData.city,
+        postalCode: formData.pincode,
+        state: formData.state,
+      },
+      paymentMethod: 'WhatsApp',
+      totalPrice: cartTotal,
+      phone: formData.phone,
+      isPaid: true,
+      paidAt: new Date().toISOString(),
+      isDelivered: false,
+      createdAt: new Date().toISOString()
+    };
 
     // Sync to Database for "My Orders" history
     try {
-      await request('/api/orders', 'POST', {
-        orderItems: cartItems.map(item => ({
-          name: item.name,
-          qty: item.qty,
-          image: item.images[0],
-          price: item.price,
-          product: item._id,
-          size: item.size
-        })),
-        shippingAddress: {
-          address: formData.address,
-          city: formData.city,
-          postalCode: formData.pincode,
-          state: formData.state,
-        },
-        paymentMethod: 'WhatsApp',
-        totalPrice: cartTotal,
-        phone: formData.phone
-      });
+      await request('/api/orders', 'POST', newOrder);
     } catch (err) {
-      console.error("Database sync failed, proceeding with WhatsApp only:", err);
+      console.error("Database sync failed, saving to local demo storage:", err);
+      const demoOrders = JSON.parse(localStorage.getItem('ssm_demo_orders') || '[]');
+      demoOrders.unshift(newOrder);
+      localStorage.setItem('ssm_demo_orders', JSON.stringify(demoOrders));
     }
 
     // Dual Shopkeeper Protocol - Load Balancing with Math.random()

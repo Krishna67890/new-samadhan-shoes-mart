@@ -2,11 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { useAuth } from '../context/AuthContext';
-import { ShieldCheck, Lock, Mail, ArrowRight, Loader2, AlertCircle } from 'lucide-react';
+import { ShieldCheck, Lock, Mail, ArrowRight, Loader2, AlertCircle, Eye, EyeOff } from 'lucide-react';
 
 const OwnerLoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [localError, setLocalError] = useState(null);
   const { login, loading } = useAuth();
   const navigate = useNavigate();
@@ -28,13 +29,16 @@ const OwnerLoginPage = () => {
     e.preventDefault();
     setLocalError(null);
 
-    // Private Owner Credentials Enforcement
-    if (email !== 'Command@SamadhanShoe.com') {
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+
+    // Private Owner Credentials Enforcement (Case-Insensitive for Email)
+    if (trimmedEmail.toLowerCase() !== 'command@samadhanshoe.com') {
       setLocalError('Unauthorized Access: Invalid Owner Email.');
       return;
     }
 
-    const result = await login(email, password);
+    const result = await login(trimmedEmail, trimmedPassword);
     if (result.success && result.role === 'admin') {
       window.location.href = '/admin';
     } else {
@@ -72,7 +76,7 @@ const OwnerLoginPage = () => {
                 <input
                   type="email"
                   required
-                  className="w-full pl-16 pr-8 py-5 bg-white/5 border border-white/5 rounded-2xl focus:bg-white/10 focus:border-red-500/50 outline-none transition-all font-black text-white placeholder:text-white/5"
+                  className="w-full pl-16 pr-8 py-5 bg-white/5 border border-white/5 rounded-2xl focus:bg-white/10 focus:border-red-500/50 outline-none transition-all font-black text-white"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -84,12 +88,19 @@ const OwnerLoginPage = () => {
               <div className="relative">
                 <Lock className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   required
-                  className="w-full pl-16 pr-8 py-5 bg-white/5 border border-white/5 rounded-2xl focus:bg-white/10 focus:border-red-500/50 outline-none transition-all font-black text-white placeholder:text-white/5"
+                  className="w-full pl-16 pr-14 py-5 bg-white/5 border border-white/5 rounded-2xl focus:bg-white/10 focus:border-red-500/50 outline-none transition-all font-black text-white"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors"
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
               </div>
             </div>
 

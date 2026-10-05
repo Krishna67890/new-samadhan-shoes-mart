@@ -15,6 +15,13 @@ const AdminGalleryManager = () => {
   const [success, setSuccess] = useState(false);
   const [uploading, setUploading] = useState(false);
 
+  useEffect(() => {
+    const storedMedia = localStorage.getItem('ssm_workshop_media');
+    const storedGallery = localStorage.getItem('ssm_workshop_gallery');
+    if (storedMedia) setWorkshopMedia(JSON.parse(storedMedia));
+    if (storedGallery) setWorkshopGallery(JSON.parse(storedGallery));
+  }, []);
+
   const handleAddMedia = (type) => {
     if (type === 'video') {
       setWorkshopMedia([{ type: 'video', url: '', title: 'New Reel' }, ...workshopMedia]);
@@ -52,8 +59,10 @@ const AdminGalleryManager = () => {
   };
 
   const handleSave = async () => {
-    // In a real app, this would send to backend.
-    // For now we simulate success.
+    // PERSISTENCE FALLBACK: Save to localStorage for demo visibility
+    localStorage.setItem('ssm_workshop_media', JSON.stringify(workshopMedia));
+    localStorage.setItem('ssm_workshop_gallery', JSON.stringify(workshopGallery));
+
     setSuccess(true);
     setTimeout(() => setSuccess(false), 3000);
   };
@@ -215,6 +224,13 @@ const AdminGalleryManager = () => {
                       <option value="Women">Women</option>
                       <option value="Kids">Kids</option>
                       <option value="Sneakers">Sneakers</option>
+                      <option value="Women's Edition">Women's Edition</option>
+                      <option value="Kids Edition">Kids Edition</option>
+                      <option value="Bespoke Derbies">Bespoke Derbies</option>
+                      <option value="Goodyear Boots">Goodyear Boots</option>
+                      <option value="Italian Loafers">Italian Loafers</option>
+                      <option value="Minimalist Sneakers">Minimalist Sneakers</option>
+                      <option value="Workshop">Workshop</option>
                     </select>
                     <input
                       type="text"

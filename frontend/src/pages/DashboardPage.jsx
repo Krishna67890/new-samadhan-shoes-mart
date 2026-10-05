@@ -18,15 +18,24 @@ const DashboardPage = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
+        // First try real backend
         const data = await request('/api/orders/myorders');
         if (data && Array.isArray(data)) {
           setOrders(data);
         } else {
-          setOrders([]);
+          throw new Error('Fallback to local');
         }
       } catch (err) {
-        console.error(err);
-        setOrders([]);
+        // Fallback to ssm_demo_orders
+        try {
+          const localOrders = JSON.parse(localStorage.getItem('ssm_demo_orders') || '[]');
+          // If we have a logged in user, maybe filter by user ID if available,
+          // but for demo we show all local orders if backend fails
+          setOrders(localOrders);
+        } catch (localErr) {
+          console.error(localErr);
+          setOrders([]);
+        }
       }
     };
     fetchOrders();

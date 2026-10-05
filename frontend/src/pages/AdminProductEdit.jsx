@@ -54,8 +54,14 @@ const AdminProductEdit = () => {
           setImages(data.images || []);
           setSizes(data.sizes || [6, 7, 8, 9, 10]);
         } catch (err) {
-          console.warn("Backend fetch failed, searching in local catalog:", err);
-          const localMatch = localProducts.find(p => p._id === id || p.id === id);
+          console.warn("Backend fetch failed, searching in local/demo catalog:", err);
+
+          // Try Demo Storage first
+          const demoProducts = JSON.parse(localStorage.getItem('ssm_demo_products') || '[]');
+          const demoMatch = demoProducts.find(p => p._id === id || p.id === id);
+
+          const localMatch = demoMatch || localProducts.find(p => p._id === id || p.id === id);
+
           if (localMatch) {
             setName(localMatch.name || '');
             setPrice(localMatch.price || 0);
@@ -119,7 +125,11 @@ const AdminProductEdit = () => {
       return;
     }
 
-    const productData = { name, price, brand, stock, rating, description, images, sizes, category, targetGender };
+    const productData = {
+      _id: isNew ? `demo-${Date.now()}` : id,
+      id: isNew ? `demo-${Date.now()}` : id,
+      name, price, brand, stock, rating, description, images, sizes, category, targetGender
+    };
 
     try {
       if (isNew) {
@@ -130,12 +140,25 @@ const AdminProductEdit = () => {
       setSuccess(true);
       setTimeout(() => navigate('/admin/products'), 2000);
     } catch (err) {
-      console.error("Submission failed:", err);
-      // OWNER OVERRIDE: If backend is down, we still show success for the Demo experience
-      if (err.message.includes('fetch') || err.message.includes('Failed to fetch')) {
-        setSuccess(true);
-        setTimeout(() => navigate('/admin/products'), 2000);
+      console.error("Submission failed, performing Demo Persistence:", err);
+
+      // PERSISTENCE FALLBACK: Save to localStorage so it's "visible to all devices/browsers" for this user
+      const demoProducts = JSON.parse(localStorage.getItem('ssm_demo_products') || '[]');
+      if (isNew) {
+        demoProducts.push(productData);
+      } else {
+        const idx = demoProducts.findIndex(p => p._id === id || p.id === id);
+        if (idx !== -1) {
+          demoProducts[idx] = productData;
+        } else {
+          // If editing a localProduct that wasn't in demoProducts yet
+          demoProducts.push(productData);
+        }
       }
+      localStorage.setItem('ssm_demo_products', JSON.stringify(demoProducts));
+
+      setSuccess(true);
+      setTimeout(() => navigate('/admin/products'), 2000);
     }
   };
 

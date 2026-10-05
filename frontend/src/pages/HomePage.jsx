@@ -390,12 +390,12 @@ const HomePage = () => {
             <span className="text-[#d4af37] font-black uppercase tracking-[0.4em] text-sm block mb-4">// COLLECTIONS</span>
             <h2 className="text-6xl font-black uppercase tracking-tighter">DISCOVER BY CATEGORY</h2>
           </div>
-          <div className="flex gap-4 border-b-2 border-gray-200 w-full md:w-auto">
+          <div className="flex gap-4 border-b-2 border-gray-200 w-full md:w-auto overflow-x-auto scrollbar-hide">
              {['Men', 'Women', 'Sneakers', 'Formal', 'Kids'].map(cat => (
                <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`pb-4 px-6 text-sm font-bold uppercase tracking-widest transition-all ${activeCategory === cat ? 'border-b-4 border-[#d4af37] text-[#d4af37]' : 'text-gray-400 hover:text-black'}`}
+                className={`pb-4 px-6 text-sm font-bold uppercase tracking-widest transition-all shrink-0 ${activeCategory === cat ? 'border-b-4 border-[#d4af37] text-[#d4af37]' : 'text-gray-400 hover:text-black'}`}
                >
                  {cat}
                </button>
@@ -403,7 +403,7 @@ const HomePage = () => {
           </div>
         </div>
 
-        <div className="flex overflow-x-auto md:grid md:grid-cols-2 lg:grid-cols-5 gap-8 pb-8 md:pb-0 scrollbar-hide snap-x">
+        <div className="flex overflow-x-auto md:grid md:grid-cols-2 lg:grid-cols-5 gap-8 pb-8 md:pb-0 scrollbar-hide snap-x no-blur-zone">
           {[
             { name: 'Men', desc: 'Smart everyday footwear', img: '/New-Samadhan-Shoe-Mart/Shoes-grey-men-1.jpg', path: '/products?category=Men' },
             { name: 'Women', desc: 'Elegant styles for every occasion', img: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0011.jpg', path: '/products?category=Women' },
@@ -414,7 +414,7 @@ const HomePage = () => {
             <div
               key={idx}
               onClick={() => navigate(item.path)}
-              className="category-card group relative h-[500px] min-w-[300px] md:min-w-0 rounded-[3rem] overflow-hidden cursor-pointer shadow-2xl snap-center"
+              className="category-card group relative h-[500px] min-w-[300px] md:min-w-0 rounded-[3rem] overflow-hidden cursor-pointer shadow-2xl snap-center shrink-0"
             >
               <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60 z-10" />
               <img src={item.img} alt={item.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />

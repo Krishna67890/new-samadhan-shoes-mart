@@ -12,47 +12,52 @@ export const AuthProvider = ({ children }) => {
       return null;
     }
   });
+  const [token, setToken] = useState(() => localStorage.getItem('token'));
   const [loading, setLoading] = useState(false);
 
-  // Sync state with localStorage whenever user changes
+  // Sync state with localStorage whenever user or token changes
   useEffect(() => {
     if (user) {
       try {
         localStorage.setItem('ssm_user_identity', JSON.stringify(user));
+        if (token) localStorage.setItem('token', token);
       } catch (e) {
         if (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
           console.warn("Vault Full: Clearing non-essential data...");
-          // Try to clear everything EXCEPT the identity to make room
           const identity = localStorage.getItem('ssm_user_identity');
+          const currentToken = localStorage.getItem('token');
           localStorage.clear();
           if (identity) localStorage.setItem('ssm_user_identity', identity);
+          if (currentToken) localStorage.setItem('token', currentToken);
 
-          // If it still fails, we might be trying to store a huge avatar
           try {
             localStorage.setItem('ssm_user_identity', JSON.stringify(user));
           } catch (retryError) {
-            console.error("Critical: Storage quota exceeded even after cleanup. Identity might be too large (check avatar size).");
+            console.error("Critical: Storage quota exceeded even after cleanup.");
           }
         }
       }
     } else {
       localStorage.removeItem('ssm_user_identity');
+      localStorage.removeItem('token');
     }
-  }, [user]);
+  }, [user, token]);
 
   const login = async (email, password) => {
     setLoading(true);
 
     // Check for Owner Credentials (Hardcoded as per request)
-    if (email === 'Command@SamadhanShoe.com' && password === 'Samadhan_Security_2025_Elite') {
+    if (email.toLowerCase() === 'command@samadhanshoe.com' && password === 'Samadhan_Security_2025_Elite') {
       const ownerData = {
         _id: 'owner_001',
         name: 'Vamanrao Trambak Ahire',
-        email: email,
+        email: 'Command@SamadhanShoe.com',
         role: 'admin',
         isOwner: true,
         phone: '9423228843',
-        address: 'Plot No. 29, Santkrupa Niwas, Swami Samarth Nagar, Chhatrapati Sambhaji Nagar Road, Nandur Naka',
+        secondaryPhone: '8888644021',
+        landline: '0253-2629021',
+        address: 'Plot No. 29, Santkrupa Niwas, Swami Samarth Nagar, Chhatrapati Sambhaji Nagar Road, Yashwant Lawns Javal, Nandur Naka, Nashik',
         city: 'Nashik',
         state: 'Maharashtra',
         pincode: '422003',
@@ -60,7 +65,13 @@ export const AuthProvider = ({ children }) => {
         avatar: '/New-Samadhan-Shoe-Mart/Main-Shoe.png'
       };
 
+      const secureToken = 'samadhan_elite_admin_secure_token_2025';
+
+      // Crucial: Set storage BEFORE updating state to ensure persistence across potential reloads
       localStorage.setItem('ssm_user_identity', JSON.stringify(ownerData));
+      localStorage.setItem('token', secureToken);
+
+      setToken(secureToken);
       setUser(ownerData);
       setLoading(false);
       return { success: true, role: 'admin' };
@@ -80,6 +91,10 @@ export const AuthProvider = ({ children }) => {
       identityVerified: false
     };
 
+    const userToken = 'samadhan_user_token_' + Date.now();
+    localStorage.setItem('token', userToken);
+
+    setToken(userToken);
     setUser(userData);
     setLoading(false);
     return { success: true, role: 'user' };
@@ -121,6 +136,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     setUser(null);
+    setToken(null);
     localStorage.clear();
     sessionStorage.clear();
 
@@ -143,6 +159,7 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider value={{
       user,
       setUser,
+      token,
       loading,
       isAuthenticated: !!user,
       login,

@@ -13,13 +13,16 @@ import {
   Truck,
   Loader2,
   MessageSquare,
-  Image as ImageIcon
+  Image as ImageIcon,
+  RotateCcw,
+  CheckCircle
 } from 'lucide-react';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { loading, error, request } = useFetch();
+  const [success, setSuccess] = useState(false);
   const [stats, setStats] = useState({
     totalUsers: 124,
     totalOrders: 48,
@@ -53,15 +56,33 @@ const AdminDashboard = () => {
 
   if (!user || user.role !== 'admin') return null;
 
+  const handleFactoryReset = () => {
+    if (window.confirm("WARNING: This will permanently clear all Demo Persistence data (Products, Orders, Gallery updates). Proceed?")) {
+      const keysToClear = [
+        'ssm_demo_products',
+        'ssm_workshop_media',
+        'ssm_workshop_gallery',
+        'ssm_demo_orders',
+        'newSamadhanProductReviews'
+      ];
+      keysToClear.forEach(key => localStorage.removeItem(key));
+      setSuccess(true);
+      setTimeout(() => {
+        setSuccess(false);
+        window.location.reload();
+      }, 2000);
+    }
+  };
+
   const statCards = [
-    { title: 'Total Revenue', value: `₹${stats.revenue}`, icon: <DollarSign className="w-8 h-8 text-green-600" />, bg: 'bg-green-50' },
-    { title: 'Total Orders', value: stats.totalOrders, icon: <ShoppingBag className="w-8 h-8 text-blue-600" />, bg: 'bg-blue-50' },
-    { title: 'Total Users', value: stats.totalUsers, icon: <Users className="w-8 h-8 text-purple-600" />, bg: 'bg-purple-50' },
-    { title: 'Active Visitors', value: stats.activeVisitors, icon: <TrendingUp className="w-8 h-8 text-orange-600" />, bg: 'bg-orange-50' },
+    { title: 'Total Revenue', value: `₹${stats?.revenue || 0}`, icon: <DollarSign className="w-8 h-8 text-green-600" />, bg: 'bg-green-50' },
+    { title: 'Total Orders', value: stats?.totalOrders || 0, icon: <ShoppingBag className="w-8 h-8 text-blue-600" />, bg: 'bg-blue-50' },
+    { title: 'Total Users', value: stats?.totalUsers || 0, icon: <Users className="w-8 h-8 text-purple-600" />, bg: 'bg-purple-50' },
+    { title: 'Active Visitors', value: stats?.activeVisitors || 0, icon: <TrendingUp className="w-8 h-8 text-orange-600" />, bg: 'bg-orange-50' },
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 no-blur-zone">
       <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
         <div>
           <h1 className="text-5xl font-black text-slate-950 tracking-tighter uppercase leading-none mb-4">Store Command</h1>
@@ -77,8 +98,24 @@ const AdminDashboard = () => {
           <Link to="/admin/orders" className="bg-white text-slate-950 px-8 py-4 rounded-2xl border border-slate-200 hover:bg-slate-50 transition-all flex items-center font-black uppercase tracking-widest text-[10px] shadow-sm">
             <Truck className="w-4 h-4 mr-2" /> All Shipments
           </Link>
+          <button
+            onClick={handleFactoryReset}
+            className="bg-rose-50 text-rose-600 px-6 py-4 rounded-2xl border border-rose-100 hover:bg-rose-600 hover:text-white transition-all flex items-center font-black uppercase tracking-widest text-[10px] shadow-sm"
+          >
+            <RotateCcw className="w-4 h-4 mr-2" /> Factory Reset
+          </button>
         </div>
       </div>
+
+      {success && (
+         <div className="bg-emerald-600 text-white p-6 rounded-[2rem] mb-12 flex items-center shadow-xl border-4 border-white animate-in zoom-in-95 no-blur-zone">
+            <CheckCircle className="w-8 h-8 mr-4" />
+            <div>
+               <p className="font-black uppercase tracking-widest text-lg">Update Successfull</p>
+               <p className="text-[10px] opacity-80 font-bold uppercase tracking-tighter">Demo database has been wiped and reset to factory defaults.</p>
+            </div>
+         </div>
+      )}
 
       {loading ? (
         <div className="flex justify-center py-20">

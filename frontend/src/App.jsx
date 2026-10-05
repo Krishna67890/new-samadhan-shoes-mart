@@ -15,6 +15,7 @@ import ProfilePage from './pages/ProfilePage';
 import EditProfilePage from './pages/EditProfilePage';
 import OwnerLoginPage from './pages/OwnerLoginPage';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminOrders from './pages/AdminOrders';
 import AdminProductList from './pages/AdminProductList';
 import AdminProductEdit from './pages/AdminProductEdit';
 import AdminGalleryManager from './pages/AdminGalleryManager';
@@ -75,6 +76,7 @@ function App() {
 
           {/* Admin Protected Routes */}
           <Route path="/admin" element={<AdminRoute><PageWrapper><AdminDashboard /></PageWrapper></AdminRoute>} />
+          <Route path="/admin/orders" element={<AdminRoute><PageWrapper><AdminOrders /></PageWrapper></AdminRoute>} />
           <Route path="/admin/products" element={<AdminRoute><PageWrapper><AdminProductList /></PageWrapper></AdminRoute>} />
           <Route path="/admin/product/new" element={<AdminRoute><PageWrapper><AdminProductEdit /></PageWrapper></AdminRoute>} />
           <Route path="/admin/product/:id/edit" element={<AdminRoute><PageWrapper><AdminProductEdit /></PageWrapper></AdminRoute>} />

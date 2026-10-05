@@ -125,6 +125,16 @@ const CATEGORY_CATALOG = [
 
 const WorkshopPage = () => {
   const navigate = useNavigate();
+  const [workshopMedia, setWorkshopMedia] = useState(WORKSHOP_MEDIA);
+  const [workshopGallery, setWorkshopGallery] = useState(WORKSHOP_GALLERY);
+
+  useEffect(() => {
+    const storedMedia = localStorage.getItem('ssm_workshop_media');
+    const storedGallery = localStorage.getItem('ssm_workshop_gallery');
+    if (storedMedia) setWorkshopMedia(JSON.parse(storedMedia));
+    if (storedGallery) setWorkshopGallery(JSON.parse(storedGallery));
+  }, []);
+
   const [selectedStation, setSelectedStation] = useState(0);
   const [bookingStatus, setBookingStatus] = useState(null);
   const [currentMediaIdx, setCurrentMediaIdx] = useState(0);
@@ -333,9 +343,9 @@ Requested via New Samadhan Shoes Website`;
       </section>
 
       {/* Advanced Multi-Media Auto-Scrolling Slideshow */}
-      <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-8">
+      <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-8 no-blur-zone">
         <div className="relative h-[300px] sm:h-[500px] rounded-[3rem] overflow-hidden group shadow-2xl bg-[#111111]">
-          {WORKSHOP_MEDIA.map((media, idx) => (
+          {workshopMedia.map((media, idx) => (
             <div
               key={idx}
               className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
@@ -369,7 +379,7 @@ Requested via New Samadhan Shoes Website`;
                {isAutoPlaying ? <Pause size={20} /> : <Play size={20} />}
              </button>
              <div className="flex gap-2">
-                {WORKSHOP_MEDIA.map((_, idx) => (
+                {workshopMedia.map((_, idx) => (
                   <button
                     key={idx}
                     onClick={() => setCurrentMediaIdx(idx)}
@@ -606,7 +616,7 @@ Requested via New Samadhan Shoes Website`;
           </div>
 
           <div className="flex flex-wrap gap-2">
-            {['All', 'Heritage', 'Men', 'Women', 'Kids', 'Sneakers'].map((tab) => (
+            {['All', "Women's Edition", "Kids Edition", 'Bespoke Derbies', 'Goodyear Boots', 'Italian Loafers', 'Minimalist Sneakers', 'Workshop'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveGalleryTab(tab)}
@@ -622,8 +632,8 @@ Requested via New Samadhan Shoes Website`;
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 relative z-10">
-          {WORKSHOP_GALLERY.filter(item => activeGalleryTab === 'All' || item.category === activeGalleryTab).map((item, idx) => (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 relative z-10 no-blur-zone">
+          {workshopGallery.filter(item => activeGalleryTab === 'All' || item.category === activeGalleryTab).map((item, idx) => (
             <div
               key={idx}
               className="group relative aspect-[4/5] rounded-[2.5rem] overflow-hidden bg-[#F7F5F0] border border-[#111111]/5 shadow-sm hover:shadow-2xl transition-all duration-500"

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Trash2, Search, Star, MessageSquare, ArrowLeft, Filter } from 'lucide-react';
+import { Trash2, Search, Star, MessageSquare, ArrowLeft, Filter, CheckCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { getReviews, deleteReview } from '../utils/reviewService';
 import localProducts from '../utils/localProducts';
@@ -9,6 +9,7 @@ const AdminReviewDashboard = () => {
   const [reviews, setReviews] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('All');
+  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,31 +17,35 @@ const AdminReviewDashboard = () => {
   }, []);
 
   const loadReviews = () => {
-    setReviews(getReviews());
+    const data = getReviews();
+    setReviews(Array.isArray(data) ? data : []);
   };
 
-  const getProductName = (id) => {
-    const p = localProducts.find(prod => String(prod.id) === String(id) || String(prod._id) === String(id));
-    return p ? p.name : 'Unknown Product';
+  const getProductInfo = (id) => {
+    const demoProducts = JSON.parse(localStorage.getItem('ssm_demo_products') || '[]');
+    const allProducts = [...localProducts, ...demoProducts];
+    const p = allProducts.find(prod => String(prod.id) === String(id) || String(prod._id) === String(id));
+    return p || { name: 'Unknown Product', category: 'N/A' };
   };
 
-  const getProductCategory = (id) => {
-    const p = localProducts.find(prod => String(prod.id) === String(id) || String(prod._id) === String(id));
-    return p ? p.category : 'N/A';
-  };
+  const getProductName = (id) => getProductInfo(id).name;
+  const getProductCategory = (id) => getProductInfo(id).category;
 
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to permanently remove this review?")) {
       deleteReview(id);
       loadReviews();
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 3000);
     }
   };
 
-  const filteredReviews = reviews.filter(rev => {
+  const filteredReviews = (Array.isArray(reviews) ? reviews : []).filter(rev => {
+    const productName = getProductName(rev.productId) || '';
     const matchesSearch =
-      rev.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      rev.review.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      getProductName(rev.productId).toLowerCase().includes(searchTerm.toLowerCase());
+      (rev.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (rev.review || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      productName.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesCategory = categoryFilter === 'All' || getProductCategory(rev.productId) === categoryFilter;
 
@@ -49,12 +54,12 @@ const AdminReviewDashboard = () => {
 
   const stats = {
     total: reviews.length,
-    avg: reviews.length ? (reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length).toFixed(1) : 0,
+    avg: reviews.length ? (reviews.reduce((acc, r) => acc + (r.rating || 0), 0) / reviews.length).toFixed(1) : 0,
     fiveStar: reviews.filter(r => r.rating === 5).length
   };
 
   return (
-    <div className="min-h-screen bg-[#F7F5F0] pt-32 pb-20 px-6">
+    <div className="min-h-screen bg-[#F7F5F0] pt-32 pb-20 px-6 no-blur-zone">
       <div className="container mx-auto max-w-7xl">
 
         {/* HEADER */}
@@ -80,6 +85,16 @@ const AdminReviewDashboard = () => {
              </div>
           </div>
         </div>
+
+        {success && (
+          <div className="bg-[#8B0000] text-white p-6 rounded-[2.5rem] mb-12 flex items-center shadow-xl border-4 border-white animate-in zoom-in-95 no-blur-zone">
+            <CheckCircle className="w-8 h-8 mr-4" />
+            <div>
+              <p className="font-black uppercase tracking-widest text-lg">Update Successfull</p>
+              <p className="text-[10px] opacity-80 font-bold uppercase tracking-tighter">Review database has been synchronized successfully.</p>
+            </div>
+          </div>
+        )}
 
         {/* FILTERS */}
         <div className="bg-white p-8 rounded-[3rem] border border-[#111]/5 shadow-xl mb-12 flex flex-col md:flex-row gap-6 items-center">

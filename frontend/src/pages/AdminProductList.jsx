@@ -15,15 +15,41 @@ const AdminProductList = () => {
   const fetchProducts = async () => {
     try {
       const data = await request('/api/products');
+      const demoProducts = JSON.parse(localStorage.getItem('ssm_demo_products') || '[]');
+
+      let allProducts = [];
       if (data && Array.isArray(data) && data.length > 0) {
-        setProducts(data);
+        allProducts = [...data];
       } else {
-        console.log("Using local fallback products");
-        setProducts(localProducts);
+        allProducts = [...localProducts];
       }
+
+      // Merge Demo Products (Overwriting local/server matches by ID)
+      demoProducts.forEach(dp => {
+         const idx = allProducts.findIndex(p => p._id === dp._id || p.id === dp.id);
+         if (idx !== -1) {
+            allProducts[idx] = dp;
+         } else {
+            allProducts.unshift(dp);
+         }
+      });
+
+      setProducts(allProducts);
     } catch (err) {
-      console.error("Fetch failed, using local products:", err);
-      setProducts(localProducts);
+      console.error("Fetch failed, using local/demo products:", err);
+      const demoProducts = JSON.parse(localStorage.getItem('ssm_demo_products') || '[]');
+
+      // Merge local and demo
+      let allProducts = [...localProducts];
+      demoProducts.forEach(dp => {
+         const idx = allProducts.findIndex(p => p._id === dp._id || p.id === dp.id);
+         if (idx !== -1) {
+            allProducts[idx] = dp;
+         } else {
+            allProducts.unshift(dp);
+         }
+      });
+      setProducts(allProducts);
     }
   };
 
@@ -47,21 +73,33 @@ const AdminProductList = () => {
     if (window.confirm('Are you sure you want to delete this product?')) {
       try {
         await request(`/api/products/${id}`, 'DELETE');
+
+        // Also remove from demo storage
+        const demoProducts = JSON.parse(localStorage.getItem('ssm_demo_products') || '[]');
+        const filteredDemo = demoProducts.filter(p => p._id !== id && p.id !== id);
+        localStorage.setItem('ssm_demo_products', JSON.stringify(filteredDemo));
+
         fetchProducts(); // Refresh list
       } catch (err) {
-        console.error("Delete failed on server, removing from local view for demo:", err);
-        setProducts(prev => prev.filter(p => p._id !== id));
+        console.error("Delete failed on server, removing from local/demo view:", err);
+
+        // Remove from demo storage
+        const demoProducts = JSON.parse(localStorage.getItem('ssm_demo_products') || '[]');
+        const filteredDemo = demoProducts.filter(p => p._id !== id && p.id !== id);
+        localStorage.setItem('ssm_demo_products', JSON.stringify(filteredDemo));
+
+        setProducts(prev => prev.filter(p => p._id !== id && p.id !== id));
       }
     }
   };
 
-  const filteredProducts = products.filter(p =>
-    p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    p.brand.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredProducts = (products || []).filter(p =>
+    (p.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (p.brand || '').toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 no-blur-zone">
       <div className="flex items-center mb-8">
         <button onClick={() => navigate('/admin')} className="mr-4 p-2 hover:bg-gray-100 rounded-full transition">
           <ArrowLeft className="w-6 h-6" />
