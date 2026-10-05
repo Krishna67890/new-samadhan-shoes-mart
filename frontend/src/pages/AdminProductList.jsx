@@ -109,7 +109,7 @@ const AdminProductList = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100" ref={listRef}>
-                {filteredProducts.map((product) => (
+                {Array.isArray(filteredProducts) && filteredProducts.map((product) => (
                   <tr key={product._id} className="product-row hover:bg-gray-50 transition">
                     <td className="px-6 py-4 font-mono text-xs text-gray-400">{product._id.substring(10)}</td>
                     <td className="px-6 py-4">

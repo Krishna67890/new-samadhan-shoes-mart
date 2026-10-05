@@ -31,6 +31,17 @@ const productSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    category: {
+      type: String,
+      required: true,
+      default: 'Formal',
+    },
+    targetGender: {
+      type: String,
+      required: true,
+      enum: ['Men', 'Women', 'Kids', 'Unisex'],
+      default: 'Men',
+    },
     price: {
       type: Number,
       required: true,

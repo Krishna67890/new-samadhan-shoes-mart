@@ -44,18 +44,23 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
 
     // Check for Owner Credentials (Hardcoded as per request)
-    if (email === 'Samadhan@Shoe.com' && password === 'Samadhan@123') {
+    if (email === 'Command@SamadhanShoe.com' && password === 'Samadhan_Security_2025_Elite') {
       const ownerData = {
         _id: 'owner_001',
-        name: 'Samadhan (Owner)',
+        name: 'Vamanrao Trambak Ahire',
         email: email,
         role: 'admin',
         isOwner: true,
+        phone: '9423228843',
+        address: 'Plot No. 29, Santkrupa Niwas, Swami Samarth Nagar, Chhatrapati Sambhaji Nagar Road, Nandur Naka',
         city: 'Nashik',
         state: 'Maharashtra',
+        pincode: '422003',
         identityVerified: true,
         avatar: '/New-Samadhan-Shoe-Mart/Main-Shoe.png'
       };
+
+      localStorage.setItem('ssm_user_identity', JSON.stringify(ownerData));
       setUser(ownerData);
       setLoading(false);
       return { success: true, role: 'admin' };

@@ -113,7 +113,7 @@ const AdminReviewDashboard = () => {
 
         {/* REVIEWS TABLE/LIST */}
         <div className="space-y-6">
-          {filteredReviews.length > 0 ? (
+          {Array.isArray(filteredReviews) && filteredReviews.length > 0 ? (
             filteredReviews.map((rev) => (
               <div key={rev.id} className="bg-white p-10 rounded-[3rem] border border-[#111]/5 shadow-sm hover:shadow-md transition-all">
                 <div className="grid md:grid-cols-4 gap-8 items-center">
@@ -130,7 +130,7 @@ const AdminReviewDashboard = () => {
                       <div>
                         <p className="font-bold text-sm text-[#111]">{rev.name}</p>
                         <div className="flex text-[#8B0000]">
-                          {[...Array(5)].map((_, i) => <Star key={i} size={10} fill={i < rev.rating ? "currentColor" : "none"} />)}
+                          {Array.from({ length: 5 }).map((_, i) => <Star key={i} size={10} fill={i < rev.rating ? "currentColor" : "none"} />)}
                         </div>
                       </div>
                     </div>

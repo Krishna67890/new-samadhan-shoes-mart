@@ -86,14 +86,17 @@ const HomePage = () => {
         }
       });
 
-      heroTl
-        .to(heroShoeRef.current, {
+      if (heroShoeRef.current) {
+        heroTl.to(heroShoeRef.current, {
           scale: 1.8,
           rotation: 25,
           y: 80,
           duration: 2,
           ease: "power2.inOut"
-        })
+        });
+      }
+
+      heroTl
         .to(".hero-text", {
           y: -150,
           scale: 0.8,
@@ -108,7 +111,7 @@ const HomePage = () => {
           duration: 2.5,
           ease: "expo.inOut"
         }, "<")
-        .from(".category-labels span", {
+        .from(".category-labels button", {
           opacity: 0,
           y: 50,
           scale: 0.5,
@@ -400,7 +403,7 @@ const HomePage = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+        <div className="flex overflow-x-auto md:grid md:grid-cols-2 lg:grid-cols-5 gap-8 pb-8 md:pb-0 scrollbar-hide snap-x">
           {[
             { name: 'Men', desc: 'Smart everyday footwear', img: '/New-Samadhan-Shoe-Mart/Shoes-grey-men-1.jpg', path: '/products?category=Men' },
             { name: 'Women', desc: 'Elegant styles for every occasion', img: '/New-Samadhan-Shoe-Mart/IMG-20260928-WA0011.jpg', path: '/products?category=Women' },
@@ -411,7 +414,7 @@ const HomePage = () => {
             <div
               key={idx}
               onClick={() => navigate(item.path)}
-              className="category-card group relative h-[500px] rounded-[3rem] overflow-hidden cursor-pointer shadow-2xl"
+              className="category-card group relative h-[500px] min-w-[300px] md:min-w-0 rounded-[3rem] overflow-hidden cursor-pointer shadow-2xl snap-center"
             >
               <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60 z-10" />
               <img src={item.img} alt={item.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />

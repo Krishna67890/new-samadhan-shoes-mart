@@ -101,7 +101,7 @@ const AdminGalleryManager = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {workshopMedia.map((item, idx) => (
+            {Array.isArray(workshopMedia) && workshopMedia.map((item, idx) => (
               <div key={idx} className="p-4 border border-gray-100 rounded-2xl flex gap-4 bg-gray-50/50">
                 <div className="w-24 h-24 bg-black rounded-lg flex items-center justify-center overflow-hidden shrink-0 relative group">
                   {item.url ? (
@@ -165,7 +165,7 @@ const AdminGalleryManager = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {workshopGallery.map((item, idx) => (
+            {Array.isArray(workshopGallery) && workshopGallery.map((item, idx) => (
               <div key={idx} className="p-4 border border-gray-100 rounded-2xl space-y-4 bg-gray-50/50 relative group">
                 <div className="aspect-[4/3] bg-gray-100 rounded-xl overflow-hidden relative group/img">
                   {item.url ? (

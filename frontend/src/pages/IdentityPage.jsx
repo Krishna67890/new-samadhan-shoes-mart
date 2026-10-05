@@ -248,12 +248,19 @@ const IdentityPage = () => {
                      <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-6">State</label>
                      <select name="state" value={formData.state} onChange={handleInputChange} className="w-full px-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-blue-500/50 transition-all appearance-none cursor-pointer">
                         <option value="" className="bg-[#111]">SELECT STATE</option>
-                        {indiaData.states.map(s => <option key={s} value={s} className="bg-[#111]">{s}</option>)}
+                        {Array.isArray(indiaData?.states) && indiaData.states.map(s => <option key={s} value={s} className="bg-[#111]">{s}</option>)}
                      </select>
                   </div>
                   <div className="space-y-4">
                      <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-6">City</label>
-                     <input name="city" value={formData.city} onChange={handleInputChange} className="w-full px-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-blue-500/50 transition-all" placeholder="CITY" />
+                     {Array.isArray(indiaData?.citiesByState?.[formData.state]) ? (
+                        <select name="city" value={formData.city} onChange={handleInputChange} className="w-full px-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-blue-500/50 transition-all appearance-none cursor-pointer">
+                           <option value="" className="bg-[#111]">SELECT CITY</option>
+                           {indiaData.citiesByState[formData.state].map(c => <option key={c} value={c} className="bg-[#111]">{c}</option>)}
+                        </select>
+                     ) : (
+                        <input name="city" value={formData.city} onChange={handleInputChange} className="w-full px-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-blue-500/50 transition-all" placeholder="CITY" />
+                     )}
                   </div>
                   <div className="space-y-4">
                      <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-6">Pincode</label>

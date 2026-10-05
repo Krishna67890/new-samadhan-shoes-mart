@@ -13,12 +13,15 @@ const OwnerLoginPage = () => {
   const formRef = useRef(null);
 
   useEffect(() => {
-    gsap.from(formRef.current, {
-      y: 50,
-      opacity: 0,
-      duration: 1.2,
-      ease: 'power4.out'
-    });
+    if (formRef.current) {
+      gsap.from(formRef.current, {
+        y: 50,
+        opacity: 0,
+        duration: 1.2,
+        ease: 'power4.out',
+        clearProps: "all"
+      });
+    }
   }, []);
 
   const handleLogin = async (e) => {
@@ -26,7 +29,7 @@ const OwnerLoginPage = () => {
     setLocalError(null);
 
     // Private Owner Credentials Enforcement
-    if (email !== 'Samadhan@Shoe.com') {
+    if (email !== 'Command@SamadhanShoe.com') {
       setLocalError('Unauthorized Access: Invalid Owner Email.');
       return;
     }
@@ -41,8 +44,8 @@ const OwnerLoginPage = () => {
 
   return (
     <div className="min-h-screen bg-[#050505] flex items-center justify-center p-6 relative overflow-hidden">
-      {/* Red Pulse Glow for Security */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-red-600/10 rounded-full animate-pulse"></div>
+      {/* Red Pulse Glow for Security - Sharp edges per Zero-Blur policy */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-red-600/10 rounded-full border border-red-600/5 animate-pulse"></div>
 
       <div className="w-full max-w-lg z-10" ref={formRef}>
         <div className="bg-white/[0.03] rounded-[3rem] border border-white/10 p-10 md:p-14 shadow-2xl">
@@ -69,7 +72,6 @@ const OwnerLoginPage = () => {
                 <input
                   type="email"
                   required
-                  placeholder="Samadhan@Shoe.com"
                   className="w-full pl-16 pr-8 py-5 bg-white/5 border border-white/5 rounded-2xl focus:bg-white/10 focus:border-red-500/50 outline-none transition-all font-black text-white placeholder:text-white/5"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -84,7 +86,6 @@ const OwnerLoginPage = () => {
                 <input
                   type="password"
                   required
-                  placeholder="••••••••"
                   className="w-full pl-16 pr-8 py-5 bg-white/5 border border-white/5 rounded-2xl focus:bg-white/10 focus:border-red-500/50 outline-none transition-all font-black text-white placeholder:text-white/5"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}

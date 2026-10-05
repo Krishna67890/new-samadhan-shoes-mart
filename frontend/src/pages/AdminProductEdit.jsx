@@ -43,29 +43,29 @@ const AdminProductEdit = () => {
       const fetchProduct = async () => {
         try {
           const data = await request(`/api/products/${id}`);
-          setName(data.name);
-          setPrice(data.price);
-          setBrand(data.brand);
-          setStock(data.stock);
-          setRating(data.rating);
-          setDescription(data.description);
+          setName(data.name || '');
+          setPrice(data.price || 0);
+          setBrand(data.brand || '');
+          setStock(data.stock || 0);
+          setRating(data.rating || 0);
+          setDescription(data.description || '');
           setCategory(data.category || 'Formal');
           setTargetGender(data.targetGender || 'Men');
-          setImages(data.images);
-          setSizes(data.sizes);
+          setImages(data.images || []);
+          setSizes(data.sizes || [6, 7, 8, 9, 10]);
         } catch (err) {
           console.warn("Backend fetch failed, searching in local catalog:", err);
           const localMatch = localProducts.find(p => p._id === id || p.id === id);
           if (localMatch) {
-            setName(localMatch.name);
-            setPrice(localMatch.price);
-            setBrand(localMatch.brand);
+            setName(localMatch.name || '');
+            setPrice(localMatch.price || 0);
+            setBrand(localMatch.brand || '');
             setStock(localMatch.stock || 10);
-            setRating(localMatch.rating);
-            setDescription(localMatch.description);
+            setRating(localMatch.rating || 0);
+            setDescription(localMatch.description || '');
             setCategory(localMatch.category || 'Formal');
             setTargetGender(localMatch.targetGender || 'Men');
-            setImages(localMatch.images);
+            setImages(localMatch.images || []);
             setSizes(localMatch.sizes || [6, 7, 8, 9, 10]);
           }
         }
