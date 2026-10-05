@@ -4,6 +4,7 @@ import { gsap } from 'gsap';
 import useFetch from '../hooks/useFetch';
 import { Edit, Trash2, Plus, ArrowLeft, Search, Loader2, AlertCircle, Package, Filter, ExternalLink } from 'lucide-react';
 import localProducts from '../utils/localProducts';
+import { getMergedProducts } from '../utils/productUtils';
 
 const AdminProductList = () => {
   const { loading, error, request } = useFetch();
@@ -16,39 +17,11 @@ const AdminProductList = () => {
   const fetchProducts = async () => {
     try {
       const data = await request('/api/products');
-      const demoProducts = JSON.parse(localStorage.getItem('ssm_demo_products') || '[]');
-
-      let allProducts = [];
-      if (data && Array.isArray(data) && data.length > 0) {
-        allProducts = [...data];
-      } else {
-        allProducts = [...localProducts];
-      }
-
-      // Merge Demo Products
-      demoProducts.forEach(dp => {
-         const idx = allProducts.findIndex(p => p._id === dp._id || p.id === dp.id);
-         if (idx !== -1) {
-            allProducts[idx] = dp;
-         } else {
-            allProducts.unshift(dp);
-         }
-      });
-
+      const allProducts = getMergedProducts(data);
       setProducts(allProducts);
     } catch (err) {
       console.error("Fetch failed, using local/demo products:", err);
-      const demoProducts = JSON.parse(localStorage.getItem('ssm_demo_products') || '[]');
-
-      let allProducts = [...localProducts];
-      demoProducts.forEach(dp => {
-         const idx = allProducts.findIndex(p => p._id === dp._id || p.id === dp.id);
-         if (idx !== -1) {
-            allProducts[idx] = dp;
-         } else {
-            allProducts.unshift(dp);
-         }
-      });
+      const allProducts = getMergedProducts([]);
       setProducts(allProducts);
     }
   };

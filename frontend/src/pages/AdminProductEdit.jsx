@@ -5,6 +5,7 @@ import useFetch from '../hooks/useFetch';
 import { ArrowLeft, Save, Upload, Loader2, Image as ImageIcon, CheckCircle, AlertCircle, PlusCircle, Sparkles } from 'lucide-react';
 
 import localProducts from '../utils/localProducts';
+import { getProductById } from '../utils/productUtils';
 
 const AdminProductEdit = () => {
   const { id } = useParams();
@@ -42,38 +43,21 @@ const AdminProductEdit = () => {
     if (!isNew) {
       const fetchProduct = async () => {
         try {
-          const data = await request(`/api/products/${id}`);
-          setName(data.name || '');
-          setPrice(data.price || 0);
-          setBrand(data.brand || '');
-          setStock(data.stock || 0);
-          setRating(data.rating || 0);
-          setDescription(data.description || '');
-          setCategory(data.category || 'Formal');
-          setTargetGender(data.targetGender || 'Men');
-          setImages(data.images || []);
-          setSizes(data.sizes || [6, 7, 8, 9, 10]);
-        } catch (err) {
-          console.warn("Backend fetch failed, searching in local/demo catalog:", err);
-
-          // Try Demo Storage first
-          const demoProducts = JSON.parse(localStorage.getItem('ssm_demo_products') || '[]');
-          const demoMatch = demoProducts.find(p => p._id === id || p.id === id);
-
-          const localMatch = demoMatch || localProducts.find(p => p._id === id || p.id === id);
-
-          if (localMatch) {
-            setName(localMatch.name || '');
-            setPrice(localMatch.price || 0);
-            setBrand(localMatch.brand || '');
-            setStock(localMatch.stock || 10);
-            setRating(localMatch.rating || 0);
-            setDescription(localMatch.description || '');
-            setCategory(localMatch.category || 'Formal');
-            setTargetGender(localMatch.targetGender || 'Men');
-            setImages(localMatch.images || []);
-            setSizes(localMatch.sizes || [6, 7, 8, 9, 10]);
+          const data = await getProductById(id, request);
+          if (data) {
+            setName(data.name || '');
+            setPrice(data.price || 0);
+            setBrand(data.brand || '');
+            setStock(data.stock || 0);
+            setRating(data.rating || 0);
+            setDescription(data.description || '');
+            setCategory(data.category || 'Formal');
+            setTargetGender(data.targetGender || 'Men');
+            setImages(data.images || []);
+            setSizes(data.sizes || [6, 7, 8, 9, 10]);
           }
+        } catch (err) {
+          console.error("Error loading product data:", err);
         }
       };
       fetchProduct();

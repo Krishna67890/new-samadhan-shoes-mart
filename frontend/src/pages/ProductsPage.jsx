@@ -6,6 +6,7 @@ import useFetch from '../hooks/useFetch';
 import { Star, ChevronRight, Sparkles, ShoppingBag, MessageCircle, Filter, Check, PlusCircle, Edit, Trash2 } from 'lucide-react';
 
 import localProducts from '../utils/localProducts';
+import { getMergedProducts } from '../utils/productUtils';
 import { calculateProductStats } from '../utils/reviewService';
 
 const CATEGORIES = ['All', 'Men', 'Women', 'Sneakers', 'Formal', 'Kids'];
@@ -38,33 +39,24 @@ const ProductsPage = () => {
     const customerName = user?.name || 'Valued Shopper';
     const message = `Hello New Samadhan Shoe Mart! 👋\n\nI want to order this Masterpiece:\n\n👟 *Product:* ${product?.name}\n🏷️ *Brand:* ${product?.brand || 'New Samadhan'}\n💰 *Price:* ₹${(cleanPrice || 0).toLocaleString()}\n📏 *Size:* To be confirmed\n📦 *Quantity:* 1\n\n--- CUSTOMER DETAILS ---\n👤 *Name:* ${customerName}\n📞 *Phone:* ${user?.phone || 'Not Provided'}\n📍 *Address:* ${user?.address || 'Nashik Store Pickup / Delivery'}\n🏙️ *City:* ${user?.city || 'Nashik'}\n📮 *Pincode:* ${user?.pincode || '422003'}\n\n--- PAYMENT INTENT ---\nI am ready to proceed with online payment or UPI. Please confirm availability and share the payment details.`;
 
+    const encodedMsg = encodeURIComponent(message);
     // Dual Shopkeeper Protocol - Use business numbers 9423228843 or 8888644021
-    const targetNum = Math.random() > 0.5 ? '9423228843' : '8888644021';
-    window.open(`https://wa.me/91${targetNum}?text=${encodeURIComponent(message)}`, '_blank');
+    window.open(`https://wa.me/919423228843?text=${encodedMsg}`, '_blank');
+    setTimeout(() => {
+      window.open(`https://wa.me/918888644021?text=${encodedMsg}`, '_blank');
+    }, 600);
   };
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const data = await request('/api/products');
-        if (data && data.length > 0) {
-          // Verify if backend provides Women & Kids products
-          const hasWomen = data.some(p => p.category === 'Women' || p.targetGender === 'Women');
-          const hasKids = data.some(p => p.category === 'Kids' || p.targetGender === 'Kids');
-
-          if (!hasWomen || !hasKids) {
-            // Append local curated Women and Kids footwear to guarantee a rich catalog
-            const extraItems = localProducts.filter(lp => lp.category === 'Women' || lp.category === 'Kids' || lp.targetGender === 'Women' || lp.targetGender === 'Kids');
-            setProducts([...data, ...extraItems]);
-          } else {
-            setProducts(data);
-          }
-        } else {
-          setProducts(localProducts);
-        }
+        const allProducts = getMergedProducts(data);
+        setProducts(allProducts);
       } catch (err) {
         console.warn("Using local product catalog:", err);
-        setProducts(localProducts);
+        const allProducts = getMergedProducts([]);
+        setProducts(allProducts);
       }
     };
     fetchProducts();

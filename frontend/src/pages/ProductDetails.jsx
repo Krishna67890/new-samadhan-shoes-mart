@@ -5,6 +5,7 @@ import { AuthContext } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import useFetch from '../hooks/useFetch';
 import localProducts from '../utils/localProducts';
+import { getProductById } from '../utils/productUtils';
 import Reviews from '../components/Reviews';
 import {
   Star,
@@ -37,17 +38,12 @@ const ProductDetails = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const data = await request(`/api/products/${id}`);
-        if (data && (data._id || data.id)) {
+        const data = await getProductById(id, request);
+        if (data) {
           setProduct(data);
-          return;
         }
       } catch (err) {
-        console.warn("API Fetch failed, using local catalog fallback:", err);
-      }
-      const local = localProducts.find(p => String(p._id) === String(id) || String(p.id) === String(id));
-      if (local) {
-        setProduct(local);
+        console.error("Error loading product details:", err);
       }
     };
     fetchProduct();
@@ -98,9 +94,12 @@ const ProductDetails = () => {
     const customerName = user?.name || 'Valued Shopper';
     const message = `Hello New Samadhan Shoe Mart! 👟\n\nI want to order this Masterpiece:\n\n*Product:* ${product?.name}\n*Brand:* ${product?.brand || 'New Samadhan'}\n*Quantity:* ${quantity}\n*Size:* ${selectedSize || 'Standard'}\n*Price:* ₹${(cleanPrice || 0).toLocaleString()}\n*Total Amount:* ₹${(total || 0).toLocaleString()}\n\n*--- CUSTOMER DETAILS ---*\n*Name:* ${customerName}\n*Contact:* ${user?.phone || 'Not Provided'}\n*Address:* ${user?.address || 'Nashik Store / Delivery'}\n*City:* ${user?.city || 'Nashik'}\n*Pincode:* ${user?.pincode || '422003'}\n\n*--- ORDER METADATA ---*\n*Ref ID:* #NSSM-${Math.floor(100000 + Math.random() * 900000)}\n\nPlease confirm availability and share payment details.`;
 
-    // Rotate between primary business numbers (1. 9423228843, 2. 8888644021)
-    const targetNum = Math.random() > 0.5 ? '9423228843' : '8888644021';
-    window.open(`https://wa.me/91${targetNum}?text=${encodeURIComponent(message)}`, '_blank');
+    const encodedMsg = encodeURIComponent(message);
+    // Dual Shopkeeper Protocol - Use business numbers 9423228843 or 8888644021
+    window.open(`https://wa.me/919423228843?text=${encodedMsg}`, '_blank');
+    setTimeout(() => {
+      window.open(`https://wa.me/918888644021?text=${encodedMsg}`, '_blank');
+    }, 600);
   };
 
   if (loading) return (

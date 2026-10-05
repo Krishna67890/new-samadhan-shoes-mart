@@ -235,9 +235,12 @@ const ServiceCentrePage = () => {
                           <button
                              onClick={() => {
                                 const message = `*ELITE RESTORATION REQUEST*\n\nNode: ${selectedCenter.name}\nProtocol: Diamond Restoration\n\nI need a professional service for my footwear. Please confirm the security clearance for a visit.`;
-                                // Dual number protocol - ensures one of the store owners sees it
-                                const targetNum = Math.random() > 0.5 ? '9423228843' : '8888644021';
-                                window.open(`https://wa.me/91${targetNum}?text=${encodeURIComponent(message)}`, '_blank');
+                                const encodedMsg = encodeURIComponent(message);
+                                // Dual number protocol - ensures both store owners see it
+                                window.open(`https://wa.me/919423228843?text=${encodedMsg}`, '_blank');
+                                setTimeout(() => {
+                                   window.open(`https://wa.me/918888644021?text=${encodedMsg}`, '_blank');
+                                }, 600);
                              }}
                              className="bg-emerald-600 text-white py-5 rounded-xl text-[10px] font-sans font-bold uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-emerald-700 transition-all shadow-md"
                           >
