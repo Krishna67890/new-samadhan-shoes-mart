@@ -171,7 +171,7 @@ const DashboardPage = () => {
                              <div className="w-1 h-1 bg-[#111111]/10 rounded-full"></div>
                              <div className="flex items-center gap-1">
                                <CreditCard size={12} />
-                               <span className="text-[10px] font-bold uppercase tracking-wider">₹{order.totalPrice.toLocaleString()}</span>
+                               <span className="text-[10px] font-bold uppercase tracking-wider">₹{(order.totalPrice || 0).toLocaleString()}</span>
                              </div>
                            </div>
                         </div>

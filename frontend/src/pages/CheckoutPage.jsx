@@ -115,9 +115,9 @@ const CheckoutPage = () => {
     message += `--------------------------------------\n`;
     message += `👟 *PRODUCTS:*\n`;
     cartItems.forEach(item => {
-      message += `  - ${item.name} (Size ${item.size}) x${item.qty} [₹${(item.price * item.qty).toLocaleString()}]\n`;
+      message += `  - ${item.name} (Size ${item.size}) x${item.qty} [₹${((item.price || 0) * item.qty).toLocaleString()}]\n`;
     });
-    message += `💰 *TOTAL AMOUNT:* ₹${cartTotal.toLocaleString()}\n`;
+    message += `💰 *TOTAL AMOUNT:* ₹${(cartTotal || 0).toLocaleString()}\n`;
     message += `🏢 *ORIGIN:* New Samadhan Shoe Mart Factory, Nashik\n`;
     message += `--------------------------------------\n`;
     message += `✅ *ORDER REF:* #${orderRef}\n`;
@@ -317,7 +317,7 @@ const CheckoutPage = () => {
                           <h4 className="text-[10px] sm:text-xs font-bold truncate uppercase tracking-tight text-[#111111]">{item.name}</h4>
                           <div className="flex justify-between items-center mt-2 sm:mt-3">
                              <p className="text-[8px] sm:text-[10px] font-bold text-[#6B6B6B] uppercase tracking-widest">Sz {item.size} x {item.qty}</p>
-                             <p className="text-xs sm:text-sm font-black text-[#111111] tracking-tighter tabular-nums">₹{(item.price * item.qty).toLocaleString()}</p>
+                             <p className="text-xs sm:text-sm font-black text-[#111111] tracking-tighter tabular-nums">₹{((item.price || 0) * item.qty).toLocaleString()}</p>
                           </div>
                        </div>
                     </div>
@@ -327,7 +327,7 @@ const CheckoutPage = () => {
                <div className="space-y-4 sm:space-y-6 pt-8 sm:pt-10 border-t border-[#111111]/5 relative z-10">
                   <div className="flex justify-between items-center">
                      <span className="text-[8px] sm:text-[9px] font-bold uppercase tracking-[0.4em] text-[#6B6B6B]">Subtotal</span>
-                     <span className="text-xs sm:text-sm font-black tabular-nums">₹{cartTotal.toLocaleString()}</span>
+                     <span className="text-xs sm:text-sm font-black tabular-nums">₹{(cartTotal || 0).toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between items-center">
                      <span className="text-[8px] sm:text-[9px] font-bold uppercase tracking-[0.4em] text-emerald-600">Priority logistics</span>
@@ -335,7 +335,7 @@ const CheckoutPage = () => {
                   </div>
                   <div className="pt-4 sm:pt-6 flex flex-col gap-1 sm:gap-2">
                      <span className="text-[8px] sm:text-[9px] font-bold uppercase tracking-[0.4em] text-[#8B0000]">Final Valuation</span>
-                     <span className="text-3xl sm:text-5xl font-black tracking-tighter text-[#111111] tabular-nums">₹{cartTotal.toLocaleString()}</span>
+                     <span className="text-3xl sm:text-5xl font-black tracking-tighter text-[#111111] tabular-nums">₹{(cartTotal || 0).toLocaleString()}</span>
                   </div>
                </div>
 

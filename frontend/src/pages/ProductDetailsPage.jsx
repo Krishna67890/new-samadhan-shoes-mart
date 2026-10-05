@@ -200,7 +200,7 @@ const ProductDetailsPage = () => {
     }
 
     const cleanPrice = sanitizePrice(product?.price);
-    const message = `Hello New Samadhan Shoe Mart! 👋\n\nI want to order this Masterpiece:\n\n👟 *Product:* ${product?.name}\n🏷️ *Brand:* ${product?.brand}\n💰 *Price:* ₹${(cleanPrice * qty).toLocaleString()}\n📏 *Size:* ${selectedSize} (UK/IN)\n📦 *Quantity:* ${qty}\n🖼️ *Image:* ${product?.images?.[0]}\n\n--- CUSTOMER DETAILS ---\n👤 *Name:* ${user?.name || 'Guest'}\n📍 *Address:* ${user?.address || 'Not Provided'}\n🏙️ *City:* ${user?.city || 'Not Provided'}\n📮 *Pincode:* ${user?.pincode || 'Not Provided'}\n\n--- PAYMENT INTENT ---\nI am ready to proceed with the online payment via UPI/Bank Transfer. Please share the QR code or Payment Link.`;
+    const message = `Hello New Samadhan Shoe Mart! 👋\n\nI want to order this Masterpiece:\n\n👟 *Product:* ${product?.name}\n🏷️ *Brand:* ${product?.brand}\n💰 *Price:* ₹${((cleanPrice || 0) * qty).toLocaleString()}\n📏 *Size:* ${selectedSize} (UK/IN)\n📦 *Quantity:* ${qty}\n🖼️ *Image:* ${product?.images?.[0]}\n\n--- CUSTOMER DETAILS ---\n👤 *Name:* ${user?.name || 'Guest'}\n📍 *Address:* ${user?.address || 'Not Provided'}\n🏙️ *City:* ${user?.city || 'Not Provided'}\n📮 *Pincode:* ${user?.pincode || 'Not Provided'}\n\n--- PAYMENT INTENT ---\nI am ready to proceed with the online payment via UPI/Bank Transfer. Please share the QR code or Payment Link.`;
     const encodedMessage = encodeURIComponent(message);
 
     // Dual Shopkeeper Protocol - Use business numbers 9423228843 or 8888644021
@@ -354,7 +354,7 @@ const ProductDetailsPage = () => {
               </h1>
 
               <div className="flex items-end gap-4 mb-10">
-                <span className="text-5xl font-black text-white tracking-tighter">₹{(cleanPrice * qty).toLocaleString()}</span>
+                <span className="text-5xl font-black text-white tracking-tighter">₹{((cleanPrice || 0) * qty).toLocaleString()}</span>
                 <span className="text-slate-500 font-bold mb-2 uppercase text-[9px] tracking-widest">INC. ALL TAXES</span>
               </div>
 

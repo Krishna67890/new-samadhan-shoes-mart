@@ -445,7 +445,7 @@ const ProfilePage = () => {
                                 <div className="flex items-center gap-10">
                                    <div className="text-right">
                                       <p className="text-[9px] font-bold text-[#111111]/30 uppercase tracking-widest mb-1">Total Value</p>
-                                      <p className="text-2xl font-editorial font-black text-[#111111]">₹{order.totalPrice.toLocaleString()}</p>
+                                      <p className="text-2xl font-editorial font-black text-[#111111]">₹{(order.totalPrice || 0).toLocaleString()}</p>
                                    </div>
                                    <button className="w-14 h-14 bg-white text-[#111111]/40 rounded-[1.5rem] border border-[#111111]/10 flex items-center justify-center group-hover:bg-[#111111] group-hover:text-white transition-all shadow-sm">
                                       <ChevronRight size={20} />

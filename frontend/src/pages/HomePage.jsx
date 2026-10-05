@@ -572,7 +572,7 @@ const HomePage = () => {
                   <div className="flex text-[#d4af37] mb-4">
                      {[...Array(5)].map((_, i) => <Star key={i} size={24} fill={i < Math.floor(globalStats.avg) ? "currentColor" : "none"} />)}
                   </div>
-                  <p className="text-gray-400 font-bold uppercase tracking-widest text-sm mb-12">Based on {globalStats.total.toLocaleString()} Reviews</p>
+                  <p className="text-gray-400 font-bold uppercase tracking-widest text-sm mb-12">Based on {(globalStats.total || 0).toLocaleString()} Reviews</p>
 
                   <div className="space-y-4">
                      {[

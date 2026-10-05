@@ -96,7 +96,7 @@ const ProductDetails = () => {
     const cleanPrice = sanitizePrice(product?.price);
     const total = cleanPrice * quantity;
     const customerName = user?.name || 'Valued Shopper';
-    const message = `Hello New Samadhan Shoe Mart! 👟\n\nI want to order this Masterpiece:\n\n*Product:* ${product?.name}\n*Brand:* ${product?.brand || 'New Samadhan'}\n*Quantity:* ${quantity}\n*Size:* ${selectedSize || 'Standard'}\n*Price:* ₹${cleanPrice.toLocaleString()}\n*Total Amount:* ₹${total.toLocaleString()}\n\n*--- CUSTOMER DETAILS ---*\n*Name:* ${customerName}\n*Contact:* ${user?.phone || 'Not Provided'}\n*Address:* ${user?.address || 'Nashik Store / Delivery'}\n*City:* ${user?.city || 'Nashik'}\n*Pincode:* ${user?.pincode || '422003'}\n\n*--- ORDER METADATA ---*\n*Ref ID:* #NSSM-${Math.floor(100000 + Math.random() * 900000)}\n\nPlease confirm availability and share payment details.`;
+    const message = `Hello New Samadhan Shoe Mart! 👟\n\nI want to order this Masterpiece:\n\n*Product:* ${product?.name}\n*Brand:* ${product?.brand || 'New Samadhan'}\n*Quantity:* ${quantity}\n*Size:* ${selectedSize || 'Standard'}\n*Price:* ₹${(cleanPrice || 0).toLocaleString()}\n*Total Amount:* ₹${(total || 0).toLocaleString()}\n\n*--- CUSTOMER DETAILS ---*\n*Name:* ${customerName}\n*Contact:* ${user?.phone || 'Not Provided'}\n*Address:* ${user?.address || 'Nashik Store / Delivery'}\n*City:* ${user?.city || 'Nashik'}\n*Pincode:* ${user?.pincode || '422003'}\n\n*--- ORDER METADATA ---*\n*Ref ID:* #NSSM-${Math.floor(100000 + Math.random() * 900000)}\n\nPlease confirm availability and share payment details.`;
 
     // Rotate between primary business numbers (1. 9423228843, 2. 8888644021)
     const targetNum = Math.random() > 0.5 ? '9423228843' : '8888644021';
@@ -201,7 +201,7 @@ const ProductDetails = () => {
                  <div className="flex flex-col sm:flex-row sm:items-end gap-6 md:gap-12">
                     <div className="flex flex-col">
                        <span className="text-[8px] md:text-[9px] font-black text-[#6B6B6B] uppercase tracking-[0.3em] mb-2 md:mb-3">Market Valuation</span>
-                       <span className="text-3xl md:text-5xl font-black text-[#111111] tracking-tighter tabular-nums">₹{(sanitizePrice(product?.price) * quantity).toLocaleString()}</span>
+                       <span className="text-3xl md:text-5xl font-black text-[#111111] tracking-tighter tabular-nums">₹{( (sanitizePrice(product?.price) || 0) * quantity).toLocaleString()}</span>
                     </div>
 
                     <div className="flex flex-col">

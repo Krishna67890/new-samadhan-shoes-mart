@@ -142,7 +142,7 @@ const AdminOrders = () => {
           <div className="flex gap-4">
              <div className="bg-white px-8 py-6 rounded-[2rem] border border-[#111]/5 shadow-sm">
                 <span className="text-[9px] font-black text-[#6B6B6B] uppercase tracking-widest block mb-1">Total Sales</span>
-                <span className="text-3xl font-black text-[#111]">₹{stats.revenue.toLocaleString()}</span>
+                <span className="text-3xl font-black text-[#111]">₹{(stats.revenue || 0).toLocaleString()}</span>
              </div>
              <div className="bg-white px-8 py-6 rounded-[2rem] border border-[#111]/5 shadow-sm">
                 <span className="text-[9px] font-black text-[#6B6B6B] uppercase tracking-widest block mb-1">Active Shipments</span>
@@ -212,7 +212,7 @@ const AdminOrders = () => {
 
                   <div className="col-span-1">
                     <span className="text-[9px] font-black text-[#6B6B6B] uppercase tracking-widest block mb-2">Transaction</span>
-                    <p className="font-black text-xl text-[#111]">₹{order.totalPrice.toLocaleString()}</p>
+                    <p className="font-black text-xl text-[#111]">₹{(order.totalPrice || 0).toLocaleString()}</p>
                     <div className="flex items-center gap-1 mt-1">
                       {order.isPaid ? (
                         <span className="text-[8px] bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded font-black uppercase">Paid</span>

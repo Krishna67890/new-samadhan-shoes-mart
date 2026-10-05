@@ -14,7 +14,7 @@ const CartPage = () => {
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const msg = new SpeechSynthesisUtterance();
-      msg.text = `Welcome to your Vault. Your total is ${cartTotal.toLocaleString()} rupees. When you click Confirm, I will copy your order details and open our official WhatsApp group. Just paste the message there so our Shopkeeper and Developer can process your shoes immediately.`;
+      msg.text = `Welcome to your Vault. Your total is ${(cartTotal || 0).toLocaleString()} rupees. When you click Confirm, I will copy your order details and open our official WhatsApp group. Just paste the message there so our Shopkeeper and Developer can process your shoes immediately.`;
       msg.lang = 'en-IN';
       msg.rate = 0.9;
       window.speechSynthesis.speak(msg);
@@ -79,7 +79,7 @@ const CartPage = () => {
                       <span className="px-3 py-1 bg-[#111111]/5 border border-[#111111]/10 rounded-full text-[8px] font-bold text-[#6B6B6B] uppercase tracking-widest">Size: {item.size}</span>
                     </div>
                     <h3 className="text-xl sm:text-2xl font-editorial font-bold text-[#111111] mb-2 sm:mb-4 tracking-tight uppercase leading-none">{item.name}</h3>
-                    <div className="text-2xl sm:text-3xl font-black text-[#111111] tracking-tighter tabular-nums">₹{item.price.toLocaleString()}</div>
+                    <div className="text-2xl sm:text-3xl font-black text-[#111111] tracking-tighter tabular-nums">₹{(item.price || 0).toLocaleString()}</div>
                   </div>
 
                   <div className="flex flex-row sm:flex-col items-center sm:items-end gap-6 w-full sm:w-auto justify-between sm:justify-center">
@@ -89,7 +89,7 @@ const CartPage = () => {
                       <button onClick={() => addToCart(item, 1, item.size)} className="w-8 h-8 font-bold text-[#111111] hover:text-[#8B0000] transition-colors">+</button>
                     </div>
                     <div className="text-right">
-                      <p className="text-lg sm:text-xl font-black text-[#8B0000] tracking-tighter tabular-nums">₹{(item.price * item.qty).toLocaleString()}</p>
+                      <p className="text-lg sm:text-xl font-black text-[#8B0000] tracking-tighter tabular-nums">₹{((item.price || 0) * item.qty).toLocaleString()}</p>
                     </div>
                   </div>
 
@@ -112,7 +112,7 @@ const CartPage = () => {
                 <div className="space-y-6 sm:space-y-8 mb-8 sm:mb-12 relative z-10">
                   <div className="flex justify-between items-center">
                     <span className="text-[9px] font-bold text-[#6B6B6B] uppercase tracking-[0.3em]">Items Valuation</span>
-                    <span className="text-base sm:text-lg font-black text-[#111111] tabular-nums">₹{cartTotal.toLocaleString()}</span>
+                    <span className="text-base sm:text-lg font-black text-[#111111] tabular-nums">₹{(cartTotal || 0).toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-[9px] font-bold text-[#6B6B6B] uppercase tracking-[0.3em]">Elite Delivery</span>
@@ -121,7 +121,7 @@ const CartPage = () => {
                   <div className="pt-6 sm:pt-8 border-t border-[#111111]/5">
                     <div className="flex flex-col gap-1 sm:gap-2">
                       <span className="text-[9px] font-bold text-[#6B6B6B] uppercase tracking-[0.4em]">Total Commitment</span>
-                      <span className="text-3xl sm:text-5xl font-black text-[#8B0000] tracking-tighter tabular-nums">₹{cartTotal.toLocaleString()}</span>
+                      <span className="text-3xl sm:text-5xl font-black text-[#8B0000] tracking-tighter tabular-nums">₹{(cartTotal || 0).toLocaleString()}</span>
                     </div>
                   </div>
                 </div>

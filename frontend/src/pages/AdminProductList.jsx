@@ -102,7 +102,7 @@ const AdminProductList = () => {
   const stats = {
     total: products.length,
     lowStock: products.filter(p => (p.stock !== undefined ? p.stock : 12) < 5).length,
-    valuation: products.reduce((acc, p) => acc + (p.price * (p.stock !== undefined ? p.stock : 12)), 0)
+    valuation: products.reduce((acc, p) => acc + ((p.price || 0) * (p.stock !== undefined ? p.stock : 12)), 0)
   };
 
   return (
@@ -191,7 +191,7 @@ const AdminProductList = () => {
 
                   <div className="col-span-1 text-center md:text-left">
                     <span className="text-[9px] font-black text-[#6B6B6B] uppercase tracking-widest block mb-2">Valuation</span>
-                    <p className="font-black text-xl text-[#111]">₹{product.price.toLocaleString()}</p>
+                    <p className="font-black text-xl text-[#111]">₹{(product.price || 0).toLocaleString()}</p>
                   </div>
 
                   <div className="col-span-1">

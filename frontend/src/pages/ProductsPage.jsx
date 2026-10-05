@@ -36,7 +36,7 @@ const ProductsPage = () => {
   const handleWhatsAppOrder = (product) => {
     const cleanPrice = sanitizePrice(product?.price);
     const customerName = user?.name || 'Valued Shopper';
-    const message = `Hello New Samadhan Shoe Mart! 👋\n\nI want to order this Masterpiece:\n\n👟 *Product:* ${product?.name}\n🏷️ *Brand:* ${product?.brand || 'New Samadhan'}\n💰 *Price:* ₹${cleanPrice.toLocaleString()}\n📏 *Size:* To be confirmed\n📦 *Quantity:* 1\n\n--- CUSTOMER DETAILS ---\n👤 *Name:* ${customerName}\n📞 *Phone:* ${user?.phone || 'Not Provided'}\n📍 *Address:* ${user?.address || 'Nashik Store Pickup / Delivery'}\n🏙️ *City:* ${user?.city || 'Nashik'}\n📮 *Pincode:* ${user?.pincode || '422003'}\n\n--- PAYMENT INTENT ---\nI am ready to proceed with online payment or UPI. Please confirm availability and share the payment details.`;
+    const message = `Hello New Samadhan Shoe Mart! 👋\n\nI want to order this Masterpiece:\n\n👟 *Product:* ${product?.name}\n🏷️ *Brand:* ${product?.brand || 'New Samadhan'}\n💰 *Price:* ₹${(cleanPrice || 0).toLocaleString()}\n📏 *Size:* To be confirmed\n📦 *Quantity:* 1\n\n--- CUSTOMER DETAILS ---\n👤 *Name:* ${customerName}\n📞 *Phone:* ${user?.phone || 'Not Provided'}\n📍 *Address:* ${user?.address || 'Nashik Store Pickup / Delivery'}\n🏙️ *City:* ${user?.city || 'Nashik'}\n📮 *Pincode:* ${user?.pincode || '422003'}\n\n--- PAYMENT INTENT ---\nI am ready to proceed with online payment or UPI. Please confirm availability and share the payment details.`;
 
     // Dual Shopkeeper Protocol - Use business numbers 9423228843 or 8888644021
     const targetNum = Math.random() > 0.5 ? '9423228843' : '8888644021';
@@ -221,7 +221,7 @@ const ProductsPage = () => {
                     <div className="flex justify-between items-center pt-4 border-t border-[#111111]/5">
                       <div className="flex flex-col">
                         <span className="text-[8px] font-bold text-[#6B6B6B] uppercase tracking-[0.25em] mb-0.5">Price</span>
-                        <span className="text-xl font-black text-[#111111] tracking-tight tabular-nums">₹{cleanPrice.toLocaleString()}</span>
+                        <span className="text-xl font-black text-[#111111] tracking-tight tabular-nums">₹{(cleanPrice || 0).toLocaleString()}</span>
                       </div>
                       <div className="flex gap-2">
                         {isAdmin && (

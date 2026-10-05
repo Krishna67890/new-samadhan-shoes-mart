@@ -75,6 +75,9 @@ const AdminDashboard = () => {
             totalUsers: data.totalUsers || dStats.totalUsers,
             totalOrders: data.totalOrders || dStats.totalOrders,
             revenue: data.totalRevenue || dStats.revenue,
+            valuation: data.totalValuation || dStats.valuation,
+            totalStockCount: data.totalStockCount || dStats.totalStockCount,
+            totalInventory: data.totalInventory || dStats.totalInventory,
             activeVisitors: data.activeVisitors || dStats.activeVisitors
           });
         }
@@ -106,10 +109,10 @@ const AdminDashboard = () => {
   };
 
   const statCards = [
-    { title: 'Total Revenue', value: `₹${stats.revenue.toLocaleString()}`, icon: <DollarSign className="w-8 h-8 text-[#111]" />, bg: 'bg-white' },
+    { title: 'Total Revenue', value: `₹${(stats.revenue || 0).toLocaleString()}`, icon: <DollarSign className="w-8 h-8 text-[#111]" />, bg: 'bg-white' },
     { title: 'Total Orders', value: stats.totalOrders, icon: <ShoppingBag className="w-8 h-8 text-[#8B0000]" />, bg: 'bg-white' },
     { title: 'Vault Inventory', value: `${stats.totalStockCount} Units`, icon: <Package className="w-8 h-8 text-blue-600" />, bg: 'bg-white' },
-    { title: 'Matrix Valuation', value: `₹${stats.valuation.toLocaleString()}`, icon: <Zap className="w-8 h-8 text-emerald-600" />, bg: 'bg-white' },
+    { title: 'Matrix Valuation', value: `₹${(stats.valuation || 0).toLocaleString()}`, icon: <Zap className="w-8 h-8 text-emerald-600" />, bg: 'bg-white' },
   ];
 
   const quickActions = [
