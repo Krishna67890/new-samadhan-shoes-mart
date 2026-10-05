@@ -118,7 +118,7 @@ const AboutPage = () => {
   }, []);
 
   return (
-    <div ref={containerRef} style={{ background: '#F7F5F0', color: '#111111', fontFamily: "'Inter', sans-serif", overflowX: 'hidden' }}>
+    <div ref={containerRef} className="no-blur-zone" style={{ background: '#F7F5F0', color: '#111111', fontFamily: "'Inter', sans-serif", overflowX: 'hidden' }}>
 
       {/* ── HERO ── */}
       <section style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', padding: '120px 24px 80px', overflow: 'hidden', background: '#0a0a0a' }}>

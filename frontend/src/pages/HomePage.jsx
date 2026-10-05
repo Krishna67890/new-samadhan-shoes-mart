@@ -319,7 +319,7 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div ref={containerRef} className="bg-white text-[#1a1a1a] font-sans selection:bg-[#d4af37] selection:text-white overflow-x-hidden pt-24">
+    <div ref={containerRef} className="bg-white text-[#1a1a1a] font-sans selection:bg-[#d4af37] selection:text-white overflow-x-hidden pt-24 no-blur-zone">
       {/* Redundant Pre-Header and Nav removed as they are global in App.jsx */}
 
       {/* PHASE 1: HERO */}

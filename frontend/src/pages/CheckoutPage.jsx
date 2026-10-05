@@ -142,7 +142,7 @@ const CheckoutPage = () => {
   };
 
   return (
-    <div className="bg-[#F7F5F0] min-h-screen pt-32 pb-24 px-6 relative overflow-hidden text-[#111111]">
+    <div className="bg-[#F7F5F0] min-h-screen pt-32 pb-24 px-6 relative overflow-hidden text-[#111111] no-blur-zone">
       {/* Background Glow */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#8B0000]/5 rounded-full"></div>
 

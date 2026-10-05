@@ -245,7 +245,7 @@ Requested via New Samadhan Shoes Website`;
   };
 
   return (
-    <div ref={containerRef} className="bg-[#F7F5F0] text-[#111111] min-h-screen pt-28 pb-20 font-sans selection:bg-[#8B0000] selection:text-white overflow-x-hidden">
+    <div ref={containerRef} className="bg-[#F7F5F0] text-[#111111] min-h-screen pt-28 pb-20 font-sans selection:bg-[#8B0000] selection:text-white overflow-x-hidden no-blur-zone">
 
       {/* Hero Section with Front-Banner.jpg strictly integrated as primary background hero */}
       <section ref={workshopHeroRef} className="relative min-h-[85vh] flex items-center px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto rounded-[4rem] overflow-hidden my-6 shadow-2xl bg-[#050505]">

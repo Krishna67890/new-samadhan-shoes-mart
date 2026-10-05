@@ -32,7 +32,7 @@ const ShopListing = () => {
   }, [shops, loading]);
 
   return (
-    <div ref={containerRef} className="bg-[#F7F5F0] text-[#111111] min-h-screen pt-36 pb-24 relative overflow-hidden">
+    <div ref={containerRef} className="bg-[#F7F5F0] text-[#111111] min-h-screen pt-36 pb-24 relative overflow-hidden no-blur-zone">
       {/* Background Micro Grid */}
       <div className="fixed inset-0 bg-[radial-gradient(#111111_1px,transparent_1px)] [background-size:32px_32px] pointer-events-none opacity-[0.02]"></div>
 

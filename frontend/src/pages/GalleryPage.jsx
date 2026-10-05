@@ -242,7 +242,7 @@ const GalleryPage = () => {
     : GALLERY_ITEMS.filter((item) => item.category === activeCategory);
 
   return (
-    <div className="bg-[#F7F5F0] text-[#111111] min-h-screen pt-28 pb-20 font-sans selection:bg-[#8B0000] selection:text-white">
+    <div className="bg-[#F7F5F0] text-[#111111] min-h-screen pt-28 pb-20 font-sans selection:bg-[#8B0000] selection:text-white no-blur-zone">
 
       {/* Hero Section */}
       <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-12 md:py-16">

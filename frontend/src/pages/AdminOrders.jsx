@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useFetch from '../hooks/useFetch';
-import { Truck, ArrowLeft, CheckCircle, Clock, ExternalLink, Loader2 } from 'lucide-react';
+import { Truck, ArrowLeft, CheckCircle, Clock, ExternalLink, Loader2, Filter, Search } from 'lucide-react';
 
 const AdminOrders = () => {
   const { loading, error, request } = useFetch();
   const [orders, setOrders] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('All');
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
@@ -100,110 +102,164 @@ const AdminOrders = () => {
     }
   };
 
+  const filteredOrders = orders.filter(order => {
+    const matchesSearch =
+      order._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (order.user?.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (order.user?.email || '').toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesStatus =
+      statusFilter === 'All' ||
+      (statusFilter === 'Delivered' && order.isDelivered) ||
+      (statusFilter === 'Pending' && !order.isDelivered);
+
+    return matchesSearch && matchesStatus;
+  });
+
+  const stats = {
+    total: orders.length,
+    pending: orders.filter(o => !o.isDelivered).length,
+    revenue: orders.reduce((acc, o) => acc + o.totalPrice, 0)
+  };
+
   return (
-    <div className="container mx-auto px-4 py-8 no-blur-zone">
-      <div className="flex items-center mb-8 justify-between">
-        <div className="flex items-center">
-          <button onClick={() => navigate('/admin')} className="mr-4 p-2 hover:bg-gray-100 rounded-full transition">
-            <ArrowLeft className="w-6 h-6" />
-          </button>
-          <h1 className="text-3xl font-bold text-gray-800">Customer Orders</h1>
-        </div>
-      </div>
+    <div className="min-h-screen bg-[#F7F5F0] pt-32 pb-20 px-6 no-blur-zone">
+      <div className="container mx-auto max-w-7xl">
 
-      {success && (
-         <div className="bg-green-600 text-white p-6 rounded-2xl mb-8 flex items-center shadow-xl border-4 border-white animate-in zoom-in-95">
-            <CheckCircle className="w-8 h-8 mr-3" />
-            <div>
-               <p className="font-black uppercase tracking-widest text-lg">Update Successfull</p>
-               <p className="text-xs opacity-80 font-bold uppercase tracking-tighter">Order delivery status has been synchronized.</p>
-            </div>
-         </div>
-      )}
-
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        {loading ? (
-          <div className="flex justify-center py-20">
-            <Loader2 className="w-12 h-12 animate-spin text-primary" />
+        {/* HEADER */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16">
+          <div>
+            <button
+              onClick={() => navigate('/admin')}
+              className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[#6B6B6B] mb-4 hover:text-[#111]"
+            >
+              <ArrowLeft size={14} /> Back to Dashboard
+            </button>
+            <h1 className="text-5xl font-editorial font-black uppercase tracking-tighter text-[#111]">Order Logistics</h1>
+            <p className="text-slate-500 font-bold uppercase tracking-[0.2em] text-[10px] mt-2">Shipment Command • Real-time Transaction Stream</p>
           </div>
-        ) : error ? (
-          <div className="p-10 text-center text-red-600 bg-red-50">{error}</div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead className="bg-gray-50 text-gray-500 uppercase text-xs font-bold tracking-wider">
-                <tr>
-                  <th className="px-6 py-4">ORDER ID</th>
-                  <th className="px-6 py-4">USER</th>
-                  <th className="px-6 py-4">DATE</th>
-                  <th className="px-6 py-4">TOTAL</th>
-                  <th className="px-6 py-4">PAID</th>
-                  <th className="px-6 py-4">DELIVERED</th>
-                  <th className="px-6 py-4">ACTIONS</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {Array.isArray(orders) && orders.map((order) => (
-                  <tr key={order._id} className="hover:bg-gray-50 transition">
-                    <td className="px-6 py-4 font-mono text-xs text-gray-400">{order._id.substring(10).toUpperCase()}</td>
-                    <td className="px-6 py-4">
-                      <div className="text-sm">
-                        <p className="font-bold text-gray-800">{order.user && order.user.name}</p>
-                        <p className="text-gray-400 text-xs">{order.user && order.user.email}</p>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-600">
-                      {new Date(order.createdAt).toLocaleDateString()}
-                    </td>
-                    <td className="px-6 py-4 font-bold text-gray-900">₹{order.totalPrice}</td>
-                    <td className="px-6 py-4">
-                      {order.isPaid ? (
-                        <div className="flex items-center text-green-600 font-medium text-sm">
-                           <CheckCircle className="w-4 h-4 mr-1" /> {new Date(order.paidAt).toLocaleDateString()}
-                        </div>
-                      ) : (
-                        <div className="flex items-center text-red-500 font-medium text-sm">
-                           <Clock className="w-4 h-4 mr-1" /> Pending
-                        </div>
-                      )}
-                    </td>
-                    <td className="px-6 py-4">
-                      {order.isDelivered ? (
-                        <div className="flex items-center text-green-600 font-medium text-sm">
-                           <CheckCircle className="w-4 h-4 mr-1" /> {new Date(order.deliveredAt).toLocaleDateString()}
-                        </div>
-                      ) : (
-                        <div className="flex items-center text-orange-500 font-medium text-sm">
-                           <Truck className="w-4 h-4 mr-1" /> In Transit
-                        </div>
-                      )}
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex space-x-2">
-                        {!order.isDelivered && order.isPaid && (
-                          <button
-                            onClick={() => deliverHandler(order._id)}
-                            className="bg-primary text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-blue-800 transition"
-                          >
-                            Mark Delivered
-                          </button>
-                        )}
-                        <button className="p-2 text-gray-400 hover:text-primary transition" title="View Details">
-                           <ExternalLink className="w-5 h-5" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-                {orders.length === 0 && (
-                  <tr>
-                    <td colSpan="7" className="px-6 py-10 text-center text-gray-500">No orders found.</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+
+          <div className="flex gap-4">
+             <div className="bg-white px-8 py-6 rounded-[2rem] border border-[#111]/5 shadow-sm">
+                <span className="text-[9px] font-black text-[#6B6B6B] uppercase tracking-widest block mb-1">Total Sales</span>
+                <span className="text-3xl font-black text-[#111]">₹{stats.revenue.toLocaleString()}</span>
+             </div>
+             <div className="bg-white px-8 py-6 rounded-[2rem] border border-[#111]/5 shadow-sm">
+                <span className="text-[9px] font-black text-[#6B6B6B] uppercase tracking-widest block mb-1">Active Shipments</span>
+                <span className="text-3xl font-black text-[#8B0000]">{stats.pending}</span>
+             </div>
+          </div>
+        </div>
+
+        {success && (
+          <div className="bg-[#8B0000] text-white p-6 rounded-[2.5rem] mb-12 flex items-center shadow-xl border-4 border-white animate-in zoom-in-95 no-blur-zone">
+            <CheckCircle className="w-8 h-8 mr-4" />
+            <div>
+              <p className="font-black uppercase tracking-widest text-lg">Update Successfull</p>
+              <p className="text-[10px] opacity-80 font-bold uppercase tracking-tighter">Logistics record has been updated and synchronized.</p>
+            </div>
           </div>
         )}
+
+        {/* FILTERS */}
+        <div className="bg-white p-8 rounded-[3rem] border border-[#111]/5 shadow-xl mb-12 flex flex-col md:flex-row gap-6 items-center">
+          <div className="relative flex-1 w-full">
+            <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-[#6B6B6B]" size={20} />
+            <input
+              type="text"
+              placeholder="Search by Order ID, Customer, or Email..."
+              className="w-full bg-[#F7F5F0] border-0 rounded-2xl py-4 pl-16 pr-6 text-sm font-bold outline-none focus:ring-2 focus:ring-[#8B0000]"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+
+          <div className="flex items-center gap-4 w-full md:w-auto">
+            <Filter size={20} className="text-[#6B6B6B]" />
+            <select
+              className="bg-[#F7F5F0] border-0 rounded-2xl py-4 px-8 text-[10px] font-black uppercase tracking-widest outline-none cursor-pointer"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+            >
+              <option value="All">All Shipments</option>
+              <option value="Pending">Pending Delivery</option>
+              <option value="Delivered">Completed</option>
+            </select>
+          </div>
+        </div>
+
+        {/* ORDERS LIST */}
+        <div className="space-y-6">
+          {loading ? (
+            <div className="flex justify-center py-20">
+              <Loader2 className="w-12 h-12 animate-spin text-[#8B0000]" />
+            </div>
+          ) : filteredOrders.length > 0 ? (
+            filteredOrders.map((order) => (
+              <div key={order._id} className="bg-white p-10 rounded-[3rem] border border-[#111]/5 shadow-sm hover:shadow-md transition-all">
+                <div className="grid md:grid-cols-5 gap-8 items-center">
+                  <div className="col-span-1">
+                    <span className="text-[9px] font-black text-[#6B6B6B] uppercase tracking-widest block mb-2">Order ID</span>
+                    <h6 className="font-mono text-xs text-[#111] font-bold uppercase tracking-tight line-clamp-1">{order._id.substring(order._id.length - 12).toUpperCase()}</h6>
+                    <span className="text-[8px] text-[#6B6B6B] font-bold uppercase">{new Date(order.createdAt).toLocaleDateString()}</span>
+                  </div>
+
+                  <div className="col-span-1">
+                    <span className="text-[9px] font-black text-[#6B6B6B] uppercase tracking-widest block mb-2">Customer</span>
+                    <p className="font-bold text-sm text-[#111] uppercase">{order.user?.name}</p>
+                    <p className="text-[10px] text-[#6B6B6B] truncate">{order.user?.email}</p>
+                  </div>
+
+                  <div className="col-span-1">
+                    <span className="text-[9px] font-black text-[#6B6B6B] uppercase tracking-widest block mb-2">Transaction</span>
+                    <p className="font-black text-xl text-[#111]">₹{order.totalPrice.toLocaleString()}</p>
+                    <div className="flex items-center gap-1 mt-1">
+                      {order.isPaid ? (
+                        <span className="text-[8px] bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded font-black uppercase">Paid</span>
+                      ) : (
+                        <span className="text-[8px] bg-amber-50 text-amber-600 px-2 py-0.5 rounded font-black uppercase">Pending</span>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="col-span-1">
+                    <span className="text-[9px] font-black text-[#6B6B6B] uppercase tracking-widest block mb-2">Logistic Status</span>
+                    {order.isDelivered ? (
+                      <div className="flex items-center text-emerald-600 gap-2">
+                        <CheckCircle size={16} />
+                        <span className="text-[10px] font-black uppercase tracking-widest">Delivered</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center text-amber-500 gap-2">
+                        <Truck size={16} />
+                        <span className="text-[10px] font-black uppercase tracking-widest">In Transit</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="col-span-1 flex justify-end gap-4">
+                    {!order.isDelivered && (
+                      <button
+                        onClick={() => deliverHandler(order._id)}
+                        className="px-6 py-3 bg-[#111] text-white rounded-xl text-[9px] font-black uppercase tracking-widest hover:bg-[#8B0000] transition-all"
+                      >
+                        Finalize
+                      </button>
+                    )}
+                    <button className="p-3 text-[#111] border border-[#111]/20 rounded-xl hover:bg-[#111] hover:text-white transition-all">
+                      <ExternalLink size={18} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="bg-white py-32 text-center rounded-[4rem] border border-dashed border-[#111]/10">
+              <Truck size={64} className="mx-auto text-[#111]/5 mb-8" />
+              <h5 className="text-2xl font-editorial font-black uppercase text-[#111]/20">No matching shipments found.</h5>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

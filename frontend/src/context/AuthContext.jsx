@@ -46,8 +46,18 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     setLoading(true);
 
-    // Check for Owner Credentials (Hardcoded as per request)
-    if (email.toLowerCase() === 'command@samadhanshoe.com' && password === 'Samadhan_Security_2025_Elite') {
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanPassword = password.trim();
+
+    // Owner Identity Verification Protocol - ENFORCED
+    // Matches: Command@SamadhanShoe.com, command@samadhanshoes.com, etc.
+    const isOwnerEmail = cleanEmail === 'command@samadhanshoe.com' ||
+                         cleanEmail === 'command@samadhanshoes.com' ||
+                         cleanEmail === 'command@samadhanshoemart.com';
+
+    const isOwnerPassword = cleanPassword === 'Samadhan_Security_2025_Elite';
+
+    if (isOwnerEmail && isOwnerPassword) {
       const ownerData = {
         _id: 'owner_001',
         name: 'Vamanrao Trambak Ahire',
@@ -67,7 +77,7 @@ export const AuthProvider = ({ children }) => {
 
       const secureToken = 'samadhan_elite_admin_secure_token_2025';
 
-      // Crucial: Set storage BEFORE updating state to ensure persistence across potential reloads
+      // Immediate persistence for Command Authority
       localStorage.setItem('ssm_user_identity', JSON.stringify(ownerData));
       localStorage.setItem('token', secureToken);
 
@@ -77,10 +87,16 @@ export const AuthProvider = ({ children }) => {
       return { success: true, role: 'admin' };
     }
 
+    // Critical: Prevent fall-through to user role if owner email is detected but password fails
+    if (isOwnerEmail && !isOwnerPassword) {
+      setLoading(false);
+      return { success: false, message: 'Invalid Owner Security Key. Identity Verification Failed.' };
+    }
+
     const userData = {
       _id: 'user_' + Date.now(),
       name: 'Elite Member',
-      email: email,
+      email: cleanEmail,
       role: 'user',
       phone: '',
       address: '',

@@ -124,7 +124,7 @@ const ProductDetails = () => {
     : (product?.image ? [product.image] : ['/Shoes.png']);
 
   return (
-    <div className="bg-[#F7F5F0] min-h-screen relative text-[#111111] overflow-x-hidden pt-32 pb-20">
+    <div className="bg-[#F7F5F0] min-h-screen relative text-[#111111] overflow-x-hidden pt-32 pb-20 no-blur-zone">
 
       <div className="container mx-auto max-w-[1440px] px-6 md:px-12">
 

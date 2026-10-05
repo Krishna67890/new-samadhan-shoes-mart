@@ -104,7 +104,7 @@ const ProductsPage = () => {
   });
 
   return (
-    <div className="bg-[#F7F5F0] min-h-screen pt-32 pb-24 relative overflow-hidden">
+    <div className="bg-[#F7F5F0] min-h-screen pt-32 pb-24 relative overflow-hidden no-blur-zone">
       {/* Background Glow Effect */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-[#8B0000]/5 rounded-full pointer-events-none"></div>
 

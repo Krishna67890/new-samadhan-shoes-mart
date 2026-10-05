@@ -140,7 +140,7 @@ const ProfilePage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F7F5F0] text-[#111111] pt-36 pb-24 px-4 sm:px-10 lg:px-20 relative overflow-x-hidden font-sans" ref={containerRef}>
+    <div className="min-h-screen bg-[#F7F5F0] text-[#111111] pt-36 pb-24 px-4 sm:px-10 lg:px-20 relative overflow-x-hidden font-sans no-blur-zone" ref={containerRef}>
       {/* Background patterns */}
       <div className="fixed inset-0 bg-[radial-gradient(#111111_1px,transparent_1px)] [background-size:32px_32px] pointer-events-none opacity-[0.03]"></div>
 

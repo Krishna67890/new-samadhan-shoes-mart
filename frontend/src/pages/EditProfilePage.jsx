@@ -103,7 +103,7 @@ const EditProfilePage = () => {
     : 'https://cdn-icons-png.flaticon.com/512/4140/4140048.png');
 
   return (
-    <div className="min-h-screen bg-[#F7F5F0] text-[#111111] pt-36 pb-24 px-4 sm:px-10 lg:px-20 relative overflow-x-hidden" ref={containerRef}>
+    <div className="min-h-screen bg-[#F7F5F0] text-[#111111] pt-36 pb-24 px-4 sm:px-10 lg:px-20 relative overflow-x-hidden no-blur-zone" ref={containerRef}>
       {/* Background patterns */}
       <div className="fixed inset-0 bg-[radial-gradient(#111111_1px,transparent_1px)] [background-size:32px_32px] pointer-events-none opacity-[0.02]"></div>
 

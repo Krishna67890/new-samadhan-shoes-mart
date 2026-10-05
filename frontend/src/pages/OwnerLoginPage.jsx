@@ -29,25 +29,24 @@ const OwnerLoginPage = () => {
     e.preventDefault();
     setLocalError(null);
 
-    const trimmedEmail = email.trim();
-    const trimmedPassword = password.trim();
+    // Call the central login logic which handles Owner verification
+    const result = await login(email, password);
 
-    // Private Owner Credentials Enforcement (Case-Insensitive for Email)
-    if (trimmedEmail.toLowerCase() !== 'command@samadhanshoe.com') {
-      setLocalError('Unauthorized Access: Invalid Owner Email.');
-      return;
-    }
-
-    const result = await login(trimmedEmail, trimmedPassword);
-    if (result.success && result.role === 'admin') {
-      window.location.href = '/admin';
+    if (result.success) {
+      if (result.role === 'admin') {
+        // Force immediate redirect to admin command center
+        window.location.href = '/admin';
+      } else {
+        setLocalError('Access Denied: Owner Portal requires Command Authority privileges.');
+      }
     } else {
-      setLocalError('Authentication Failed: Identity Not Verified.');
+      // Show the specific error from AuthContext (e.g., Invalid Security Key)
+      setLocalError(result.message || 'Authentication Failed: Identity Not Verified.');
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#050505] flex items-center justify-center p-6 relative overflow-hidden">
+    <div className="min-h-screen bg-[#050505] flex items-center justify-center p-6 relative overflow-hidden no-blur-zone">
       {/* Red Pulse Glow for Security - Sharp edges per Zero-Blur policy */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-red-600/10 rounded-full border border-red-600/5 animate-pulse"></div>
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import useFetch from '../hooks/useFetch';
+import localProducts from '../utils/localProducts';
 import {
   Users,
   Package,
@@ -15,7 +16,10 @@ import {
   MessageSquare,
   Image as ImageIcon,
   RotateCcw,
-  CheckCircle
+  CheckCircle,
+  ShieldCheck,
+  Zap,
+  ChevronRight
 } from 'lucide-react';
 
 const AdminDashboard = () => {
@@ -23,12 +27,38 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
   const { loading, error, request } = useFetch();
   const [success, setSuccess] = useState(false);
-  const [stats, setStats] = useState({
-    totalUsers: 124,
-    totalOrders: 48,
-    revenue: 86500,
-    activeVisitors: 12
-  });
+
+  // Calculate stats from demo data if available
+  const getDemoStats = () => {
+    const demoOrders = JSON.parse(localStorage.getItem('ssm_demo_orders') || '[]');
+    const demoProducts = JSON.parse(localStorage.getItem('ssm_demo_products') || '[]');
+
+    // Merge logic for accurate valuation matrix
+    let allProducts = [...localProducts];
+    demoProducts.forEach(dp => {
+       const idx = allProducts.findIndex(p => p._id === dp._id || p.id === dp.id);
+       if (idx !== -1) {
+          allProducts[idx] = dp;
+       } else {
+          allProducts.unshift(dp);
+       }
+    });
+
+    const totalRev = demoOrders.reduce((acc, o) => acc + o.totalPrice, 0);
+    const totalValuation = allProducts.reduce((acc, p) => acc + (p.price * (p.stock !== undefined ? p.stock : 12)), 0);
+    const totalStock = allProducts.reduce((acc, p) => acc + (p.stock !== undefined ? p.stock : 12), 0);
+
+    return {
+      totalUsers: 124,
+      totalOrders: Math.max(48, demoOrders.length),
+      revenue: Math.max(86500, totalRev),
+      valuation: totalValuation,
+      totalInventory: allProducts.length,
+      totalStockCount: totalStock
+    };
+  };
+
+  const [stats, setStats] = useState(getDemoStats());
 
   useEffect(() => {
     if (!user || user.role !== 'admin') {
@@ -40,11 +70,12 @@ const AdminDashboard = () => {
       try {
         const data = await request('/api/admin/stats');
         if (data) {
+          const dStats = getDemoStats();
           setStats({
-            totalUsers: data.totalUsers || 124,
-            totalOrders: data.totalOrders || 48,
-            revenue: data.totalRevenue || 86500,
-            activeVisitors: data.activeVisitors || 12
+            totalUsers: data.totalUsers || dStats.totalUsers,
+            totalOrders: data.totalOrders || dStats.totalOrders,
+            revenue: data.totalRevenue || dStats.revenue,
+            activeVisitors: data.activeVisitors || dStats.activeVisitors
           });
         }
       } catch (err) {
@@ -75,129 +106,143 @@ const AdminDashboard = () => {
   };
 
   const statCards = [
-    { title: 'Total Revenue', value: `₹${stats?.revenue || 0}`, icon: <DollarSign className="w-8 h-8 text-green-600" />, bg: 'bg-green-50' },
-    { title: 'Total Orders', value: stats?.totalOrders || 0, icon: <ShoppingBag className="w-8 h-8 text-blue-600" />, bg: 'bg-blue-50' },
-    { title: 'Total Users', value: stats?.totalUsers || 0, icon: <Users className="w-8 h-8 text-purple-600" />, bg: 'bg-purple-50' },
-    { title: 'Active Visitors', value: stats?.activeVisitors || 0, icon: <TrendingUp className="w-8 h-8 text-orange-600" />, bg: 'bg-orange-50' },
+    { title: 'Total Revenue', value: `₹${stats.revenue.toLocaleString()}`, icon: <DollarSign className="w-8 h-8 text-[#111]" />, bg: 'bg-white' },
+    { title: 'Total Orders', value: stats.totalOrders, icon: <ShoppingBag className="w-8 h-8 text-[#8B0000]" />, bg: 'bg-white' },
+    { title: 'Vault Inventory', value: `${stats.totalStockCount} Units`, icon: <Package className="w-8 h-8 text-blue-600" />, bg: 'bg-white' },
+    { title: 'Matrix Valuation', value: `₹${stats.valuation.toLocaleString()}`, icon: <Zap className="w-8 h-8 text-emerald-600" />, bg: 'bg-white' },
+  ];
+
+  const quickActions = [
+    { name: 'Add Product', path: '/admin/product/new', icon: <PlusCircle size={18} />, color: 'bg-[#111] text-white' },
+    { name: 'Order Logs', path: '/admin/orders', icon: <Truck size={18} />, color: 'bg-white text-[#111] border border-[#111]/10' },
+    { name: 'Media Hub', path: '/admin/gallery', icon: <ImageIcon size={18} />, color: 'bg-white text-[#111] border border-[#111]/10' },
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8 no-blur-zone">
-      <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
-        <div>
-          <h1 className="text-5xl font-black text-slate-950 tracking-tighter uppercase leading-none mb-4">Store Command</h1>
-          <p className="text-slate-500 font-bold uppercase tracking-[0.2em] text-[10px]">Administrative Access Level • Samadhan Shoes Mart</p>
-        </div>
-        <div className="flex space-x-4">
-          <Link to="/admin/product/new" className="bg-slate-950 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-blue-600 transition-all flex items-center shadow-xl shadow-slate-200">
-            <PlusCircle className="w-4 h-4 mr-2" /> Add Product
-          </Link>
-          <Link to="/admin/products" className="bg-white text-slate-950 px-8 py-4 rounded-2xl border border-slate-200 hover:bg-slate-50 transition-all flex items-center font-black uppercase tracking-widest text-[10px] shadow-sm">
-            <Package className="w-4 h-4 mr-2" /> All Products
-          </Link>
-          <Link to="/admin/orders" className="bg-white text-slate-950 px-8 py-4 rounded-2xl border border-slate-200 hover:bg-slate-50 transition-all flex items-center font-black uppercase tracking-widest text-[10px] shadow-sm">
-            <Truck className="w-4 h-4 mr-2" /> All Shipments
-          </Link>
-          <button
-            onClick={handleFactoryReset}
-            className="bg-rose-50 text-rose-600 px-6 py-4 rounded-2xl border border-rose-100 hover:bg-rose-600 hover:text-white transition-all flex items-center font-black uppercase tracking-widest text-[10px] shadow-sm"
-          >
-            <RotateCcw className="w-4 h-4 mr-2" /> Factory Reset
-          </button>
-        </div>
-      </div>
+    <div className="min-h-screen bg-[#F7F5F0] pt-32 pb-20 px-6 no-blur-zone">
+      <div className="container mx-auto max-w-7xl">
 
-      {success && (
-         <div className="bg-emerald-600 text-white p-6 rounded-[2rem] mb-12 flex items-center shadow-xl border-4 border-white animate-in zoom-in-95 no-blur-zone">
-            <CheckCircle className="w-8 h-8 mr-4" />
-            <div>
-               <p className="font-black uppercase tracking-widest text-lg">Update Successfull</p>
-               <p className="text-[10px] opacity-80 font-bold uppercase tracking-tighter">Demo database has been wiped and reset to factory defaults.</p>
+        {/* HEADER */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16">
+          <div>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="px-3 py-1 bg-[#8B0000] text-white text-[8px] font-black uppercase tracking-[0.2em] rounded-full flex items-center gap-2">
+                <ShieldCheck size={10} /> Secure Node
+              </div>
+              <div className="px-3 py-1 bg-white text-[#111] border border-[#111]/10 text-[8px] font-black uppercase tracking-[0.2em] rounded-full">
+                Samadhan Shoes Mart v2.0
+              </div>
             </div>
-         </div>
-      )}
+            <h1 className="text-6xl font-editorial font-black uppercase tracking-tighter text-[#111]">Store Command</h1>
+            <p className="text-slate-500 font-bold uppercase tracking-[0.2em] text-[10px] mt-4">Administrative Access • Proprietor Dashboard</p>
+          </div>
 
-      {loading ? (
-        <div className="flex justify-center py-20">
-          <Loader2 className="w-12 h-12 animate-spin text-primary" />
+          <div className="flex flex-wrap gap-4">
+            {quickActions.map((action, i) => (
+              <Link
+                key={i}
+                to={action.path}
+                className={`${action.color} px-8 py-5 rounded-[2rem] font-black uppercase tracking-widest text-[10px] flex items-center gap-3 shadow-xl hover:-translate-y-1 transition-all duration-300`}
+              >
+                {action.icon} {action.name}
+              </Link>
+            ))}
+            <button
+              onClick={handleFactoryReset}
+              className="bg-rose-50 text-rose-600 px-6 py-5 rounded-[2rem] border border-rose-100 hover:bg-rose-600 hover:text-white transition-all flex items-center font-black uppercase tracking-widest text-[10px] shadow-sm"
+            >
+              <RotateCcw className="w-4 h-4 mr-2" /> Reset Vault
+            </button>
+          </div>
         </div>
-      ) : (
-        <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-            {statCards.map((card, index) => (
-              <div key={index} className={`p-8 rounded-[2.5rem] border border-slate-100 shadow-sm transition-all hover:shadow-xl hover:-translate-y-2 duration-500 bg-white`}>
-                <div className="flex justify-between items-start">
-                  <div>
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">{card.title}</p>
-                    <h3 className="text-3xl font-black text-slate-950 tracking-tighter">{card.value}</h3>
-                  </div>
-                  <div className={`p-4 rounded-2xl shadow-sm ${card.bg}`}>
-                    {card.icon}
-                  </div>
+
+        {success && (
+           <div className="bg-emerald-600 text-white p-6 rounded-[2.5rem] mb-12 flex items-center shadow-xl border-4 border-white animate-in zoom-in-95 no-blur-zone">
+              <CheckCircle className="w-8 h-8 mr-4" />
+              <div>
+                 <p className="font-black uppercase tracking-widest text-lg">System Wipe Successful</p>
+                 <p className="text-[10px] opacity-80 font-bold uppercase tracking-tighter">Demo database has been cleared and reset to factory defaults.</p>
+              </div>
+           </div>
+        )}
+
+        {/* STATS GRID */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+          {statCards.map((card, index) => (
+            <div key={index} className="bg-white p-10 rounded-[3rem] border border-[#111]/5 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group">
+              <div className="flex justify-between items-start mb-6">
+                <div className="p-4 bg-[#F7F5F0] rounded-2xl group-hover:bg-[#111] group-hover:text-white transition-colors duration-500">
+                  {card.icon}
+                </div>
+                <div className="flex items-center gap-1 text-[8px] font-black text-emerald-500 uppercase tracking-widest">
+                  <TrendingUp size={12} /> +12%
                 </div>
               </div>
-            ))}
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            <div className="bg-white p-10 rounded-[3.5rem] border border-slate-100 shadow-sm">
-               <h3 className="text-2xl font-black text-slate-950 mb-8 tracking-tighter uppercase flex items-center gap-4">
-                  <Package className="w-8 h-8 text-blue-600" /> Catalog Control
-               </h3>
-               <div className="space-y-6">
-                  <p className="text-slate-500 font-medium leading-relaxed italic uppercase text-[11px] tracking-widest">
-                    Manage elite inventory, adjust valuations, and introduce new masterworks to the vault.
-                  </p>
-                  <Link to="/admin/products" className="inline-flex items-center text-blue-600 font-black uppercase tracking-widest text-[10px] hover:gap-4 transition-all">
-                     Open Product Matrix <List className="ml-2 w-4 h-4" />
-                  </Link>
-               </div>
+              <p className="text-[10px] font-black text-[#6B6B6B] uppercase tracking-widest mb-2">{card.title}</p>
+              <h3 className="text-4xl font-black text-[#111] tracking-tighter">{card.value}</h3>
             </div>
+          ))}
+        </div>
 
-            <div className="bg-white p-10 rounded-[3.5rem] border border-slate-100 shadow-sm">
-               <h3 className="text-2xl font-black text-slate-950 mb-8 tracking-tighter uppercase flex items-center gap-4">
-                  <ShoppingBag className="w-8 h-8 text-emerald-500" /> Logistics Hub
-               </h3>
-               <div className="space-y-6">
-                  <p className="text-slate-500 font-medium leading-relaxed italic uppercase text-[11px] tracking-widest">
-                    Monitor user orders, synchronize delivery vectors, and finalize transaction records.
-                  </p>
-                  <Link to="/admin/orders" className="inline-flex items-center text-blue-600 font-black uppercase tracking-widest text-[10px] hover:gap-4 transition-all">
-                     Launch Order Stream <List className="ml-2 w-4 h-4" />
-                  </Link>
-               </div>
-            </div>
+        {/* COMMAND MODULES */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {[
+            {
+              title: 'Catalog Control',
+              desc: 'Manage elite inventory and adjust valuations.',
+              icon: <Package className="text-blue-600" />,
+              link: '/admin/products',
+              label: 'Inventory Matrix'
+            },
+            {
+              title: 'Logistics Hub',
+              desc: 'Monitor user orders and delivery vectors.',
+              icon: <Truck className="text-emerald-500" />,
+              link: '/admin/orders',
+              label: 'Shipment Stream'
+            },
+            {
+              title: 'Gallery Assets',
+              desc: 'Update workshop videos and heritage photos.',
+              icon: <ImageIcon className="text-indigo-500" />,
+              link: '/admin/gallery',
+              label: 'Media Vault'
+            },
+            {
+              title: 'Feedback Review',
+              desc: 'Audit customer interactions and reputation.',
+              icon: <MessageSquare className="text-amber-500" />,
+              link: '/admin/reviews',
+              label: 'Interaction Audit'
+            }
+          ].map((module, i) => (
+            <Link
+              key={i}
+              to={module.link}
+              className="bg-white p-10 rounded-[3.5rem] border border-[#111]/5 shadow-sm hover:shadow-xl transition-all group flex flex-col h-full"
+            >
+              <div className="w-16 h-16 bg-[#F7F5F0] rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500">
+                {React.cloneElement(module.icon, { size: 32 })}
+              </div>
+              <h3 className="text-2xl font-editorial font-black text-[#111] mb-4 tracking-tighter uppercase">{module.title}</h3>
+              <p className="text-[#6B6B6B] font-medium leading-relaxed uppercase text-[9px] tracking-widest mb-8 flex-grow">
+                {module.desc}
+              </p>
+              <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-[0.2em] text-[#111] group-hover:text-[#8B0000] transition-colors">
+                <span>{module.label}</span>
+                <ChevronRight size={16} className="group-hover:translate-x-2 transition-transform" />
+              </div>
+            </Link>
+          ))}
+        </div>
 
-            <div className="bg-white p-10 rounded-[3.5rem] border border-slate-100 shadow-sm">
-               <h3 className="text-2xl font-black text-slate-950 mb-8 tracking-tighter uppercase flex items-center gap-4">
-                  <ImageIcon className="w-8 h-8 text-indigo-500" /> Gallery Assets
-               </h3>
-               <div className="space-y-6">
-                  <p className="text-slate-500 font-medium leading-relaxed italic uppercase text-[11px] tracking-widest">
-                    Update workshop videos, heritage photos, and brand advertisement reels.
-                  </p>
-                  <Link to="/admin/gallery" className="inline-flex items-center text-indigo-600 font-black uppercase tracking-widest text-[10px] hover:gap-4 transition-all">
-                     Manage Media <List className="ml-2 w-4 h-4" />
-                  </Link>
-               </div>
-            </div>
-
-            <div className="bg-white p-10 rounded-[3.5rem] border border-slate-100 shadow-sm">
-               <h3 className="text-2xl font-black text-slate-950 mb-8 tracking-tighter uppercase flex items-center gap-4">
-                  <MessageSquare className="w-8 h-8 text-amber-500" /> Feedback Review
-               </h3>
-               <div className="space-y-6">
-                  <p className="text-slate-500 font-medium leading-relaxed italic uppercase text-[11px] tracking-widest">
-                    Moderate customer testimonials, filter interactions, and maintain brand reputation.
-                  </p>
-                  <Link to="/admin/reviews" className="inline-flex items-center text-amber-600 font-black uppercase tracking-widest text-[10px] hover:gap-4 transition-all">
-                     Audit Reviews <List className="ml-2 w-4 h-4" />
-                  </Link>
-               </div>
-            </div>
-          </div>
-        </>
-      )}
+        {/* FOOTER STATUS */}
+        <div className="mt-20 pt-10 border-t border-[#111]/5 flex justify-between items-center text-[8px] font-black text-[#6B6B6B] uppercase tracking-[0.3em]">
+          <span>System Status: Optimal</span>
+          <span>Last Sync: {new Date().toLocaleTimeString()}</span>
+          <span>Access Level: Proprietor (Elite)</span>
+        </div>
+      </div>
     </div>
   );
 };

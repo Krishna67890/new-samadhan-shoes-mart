@@ -2,13 +2,14 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
 import useFetch from '../hooks/useFetch';
-import { Edit, Trash2, Plus, ArrowLeft, Search, Loader2, AlertCircle, Package } from 'lucide-react';
+import { Edit, Trash2, Plus, ArrowLeft, Search, Loader2, AlertCircle, Package, Filter, ExternalLink } from 'lucide-react';
 import localProducts from '../utils/localProducts';
 
 const AdminProductList = () => {
   const { loading, error, request } = useFetch();
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('All');
   const navigate = useNavigate();
   const listRef = useRef(null);
 
@@ -24,7 +25,7 @@ const AdminProductList = () => {
         allProducts = [...localProducts];
       }
 
-      // Merge Demo Products (Overwriting local/server matches by ID)
+      // Merge Demo Products
       demoProducts.forEach(dp => {
          const idx = allProducts.findIndex(p => p._id === dp._id || p.id === dp.id);
          if (idx !== -1) {
@@ -39,7 +40,6 @@ const AdminProductList = () => {
       console.error("Fetch failed, using local/demo products:", err);
       const demoProducts = JSON.parse(localStorage.getItem('ssm_demo_products') || '[]');
 
-      // Merge local and demo
       let allProducts = [...localProducts];
       demoProducts.forEach(dp => {
          const idx = allProducts.findIndex(p => p._id === dp._id || p.id === dp.id);
@@ -59,139 +59,174 @@ const AdminProductList = () => {
 
   useEffect(() => {
     if (!loading && products.length > 0) {
-      gsap.from('.product-row', {
-        x: -20,
+      gsap.from('.product-card-anim', {
+        y: 20,
         opacity: 0,
-        duration: 0.4,
-        stagger: 0.05,
-        ease: 'power2.out'
+        duration: 0.5,
+        stagger: 0.1,
+        ease: 'power3.out'
       });
     }
   }, [loading, products]);
 
   const deleteHandler = async (id) => {
-    if (window.confirm('Are you sure you want to delete this product?')) {
+    if (window.confirm('Are you sure you want to delete this product from the vault?')) {
       try {
         await request(`/api/products/${id}`, 'DELETE');
 
-        // Also remove from demo storage
         const demoProducts = JSON.parse(localStorage.getItem('ssm_demo_products') || '[]');
         const filteredDemo = demoProducts.filter(p => p._id !== id && p.id !== id);
         localStorage.setItem('ssm_demo_products', JSON.stringify(filteredDemo));
 
-        fetchProducts(); // Refresh list
+        fetchProducts();
       } catch (err) {
         console.error("Delete failed on server, removing from local/demo view:", err);
-
-        // Remove from demo storage
         const demoProducts = JSON.parse(localStorage.getItem('ssm_demo_products') || '[]');
         const filteredDemo = demoProducts.filter(p => p._id !== id && p.id !== id);
         localStorage.setItem('ssm_demo_products', JSON.stringify(filteredDemo));
-
         setProducts(prev => prev.filter(p => p._id !== id && p.id !== id));
       }
     }
   };
 
-  const filteredProducts = (products || []).filter(p =>
-    (p.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (p.brand || '').toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredProducts = products.filter(p => {
+    const matchesSearch =
+      (p.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (p.brand || '').toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesCategory = categoryFilter === 'All' || p.category === categoryFilter;
+
+    return matchesSearch && matchesCategory;
+  });
+
+  const stats = {
+    total: products.length,
+    lowStock: products.filter(p => p.stock < 5).length,
+    valuation: products.reduce((acc, p) => acc + (p.price * p.stock), 0)
+  };
 
   return (
-    <div className="container mx-auto px-4 py-8 no-blur-zone">
-      <div className="flex items-center mb-8">
-        <button onClick={() => navigate('/admin')} className="mr-4 p-2 hover:bg-gray-100 rounded-full transition">
-          <ArrowLeft className="w-6 h-6" />
-        </button>
-        <h1 className="text-3xl font-bold text-gray-800">Manage Products</h1>
-      </div>
+    <div className="min-h-screen bg-[#F7F5F0] pt-32 pb-20 px-6 no-blur-zone">
+      <div className="container mx-auto max-w-7xl">
 
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        <div className="p-6 border-b border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="relative w-full md:w-96">
-            <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+        {/* HEADER */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16">
+          <div>
+            <button
+              onClick={() => navigate('/admin')}
+              className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[#6B6B6B] mb-4 hover:text-[#111]"
+            >
+              <ArrowLeft size={14} /> Back to Dashboard
+            </button>
+            <h1 className="text-5xl font-editorial font-black uppercase tracking-tighter text-[#111]">Product Matrix</h1>
+            <p className="text-slate-500 font-bold uppercase tracking-[0.2em] text-[10px] mt-2">Vault Catalog • Inventory Access Level 5</p>
+          </div>
+
+          <div className="flex gap-4">
+             <div className="bg-white px-8 py-6 rounded-[2rem] border border-[#111]/5 shadow-sm">
+                <span className="text-[9px] font-black text-[#6B6B6B] uppercase tracking-widest block mb-1">Total Items</span>
+                <span className="text-3xl font-black text-[#111]">{stats.total}</span>
+             </div>
+             <Link
+               to="/admin/product/new"
+               className="bg-[#111] text-white px-10 py-6 rounded-[2rem] flex items-center gap-3 hover:bg-[#8B0000] transition-all shadow-xl shadow-slate-200 group"
+             >
+                <Plus size={20} className="group-hover:rotate-90 transition-transform duration-500" />
+                <span className="font-black uppercase tracking-widest text-xs">Add Product</span>
+             </Link>
+          </div>
+        </div>
+
+        {/* FILTERS */}
+        <div className="bg-white p-8 rounded-[3rem] border border-[#111]/5 shadow-xl mb-12 flex flex-col md:flex-row gap-6 items-center">
+          <div className="relative flex-1 w-full">
+            <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-[#6B6B6B]" size={20} />
             <input
               type="text"
-              placeholder="Search products..."
-              className="w-full pl-10 pr-4 py-2 border rounded-xl focus:ring-2 focus:ring-primary outline-none transition"
+              placeholder="Search by product name or brand..."
+              className="w-full bg-[#F7F5F0] border-0 rounded-2xl py-4 pl-16 pr-6 text-sm font-bold outline-none focus:ring-2 focus:ring-[#8B0000]"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <Link to="/admin/product/new" className="btn-primary flex items-center w-full md:w-auto justify-center">
-            <Plus className="w-5 h-5 mr-2" /> Add New Product
-          </Link>
+
+          <div className="flex items-center gap-4 w-full md:w-auto">
+            <Filter size={20} className="text-[#6B6B6B]" />
+            <select
+              className="bg-[#F7F5F0] border-0 rounded-2xl py-4 px-8 text-[10px] font-black uppercase tracking-widest outline-none cursor-pointer"
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(e.target.value)}
+            >
+              <option value="All">All Categories</option>
+              <option value="Men">Men</option>
+              <option value="Women">Women</option>
+              <option value="Sneakers">Sneakers</option>
+              <option value="Formal">Formal</option>
+              <option value="Kids">Kids</option>
+            </select>
+          </div>
         </div>
 
-        {loading ? (
-          <div className="flex justify-center py-20">
-            <Loader2 className="w-12 h-12 animate-spin text-primary" />
-          </div>
-        ) : error ? (
-          <div className="p-10 text-center text-red-600 bg-red-50 flex flex-col items-center">
-             <AlertCircle className="w-12 h-12 mb-2" />
-             <p>{error}</p>
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead className="bg-gray-50 text-gray-500 uppercase text-xs font-bold tracking-wider">
-                <tr>
-                  <th className="px-6 py-4">ID</th>
-                  <th className="px-6 py-4">NAME</th>
-                  <th className="px-6 py-4">BRAND</th>
-                  <th className="px-6 py-4">PRICE</th>
-                  <th className="px-6 py-4">STOCK</th>
-                  <th className="px-6 py-4">ACTIONS</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100" ref={listRef}>
-                {Array.isArray(filteredProducts) && filteredProducts.map((product) => (
-                  <tr key={product._id} className="product-row hover:bg-gray-50 transition">
-                    <td className="px-6 py-4 font-mono text-xs text-gray-400">{product._id.substring(10)}</td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center">
-                        <img src={product.images[0]} alt="" className="w-10 h-10 object-cover rounded mr-3 border" />
-                        <span className="font-bold text-gray-800">{product.name}</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-gray-600">{product.brand}</td>
-                    <td className="px-6 py-4 font-bold">₹{product.price}</td>
-                    <td className="px-6 py-4">
-                       <span className={`px-2 py-1 rounded-full text-xs font-bold ${product.stock > 10 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                         {product.stock} in stock
-                       </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex space-x-3">
-                        <Link
-                          to={`/admin/product/${product._id}/edit`}
-                          className="p-2 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg transition"
-                          title="Edit"
-                        >
-                          <Edit className="w-5 h-5" />
-                        </Link>
-                        <button
-                          onClick={() => deleteHandler(product._id)}
-                          className="p-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg transition"
-                          title="Delete"
-                        >
-                          <Trash2 className="w-5 h-5" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-                {filteredProducts.length === 0 && (
-                  <tr>
-                    <td colSpan="6" className="px-6 py-10 text-center text-gray-500">No products found.</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        )}
+        {/* PRODUCTS LIST */}
+        <div className="space-y-6" ref={listRef}>
+          {loading ? (
+            <div className="flex justify-center py-20">
+              <Loader2 className="w-12 h-12 animate-spin text-[#8B0000]" />
+            </div>
+          ) : filteredProducts.length > 0 ? (
+            filteredProducts.map((product) => (
+              <div key={product._id} className="product-card-anim bg-white p-8 rounded-[3rem] border border-[#111]/5 shadow-sm hover:shadow-md transition-all">
+                <div className="grid md:grid-cols-6 gap-8 items-center">
+                  <div className="col-span-1">
+                    <div className="w-24 h-24 rounded-2xl overflow-hidden border border-[#111]/5 shadow-inner bg-[#F7F5F0]">
+                      <img src={product.images[0]} alt="" className="w-full h-full object-cover" />
+                    </div>
+                  </div>
+
+                  <div className="col-span-2">
+                    <span className="text-[9px] font-black text-[#6B6B6B] uppercase tracking-widest block mb-2">{product.brand}</span>
+                    <h6 className="font-bold text-lg text-[#111] uppercase tracking-tight">{product.name}</h6>
+                    <span className="text-[8px] bg-[#F7F5F0] px-2 py-1 rounded text-[#6B6B6B] font-bold uppercase mt-2 inline-block">{product.category}</span>
+                  </div>
+
+                  <div className="col-span-1 text-center md:text-left">
+                    <span className="text-[9px] font-black text-[#6B6B6B] uppercase tracking-widest block mb-2">Valuation</span>
+                    <p className="font-black text-xl text-[#111]">₹{product.price.toLocaleString()}</p>
+                  </div>
+
+                  <div className="col-span-1">
+                    <span className="text-[9px] font-black text-[#6B6B6B] uppercase tracking-widest block mb-2">Inventory</span>
+                    <div className="flex items-center gap-2">
+                      <div className={`w-2 h-2 rounded-full ${product.stock > 10 ? 'bg-emerald-500' : 'bg-red-500 animate-pulse'}`}></div>
+                      <span className="text-[10px] font-black uppercase tracking-widest">{product.stock} Units</span>
+                    </div>
+                    {product.stock < 5 && <span className="text-[8px] text-red-600 font-bold uppercase block mt-1">Critical Low Stock</span>}
+                  </div>
+
+                  <div className="col-span-1 flex justify-end gap-3">
+                    <Link
+                      to={`/admin/product/${product._id}/edit`}
+                      className="p-4 bg-[#F7F5F0] text-[#111] rounded-2xl hover:bg-[#111] hover:text-white transition-all"
+                    >
+                      <Edit size={18} />
+                    </Link>
+                    <button
+                      onClick={() => deleteHandler(product._id)}
+                      className="p-4 bg-rose-50 text-rose-600 rounded-2xl hover:bg-rose-600 hover:text-white transition-all"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="bg-white py-32 text-center rounded-[4rem] border border-dashed border-[#111]/10">
+              <Package size={64} className="mx-auto text-[#111]/5 mb-8" />
+              <h5 className="text-2xl font-editorial font-black uppercase text-[#111]/20">No matching products found.</h5>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

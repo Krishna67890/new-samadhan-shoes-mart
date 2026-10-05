@@ -163,13 +163,29 @@ const AdminProductEdit = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 no-blur-zone">
-      <div className="flex items-center mb-8">
-        <button onClick={() => navigate('/admin/products')} className="mr-4 p-2 hover:bg-gray-100 rounded-full transition">
-          <ArrowLeft className="w-6 h-6" />
-        </button>
-        <h1 className="text-3xl font-bold text-gray-800 uppercase tracking-tighter">Product Master Editor</h1>
-      </div>
+    <div className="min-h-screen bg-[#F7F5F0] pt-32 pb-20 px-6 no-blur-zone">
+      <div className="container mx-auto max-w-5xl">
+        <div className="flex items-center mb-12">
+          <button
+            onClick={() => navigate('/admin/products')}
+            className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[#6B6B6B] hover:text-[#111] transition-colors"
+          >
+            <ArrowLeft size={16} /> Back to Catalog
+          </button>
+        </div>
+
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-16">
+          <div>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="px-3 py-1 bg-[#8B0000] text-white text-[8px] font-black uppercase tracking-[0.2em] rounded-full flex items-center gap-2">
+                <Sparkles size={10} /> {isNew ? 'New Entry' : 'Matrix Update'}
+              </div>
+            </div>
+            <h1 className="text-6xl font-editorial font-black uppercase tracking-tighter text-[#111]">
+              {isNew ? 'Create Masterpiece' : 'Edit Asset'}
+            </h1>
+          </div>
+        </div>
 
       {success && (
          <div className="bg-green-600 text-white p-6 rounded-2xl mb-8 flex items-center shadow-xl border-4 border-white animate-in zoom-in-95">
@@ -200,55 +216,55 @@ const AdminProductEdit = () => {
         </div>
 
         <form onSubmit={submitHandler} className="p-8 md:p-12 space-y-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Left Column: Basic Info */}
-            <div className="space-y-6">
-              <h3 className="text-xl font-bold border-b pb-4 text-gray-700 flex items-center">
-                 <ImageIcon className="w-5 h-5 mr-2 text-primary" /> General Information
+            <div className="space-y-8">
+              <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#8B0000] border-b border-[#111]/5 pb-4 flex items-center">
+                 General Information
               </h3>
 
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">Product Name</label>
+              <div className="space-y-6">
+                <div className="space-y-2">
+                  <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-2">Product Name</label>
                   <input
                     type="text"
                     required
-                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary outline-none transition"
+                    className="w-full px-6 py-5 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-[#8B0000] outline-none transition-all font-bold text-[#111]"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">Brand</label>
+                <div className="grid grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-2">Brand</label>
                     <input
                       type="text"
                       required
-                      className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary outline-none transition"
+                      className="w-full px-6 py-5 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-[#8B0000] outline-none transition-all font-bold text-[#111]"
                       value={brand}
                       onChange={(e) => setBrand(e.target.value)}
                     />
                   </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">Price (₹1,000 - ₹2,000)</label>
+                  <div className="space-y-2">
+                    <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-2">Price (₹1,000 - ₹2,000)</label>
                     <input
                       type="number"
                       required
                       min="1000"
                       max="2000"
-                      className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary outline-none transition"
+                      className="w-full px-6 py-5 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-[#8B0000] outline-none transition-all font-bold text-[#111]"
                       value={price}
                       onChange={(e) => setPrice(Number(e.target.value))}
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">Category</label>
+                <div className="grid grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-2">Category</label>
                     <select
-                      className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary outline-none transition"
+                      className="w-full px-6 py-5 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-[#8B0000] outline-none transition-all font-bold text-[#111] appearance-none"
                       value={category}
                       onChange={(e) => setCategory(e.target.value)}
                     >
@@ -258,12 +274,15 @@ const AdminProductEdit = () => {
                       <option value="Sports">Sports</option>
                       <option value="Boots">Boots</option>
                       <option value="Sandals">Sandals</option>
+                      <option value="Men">Men</option>
+                      <option value="Women">Women</option>
+                      <option value="Kids">Kids</option>
                     </select>
                   </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">Target Gender</label>
+                  <div className="space-y-2">
+                    <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-2">Target Gender</label>
                     <select
-                      className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary outline-none transition"
+                      className="w-full px-6 py-5 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-[#8B0000] outline-none transition-all font-bold text-[#111] appearance-none"
                       value={targetGender}
                       onChange={(e) => setTargetGender(e.target.value)}
                     >
@@ -275,37 +294,37 @@ const AdminProductEdit = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">Stock</label>
+                <div className="grid grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-2">Stock</label>
                     <input
                       type="number"
                       required
-                      className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary outline-none transition"
+                      className="w-full px-6 py-5 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-[#8B0000] outline-none transition-all font-bold text-[#111]"
                       value={stock}
                       onChange={(e) => setStock(Number(e.target.value))}
                     />
                   </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">Initial Rating (0-5)</label>
+                  <div className="space-y-2">
+                    <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-2">Initial Rating (0-5)</label>
                     <input
                       type="number"
                       step="0.1"
                       min="0"
                       max="5"
-                      className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary outline-none transition"
+                      className="w-full px-6 py-5 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-[#8B0000] outline-none transition-all font-bold text-[#111]"
                       value={rating}
                       onChange={(e) => setRating(Number(e.target.value))}
                     />
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">Description</label>
+                <div className="space-y-2">
+                  <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-2">Description</label>
                   <textarea
                     rows="5"
                     required
-                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary outline-none transition"
+                    className="w-full px-6 py-5 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-[#8B0000] outline-none transition-all font-bold text-[#111] resize-none"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                   ></textarea>
@@ -314,30 +333,30 @@ const AdminProductEdit = () => {
             </div>
 
             {/* Right Column: Images & Sizes */}
-            <div className="space-y-6">
-               <h3 className="text-xl font-bold border-b pb-4 text-gray-700 flex items-center">
-                 <Upload className="w-5 h-5 mr-2 text-primary" /> Media & Options
+            <div className="space-y-8">
+               <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-600 border-b border-[#111]/5 pb-4 flex items-center">
+                 Media & Options
                </h3>
 
-               <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-3">Product Images (Exactly 4 Required)</label>
-                  <div className="flex flex-wrap gap-4 mb-4">
+               <div className="space-y-4">
+                  <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-2">Product Images (Exactly 4 Required)</label>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                      {images.map((img, idx) => (
-                        <div key={idx} className="relative w-24 h-24 rounded-lg overflow-hidden border">
+                        <div key={idx} className="relative aspect-square rounded-2xl overflow-hidden border border-[#111]/5 bg-[#F7F5F0]">
                            <img src={img} alt="" className="w-full h-full object-cover" />
                            <button
                              type="button"
                              onClick={() => setImages(images.filter((_, i) => i !== idx))}
-                             className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1"
+                             className="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1.5 shadow-lg"
                            >
                              <ArrowLeft className="w-3 h-3 rotate-45" />
                            </button>
                         </div>
                      ))}
                      {images.length < 4 && (
-                       <label className="w-24 h-24 rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:border-primary transition">
-                          {uploading ? <Loader2 className="w-6 h-6 animate-spin text-primary" /> : <PlusCircle className="w-6 h-6 text-gray-400" />}
-                          <span className="text-[10px] font-bold text-gray-400 mt-1">UPLOAD</span>
+                       <label className="aspect-square rounded-2xl border-2 border-dashed border-slate-200 flex flex-col items-center justify-center cursor-pointer hover:border-[#8B0000] hover:bg-slate-50 transition-all group">
+                          {uploading ? <Loader2 className="w-6 h-6 animate-spin text-[#8B0000]" /> : <PlusCircle className="w-6 h-6 text-slate-300 group-hover:text-[#8B0000]" />}
+                          <span className="text-[8px] font-black text-slate-400 mt-2 uppercase tracking-widest">UPLOAD</span>
                           <input
                             type="file"
                             className="hidden"
@@ -349,15 +368,15 @@ const AdminProductEdit = () => {
                      )}
                   </div>
                   {images.length !== 4 && (
-                    <p className="text-xs font-bold text-orange-600 mt-2 italic flex items-center gap-1">
-                      <AlertCircle size={12} /> Mandatory: {images.length}/4 images uploaded.
+                    <p className="text-[9px] font-black text-rose-500 uppercase tracking-widest flex items-center gap-2">
+                      <AlertCircle size={12} /> Mandatory Requirement: {images.length}/4 images.
                     </p>
                   )}
                </div>
 
-               <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-3">Available Sizes (UK/India)</label>
-                  <div className="flex flex-wrap gap-2">
+               <div className="space-y-4">
+                  <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-2">Available Sizes (UK/India)</label>
+                  <div className="flex flex-wrap gap-3">
                     {[5, 6, 7, 8, 9, 10, 11, 12].map(s => (
                       <button
                         key={s}
@@ -366,8 +385,8 @@ const AdminProductEdit = () => {
                            if (sizes.includes(s)) setSizes(sizes.filter(x => x !== s));
                            else setSizes([...sizes, s].sort((a,b) => a-b));
                         }}
-                        className={`px-4 py-2 rounded-lg border-2 font-bold transition
-                          ${sizes.includes(s) ? 'bg-primary border-primary text-white' : 'border-gray-200 text-gray-500 hover:border-primary'}`}
+                        className={`w-14 h-14 rounded-xl border-2 font-black transition-all text-[11px]
+                          ${sizes.includes(s) ? 'bg-[#111] border-[#111] text-white shadow-xl' : 'bg-white border-slate-100 text-slate-400 hover:border-[#8B0000]'}`}
                       >
                         {s}
                       </button>
@@ -377,14 +396,14 @@ const AdminProductEdit = () => {
             </div>
           </div>
 
-          <div className="flex justify-end pt-8 border-t">
+          <div className="pt-12 border-t border-[#111]/5">
              <button
                type="submit"
                disabled={loading}
-               className="btn-primary flex items-center px-10 py-4 text-lg font-bold shadow-lg shadow-blue-100"
+               className="w-full bg-[#111] text-white py-6 rounded-[2.5rem] text-[11px] font-black uppercase tracking-[0.4em] transition-all hover:bg-[#8B0000] shadow-2xl flex items-center justify-center gap-4 group"
              >
-               {loading ? <Loader2 className="w-6 h-6 animate-spin mr-2" /> : <Save className="w-5 h-5 mr-2" />}
-               {isNew ? 'Create Product' : 'Update Product'}
+               {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : <Save className="w-5 h-5" />}
+               {isNew ? 'Authorize New Product Entry' : 'Commit Matrix Updates'}
              </button>
           </div>
         </form>
