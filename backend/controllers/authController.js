@@ -57,15 +57,39 @@ const loginUser = async (req, res) => {
   const ownerPassword = process.env.OWNER_PASSWORD || 'Samadhan_Security_2025_Elite';
 
   if (email === ownerEmail && password === ownerPassword) {
-    // We use a valid-formatted MongoDB ObjectId string for the Mock Admin
-    const mockAdminId = '65a123456789012345678901';
-    return res.json({
-      _id: mockAdminId,
-      name: 'Store Owner',
-      email: ownerEmail,
-      role: 'admin',
-      token: generateToken(mockAdminId),
-    });
+    try {
+      // ENSURE OWNER EXISTS IN DATABASE for global sync capability
+      let owner = await User.findOne({ email: ownerEmail });
+
+      if (!owner) {
+        owner = await User.create({
+          name: 'Store Owner',
+          email: ownerEmail,
+          password: ownerPassword,
+          role: 'admin'
+        });
+        console.log('✅ [Auth] Official Owner created in Database');
+      }
+
+      return res.json({
+        _id: owner._id,
+        name: owner.name,
+        email: owner.email,
+        role: owner.role,
+        token: generateToken(owner._id),
+      });
+    } catch (error) {
+      console.error('❌ [Auth] Owner DB Synchronization Failed:', error.message);
+      // Fallback to mock session
+      const mockAdminId = '65a123456789012345678901';
+      return res.json({
+        _id: mockAdminId,
+        name: 'Store Owner (Offline Mode)',
+        email: ownerEmail,
+        role: 'admin',
+        token: generateToken(mockAdminId),
+      });
+    }
   }
 
   try {

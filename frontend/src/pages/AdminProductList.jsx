@@ -11,16 +11,24 @@ const AdminProductList = () => {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('All');
+  const [dbConnected, setDbConnected] = useState(true);
   const navigate = useNavigate();
   const listRef = useRef(null);
 
   const fetchProducts = async () => {
     try {
       const data = await request('/api/products');
+      // If we get an error response disguised as data or empty, we check connectivity
+      if (data && data.message && data.message.includes('Database status pending')) {
+        setDbConnected(false);
+      } else {
+        setDbConnected(true);
+      }
       const allProducts = getMergedProducts(data);
       setProducts(allProducts);
     } catch (err) {
       console.error("Fetch failed, using local/demo products:", err);
+      setDbConnected(false);
       const allProducts = getMergedProducts([]);
       setProducts(allProducts);
     }
@@ -44,20 +52,30 @@ const AdminProductList = () => {
 
   const deleteHandler = async (id) => {
     if (window.confirm('Are you sure you want to delete this product from the vault?')) {
+      const prodIdStr = String(id);
+      const isGlobalProduct = /^[0-9a-fA-F]{24}$/.test(prodIdStr);
+
       try {
-        await request(`/api/products/${id}`, 'DELETE');
+        if (isGlobalProduct) {
+          await request(`/api/products/${id}`, 'DELETE');
+        }
 
+        // Always remove from Local State/View
+        setProducts(prev => prev.filter(p => (p._id || p.id) !== id));
+
+        // Clear from Local Storage cache
         const demoProducts = JSON.parse(localStorage.getItem('ssm_demo_products') || '[]');
-        const filteredDemo = demoProducts.filter(p => p._id !== id && p.id !== id);
-        localStorage.setItem('ssm_demo_products', JSON.stringify(filteredDemo));
-
-        fetchProducts();
+        localStorage.setItem('ssm_demo_products', JSON.stringify(
+          demoProducts.filter(p => (p._id || p.id) !== id)
+        ));
       } catch (err) {
-        console.error("Delete failed on server, removing from local/demo view:", err);
-        const demoProducts = JSON.parse(localStorage.getItem('ssm_demo_products') || '[]');
-        const filteredDemo = demoProducts.filter(p => p._id !== id && p.id !== id);
-        localStorage.setItem('ssm_demo_products', JSON.stringify(filteredDemo));
-        setProducts(prev => prev.filter(p => p._id !== id && p.id !== id));
+        console.error("Delete failed:", err);
+        // If it was only a local product, remove it anyway
+        if (!isGlobalProduct) {
+           setProducts(prev => prev.filter(p => (p._id || p.id) !== id));
+        } else {
+           alert('FAILED TO DELETE: The cloud database is not responding. This product will reappear until you fix the MONGO_URI in Vercel settings.');
+        }
       }
     }
   };

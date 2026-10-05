@@ -88,13 +88,20 @@ const getProductById = async (req, res) => {
 // @access  Private/Admin
 const deleteProduct = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
-    if (product) {
-      await Product.deleteOne({ _id: product._id });
-      res.json({ message: 'Product removed' });
-    } else {
-      res.status(404).json({ message: 'Product not found' });
+    // 1. Try deleting by DB ID
+    if (req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+      const product = await Product.findById(req.params.id);
+      if (product) {
+        await Product.deleteOne({ _id: product._id });
+        return res.json({ message: 'Product removed from Global Vault' });
+      }
     }
+
+    // 2. Handle Mock/Fallback Deletion
+    res.status(404).json({
+      message: 'Product not found in Global Database. If this was a Demo product, it has been removed from your local view.',
+      isDemo: true
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -106,6 +113,11 @@ const deleteProduct = async (req, res) => {
 const createProduct = async (req, res) => {
   try {
     const { name, price, description, images, brand, sizes, stock, category, targetGender } = req.body;
+
+    // Validation: Ensure no blob URLs are being saved to the permanent database
+    if (images && images.some(img => img.startsWith('blob:'))) {
+      return res.status(400).json({ message: 'Critical Error: One or more images failed to upload to the server. Products with "blob:" links cannot be saved globally.' });
+    }
 
     const product = new Product({
       name,
@@ -122,9 +134,11 @@ const createProduct = async (req, res) => {
     });
 
     const createdProduct = await product.save();
+    console.log(`✅ [Database] Product Created: ${createdProduct.name} by ${req.user.name}`);
     res.status(201).json(createdProduct);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('❌ [Database] Create Error:', error.message);
+    res.status(500).json({ message: `Database Save Failed: ${error.message}. Ensure your MongoDB Atlas connection is active.` });
   }
 };
 
@@ -134,6 +148,11 @@ const createProduct = async (req, res) => {
 const updateProduct = async (req, res) => {
   try {
     const { name, price, description, images, brand, sizes, stock, category, targetGender } = req.body;
+
+    // Only attempt DB lookups for valid ObjectIds to prevent crashes
+    if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({ message: 'Invalid Product ID format. This is likely a local demo product that cannot be updated globally yet.' });
+    }
 
     const product = await Product.findById(req.params.id);
 
@@ -151,10 +170,11 @@ const updateProduct = async (req, res) => {
       const updatedProduct = await product.save();
       res.json(updatedProduct);
     } else {
-      res.status(404).json({ message: 'Product not found' });
+      res.status(404).json({ message: 'Product not found in Global Vault' });
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('❌ [Database] Update Error:', error.message);
+    res.status(500).json({ message: `Database Update Failed: ${error.message}` });
   }
 };
 

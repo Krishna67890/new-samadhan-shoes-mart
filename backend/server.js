@@ -50,12 +50,13 @@ if (process.env.NODE_ENV === 'production') {
 
 const PORT = process.env.PORT || 5000;
 
-// Senior Architect Note: Start the server immediately so Guest mode works.
-// Connect to DB in the background.
-app.listen(PORT, () => {
-  console.log(`🚀 [Server] New Samadhan Shoe Mart active on port ${PORT}`);
-  console.log(`💡 [System] Guest Login is now ENABLED.`);
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`🚀 [Server] New Samadhan Shoe Mart active on port ${PORT}`);
+    connectDB();
+  });
+}
 
-  // Background connection attempt
-  connectDB();
-});
+connectDB(); // Ensure DB connects in production
+
+export default app;

@@ -232,11 +232,33 @@ const ProductsPage = () => {
                               onClick={async (e) => {
                                 e.stopPropagation();
                                 if (window.confirm('Delete this masterpiece permanently?')) {
+                                  const prodIdStr = String(prodId);
+                                  // A real MongoDB ID is exactly 24 hex characters.
+                                  const isGlobalProduct = /^[0-9a-fA-F]{24}$/.test(prodIdStr);
+
                                   try {
-                                    await request(`/api/products/${prodId}`, 'DELETE');
-                                    setProducts(products.filter(p => (p._id || p.id) !== prodId));
+                                    if (isGlobalProduct) {
+                                      await request(`/api/products/${prodId}`, 'DELETE');
+                                    }
+
+                                    // Remove from UI state
+                                    setProducts(prev => prev.filter(p => (p._id || p.id) !== prodId));
+
+                                    // Remove from local storage cache
+                                    const demoProducts = JSON.parse(localStorage.getItem('ssm_demo_products') || '[]');
+                                    localStorage.setItem('ssm_demo_products', JSON.stringify(
+                                      demoProducts.filter(p => (p._id || p.id) !== prodId)
+                                    ));
+
+                                    console.log("Product successfully removed.");
                                   } catch (err) {
-                                    alert('Failed to delete product.');
+                                    console.error("Delete failed:", err);
+                                    // If it's NOT a global product, we just remove it from view anyway since it's only local
+                                    if (!isGlobalProduct) {
+                                       setProducts(prev => prev.filter(p => (p._id || p.id) !== prodId));
+                                    } else {
+                                       alert('FAILED TO SYNC: The server could not delete this product. It will stay in the catalog until the database is connected. Please check your Vercel/MongoDB connection.');
+                                    }
                                   }
                                 }
                               }}

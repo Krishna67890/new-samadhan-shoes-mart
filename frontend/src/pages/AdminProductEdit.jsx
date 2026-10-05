@@ -76,14 +76,7 @@ const AdminProductEdit = () => {
       const uploadPromises = files.map(async (file) => {
         const formData = new FormData();
         formData.append('image', file);
-        try {
-          const res = await request('/api/upload', 'POST', formData);
-          return res;
-        } catch (err) {
-          console.warn("Backend upload failed, using local preview for demo:", err);
-          // Fallback to local URL for demonstration if backend is down
-          return URL.createObjectURL(file);
-        }
+        return await request('/api/upload', 'POST', formData);
       });
 
       const uploadedUrls = await Promise.all(uploadPromises);
@@ -92,7 +85,7 @@ const AdminProductEdit = () => {
     } catch (err) {
       console.error("Upload process failed:", err);
       setUploading(false);
-      alert("Media upload failed. Check backend connectivity.");
+      alert("MEDIA UPLOAD FAILED: The images could not be saved to the server. Without a server upload, other devices will not be able to see these pictures. Please check your internet/backend connection.");
     }
   };
 
@@ -338,6 +331,28 @@ const AdminProductEdit = () => {
 
                <div className="space-y-4">
                   <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-2">Product Images (Exactly 4 Required)</label>
+
+                  {/* URL Input Fallback for Vercel/Cloud Stability */}
+                  <div className="flex gap-2 mb-4">
+                    <input
+                      type="text"
+                      placeholder="Paste Image URL here..."
+                      className="flex-1 px-4 py-2 bg-[#F7F5F0] rounded-xl text-[10px] font-bold outline-none border border-slate-200 focus:border-[#8B0000]"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          if (e.target.value && images.length < 4) {
+                            setImages([...images, e.target.value]);
+                            e.target.value = '';
+                          } else if (images.length >= 4) {
+                            alert("Already have 4 images.");
+                          }
+                        }
+                      }}
+                    />
+                    <p className="text-[8px] font-bold text-slate-400 uppercase self-center italic">Press Enter to add Link</p>
+                  </div>
+
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                      {images.map((img, idx) => (
                         <div key={idx} className="relative aspect-square rounded-2xl overflow-hidden border border-[#111]/5 bg-[#F7F5F0]">

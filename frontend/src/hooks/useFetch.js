@@ -12,10 +12,16 @@ const useFetch = () => {
       setError(null);
 
       try {
-        // Use relative URL in production; use the current machine's IP in development for cross-device testing
-        const baseUrl = import.meta.env.PROD
-          ? ''
-          : `http://${window.location.hostname}:5000`;
+        // PRIORITY:
+        // 1. Environment Variable (VITE_API_URL) - Best for Vercel/Production
+        // 2. Relative path (if in Production and no env var)
+        // 3. Localhost (Development)
+
+        let baseUrl = import.meta.env.VITE_API_URL || '';
+
+        if (!baseUrl && !import.meta.env.PROD) {
+          baseUrl = `http://${window.location.hostname}:5000`;
+        }
 
         const fullUrl = url.startsWith('http') ? url : `${baseUrl}${url}`;
 
