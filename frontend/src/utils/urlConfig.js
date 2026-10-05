@@ -24,14 +24,24 @@ export const getApiBaseUrl = () => {
 export const resolveImageUrl = (path) => {
   if (!path) return '/placeholder-shoe.jpg';
 
-  // If it's already a full URL (http://... or https://...) or a data URI/blob
-  if (path.startsWith('http') || path.startsWith('blob:') || path.startsWith('data:')) {
+  const baseUrl = getApiBaseUrl();
+
+  // Handle case where path is already a full URL
+  if (path.startsWith('http')) {
+    // If the URL contains localhost or 127.0.0.1, it's likely from a local DB entry
+    // We need to replace it with the actual dynamic baseUrl so other devices can see it
+    if (path.includes('localhost:') || path.includes('127.0.0.1:')) {
+      return path.replace(/http:\/\/(localhost|127\.0\.0\.1):5000/g, baseUrl);
+    }
     return path;
   }
 
-  // If it's a relative path from our server (starts with /uploads or uploads)
-  const baseUrl = getApiBaseUrl();
-  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  // Handle data URIs or blobs
+  if (path.startsWith('blob:') || path.startsWith('data:')) {
+    return path;
+  }
 
+  // If it's a relative path from our server
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
   return `${baseUrl}${cleanPath}`;
 };

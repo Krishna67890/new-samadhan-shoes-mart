@@ -112,7 +112,7 @@ const deleteProduct = async (req, res) => {
 // @access  Private/Admin
 const createProduct = async (req, res) => {
   try {
-    const { name, price, description, images, brand, sizes, stock, category, targetGender } = req.body;
+    const { name, price, description, images, brand, sizes, stock, category, targetGender, model3D } = req.body;
 
     // Validation: Ensure no blob URLs are being saved to the permanent database
     if (images && images.some(img => img.startsWith('blob:'))) {
@@ -124,6 +124,7 @@ const createProduct = async (req, res) => {
       price,
       user: req.user._id,
       images: images || ['/images/sample.jpg'],
+      model3D,
       brand,
       category: category || 'Formal',
       targetGender: targetGender || 'Men',
@@ -147,7 +148,7 @@ const createProduct = async (req, res) => {
 // @access  Private/Admin
 const updateProduct = async (req, res) => {
   try {
-    const { name, price, description, images, brand, sizes, stock, category, targetGender } = req.body;
+    const { name, price, description, images, brand, sizes, stock, category, targetGender, model3D } = req.body;
 
     // Only attempt DB lookups for valid ObjectIds to prevent crashes
     if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
@@ -161,6 +162,7 @@ const updateProduct = async (req, res) => {
       product.price = price || product.price;
       product.description = description || product.description;
       product.images = images || product.images;
+      product.model3D = model3D !== undefined ? model3D : product.model3D;
       product.brand = brand || product.brand;
       product.category = category || product.category;
       product.targetGender = targetGender || product.targetGender;

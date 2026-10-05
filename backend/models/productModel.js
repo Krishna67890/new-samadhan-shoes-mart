@@ -63,6 +63,10 @@ const productSchema = mongoose.Schema(
         required: true,
       },
     ],
+    model3D: {
+      type: String,
+      required: false,
+    },
     sizes: [
       {
         type: Number,

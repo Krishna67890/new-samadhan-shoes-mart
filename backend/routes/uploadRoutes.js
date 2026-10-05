@@ -28,14 +28,14 @@ const storage = multer.diskStorage({
 });
 
 function checkFileType(file, cb) {
-  const filetypes = /jpg|jpeg|png/;
+  const filetypes = /jpg|jpeg|png|glb|gltf/;
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-  const mimetype = filetypes.test(file.mimetype);
+  const mimetype = filetypes.test(file.mimetype) || path.extname(file.originalname).toLowerCase() === '.glb' || path.extname(file.originalname).toLowerCase() === '.gltf';
 
   if (extname && mimetype) {
     return cb(null, true);
   } else {
-    cb('Images only!');
+    cb('Images or 3D Models (.glb, .gltf) only!');
   }
 }
 

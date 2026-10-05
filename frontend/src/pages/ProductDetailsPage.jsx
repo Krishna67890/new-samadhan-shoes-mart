@@ -10,9 +10,10 @@ gsap.registerPlugin(ScrollTrigger);
 import {
   Star, ShoppingCart, MessageCircle, ArrowLeft, CheckCircle,
   Shield, Truck, RefreshCw, CreditCard, Box, Zap, Info,
-  Search, ShieldCheck, MapPin, Smartphone, HelpCircle
+  Search, ShieldCheck, MapPin, Smartphone, HelpCircle, View
 } from 'lucide-react';
 import { resolveImageUrl } from '../utils/urlConfig';
+import ShoeViewer from '../components/ShoeViewer';
 
 const ProductDetailsPage = () => {
   const { id } = useParams();
@@ -221,10 +222,10 @@ const ProductDetailsPage = () => {
 
   return (
     <div className="bg-[#050505] min-h-[300vh] pt-32 pb-24 relative overflow-hidden" ref={containerRef}>
-      {/* 3D FLOATING HERITAGE SHOE (Main-Shoe.png) */}
+      {/* 3D FLOATING HERITAGE SHOE (Real 3D or GSAP fallback) */}
       <div
         ref={mainShoeRef}
-        className="fixed top-1/4 right-[5%] w-[45vw] max-w-[850px] pointer-events-none z-0 hidden lg:block"
+        className="fixed top-1/4 right-[5%] w-[45vw] max-w-[850px] z-0 hidden lg:block"
         style={{
             perspective: '6000px',
             transformStyle: 'preserve-3d',
@@ -233,28 +234,34 @@ const ProductDetailsPage = () => {
             filter: 'drop-shadow(0 180px 350px rgba(0,0,0,0.6))'
         }}
       >
-        <div className="relative w-full h-full group transform-gpu">
-          {/* Virtual Shine Layer */}
-          <div className="absolute inset-0 z-10 opacity-0 group-hover:opacity-20 transition-opacity duration-1000 mix-blend-soft-light pointer-events-none"
-               style={{ background: 'linear-gradient(135deg, transparent 40%, white 50%, transparent 60%)', backgroundSize: '200% 200%', animation: 'shine 8s infinite linear' }}>
+        {product?.model3D ? (
+          <div className="w-full h-[600px] pointer-events-auto">
+             <ShoeViewer modelUrl={resolveImageUrl(product.model3D)} />
           </div>
+        ) : (
+          <div className="relative w-full h-full group transform-gpu pointer-events-none">
+            {/* Virtual Shine Layer */}
+            <div className="absolute inset-0 z-10 opacity-0 group-hover:opacity-20 transition-opacity duration-1000 mix-blend-soft-light pointer-events-none"
+                style={{ background: 'linear-gradient(135deg, transparent 40%, white 50%, transparent 60%)', backgroundSize: '200% 200%', animation: 'shine 8s infinite linear' }}>
+            </div>
 
-          <img
-            src="/New-Samadhan-Shoe-Mart/Main-Shoe.png"
-            alt="New Samadhan Heritage"
-            className="w-full h-auto filter drop-shadow-[0_120px_250px_rgba(0,0,0,0.8)] opacity-60 brightness-115 contrast-110 transition-all duration-1000"
-          />
-        </div>
+            <img
+              src="/New-Samadhan-Shoe-Mart/Main-Shoe.png"
+              alt="New Samadhan Heritage"
+              className="w-full h-auto filter drop-shadow-[0_120px_250px_rgba(0,0,0,0.8)] opacity-60 brightness-115 contrast-110 transition-all duration-1000"
+            />
+          </div>
+        )}
 
         {/* Advanced Technical Nodes */}
-        <div className="tech-node-1 absolute top-0 left-[-200px] opacity-0 translate-x-[-50px] transition-all duration-700">
+        <div className="tech-node-1 absolute top-0 left-[-200px] opacity-0 translate-x-[-50px] transition-all duration-700 pointer-events-none">
             <div className="bg-blue-600/90 border border-blue-500/30 p-6 rounded-2xl">
                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-400 block mb-2">Build Quality</span>
                 <p className="text-white text-xs font-bold uppercase leading-tight">Reinforced <br/> Side-Wall Stitching</p>
             </div>
         </div>
 
-        <div className="tech-node-2 absolute bottom-[20%] right-[-100px] opacity-0 translate-x-[50px] transition-all duration-700">
+        <div className="tech-node-2 absolute bottom-[20%] right-[-100px] opacity-0 translate-x-[50px] transition-all duration-700 pointer-events-none">
             <div className="bg-emerald-500/90 border border-emerald-500/30 p-6 rounded-2xl">
                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-emerald-400 block mb-2">Traction Tech</span>
                 <p className="text-white text-xs font-bold uppercase leading-tight">Industrial Grade <br/> Non-Slip Sole</p>

@@ -10,7 +10,12 @@ const userSchema = mongoose.Schema(
     phone: { type: String, default: '' },
     address: { type: String, default: '' },
     city: { type: String, default: '' },
+    state: { type: String, default: '' },
     pincode: { type: String, default: '' },
+    gender: { type: String, default: '' },
+    shoeSize: { type: String, default: '' },
+    stylePreference: { type: String, default: '' },
+    identityVerified: { type: Boolean, default: false },
     avatar: { type: String, default: '/uploads/avatars/default-avatar.png' },
   },
   { timestamps: true }

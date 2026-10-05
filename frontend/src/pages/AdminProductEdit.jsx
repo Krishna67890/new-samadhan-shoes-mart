@@ -27,8 +27,10 @@ const AdminProductEdit = () => {
   const [category, setCategory] = useState(queryCategory || 'Formal');
   const [targetGender, setTargetGender] = useState('Men');
   const [images, setImages] = useState([]);
+  const [model3D, setModel3D] = useState('');
   const [sizes, setSizes] = useState([6, 7, 8, 9, 10]);
   const [uploading, setUploading] = useState(false);
+  const [uploadingModel, setUploadingModel] = useState(false);
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
@@ -55,6 +57,7 @@ const AdminProductEdit = () => {
             setCategory(data.category || 'Formal');
             setTargetGender(data.targetGender || 'Men');
             setImages(data.images || []);
+            setModel3D(data.model3D || '');
             setSizes(data.sizes || [6, 7, 8, 9, 10]);
           }
         } catch (err) {
@@ -91,6 +94,24 @@ const AdminProductEdit = () => {
     }
   };
 
+  const uploadModelHandler = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setUploadingModel(true);
+    try {
+      const formData = new FormData();
+      formData.append('image', file); // uploadRoutes uses 'image' fieldname
+      const uploadedUrl = await request('/api/upload', 'POST', formData);
+      setModel3D(uploadedUrl);
+      setUploadingModel(false);
+    } catch (err) {
+      console.error("Model upload failed:", err);
+      setUploadingModel(false);
+      alert(`3D MODEL UPLOAD FAILED: ${err.message || "Unknown Server Error"}`);
+    }
+  };
+
   const submitHandler = async (e) => {
     e.preventDefault();
 
@@ -107,7 +128,7 @@ const AdminProductEdit = () => {
     const productData = {
       _id: isNew ? `demo-${Date.now()}` : id,
       id: isNew ? `demo-${Date.now()}` : id,
-      name, price, brand, stock, rating, description, images, sizes, category, targetGender
+      name, price, brand, stock, rating, description, images, model3D, sizes, category, targetGender
     };
 
     try {
@@ -386,6 +407,29 @@ const AdminProductEdit = () => {
                     <p className="text-[9px] font-black text-rose-500 uppercase tracking-widest flex items-center gap-2">
                       <AlertCircle size={12} /> Mandatory Requirement: {images.length}/4 images.
                     </p>
+                  )}
+               </div>
+
+               <div className="space-y-4 pt-6 border-t border-slate-100">
+                  <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-2">Premium 3D Model (.glb)</label>
+                  <div className="flex gap-4">
+                    <input
+                      type="text"
+                      placeholder="3D Model URL (e.g. /uploads/model.glb)"
+                      className="flex-1 px-6 py-4 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-blue-600 outline-none transition-all font-bold text-[#111] text-[10px]"
+                      value={model3D}
+                      onChange={(e) => setModel3D(e.target.value)}
+                    />
+                    <label className="px-6 py-4 bg-blue-600 text-white rounded-2xl cursor-pointer hover:bg-blue-700 transition-all flex items-center gap-2 text-[10px] font-black uppercase">
+                      {uploadingModel ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload size={16} />}
+                      <span>{model3D ? 'Change' : 'Upload'}</span>
+                      <input type="file" className="hidden" accept=".glb,.gltf" onChange={uploadModelHandler} />
+                    </label>
+                  </div>
+                  {model3D && (
+                    <div className="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-lg text-[9px] font-black uppercase tracking-widest">
+                      <CheckCircle size={12} /> Model Synced: {model3D.split('/').pop()}
+                    </div>
                   )}
                </div>
 

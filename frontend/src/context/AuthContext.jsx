@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { getApiBaseUrl } from '../utils/urlConfig';
 
 export const AuthContext = createContext();
 
@@ -29,7 +30,6 @@ export const AuthProvider = ({ children }) => {
           localStorage.clear();
           if (identity) localStorage.setItem('ssm_user_identity', identity);
           if (currentToken) localStorage.setItem('token', currentToken);
-
           try {
             localStorage.setItem('ssm_user_identity', JSON.stringify(user));
           } catch (retryError) {
@@ -43,111 +43,101 @@ export const AuthProvider = ({ children }) => {
     }
   }, [user, token]);
 
+  // Global Sync: Fetch latest profile from Database on mount/token change
+  useEffect(() => {
+    const fetchLatestProfile = async () => {
+      if (token && !user?.isGuest) {
+        try {
+          const baseUrl = getApiBaseUrl();
+          const response = await fetch(`${baseUrl}/api/users/profile`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          if (response.ok) {
+            const latestUser = await response.json();
+            // Preserve token and other local flags
+            setUser(prev => ({ ...prev, ...latestUser }));
+          }
+        } catch (error) {
+          console.warn("Vault Sync: Operating in offline mode.");
+        }
+      }
+    };
+    fetchLatestProfile();
+  }, [token]);
+
   const login = async (email, password) => {
     setLoading(true);
+    try {
+      const baseUrl = getApiBaseUrl();
+      const response = await fetch(`${baseUrl}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
 
-    const cleanEmail = email.trim().toLowerCase();
-    const cleanPassword = password.trim();
+      const data = await response.json();
 
-    // Owner Identity Verification Protocol - ENFORCED
-    // Matches: Command@SamadhanShoe.com, command@samadhanshoes.com, etc.
-    const isOwnerEmail = cleanEmail === 'command@samadhanshoe.com' ||
-                         cleanEmail === 'command@samadhanshoes.com' ||
-                         cleanEmail === 'command@samadhanshoemart.com';
+      if (!response.ok) {
+        throw new Error(data.message || 'Identity Verification Failed');
+      }
 
-    const isOwnerPassword = cleanPassword === 'Samadhan_Security_2025_Elite';
+      localStorage.setItem('ssm_user_identity', JSON.stringify(data));
+      localStorage.setItem('token', data.token);
 
-    if (isOwnerEmail && isOwnerPassword) {
-      const ownerData = {
-        _id: 'owner_001',
-        name: 'Vamanrao Trambak Ahire',
-        email: 'Command@SamadhanShoe.com',
-        role: 'admin',
-        isOwner: true,
-        phone: '9423228843',
-        secondaryPhone: '8888644021',
-        landline: '0253-2629021',
-        address: 'Plot No. 29, Santkrupa Niwas, Swami Samarth Nagar, Chhatrapati Sambhaji Nagar Road, Yashwant Lawns Javal, Nandur Naka, Nashik',
-        city: 'Nashik',
-        state: 'Maharashtra',
-        pincode: '422003',
-        identityVerified: true,
-        avatar: '/New-Samadhan-Shoe-Mart/Main-Shoe.png'
-      };
-
-      const secureToken = 'samadhan_elite_admin_secure_token_2025';
-
-      // Immediate persistence for Command Authority
-      localStorage.setItem('ssm_user_identity', JSON.stringify(ownerData));
-      localStorage.setItem('token', secureToken);
-
-      setToken(secureToken);
-      setUser(ownerData);
+      setToken(data.token);
+      setUser(data);
       setLoading(false);
-      return { success: true, role: 'admin' };
-    }
-
-    // Critical: Prevent fall-through to user role if owner email is detected but password fails
-    if (isOwnerEmail && !isOwnerPassword) {
+      return { success: true, role: data.role };
+    } catch (error) {
       setLoading(false);
-      return { success: false, message: 'Invalid Owner Security Key. Identity Verification Failed.' };
+      return { success: false, message: error.message };
     }
-
-    const userData = {
-      _id: 'user_' + Date.now(),
-      name: 'Elite Member',
-      email: cleanEmail,
-      role: 'user',
-      phone: '',
-      address: '',
-      city: 'Nashik',
-      state: 'Maharashtra',
-      pincode: '',
-      gender: 'boy',
-      identityVerified: false
-    };
-
-    const userToken = 'samadhan_user_token_' + Date.now();
-    localStorage.setItem('token', userToken);
-
-    setToken(userToken);
-    setUser(userData);
-    setLoading(false);
-    return { success: true, role: 'user' };
   };
 
   const loginAsGuest = async () => {
     setLoading(true);
-    const guestData = {
-      _id: 'guest_' + Date.now(),
-      name: 'Elite Guest',
-      email: 'guest@samadhan.com',
-      role: 'user',
-      isGuest: true,
-      city: 'Nashik',
-      state: 'Maharashtra',
-      gender: 'boy'
-    };
+    try {
+      const baseUrl = getApiBaseUrl();
+      const response = await fetch(`${baseUrl}/api/auth/guest`, {
+        method: 'POST',
+      });
+      const data = await response.json();
 
-    setUser(guestData);
-    setLoading(false);
-    return { success: true, role: 'user' };
+      setUser(data);
+      localStorage.setItem('ssm_user_identity', JSON.stringify(data));
+      localStorage.setItem('token', data.token);
+      setToken(data.token);
+      setLoading(false);
+      return { success: true, role: 'user' };
+    } catch (error) {
+      setLoading(false);
+      return { success: false, message: 'Guest access denied' };
+    }
   };
 
   const register = async (name, email, password) => {
     setLoading(true);
-    const userData = {
-      _id: 'user_' + Date.now(),
-      name: name,
-      email: email,
-      role: 'user',
-      city: 'Nashik',
-      state: 'Maharashtra',
-      gender: 'boy'
-    };
-    setUser(userData);
-    setLoading(false);
-    return { success: true };
+    try {
+      const baseUrl = getApiBaseUrl();
+      const response = await fetch(`${baseUrl}/api/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password }),
+      });
+      const data = await response.json();
+
+      if (!response.ok) throw new Error(data.message);
+
+      setUser(data);
+      localStorage.setItem('ssm_user_identity', JSON.stringify(data));
+      localStorage.setItem('token', data.token);
+      setToken(data.token);
+      setLoading(false);
+      return { success: true };
+    } catch (error) {
+      setLoading(false);
+      return { success: false, message: error.message };
+    }
   };
 
   const logout = () => {
@@ -165,10 +155,32 @@ export const AuthProvider = ({ children }) => {
     window.location.href = '/login';
   };
 
-  const updateProfile = (data) => {
-    const updatedUser = { ...user, ...data };
-    setUser(updatedUser);
-    return true;
+  const updateProfile = async (data) => {
+    try {
+      const updatedUser = { ...user, ...data };
+      setUser(updatedUser);
+
+      // If not a guest, sync with backend vault
+      if (!user?.isGuest) {
+        const baseUrl = getApiBaseUrl();
+        const response = await fetch(`${baseUrl}/api/users/profile`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          },
+          body: JSON.stringify(data),
+        });
+
+        if (!response.ok) {
+          console.warn("Vault Sync failed, data preserved locally.");
+        }
+      }
+      return true;
+    } catch (error) {
+      console.error("Critical Sync Error:", error);
+      return false;
+    }
   };
 
   return (

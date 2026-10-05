@@ -16,7 +16,12 @@ const getUserProfile = async (req, res) => {
       phone: user.phone || '',
       address: user.address || '',
       city: user.city || '',
+      state: user.state || '',
       pincode: user.pincode || '',
+      gender: user.gender || '',
+      shoeSize: user.shoeSize || '',
+      stylePreference: user.stylePreference || '',
+      identityVerified: user.identityVerified || false,
       avatar: user.avatar,
     });
   } else {
@@ -36,7 +41,12 @@ const updateUserProfile = async (req, res) => {
     user.phone = req.body.phone || user.phone;
     user.address = req.body.address || user.address;
     user.city = req.body.city || user.city;
+    user.state = req.body.state || user.state;
     user.pincode = req.body.pincode || user.pincode;
+    user.gender = req.body.gender || user.gender;
+    user.shoeSize = req.body.shoeSize || user.shoeSize;
+    user.stylePreference = req.body.stylePreference || user.stylePreference;
+    user.identityVerified = req.body.identityVerified !== undefined ? req.body.identityVerified : user.identityVerified;
 
     if (req.body.password) {
       user.password = req.body.password;
@@ -61,7 +71,12 @@ const updateUserProfile = async (req, res) => {
       phone: updatedUser.phone,
       address: updatedUser.address,
       city: updatedUser.city,
+      state: updatedUser.state,
       pincode: updatedUser.pincode,
+      gender: updatedUser.gender,
+      shoeSize: updatedUser.shoeSize,
+      stylePreference: updatedUser.stylePreference,
+      identityVerified: updatedUser.identityVerified,
       avatar: updatedUser.avatar,
     });
   } else {

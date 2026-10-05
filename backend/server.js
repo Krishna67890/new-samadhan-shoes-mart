@@ -62,10 +62,11 @@ app.get('/api/health', (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
-// Listen if not on Vercel (works for both Local Dev and Local Production)
+// Listen if not on Vercel
 if (!process.env.VERCEL) {
-  app.listen(PORT, () => {
+  const server = app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 [Server] New Samadhan Shoe Mart active on port ${PORT}`);
+    console.log(`📡 [Network] Accessible via: http://0.0.0.0:${PORT}`);
   });
 }
 
