@@ -269,7 +269,7 @@ const CheckoutPage = () => {
 
             <div className="bg-white p-8 sm:p-12 rounded-[2.5rem] sm:rounded-[4rem] border border-[#111111]/5 shadow-xl">
                <h3 className="text-xl sm:text-2xl font-editorial font-bold text-[#111111] uppercase tracking-tighter mb-8 sm:mb-10 flex items-center gap-4">
-                  <Zap className="text-[#8B0000]" size={20} className="sm:w-6 sm:h-6" /> Payment Channel
+                  <Zap className="text-[#8B0000] sm:w-6 sm:h-6" size={20} /> Payment Channel
                </h3>
                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
                   <button
