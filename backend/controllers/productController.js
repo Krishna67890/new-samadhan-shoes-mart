@@ -125,7 +125,7 @@ const createProduct = async (req, res) => {
       user: req.user._id,
       images: images || ['/images/sample.jpg'],
       model3D,
-      brand,
+      brand: 'New Samadhan Shoe Mart',
       category: category || 'Formal',
       targetGender: targetGender || 'Men',
       sizes: sizes || [6, 7, 8, 9, 10],
@@ -163,7 +163,7 @@ const updateProduct = async (req, res) => {
       product.description = description || product.description;
       product.images = images || product.images;
       product.model3D = model3D !== undefined ? model3D : product.model3D;
-      product.brand = brand || product.brand;
+      product.brand = 'New Samadhan Shoe Mart';
       product.category = category || product.category;
       product.targetGender = targetGender || product.targetGender;
       product.sizes = sizes || product.sizes;

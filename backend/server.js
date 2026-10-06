@@ -51,12 +51,29 @@ app.use('/uploads', express.static(uploadsPath));
 const publicAssetsPath = path.join(__dirname, 'public');
 app.use('/New-Samadhan-Shoe-Mart', express.static(path.join(publicAssetsPath, 'New-Samadhan-Shoe-Mart')));
 
-// Health check for Vercel/Render
+import os from 'os';
+
+// ... existing imports ...
+
+// Health check for Vercel/Render & Mobile Debugging
 app.get('/api/health', (req, res) => {
+  const networkInterfaces = os.networkInterfaces();
+  const ips = [];
+  for (const name of Object.keys(networkInterfaces)) {
+    for (const net of networkInterfaces[name]) {
+      if (net.family === 'IPv4' && !net.internal) {
+        ips.push(net.address);
+      }
+    }
+  }
+
   res.json({
     status: 'active',
     database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
-    time: new Date()
+    dbName: mongoose.connection.name,
+    serverTime: new Date(),
+    localIps: ips,
+    instructions: "1. Ensure phone is on SAME Wi-Fi. 2. Whitelist 0.0.0.0/0 in Atlas. 3. Allow Port 5000 in Windows Firewall."
   });
 });
 

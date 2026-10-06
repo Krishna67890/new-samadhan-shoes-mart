@@ -1,4 +1,4 @@
-const brands = ['Nike', 'Adidas', 'Jordan', 'Puma', 'New Balance', 'Samadhan Atelier', 'Reebok', 'Converse', 'Yeezy'];
+const brands = ['New Samadhan Shoe Mart'];
 const categories = ['Men', 'Women', 'Kids', 'Formal', 'Sneakers'];
 
 const modelsByCategory = {
@@ -13,11 +13,12 @@ const colors = ['Phantom White', 'Midnight Black', 'University Red', 'Royal Blue
 
 const generateProducts = () => {
   const products = [];
+  const brand = 'New Samadhan Shoe Mart';
+
   for (let i = 1; i <= 60; i++) {
     const category = categories[i % categories.length];
     const categoryModels = modelsByCategory[category];
     const model = categoryModels[Math.floor(Math.random() * categoryModels.length)];
-    const brand = brands[Math.floor(Math.random() * brands.length)];
     const color = colors[Math.floor(Math.random() * colors.length)];
     const price = category === 'Kids' ? Math.floor(Math.random() * (4500 - 1999 + 1) + 1999) : Math.floor(Math.random() * (18000 - 3499 + 1) + 3499);
     const rating = (Math.random() * (5 - 4.2) + 4.2).toFixed(1);
@@ -25,7 +26,6 @@ const generateProducts = () => {
 
     const sizes = category === 'Kids' ? [1, 2, 3, 4, 5, 6] : (category === 'Women' ? [5, 6, 7, 8, 9] : [7, 8, 9, 10, 11]);
 
-    // List of reliable local image numbers for various footwear options
     const imgNumbers = [
       '0006', '0007', '0008', '0009', '0010', '0011', '0012', '0013', '0014', '0015',
       '0016', '0017', '0018', '0019', '0020', '0021', '0022', '0023', '0024', '0025',
@@ -35,13 +35,16 @@ const generateProducts = () => {
     ];
     const localImgName = `IMG-20260928-WA${imgNumbers[i % imgNumbers.length]}.jpg`;
 
+    const isElite = i % 10 === 0; // Every 10th product is an Elite 3D model
+
     products.push({
       name: `${brand} ${model} ${color}`,
       images: [
         `/New-Samadhan-Shoe-Mart/${localImgName}`,
         `/Shoes.png`
       ],
-      description: `Premium handcrafted footwear from New Samadhan Shoe Mart atelier. Designed with ergonomic perfection and certified durable soles for unmatched daily comfort.`,
+      model3D: isElite ? '/assets/models/elite_boot.glb' : null,
+      description: `Official premium footwear from New Samadhan Shoe Mart. Handcrafted excellence, featuring our signature comfort-grip technology.`,
       brand: brand,
       category: category,
       targetGender: category === 'Women' ? 'Women' : (category === 'Kids' ? 'Kids' : 'Men'),

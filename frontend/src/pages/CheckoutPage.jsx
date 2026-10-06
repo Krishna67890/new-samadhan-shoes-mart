@@ -304,7 +304,7 @@ const CheckoutPage = () => {
                </div>
 
                <h3 className="text-xl sm:text-2xl font-editorial font-bold uppercase tracking-tighter mb-8 sm:mb-10 flex items-center gap-4 relative z-10">
-                  <ShoppingBag className="text-[#8B0000]" size={20} className="sm:w-6 sm:h-6" /> Review Order
+                  <ShoppingBag className="text-[#8B0000] sm:w-6 sm:h-6" size={20} /> Review Order
                </h3>
 
                <div className="space-y-4 sm:space-y-6 mb-8 sm:mb-12 max-h-[300px] sm:max-h-[350px] overflow-y-auto pr-2 sm:pr-4 custom-scrollbar relative z-10">
@@ -349,7 +349,7 @@ const CheckoutPage = () => {
                </button>
 
                <div className="mt-6 sm:mt-8 flex items-center gap-4 p-4 sm:p-5 bg-[#F7F5F0] rounded-[1.5rem] sm:rounded-[2rem] border border-[#111111]/5">
-                   <ShieldCheck className="text-[#8B0000]" size={20} className="sm:w-6 sm:h-6" />
+                   <ShieldCheck className="text-[#8B0000] sm:w-6 sm:h-6" size={20} />
                    <p className="text-[8px] sm:text-[9px] text-[#6B6B6B] font-bold uppercase tracking-[0.2em] leading-relaxed italic">Encryption active. Identity verified as {user?.name}.</p>
                </div>
             </div>
