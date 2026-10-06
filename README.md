@@ -30,5 +30,5 @@ A premium, local-first boutique footwear web application designed for elite perf
 - **Shopkeeper 2**: 8888644021
 
 ---
-© 2024 New Samadhan Shoe Mart. All rights reserved.
+© 2026 New Samadhan Shoe Mart. All rights reserved.
 # Build Update 
