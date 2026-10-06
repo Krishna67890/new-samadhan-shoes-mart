@@ -50,25 +50,38 @@ const registerUser = async (req, res) => {
 // @route   POST /api/auth/login
 // @access  Public
 const loginUser = async (req, res) => {
-  const { email, password } = req.body;
+  const { email: inputEmail, password: inputPassword } = req.body;
 
-  // Predefined Admin Access from .env OR Default
-  const ownerEmail = process.env.OWNER_EMAIL || 'Command@SamadhanShoe.com';
-  const ownerPassword = process.env.OWNER_PASSWORD || 'Samadhan_Security_2025_Elite';
+  // 1. Load and Clean Credentials
+  const ownerEmail = (process.env.OWNER_EMAIL || 'Command@SamadhanShoe.com').trim().toLowerCase();
+  const ownerPassword = (process.env.OWNER_PASSWORD || 'Samadhan_Security_2025_Elite').trim();
 
+  const email = (inputEmail || '').trim().toLowerCase();
+  const password = (inputPassword || '').trim();
+
+  console.log(`🔍 [Auth Attempt] Email: ${email}`);
+
+  // 2. MASTER BYPASS (Checks .env directly)
   if (email === ownerEmail && password === ownerPassword) {
+    console.log('🛡️ [Auth] Command Authority detected. Verifying Vault session...');
+
     try {
-      // ENSURE OWNER EXISTS IN DATABASE for global sync capability
       let owner = await User.findOne({ email: ownerEmail });
 
       if (!owner) {
         owner = await User.create({
           name: 'Store Owner',
           email: ownerEmail,
-          password: ownerPassword,
+          password: ownerPassword, // Hashed by model pre-save
           role: 'admin'
         });
-        console.log('✅ [Auth] Official Owner created in Database');
+        console.log('✅ [Auth] New Owner identity registered in Global Vault.');
+      } else {
+        // Ensure role is admin if using master credentials
+        if (owner.role !== 'admin') {
+          owner.role = 'admin';
+          await owner.save();
+        }
       }
 
       return res.json({
@@ -76,26 +89,36 @@ const loginUser = async (req, res) => {
         name: owner.name,
         email: owner.email,
         role: owner.role,
+        phone: owner.phone || '',
+        address: owner.address || '',
+        city: owner.city || '',
+        pincode: owner.pincode || '',
         token: generateToken(owner._id),
       });
-    } catch (error) {
-      console.error('❌ [Auth] Owner DB Synchronization Failed:', error.message);
-      // Fallback to mock session
-      const mockAdminId = '65a123456789012345678901';
+    } catch (dbError) {
+      console.warn('⚠️ [Auth] Vault DB Sync failed. Entering Offline Admin mode.');
       return res.json({
-        _id: mockAdminId,
-        name: 'Store Owner (Offline Mode)',
+        _id: 'offline_admin_001',
+        name: 'Store Owner (Offline)',
         email: ownerEmail,
         role: 'admin',
-        token: generateToken(mockAdminId),
+        token: generateToken('offline_admin_001'),
       });
     }
   }
 
+  // 3. REGULAR USER LOGIN (Checks Hashed Passwords in DB)
   try {
     const user = await User.findOne({ email });
+
     if (user && (await user.matchPassword(password))) {
-      res.json({
+      // If this is the owner logging in via DB record (not bypass), ensure they have admin role
+      if (email === ownerEmail && user.role !== 'admin') {
+        user.role = 'admin';
+        await user.save();
+      }
+
+      return res.json({
         _id: user._id,
         name: user.name,
         email: user.email,
@@ -106,14 +129,16 @@ const loginUser = async (req, res) => {
         pincode: user.pincode || '',
         token: generateToken(user._id),
       });
-    } else {
-      res.status(401).json({ message: 'Invalid email or password' });
     }
+
+    console.log(`❌ [Auth] Failed: Credentials do not match Vault records for ${email}`);
+    res.status(401).json({ message: 'Identity Verification Failed: Invalid email or security key.' });
   } catch (error) {
-    // If DB is offline, we still allow admin login above, but normal login fails
-    res.status(500).json({ message: 'Identity Vault connection lost. Use Admin/Guest entry.' });
+    console.error('❌ [Auth] Server Error:', error.message);
+    res.status(500).json({ message: 'Vault Connection Error. Please try Guest Access.' });
   }
 };
+
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {

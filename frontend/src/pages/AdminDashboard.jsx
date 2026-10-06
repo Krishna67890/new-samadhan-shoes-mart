@@ -59,6 +59,8 @@ const AdminDashboard = () => {
   };
 
   const [stats, setStats] = useState(getDemoStats());
+  const [syncing, setSyncing] = useState(false);
+  const [syncStatus, setSyncStatus] = useState(null);
 
   useEffect(() => {
     if (!user || user.role !== 'admin') {
@@ -108,6 +110,21 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleSyncVault = async () => {
+    if (window.confirm("Initialize Global Atlas Sync? This will overwrite the cloud database with current elite assets.")) {
+      setSyncing(true);
+      try {
+        const data = await request('/api/admin/sync-vault', 'POST');
+        setSyncStatus({ success: true, message: data.message });
+        setTimeout(() => setSyncStatus(null), 5000);
+      } catch (err) {
+        setSyncStatus({ success: false, message: err.message });
+      } finally {
+        setSyncing(false);
+      }
+    }
+  };
+
   const statCards = [
     { title: 'Total Revenue', value: `₹${(stats.revenue || 0).toLocaleString()}`, icon: <DollarSign className="w-8 h-8 text-[#111]" />, bg: 'bg-white' },
     { title: 'Total Orders', value: stats.totalOrders, icon: <ShoppingBag className="w-8 h-8 text-[#8B0000]" />, bg: 'bg-white' },
@@ -141,6 +158,14 @@ const AdminDashboard = () => {
           </div>
 
           <div className="flex flex-wrap gap-4">
+            <button
+              onClick={handleSyncVault}
+              disabled={syncing}
+              className="bg-emerald-600 text-white px-8 py-5 rounded-[2rem] font-black uppercase tracking-widest text-[10px] flex items-center gap-3 shadow-xl hover:-translate-y-1 transition-all duration-300 disabled:opacity-50"
+            >
+              {syncing ? <Loader2 className="animate-spin" size={18} /> : <Zap size={18} />}
+              Sync Vault
+            </button>
             {quickActions.map((action, i) => (
               <Link
                 key={i}
@@ -165,6 +190,16 @@ const AdminDashboard = () => {
               <div>
                  <p className="font-black uppercase tracking-widest text-lg">System Wipe Successful</p>
                  <p className="text-[10px] opacity-80 font-bold uppercase tracking-tighter">Demo database has been cleared and reset to factory defaults.</p>
+              </div>
+           </div>
+        )}
+
+        {syncStatus && (
+           <div className={`${syncStatus.success ? 'bg-emerald-600' : 'bg-rose-600'} text-white p-6 rounded-[2.5rem] mb-12 flex items-center shadow-xl border-4 border-white animate-in slide-in-from-top-4 no-blur-zone`}>
+              {syncStatus.success ? <CheckCircle className="w-8 h-8 mr-4" /> : <ShieldCheck className="w-8 h-8 mr-4" />}
+              <div>
+                 <p className="font-black uppercase tracking-widest text-lg">{syncStatus.success ? 'Vault Synchronized' : 'Sync Protocol Failed'}</p>
+                 <p className="text-[10px] opacity-80 font-bold uppercase tracking-tighter">{syncStatus.message}</p>
               </div>
            </div>
         )}
