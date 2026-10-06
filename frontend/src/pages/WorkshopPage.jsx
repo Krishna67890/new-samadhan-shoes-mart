@@ -590,7 +590,7 @@ Requested via New Samadhan Shoes Website`;
             </p>
 
             <div className="inline-flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-[#ff4d4d]">
-              <span>Mochi Brand Style Masterclass Architecture</span>
+              <span>New Samadhan Shoe Mart Masterclass Architecture</span>
               <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
               <span>Guaranteed 5.0 Rating</span>
             </div>

@@ -180,6 +180,7 @@ const localProducts = [
       "/New-Samadhan-Shoe-Mart/Main-Shoe.png",
       "/New-Samadhan-Shoe-Mart/Main-Shoe.png"
     ],
+    model3D: "/assets/models/elite_boot.glb",
     sizes: [6, 7, 8, 9, 10, 11],
     rating: 5.0,
     category: "Sneakers",

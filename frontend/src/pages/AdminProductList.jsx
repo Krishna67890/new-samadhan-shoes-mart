@@ -13,6 +13,7 @@ const AdminProductList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('All');
   const [dbConnected, setDbConnected] = useState(true);
+  const [syncing, setSyncing] = useState(false);
   const navigate = useNavigate();
   const listRef = useRef(null);
 
@@ -20,7 +21,10 @@ const AdminProductList = () => {
     try {
       const data = await request('/api/products');
       // If we get an error response disguised as data or empty, we check connectivity
-      if (data && data.message && data.message.includes('Database status pending')) {
+      if (data && data.length === 0) {
+        // If the database is connected but empty, we show a sync option
+        setDbConnected(true);
+      } else if (data && data.message && data.message.includes('Database status pending')) {
         setDbConnected(false);
       } else {
         setDbConnected(true);
@@ -32,6 +36,21 @@ const AdminProductList = () => {
       setDbConnected(false);
       const allProducts = getMergedProducts([]);
       setProducts(allProducts);
+    }
+  };
+
+  const handleGlobalSync = async () => {
+    if (!window.confirm('This will push all local products to the MongoDB Atlas Cloud Vault. Continue?')) return;
+
+    setSyncing(true);
+    try {
+      await request('/api/admin/sync-vault', 'POST');
+      alert('✅ Global Vault Synchronized! All devices can now see your products.');
+      fetchProducts();
+    } catch (err) {
+      alert('❌ Sync Failed: Ensure your PC is connected to the internet and MongoDB Atlas IP whitelist allows 0.0.0.0/0');
+    } finally {
+      setSyncing(false);
     }
   };
 
@@ -115,6 +134,16 @@ const AdminProductList = () => {
           </div>
 
           <div className="flex gap-4">
+             {products.length <= 6 && (
+                <button
+                  onClick={handleGlobalSync}
+                  disabled={syncing}
+                  className="bg-emerald-600 text-white px-10 py-6 rounded-[2rem] flex items-center gap-3 hover:bg-emerald-700 transition-all shadow-xl shadow-emerald-100 disabled:opacity-50"
+                >
+                   {syncing ? <Loader2 className="animate-spin" size={20} /> : <ExternalLink size={20} />}
+                   <span className="font-black uppercase tracking-widest text-xs">Sync Vault</span>
+                </button>
+             )}
              <div className="bg-white px-8 py-6 rounded-[2rem] border border-[#111]/5 shadow-sm">
                 <span className="text-[9px] font-black text-[#6B6B6B] uppercase tracking-widest block mb-1">Total Items</span>
                 <span className="text-3xl font-black text-[#111]">{stats.total}</span>

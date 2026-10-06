@@ -12,13 +12,13 @@ const AIGuide = () => {
     const userName = JSON.parse(localStorage.getItem('ssm_user_identity') || '{}').name || 'Elite User';
 
     if (path === '/') {
-      return `Welcome to New Samadhan Shoe Mart, ${userName}. Browse our popular ADIDAS YEEZY BOOST and JORDAN collections. Click Shop to see our collection or Sync Identity to start your purchase.`;
+      return `Welcome to New Samadhan Shoe Mart, ${userName}. Browse our popular handcrafted leather and premium sneaker collections. Click Shop to see our collection or Sync Identity to start your purchase.`;
     }
     if (path === '/login') {
       return "Please enter your credentials or use Guest Login to browse. Your data is only used for order verification.";
     }
     if (path === '/products' || path === '/shop') {
-      return "Browse our curated drops. Add items like the NIKE AIR MAX 270 to your cart to begin. Every pair here is curated for elite performance.";
+      return "Browse our curated drops. Add items like the New Samadhan Elite Series to your cart to begin. Every pair here is curated for elite performance.";
     }
     if (path === '/identity' || path === '/edit-profile' || path === '/profile') {
       return `${userName}, please save your address to Nashik so we know where to deliver your shoes. This locks your identity into the vault.`;
