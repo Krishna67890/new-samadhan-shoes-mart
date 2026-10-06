@@ -1,14 +1,10 @@
+import 'dotenv/config'; // Critical: Load environment variables BEFORE any other imports
 import path from 'path';
 import { fileURLToPath } from 'url';
 import express from 'express';
-import dotenv from 'dotenv';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import connectDB from './config/db.js';
-
-// Get absolute paths in ESM
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // Route Imports
 import productRoutes from './routes/productRoutes.js';
@@ -20,7 +16,9 @@ import shopRoutes from './routes/shopRoutes.js';
 import serviceCenterRoutes from './routes/serviceCenterRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js';
 
-dotenv.config();
+// Get absolute paths in ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -47,13 +45,11 @@ app.use('/api/upload', uploadRoutes);
 const uploadsPath = path.join(__dirname, 'uploads');
 app.use('/uploads', express.static(uploadsPath));
 
-// Also serve public assets if they are mirrored in backend (optional but helpful for local network testing)
+// Also serve public assets if they are mirrored in backend
 const publicAssetsPath = path.join(__dirname, 'public');
 app.use('/New-Samadhan-Shoe-Mart', express.static(path.join(publicAssetsPath, 'New-Samadhan-Shoe-Mart')));
 
 import os from 'os';
-
-// ... existing imports ...
 
 // Health check for Vercel/Render & Mobile Debugging
 app.get('/api/health', (req, res) => {
@@ -77,11 +73,20 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// GLOBAL ERROR HANDLER - Prevents "Unexpected end of JSON input" by ensuring JSON is always returned
+app.use((err, req, res, next) => {
+  console.error('🔥 [Server Error]', err.stack);
+  res.status(err.status || 500).json({
+    message: err.message || 'An internal vault error occurred.',
+    stack: process.env.NODE_ENV === 'development' ? err.stack : null
+  });
+});
+
 const PORT = process.env.PORT || 5000;
 
 // Listen if not on Vercel
 if (!process.env.VERCEL) {
-  const server = app.listen(PORT, '0.0.0.0', () => {
+  app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 [Server] New Samadhan Shoe Mart active on port ${PORT}`);
     console.log(`📡 [Network] Accessible via: http://0.0.0.0:${PORT}`);
   });

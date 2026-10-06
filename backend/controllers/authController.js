@@ -50,65 +50,72 @@ const registerUser = async (req, res) => {
 // @route   POST /api/auth/login
 // @access  Public
 const loginUser = async (req, res) => {
-  const { email: inputEmail, password: inputPassword } = req.body;
-
-  // 1. Load and Clean Credentials
-  const ownerEmail = (process.env.OWNER_EMAIL || 'Command@SamadhanShoe.com').trim().toLowerCase();
-  const ownerPassword = (process.env.OWNER_PASSWORD || 'Samadhan_Security_2025_Elite').trim();
-
-  const email = (inputEmail || '').trim().toLowerCase();
-  const password = (inputPassword || '').trim();
-
-  console.log(`🔍 [Auth Attempt] Email: ${email}`);
-
-  // 2. MASTER BYPASS (Checks .env directly)
-  if (email === ownerEmail && password === ownerPassword) {
-    console.log('🛡️ [Auth] Command Authority detected. Verifying Vault session...');
-
-    try {
-      let owner = await User.findOne({ email: ownerEmail });
-
-      if (!owner) {
-        owner = await User.create({
-          name: 'Store Owner',
-          email: ownerEmail,
-          password: ownerPassword, // Hashed by model pre-save
-          role: 'admin'
-        });
-        console.log('✅ [Auth] New Owner identity registered in Global Vault.');
-      } else {
-        // Ensure role is admin if using master credentials
-        if (owner.role !== 'admin') {
-          owner.role = 'admin';
-          await owner.save();
-        }
-      }
-
-      return res.json({
-        _id: owner._id,
-        name: owner.name,
-        email: owner.email,
-        role: owner.role,
-        phone: owner.phone || '',
-        address: owner.address || '',
-        city: owner.city || '',
-        pincode: owner.pincode || '',
-        token: generateToken(owner._id),
-      });
-    } catch (dbError) {
-      console.warn('⚠️ [Auth] Vault DB Sync failed. Entering Offline Admin mode.');
-      return res.json({
-        _id: 'offline_admin_001',
-        name: 'Store Owner (Offline)',
-        email: ownerEmail,
-        role: 'admin',
-        token: generateToken('offline_admin_001'),
-      });
-    }
-  }
-
-  // 3. REGULAR USER LOGIN (Checks Hashed Passwords in DB)
   try {
+    const { email: inputEmail, password: inputPassword } = req.body;
+
+    // 1. Load and Clean Credentials
+    const ownerEmail = (process.env.OWNER_EMAIL || 'Command@SamadhanShoe.com').trim().toLowerCase();
+    const ownerPassword = (process.env.OWNER_PASSWORD || 'Samadhan_Security_2025_Elite').trim();
+
+    const email = (inputEmail || '').trim().toLowerCase();
+    const password = (inputPassword || '').trim();
+
+    console.log(`🔍 [Auth Attempt] Email: ${email}`);
+
+    // Verify JWT Secret Presence
+    if (!process.env.JWT_SECRET) {
+      console.error('❌ [Auth] CRITICAL: JWT_SECRET is missing from environment.');
+      return res.status(500).json({ message: 'Vault Configuration Error: Security Key missing.' });
+    }
+
+    // 2. MASTER BYPASS (Checks .env directly)
+    if (email === ownerEmail && password === ownerPassword) {
+      console.log('🛡️ [Auth] Command Authority detected. Verifying Vault session...');
+
+      try {
+        let owner = await User.findOne({ email: ownerEmail });
+
+        if (!owner) {
+          console.log('📝 [Auth] Creating Owner identity in DB...');
+          owner = await User.create({
+            name: 'Store Owner',
+            email: ownerEmail,
+            password: ownerPassword, // Hashed by model pre-save
+            role: 'admin'
+          });
+          console.log('✅ [Auth] New Owner identity registered in Global Vault.');
+        } else {
+          // Ensure role is admin if using master credentials
+          if (owner.role !== 'admin') {
+            owner.role = 'admin';
+            await owner.save();
+          }
+        }
+
+        return res.json({
+          _id: owner._id,
+          name: owner.name,
+          email: owner.email,
+          role: owner.role,
+          phone: owner.phone || '',
+          address: owner.address || '',
+          city: owner.city || '',
+          pincode: owner.pincode || '',
+          token: generateToken(owner._id),
+        });
+      } catch (dbError) {
+        console.warn('⚠️ [Auth] Vault DB Sync failed. Entering Offline Admin mode.', dbError.message);
+        return res.json({
+          _id: 'offline_admin_001',
+          name: 'Store Owner (Offline)',
+          email: ownerEmail,
+          role: 'admin',
+          token: generateToken('offline_admin_001'),
+        });
+      }
+    }
+
+    // 3. REGULAR USER LOGIN (Checks Hashed Passwords in DB)
     const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
@@ -132,10 +139,14 @@ const loginUser = async (req, res) => {
     }
 
     console.log(`❌ [Auth] Failed: Credentials do not match Vault records for ${email}`);
-    res.status(401).json({ message: 'Identity Verification Failed: Invalid email or security key.' });
+    return res.status(401).json({ message: 'Identity Verification Failed: Invalid email or security key.' });
+
   } catch (error) {
-    console.error('❌ [Auth] Server Error:', error.message);
-    res.status(500).json({ message: 'Vault Connection Error. Please try Guest Access.' });
+    console.error('❌ [Auth] Unhandled Exception:', error);
+    return res.status(500).json({
+      message: 'Vault Internal Error. Check server logs.',
+      details: error.message
+    });
   }
 };
 
