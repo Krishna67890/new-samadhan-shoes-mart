@@ -34,6 +34,23 @@ const Reviews = ({ productId, isAdmin = false }) => {
 
   useEffect(() => {
     loadData();
+    window.addEventListener('reviews_updated', loadData);
+
+    let bc;
+    try {
+      if ('BroadcastChannel' in window) {
+        bc = new BroadcastChannel('samadhan_reviews_channel');
+        bc.onmessage = () => loadData();
+      }
+    } catch (_) {}
+
+    const interval = setInterval(loadData, 8000);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('reviews_updated', loadData);
+      try { bc?.close(); } catch (_) {}
+    };
   }, [productId]);
 
   const loadData = () => {
@@ -53,7 +70,7 @@ const Reviews = ({ productId, isAdmin = false }) => {
 
   const handleRatingClick = (val) => setFormData({ ...formData, rating: val });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.review) return alert("Please fill all fields");
 
@@ -66,37 +83,35 @@ const Reviews = ({ productId, isAdmin = false }) => {
       .toUpperCase()
       .substring(0, 2);
 
-    const newReview = saveReview({
+    const newReview = await saveReview({
       productId,
       name: formData.name,
       rating: formData.rating,
       review: formData.review,
+      comment: formData.review,
       avatar: initials,
       style: formData.style
     });
 
-    setTimeout(() => {
-      setReviews(prev => [newReview, ...prev]);
-      setStats(calculateProductStats(productId));
-      setFormData({ name: '', rating: 5, review: '', style: 'classic' });
-      setIsSubmitting(false);
-      setShowSuccess(true);
+    setReviews(prev => [newReview, ...prev.filter(r => r.id !== newReview.id)]);
+    setStats(calculateProductStats(productId));
+    setFormData({ name: '', rating: 5, review: '', style: 'classic' });
+    setIsSubmitting(false);
+    setShowSuccess(true);
 
-      // Animate new review
-      setTimeout(() => {
-         const firstReview = listRef.current?.firstChild;
-         if (firstReview) {
-            gsap.from(firstReview, {
-              y: 40,
-              opacity: 0,
-              scale: 0.95,
-              duration: 0.6,
-              ease: "power3.out"
-            });
-         }
-         setShowSuccess(false);
-      }, 100);
-    }, 800);
+    setTimeout(() => {
+      const firstReview = listRef.current?.firstChild;
+      if (firstReview) {
+        gsap.from(firstReview, {
+          y: 40,
+          opacity: 0,
+          scale: 0.95,
+          duration: 0.6,
+          ease: "power3.out"
+        });
+      }
+      setShowSuccess(false);
+    }, 100);
   };
 
   const handleDelete = (id) => {

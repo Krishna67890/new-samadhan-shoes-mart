@@ -65,6 +65,7 @@ function App() {
                 <Route path="/shop/:id" element={<PageWrapper><ShopProfile /></PageWrapper>} />
                 <Route path="/product/:id" element={<PageWrapper><ProductDetails /></PageWrapper>} />
                 <Route path="/login" element={<PageWrapper><LoginPage /></PageWrapper>} />
+                <Route path="/register" element={<PageWrapper><LoginPage initialMode="register" /></PageWrapper>} />
                 <Route path="/owner-login" element={<PageWrapper><OwnerLoginPage /></PageWrapper>} />
                 <Route path="/identity" element={<ProtectedRoute><PageWrapper><IdentityPage /></PageWrapper></ProtectedRoute>} />
                 <Route path="/service-centre" element={<PageWrapper><ServiceCentrePage /></PageWrapper>} />

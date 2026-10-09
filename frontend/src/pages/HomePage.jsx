@@ -39,7 +39,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { resolveImageUrl } from '../utils/urlConfig';
 import { getMergedProducts } from '../utils/productUtils';
-import { getReviews, saveReview, deleteReview } from '../utils/reviewService';
+import { getReviews, saveReview, deleteReview, syncReviewsWithServer } from '../utils/reviewService';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
@@ -110,8 +110,9 @@ const HomePage = () => {
   const [priceFilter, setPriceFilter] = useState('all');
   const [sortBy, setSortBy] = useState('featured');
 
-  // Digital card flip
+  // Digital card flip & zoom
   const [isCardFlipped, setIsCardFlipped] = useState(false);
+  const [cardZoom, setCardZoom] = useState(1);
 
   // Modal Product State (Quick Detail Drawer)
   const [modalProduct, setModalProduct] = useState(null);
@@ -307,22 +308,17 @@ const HomePage = () => {
   const loadReviewsFromStorage = useCallback(() => {
     try {
       const saved = getReviews();
-      if (saved && saved.length > 0) {
-        const formatted = saved.slice(-6).reverse().map(r => ({
+      if (saved && Array.isArray(saved) && saved.length > 0) {
+        const formatted = saved.slice(0, 10).map(r => ({
           id: r.id || `rev_${Date.now()}_${Math.random()}`,
           name: r.name || 'Valued Customer',
-          rating: r.rating || 5,
+          rating: Number(r.rating) || 5,
           comment: r.comment || r.review || 'Exceptional craftsmanship and comfortable fit.',
           date: r.createdAt ? new Date(r.createdAt).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Recently',
           verified: true,
           city: r.city || 'Nashik'
         }));
-        setReviewsList(prev => {
-          // Merge stored reviews with default ones, keeping defaults if no stored
-          const storedIds = new Set(formatted.map(r => r.id));
-          const defaults = prev.filter(r => r.id.startsWith('rev_') && !storedIds.has(r.id));
-          return [...formatted, ...defaults].slice(0, 6);
-        });
+        setReviewsList(formatted);
       }
     } catch (err) {
       console.warn('Review load error:', err);
@@ -331,6 +327,9 @@ const HomePage = () => {
 
   useEffect(() => {
     loadReviewsFromStorage();
+    // Synchronize cross-device reviews from backend server
+    syncReviewsWithServer().then(() => loadReviewsFromStorage()).catch(() => {});
+
     // Real-time sync: listen to localStorage changes from other tabs
     const handleStorageSync = (e) => {
       if (!e.key || e.key === 'newSamadhanProductReviews') {
@@ -350,7 +349,13 @@ const HomePage = () => {
       }
     } catch (_) {}
 
+    // Auto-polling every 8 seconds ensures reviews submitted on any device show up everywhere
+    const pollInterval = setInterval(() => {
+      syncReviewsWithServer().then(() => loadReviewsFromStorage()).catch(() => {});
+    }, 8000);
+
     return () => {
+      clearInterval(pollInterval);
       window.removeEventListener('storage', handleStorageSync);
       window.removeEventListener('reviews_updated', loadReviewsFromStorage);
       try { bc?.close(); } catch (_) {}
@@ -358,10 +363,10 @@ const HomePage = () => {
   }, [loadReviewsFromStorage]);
 
   // Owner Delete Review Handler
-  const handleDeleteReview = (reviewId, e) => {
+  const handleDeleteReview = async (reviewId, e) => {
     e?.stopPropagation();
     if (window.confirm('Are you sure you want to delete this customer review?')) {
-      deleteReview(reviewId);
+      await deleteReview(reviewId);
       setReviewsList(prev => prev.filter(r => r.id !== reviewId));
       showToast('Review deleted by Owner. Synchronized across all devices.');
     }
@@ -452,25 +457,25 @@ const HomePage = () => {
   }, [expertQuery, productsList]);
 
   // Handle Review Submission
-  const handleReviewSubmit = (e) => {
+  const handleReviewSubmit = async (e) => {
     e.preventDefault();
     if (!reviewFormData.name.trim() || !reviewFormData.comment.trim()) {
       showToast('Please enter your name and review feedback.');
       return;
     }
     const newRev = {
-      name: reviewFormData.name,
-      rating: Number(reviewFormData.rating),
-      review: reviewFormData.comment,
-      comment: reviewFormData.comment,
-      city: reviewFormData.city || 'Nashik',
+      name: reviewFormData.name.trim(),
+      rating: Number(reviewFormData.rating) || 5,
+      review: reviewFormData.comment.trim(),
+      comment: reviewFormData.comment.trim(),
+      city: reviewFormData.city?.trim() || 'Nashik',
       createdAt: new Date().toISOString()
     };
-    saveReview(newRev);
+    const saved = await saveReview(newRev);
 
     setReviewsList(prev => [
       {
-        id: `rev_${Date.now()}`,
+        id: saved.id || `rev_${Date.now()}`,
         name: newRev.name,
         rating: newRev.rating,
         comment: newRev.comment,
@@ -479,11 +484,11 @@ const HomePage = () => {
         city: newRev.city
       },
       ...prev
-    ].slice(0, 8));
+    ].slice(0, 10));
 
     setReviewFormData({ name: '', rating: 5, comment: '', city: '' });
     setIsReviewModalOpen(false);
-    showToast('Thank you! Your verified review has been published. ✅');
+    showToast('Thank you! Your verified review has been published across all devices. ✅');
   };
 
   // 3D Tilt handlers on Phase 4 Spotlight
@@ -1421,21 +1426,14 @@ const HomePage = () => {
                   <ShoppingBag size={16} /> ADD TO CART
                 </button>
 
-                <button
-                  onClick={() => {
-                    const spotlightProd = productsList[0] || {
-                      id: 'spotlight_prod',
-                      name: 'AERO-GLIDE OBSIDIAN LUXE',
-                      price: 1499,
-                      image: '/New-Samadhan-Shoe-Mart/Main-Shoe.png'
-                    };
-                    addToCart(spotlightProd, 1, selectedSize);
-                    navigate('/cart');
-                  }}
-                  className="py-4 rounded-full bg-[#d4af37] text-black text-xs font-black uppercase tracking-[0.2em] hover:bg-black hover:text-white transition-all text-center shadow-lg cursor-pointer"
+                <a
+                  href={`https://wa.me/919423228843?text=${encodeURIComponent(`Hello New Samadhan Shoe Mart, I would like to order the Spotlight Model: ${productsList[0]?.name || 'AERO-GLIDE OBSIDIAN LUXE'} (Size UK/IND ${selectedSize}, Price: ₹${productsList[0]?.price || 1499}). Please confirm order.`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="py-4 rounded-full bg-[#25D366] text-black hover:bg-[#1ebe5d] hover:text-white text-xs font-black uppercase tracking-[0.2em] transition-all text-center shadow-lg cursor-pointer flex items-center justify-center gap-2"
                 >
-                  BUY NOW
-                </button>
+                  <MessageSquare size={16} /> ORDER ON WHATSAPP
+                </a>
               </div>
             </div>
           </div>
@@ -1658,6 +1656,44 @@ const HomePage = () => {
             </div>
           </div>
 
+          {/* Flagship Showroom Banner with Radiant Gold Ambient Glow */}
+          <div className="relative mb-14 max-w-5xl mx-auto rounded-3xl sm:rounded-[2.5rem] overflow-hidden p-1.5 bg-gradient-to-r from-[#d4af37]/70 via-[#ffecb3]/90 to-[#d4af37]/70 shadow-[0_0_55px_rgba(212,175,55,0.48)] group">
+            <div className="relative rounded-[22px] sm:rounded-[36px] overflow-hidden bg-black">
+              <img
+                src={resolveImageUrl("/New-Samadhan-Shoe-Mart/Front-Banner.jpg")}
+                alt="New Samadhan Shoes Mart Flagship Showroom Nashik"
+                className="w-full h-[220px] sm:h-[340px] md:h-[420px] object-cover filter brightness-95 contrast-105 group-hover:scale-105 transition-transform duration-700"
+                style={{
+                  filter: 'drop-shadow(0 0 30px rgba(212, 175, 55, 0.45))'
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent pointer-events-none" />
+              <div className="absolute bottom-6 left-6 right-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                <div>
+                  <span className="inline-block px-3 py-1 rounded-full bg-[#d4af37] text-black text-[9px] font-black uppercase tracking-[0.25em] mb-2 shadow-md">
+                    ✨ NASHIK PHYSICAL FLAGSHIP SHOWROOM
+                  </span>
+                  <h3 className="text-xl sm:text-3xl font-black text-white tracking-tight uppercase">
+                    NEW SAMADHAN SHOE MART
+                  </h3>
+                  <p className="text-xs sm:text-sm text-gray-300 font-medium">
+                    Plot No 29, Santkrupa Niwas, Factory Rd, Nashik • Since 1998
+                  </p>
+                </div>
+                <div className="flex gap-2">
+                  <a
+                    href="https://www.google.com/maps/place/New+Samadhan+Shoe+Mart+(+factory+)/@19.9993642,73.8348839,17z"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-5 py-2.5 rounded-full bg-[#d4af37] text-black text-xs font-black uppercase tracking-wider hover:bg-white transition-colors cursor-pointer shadow-lg"
+                  >
+                    Showroom Directions →
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Heritage Visiting Card & Directions Box with Full Screen Trigger */}
           <div className="grid lg:grid-cols-12 gap-8 items-center bg-white/[0.04] p-8 sm:p-12 rounded-[2.5rem] border border-white/10">
             <div className="lg:col-span-7">
@@ -1820,18 +1856,73 @@ const HomePage = () => {
 
             {fullScreenModal === 'visitingCard' && (
               <div className="flex flex-col items-center text-center w-full">
-                <span className="text-xs font-black uppercase tracking-[0.4em] text-[#d4af37] mb-4">
+                <span className="text-xs font-black uppercase tracking-[0.4em] text-[#d4af37] mb-3">
                   NEW SAMADHAN SHOES MART • OFFICIAL VISITING CARD
                 </span>
-                {/* Front card only in fullscreen, responsive for mobile - NO BACK CARD */}
-                <div className="w-full max-w-2xl mx-auto rounded-2xl overflow-hidden border-2 border-[#d4af37]/40 shadow-2xl bg-white">
-                  <img
-                    src={resolveImageUrl('/New-Samadhan-Shoe-Mart/New-Card.jpg')}
-                    alt="New Samadhan Shoes Mart Visiting Card"
-                    className="w-full h-auto object-cover"
-                    loading="eager"
-                  />
+
+                {/* Zoom Controls Bar */}
+                <div className="flex items-center gap-2 mb-4 bg-black/75 px-4 py-2 rounded-full border border-white/20 backdrop-blur-md shadow-lg">
+                  <button
+                    type="button"
+                    onClick={() => setCardZoom(prev => Math.max(1, +(prev - 0.5).toFixed(1)))}
+                    disabled={cardZoom <= 1}
+                    className="p-1.5 rounded-lg bg-white/10 hover:bg-[#d4af37] hover:text-black text-white disabled:opacity-30 disabled:hover:bg-white/10 disabled:hover:text-white transition-colors cursor-pointer"
+                    title="Zoom Out (-)"
+                  >
+                    <ZoomOut size={16} />
+                  </button>
+                  <span className="text-xs font-mono font-bold text-white px-2">
+                    {Math.round(cardZoom * 100)}%
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setCardZoom(prev => Math.min(3, +(prev + 0.5).toFixed(1)))}
+                    disabled={cardZoom >= 3}
+                    className="p-1.5 rounded-lg bg-white/10 hover:bg-[#d4af37] hover:text-black text-white disabled:opacity-30 disabled:hover:bg-white/10 disabled:hover:text-white transition-colors cursor-pointer"
+                    title="Zoom In (+)"
+                  >
+                    <ZoomIn size={16} />
+                  </button>
+                  <div className="h-4 w-px bg-white/20 mx-1" />
+                  <button
+                    type="button"
+                    onClick={() => setCardZoom(1)}
+                    className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-[#d4af37] hover:text-black text-white text-[11px] font-bold uppercase tracking-wider transition-colors cursor-pointer flex items-center gap-1"
+                    title="Reset Zoom (100%)"
+                  >
+                    <RotateCcw size={13} /> Reset
+                  </button>
                 </div>
+
+                {/* Front card only in fullscreen with zoom and pan capability */}
+                <div
+                  className="w-full max-w-3xl mx-auto rounded-2xl overflow-auto border-2 border-[#d4af37]/50 shadow-2xl bg-white max-h-[70vh] cursor-grab active:cursor-grabbing p-1"
+                  onWheel={(e) => {
+                    if (e.ctrlKey || e.metaKey) {
+                      e.preventDefault();
+                      if (e.deltaY < 0) setCardZoom(prev => Math.min(3, +(prev + 0.2).toFixed(1)));
+                      else setCardZoom(prev => Math.max(1, +(prev - 0.2).toFixed(1)));
+                    }
+                  }}
+                  onDoubleClick={() => setCardZoom(prev => prev === 1 ? 2 : 1)}
+                  title="Double-click to toggle zoom, or use buttons above"
+                >
+                  <div
+                    style={{
+                      transform: `scale(${cardZoom})`,
+                      transformOrigin: 'top center',
+                      transition: 'transform 0.25s cubic-bezier(0.2, 0, 0, 1)'
+                    }}
+                  >
+                    <img
+                      src={resolveImageUrl('/New-Samadhan-Shoe-Mart/New-Card.jpg')}
+                      alt="New Samadhan Shoes Mart Visiting Card"
+                      className="w-full h-auto object-cover select-none pointer-events-none"
+                      loading="eager"
+                    />
+                  </div>
+                </div>
+
                 <div className="mt-4 flex flex-wrap gap-3 justify-center">
                   <a
                     href="tel:+919423228843"
@@ -1840,8 +1931,8 @@ const HomePage = () => {
                     📞 Call: 9423228843
                   </a>
                   <button
-                    onClick={() => setFullScreenModal(null)}
-                    className="bg-white/10 text-white px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-widest hover:bg-white/20 transition-colors"
+                    onClick={() => { setFullScreenModal(null); setCardZoom(1); }}
+                    className="bg-white/10 text-white px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-widest hover:bg-white/20 transition-colors cursor-pointer"
                   >
                     Close
                   </button>
@@ -2017,16 +2108,14 @@ const HomePage = () => {
                     <ShoppingBag size={15} /> ADD TO CART
                   </button>
 
-                  <button
-                    onClick={() => {
-                      addToCart(modalProduct, modalQty, modalSize);
-                      setModalProduct(null);
-                      navigate('/cart');
-                    }}
-                    className="py-3.5 rounded-full bg-[#d4af37] text-black text-xs font-black uppercase tracking-wider hover:bg-black hover:text-white transition-all text-center cursor-pointer shadow-md"
+                  <a
+                    href={`https://wa.me/919423228843?text=${encodeURIComponent(`Hello New Samadhan Shoe Mart, I would like to order: ${modalProduct.name} (Size: UK/IND ${modalSize}, Price: ₹${modalProduct.price?.toLocaleString()}). Please confirm availability.`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="py-3.5 rounded-full bg-[#25D366] text-black hover:bg-[#1ebe5d] hover:text-white text-xs font-black uppercase tracking-wider transition-all text-center cursor-pointer shadow-md flex items-center justify-center gap-1.5"
                   >
-                    BUY NOW
-                  </button>
+                    <MessageSquare size={15} /> ORDER ON WHATSAPP
+                  </a>
                 </div>
 
                 <button

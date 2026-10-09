@@ -1,29 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Facebook, Instagram, Twitter, ArrowUp, Phone, MapPin, Mail, ShieldCheck } from 'lucide-react';
+import { Facebook, Instagram, Twitter, Phone, MapPin, Mail, ShieldCheck } from 'lucide-react';
 import { resolveImageUrl } from '../utils/urlConfig';
 
 const Footer = () => {
-  const scrollToTop = (e) => {
-    if (e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-    // Cross-browser scroll to top
-    try {
-      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-    } catch (_) {
-      try { window.scrollTo(0, 0); } catch (_) {}
-    }
-    try {
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
-    } catch (_) {}
-    try {
-      const topTarget = document.getElementById('root') || document.body || document.documentElement;
-      topTarget?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } catch (_) {}
-  };
 
   return (
     <footer className="bg-white text-[#111111] border-t border-[#111111]/10 pt-20 pb-12 relative overflow-hidden font-sans">
@@ -152,17 +132,6 @@ const Footer = () => {
               <ShieldCheck size={16} className="text-[#d4af37]" />
               <span>Verified Showroom &amp; Developer</span>
             </Link>
-
-            {/* Scroll To Top Button Recreated & Tested */}
-            <button
-              type="button"
-              onClick={scrollToTop}
-              className="w-12 h-12 bg-[#111111] text-[#d4af37] hover:bg-[#d4af37] hover:text-black rounded-full flex items-center justify-center transition-all duration-300 shadow-lg hover:scale-110 cursor-pointer active:scale-95 group"
-              aria-label="Scroll to top"
-              title="Go to Top"
-            >
-              <ArrowUp size={20} className="group-hover:-translate-y-1 transition-transform" />
-            </button>
           </div>
         </div>
 

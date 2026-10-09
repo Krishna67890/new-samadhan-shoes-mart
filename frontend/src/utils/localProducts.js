@@ -1152,14 +1152,14 @@ const localProducts = [
   {
     "_id": "mix4",
     "id": "mix4",
-    "name": "Samadhan Parivaar Comfort Walking Shoe",
+    "name": "Samadhan Royal Peshawari Open-Heel Leather Sandal",
     "brand": "Atelier Samadhan",
-    "price": 1450,
+    "price": 1650,
     "images": [
-      "/New-Samadhan-Shoe-Mart/Family 1.jpg",
-      "/New-Samadhan-Shoe-Mart/Family 2.jpg",
-      "/New-Samadhan-Shoe-Mart/Family 3.jpg",
-      "/New-Samadhan-Shoe-Mart/Family 4.jpg"
+      "/New-Samadhan-Shoe-Mart/IMG-20260928-WA0006.jpg",
+      "/New-Samadhan-Shoe-Mart/IMG-20260928-WA0007.jpg",
+      "/New-Samadhan-Shoe-Mart/IMG-20260928-WA0008.jpg",
+      "/New-Samadhan-Shoe-Mart/IMG-20260928-WA0009.jpg"
     ],
     "sizes": [
       6,
@@ -1168,15 +1168,16 @@ const localProducts = [
       9,
       10
     ],
-    "rating": 4.8,
+    "rating": 4.9,
     "category": "Men",
     "collection": "Bestsellers",
     "targetGender": "Men",
     "purpose": [
-      "Walking",
+      "Ethnic",
+      "Traditional",
       "Daily Wear"
     ],
-    "description": "Nashik family comfort collection walking shoe engineered for smooth joint-friendly morning walks."
+    "description": "Authentic handcrafted Indian Peshawari leather sandal with supple hide, padded arch support, and rugged traction sole."
   },
   {
     "_id": "mix5",

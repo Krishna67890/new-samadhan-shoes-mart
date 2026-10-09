@@ -1,0 +1,88 @@
+[
+  {
+    "id": "rev_1791550137811_oz2hdczpx",
+    "productId": "all",
+    "name": "Pravin Jadhav",
+    "rating": 5,
+    "comment": "Authentic leather shoes and sandals in Nashik. Synchronized seamlessly across all devices and browsers!",
+    "review": "Authentic leather shoes and sandals in Nashik. Synchronized seamlessly across all devices and browsers!",
+    "city": "Nashik",
+    "style": "classic",
+    "avatar": "PR",
+    "verified": true,
+    "helpful": 0,
+    "createdAt": "2026-10-09T12:48:57.811Z"
+  },
+  {
+    "id": "rev_seed_1",
+    "productId": "all",
+    "name": "Dr. Arvind Patil",
+    "rating": 5,
+    "comment": "Authentic Kolhapuri craftsmanship. Supreme leather softness with high arch comfort. Best footwear in Nashik.",
+    "review": "Authentic Kolhapuri craftsmanship. Supreme leather softness with high arch comfort. Best footwear in Nashik.",
+    "city": "Nashik",
+    "verified": true,
+    "helpful": 14,
+    "createdAt": "2024-01-15T10:30:00.000Z"
+  },
+  {
+    "id": "rev_seed_2",
+    "productId": "all",
+    "name": "Sneha Deshmukh",
+    "rating": 5,
+    "comment": "Ordered Peshawari sandals for festival season. Delivered swiftly in Nashik. Excellent finish and comfortable sole!",
+    "review": "Ordered Peshawari sandals for festival season. Delivered swiftly in Nashik. Excellent finish and comfortable sole!",
+    "city": "Nashik",
+    "verified": true,
+    "helpful": 9,
+    "createdAt": "2024-02-02T14:20:00.000Z"
+  },
+  {
+    "id": "rev_seed_3",
+    "productId": "all",
+    "name": "Vikram R.",
+    "rating": 5,
+    "comment": "Best formal leather shoes in Nashik. Wore them to a 3-day wedding, zero blisters. Superb fit and elegant look.",
+    "review": "Best formal leather shoes in Nashik. Wore them to a 3-day wedding, zero blisters. Superb fit and elegant look.",
+    "city": "Mumbai",
+    "verified": true,
+    "helpful": 11,
+    "createdAt": "2024-02-18T09:15:00.000Z"
+  },
+  {
+    "id": "rev_seed_4",
+    "productId": "all",
+    "name": "Ananya K.",
+    "rating": 5,
+    "comment": "Sneakers are super light and the cushioning feels like walking on air. Highly recommended for daily wear.",
+    "review": "Sneakers are super light and the cushioning feels like walking on air. Highly recommended for daily wear.",
+    "city": "Thane",
+    "verified": true,
+    "helpful": 7,
+    "createdAt": "2024-03-05T16:45:00.000Z"
+  },
+  {
+    "id": "rev_seed_5",
+    "productId": "all",
+    "name": "Rajeshwar Shinde",
+    "rating": 5,
+    "comment": "Been purchasing from Samadhan Shoe Mart for over 15 years. Pure leather quality and durability is completely unmatched.",
+    "review": "Been purchasing from Samadhan Shoe Mart for over 15 years. Pure leather quality and durability is completely unmatched.",
+    "city": "Nashik",
+    "verified": true,
+    "helpful": 19,
+    "createdAt": "2024-03-20T11:00:00.000Z"
+  },
+  {
+    "id": "rev_seed_6",
+    "productId": "all",
+    "name": "Pooja Kulkarni",
+    "rating": 5,
+    "comment": "Comfortable ethnic sandals for daily office and festival wear. Premium sole padding and genuine leather strap.",
+    "review": "Comfortable ethnic sandals for daily office and festival wear. Premium sole padding and genuine leather strap.",
+    "city": "Pune",
+    "verified": true,
+    "helpful": 6,
+    "createdAt": "2024-04-01T12:30:00.000Z"
+  }
+]

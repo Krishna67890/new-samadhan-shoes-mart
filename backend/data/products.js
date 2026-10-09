@@ -6,7 +6,7 @@ const modelsByCategory = {
   Women: ['Velvet Stiletto Heel', 'Quilted Ballet Flat', 'Ultraboost Pastel', 'Verona Ankle Boot', 'Suede Platform'],
   Kids: ['Air Force 1 Junior', 'Superstar Strap Kids', 'Nashik Academy School Derby', 'Speed Runner Flex', 'Courier Retro'],
   Formal: ['Monarch Derby', 'Imperial Oxford', 'Bespoke Brogue', 'Double Monk Strap', 'Penny Loafer'],
-  Sneakers: ['Boost 350', 'Court Classic', 'Retro Mid 1', 'Volt Street Runner', 'Air Zoom Flight']
+  Sneakers: ['Boost 350', 'Court Classic', 'Retro Mid 1', 'Royal Peshawari Sandal', 'Air Zoom Flight']
 };
 
 const technologies = [
@@ -54,7 +54,8 @@ const generateProducts = () => {
     const categoryModels = modelsByCategory[category];
     const model = categoryModels[Math.floor(Math.random() * categoryModels.length)];
     const color = colors[Math.floor(Math.random() * colors.length)];
-    const price = category === 'Kids' ? Math.floor(Math.random() * (4500 - 1999 + 1) + 1999) : Math.floor(Math.random() * (18000 - 3499 + 1) + 3499);
+    // Every product priced strictly between 1000 and 3000 Indian Rupees
+    const price = Math.floor(Math.random() * (2899 - 1099 + 1) + 1099);
     const rating = (Math.random() * (5 - 4.2) + 4.2).toFixed(1);
     const reviews = Math.floor(Math.random() * 400) + 30;
 

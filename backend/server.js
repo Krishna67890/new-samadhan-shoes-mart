@@ -15,6 +15,7 @@ import adminRoutes from './routes/adminRoutes.js';
 import shopRoutes from './routes/shopRoutes.js';
 import serviceCenterRoutes from './routes/serviceCenterRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js';
+import reviewRoutes from './routes/reviewRoutes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -47,6 +48,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/service-centers', serviceCenterRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/reviews', reviewRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({

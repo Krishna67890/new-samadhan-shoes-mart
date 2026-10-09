@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Trash2, Search, Star, MessageSquare, ArrowLeft, Filter, CheckCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { getReviews, deleteReview } from '../utils/reviewService';
+import { getReviews, deleteReview, syncReviewsWithServer } from '../utils/reviewService';
 import localProducts from '../utils/localProducts';
 import gsap from 'gsap';
 
@@ -12,14 +12,35 @@ const AdminReviewDashboard = () => {
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    loadReviews();
-  }, []);
-
   const loadReviews = () => {
     const data = getReviews();
     setReviews(Array.isArray(data) ? data : []);
   };
+
+  useEffect(() => {
+    loadReviews();
+    syncReviewsWithServer().then(() => loadReviews()).catch(() => {});
+
+    window.addEventListener('reviews_updated', loadReviews);
+
+    let bc;
+    try {
+      if ('BroadcastChannel' in window) {
+        bc = new BroadcastChannel('samadhan_reviews_channel');
+        bc.onmessage = () => loadReviews();
+      }
+    } catch (_) {}
+
+    const interval = setInterval(() => {
+      syncReviewsWithServer().then(() => loadReviews()).catch(() => {});
+    }, 8000);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('reviews_updated', loadReviews);
+      try { bc?.close(); } catch (_) {}
+    };
+  }, []);
 
   const getProductInfo = (id) => {
     const demoProducts = JSON.parse(localStorage.getItem('ssm_demo_products') || '[]');
@@ -31,9 +52,9 @@ const AdminReviewDashboard = () => {
   const getProductName = (id) => getProductInfo(id).name;
   const getProductCategory = (id) => getProductInfo(id).category;
 
-  const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to permanently remove this review?")) {
-      deleteReview(id);
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to permanently remove this review across all devices?")) {
+      await deleteReview(id);
       loadReviews();
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
