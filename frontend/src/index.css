@@ -6,9 +6,24 @@
 
 :root {
   --bg-primary: #F7F5F0;
+  --bg-secondary: #FFFFFF;
   --text-primary: #111111;
   --text-secondary: #6B6B6B;
   --accent: #8B0000; /* Deep Burgundy/Red */
+  --gold: #d4af37;
+  --border-color: #e5e7eb;
+  --hero-shadow: rgba(0,0,0,0.3);
+}
+
+.dark {
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #1a1a1a;
+  --text-primary: #f7f5f0;
+  --text-secondary: #a1a1aa;
+  --accent: #ff3333;
+  --gold: #f59e0b;
+  --border-color: #27272a;
+  --hero-shadow: rgba(212,175,55,0.2);
 }
 
 body {
@@ -16,8 +31,19 @@ body {
   color: var(--text-primary);
   font-family: 'Inter', sans-serif;
   overflow-x: hidden;
-  selection-background-color: var(--text-primary);
-  selection-color: var(--bg-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  scroll-behavior: smooth;
+}
+
+/* Ensure no transparency on fixed elements when requested */
+.no-blur-zone {
+  backdrop-filter: none !important;
+  background-color: var(--bg-secondary) !important;
+}
+
+/* Quick Response Classes */
+.quick-transition {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .font-editorial {
@@ -32,6 +58,27 @@ body {
 .gsap-reveal {
   opacity: 0;
   transform: translateY(30px);
+}
+
+.page-transition-curtain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #111111;
+  z-index: 999999;
+  pointer-events: none;
+  transform: scaleY(0);
+  transform-origin: top;
+}
+
+.page-transition-logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
 }
 
 /* Premium Layout Utilities */
@@ -84,9 +131,48 @@ body {
   width: fit-content;
 }
 
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: inline-flex;
+  animation: marquee 30s linear infinite;
+}
+
 /* Responsive fixes */
 @media (max-width: 768px) {
   .section-padding {
     @apply py-16 px-6;
   }
 }
+
+/* 3D and Luxury Footwear Showcase Classes */
+.perspective-1000 {
+  perspective: 1000px;
+}
+.perspective-1500 {
+  perspective: 1500px;
+}
+.perspective-2000 {
+  perspective: 2000px;
+}
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+}
+.shoe-ambient-shadow {
+  filter: drop-shadow(0 40px 30px rgba(0, 0, 0, 0.22));
+}
+.gold-gradient-text {
+  background: linear-gradient(135deg, #111111 0%, #b89028 50%, #d4af37 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.gold-border-glow {
+  box-shadow: 0 0 35px rgba(212, 175, 55, 0.2);
+}
+

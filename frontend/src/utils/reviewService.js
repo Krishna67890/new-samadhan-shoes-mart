@@ -1,5 +1,19 @@
 const STORAGE_KEY = 'newSamadhanProductReviews';
 
+// Broadcast sync across all tabs & browser instances
+const broadcastSync = () => {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new Event('reviews_updated'));
+    try {
+      if ('BroadcastChannel' in window) {
+        const channel = new BroadcastChannel('samadhan_reviews_channel');
+        channel.postMessage({ type: 'REVIEWS_UPDATED', timestamp: Date.now() });
+        channel.close();
+      }
+    } catch (_) {}
+  }
+};
+
 export const getReviews = () => {
   try {
     const reviews = localStorage.getItem(STORAGE_KEY);
@@ -26,6 +40,7 @@ export const saveReview = (reviewData) => {
 
   allReviews.push(newReview);
   localStorage.setItem(STORAGE_KEY, JSON.stringify(allReviews));
+  broadcastSync();
   return newReview;
 };
 
@@ -33,6 +48,7 @@ export const deleteReview = (reviewId) => {
   const allReviews = getReviews();
   const filteredReviews = allReviews.filter(review => review.id !== reviewId);
   localStorage.setItem(STORAGE_KEY, JSON.stringify(filteredReviews));
+  broadcastSync();
 };
 
 export const voteHelpful = (reviewId, userId = 'anonymous') => {

@@ -1,5 +1,5 @@
-import React, { useLayoutEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useLayoutEffect, useRef, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
@@ -43,14 +43,34 @@ const S = {
 
 const AboutPage = () => {
   const statsRef = useRef(null);
+  const heritageRef = useRef(null);
   const valuesRef = useRef(null);
   const timelineRef = useRef(null);
   const developerRef = useRef(null);
   const containerRef = useRef(null);
   const shoeRef = useRef(null);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      const id = location.hash.replace('#', '');
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [location]);
 
   useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
+    const mm = gsap.matchMedia();
+
+    mm.add({
+      isDesktop: "(min-width: 1024px)",
+      isTablet: "(min-width: 768px) and (max-width: 1023px)",
+      isMobile: "(max-width: 767px)"
+    }, (context) => {
+      let { isMobile } = context.conditions;
+
       // Technical HUD entry (Hard Mode)
       gsap.from(".about-hud", {
         opacity: 0,
@@ -81,41 +101,68 @@ const AboutPage = () => {
           trigger: ".about-shoe-trigger",
           start: "top center",
           end: "bottom top",
-          scrub: 2.2
+          scrub: isMobile ? 0.5 : 2.2
         }
       });
+
       gsap.fromTo('.stat-card',
         { y: 60, opacity: 0, scale: 0.94 },
-        { y: 0, opacity: 1, scale: 1, duration: 0.9, stagger: 0.1, ease: 'power3.out',
-          scrollTrigger: { trigger: statsRef.current, start: 'top 80%' } }
+        {
+          y: 0, opacity: 1, scale: 1, duration: 0.9, stagger: 0.1, ease: 'power3.out',
+          scrollTrigger: { trigger: statsRef.current, start: 'top 80%' }
+        }
       );
+
+      gsap.fromTo('.heritage-reveal',
+        { y: 60, opacity: 0 },
+        {
+          y: 0, opacity: 1, duration: 1, stagger: 0.2, ease: 'power3.out',
+          scrollTrigger: { trigger: heritageRef.current, start: 'top 75%' }
+        }
+      );
+
       gsap.fromTo('.value-card',
         { y: 70, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.85, stagger: 0.1, ease: 'power3.out',
-          scrollTrigger: { trigger: valuesRef.current, start: 'top 75%' } }
+        {
+          y: 0, opacity: 1, duration: 0.85, stagger: 0.1, ease: 'power3.out',
+          scrollTrigger: { trigger: valuesRef.current, start: 'top 75%' }
+        }
       );
+
       gsap.fromTo('.timeline-item',
         { x: -50, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.8, stagger: 0.14, ease: 'power3.out',
-          scrollTrigger: { trigger: timelineRef.current, start: 'top 75%' } }
+        {
+          x: 0, opacity: 1, duration: 0.8, stagger: 0.14, ease: 'power3.out',
+          scrollTrigger: { trigger: timelineRef.current, start: 'top 75%' }
+        }
       );
+
       gsap.fromTo('.timeline-line',
         { scaleY: 0 },
-        { scaleY: 1, duration: 1.6, ease: 'power2.inOut', transformOrigin: 'top center',
-          scrollTrigger: { trigger: timelineRef.current, start: 'top 80%', scrub: 0.5 } }
+        {
+          scaleY: 1, duration: 1.6, ease: 'power2.inOut', transformOrigin: 'top center',
+          scrollTrigger: { trigger: timelineRef.current, start: 'top 80%', scrub: 0.5 }
+        }
       );
+
       gsap.fromTo('.dev-card',
         { y: 80, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1.2, ease: 'power4.out',
-          scrollTrigger: { trigger: developerRef.current, start: 'top 80%' } }
+        {
+          y: 0, opacity: 1, duration: 1.2, ease: 'power4.out',
+          scrollTrigger: { trigger: developerRef.current, start: 'top 80%' }
+        }
       );
+
       gsap.fromTo('.dev-info-item',
         { x: 40, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.7, stagger: 0.1, ease: 'power3.out',
-          scrollTrigger: { trigger: developerRef.current, start: 'top 75%' } }
+        {
+          x: 0, opacity: 1, duration: 0.7, stagger: 0.1, ease: 'power3.out',
+          scrollTrigger: { trigger: developerRef.current, start: 'top 75%' }
+        }
       );
     });
-    return () => ctx.revert();
+
+    return () => mm.revert();
   }, []);
 
   return (
@@ -218,19 +265,109 @@ const AboutPage = () => {
             ))}
           </div>
           <div style={{ position: 'relative' }}>
-            <div style={{ width: '100%', aspectRatio: '4/5', background: 'linear-gradient(135deg, #1a0a0a 0%, #2d0d0d 40%, #111 100%)', borderRadius: '28px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', position: 'relative', boxShadow: '0 40px 80px rgba(0,0,0,0.15)' }}>
-              <img src={resolveImageUrl("/Shoes.png")} alt="New Samadhan Handcrafted Shoe" style={{ width: '85%', objectFit: 'contain', filter: 'none' }} />
-              <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 30%, rgba(139,0,0,0.22) 0%, transparent 65%)', pointerEvents: 'none' }} />
-              <div style={{ position: 'absolute', bottom: '28px', left: '28px', background: 'rgba(247,245,240,0.95)', padding: '14px 20px', borderRadius: '16px', boxShadow: '0 16px 40px rgba(0,0,0,0.2)' }}>
-                <div style={{ fontSize: '9px', fontWeight: 800, letterSpacing: '0.3em', color: '#8B0000', textTransform: 'uppercase', marginBottom: '4px' }}>Certified Mastercraft</div>
-                <div style={{ fontSize: '13px', fontWeight: 700, color: '#111' }}>Goodyear Welted</div>
+            {/* Advanced Mastercraft Section with Glassmorphism */}
+            <div className="group relative">
+              <div style={{
+                width: '100%',
+                aspectRatio: '4/5',
+                background: 'linear-gradient(135deg, #1a0a0a 0%, #2d0d0d 40%, #111 100%)',
+                borderRadius: '40px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                overflow: 'hidden',
+                position: 'relative',
+                boxShadow: '0 40px 80px rgba(0,0,0,0.25)',
+                border: '1px solid rgba(255,255,255,0.05)'
+              }}>
+                {/* Animated Background Elements */}
+                <div className="absolute inset-0 opacity-30">
+                  <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(139,0,0,0.2),transparent_70%)] animate-pulse"></div>
+                </div>
+
+                <img
+                  src={resolveImageUrl("/New-Samadhan-Shoe-Mart/Main-Shoe.png")}
+                  alt="New Samadhan Handcrafted Shoe"
+                  className="w-[85%] object-contain transition-transform duration-700 group-hover:scale-110 group-hover:rotate-2"
+                />
+
+                {/* Floating HUD Labels (Advanced UI) */}
+                <div className="absolute top-10 left-10 pointer-events-none transition-all duration-500 group-hover:translate-x-2">
+                  <div className="flex items-center gap-3 bg-black/40 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full">
+                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></div>
+                    <span className="text-[9px] font-black text-white uppercase tracking-[0.2em]">Full Grain Leather</span>
+                  </div>
+                </div>
+
+                <div className="absolute bottom-32 right-10 pointer-events-none transition-all duration-500 group-hover:-translate-x-2">
+                  <div className="flex items-center gap-3 bg-black/40 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full">
+                    <Hammer size={12} className="text-[#8B0000]" />
+                    <span className="text-[9px] font-black text-white uppercase tracking-[0.2em]">12 Stitches / Inch</span>
+                  </div>
+                </div>
+
+                <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 30%, rgba(139,0,0,0.22) 0%, transparent 65%)', pointerEvents: 'none' }} />
+
+                {/* Glassmorphic Badge */}
+                <div className="absolute bottom-8 left-8 right-8 bg-white/10 backdrop-blur-xl border border-white/20 p-6 rounded-[2rem] shadow-2xl transform transition-all duration-500 group-hover:translate-y-[-10px]">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div style={{ fontSize: '9px', fontWeight: 800, letterSpacing: '0.3em', color: '#ff6b6b', textTransform: 'uppercase', marginBottom: '4px' }}>Certified Mastercraft</div>
+                      <div style={{ fontSize: '16px', fontWeight: 900, color: 'white', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Goodyear Welted</div>
+                    </div>
+                    <div className="w-12 h-12 rounded-2xl bg-[#8B0000] flex items-center justify-center shadow-lg shadow-red-900/40">
+                      <ShieldCheck size={24} color="white" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Advanced GSAP Hover Interaction Element */}
+              <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-[#8B0000] rounded-[2rem] flex flex-col items-center justify-center shadow-2xl z-20 transform transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
+                <div className="font-editorial text-4xl font-black text-white leading-none">34</div>
+                <div className="text-[8px] font-black text-white/70 uppercase tracking-[0.3em] mt-2">Years</div>
               </div>
             </div>
-            <div style={{ position: 'absolute', top: '-20px', right: '-20px', background: '#8B0000', color: 'white', padding: '20px 24px', borderRadius: '20px', boxShadow: '0 20px 40px rgba(139,0,0,0.4)', textAlign: 'center' }}>
-              <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '2.4rem', fontWeight: 900, lineHeight: 1 }}>34</div>
-              <div style={{ fontSize: '9px', fontWeight: 700, letterSpacing: '0.3em', textTransform: 'uppercase', opacity: 0.85, marginTop: '4px' }}>YEARS</div>
-            </div>
           </div>
+        </div>
+      </section>
+
+      {/* ── HERITAGE OF SERVICE ── */}
+      <section ref={heritageRef} style={{ padding: '120px 24px', background: '#111111', color: 'white', overflow: 'hidden' }}>
+        <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '80px', alignItems: 'center' }}>
+           <div className="order-2 md:order-1 heritage-reveal">
+             <div style={{ borderRadius: '40px', overflow: 'hidden', boxShadow: '0 40px 80px rgba(0,0,0,0.4)', border: '1px solid rgba(255,255,255,0.1)' }}>
+               <img
+                 src={resolveImageUrl("/New-Samadhan-Shoe-Mart/Police Family 1.jpg")}
+                 alt="Trusted by Police and Defense"
+                 style={{ width: '100%', display: 'block' }}
+                 onError={e => { e.target.src = resolveImageUrl('/New-Samadhan-Shoe-Mart/Family 1.jpg'); }}
+               />
+             </div>
+           </div>
+           <div className="order-1 md:order-2 heritage-reveal">
+             <div style={S.badge}><ShieldCheck size={14} color="#8B0000" /><span style={{...S.label, color: 'white'}}>Trusted by the Uniform</span></div>
+             <h2 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 900, fontSize: 'clamp(2rem, 5vw, 4rem)', textTransform: 'uppercase', lineHeight: 0.95, margin: '0 0 24px' }}>
+               A HERITAGE <br /><span style={{ color: '#8B0000', fontStyle: 'italic', fontWeight: 300 }}>OF TRUST & SERVICE</span>
+             </h2>
+             <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.85, marginBottom: '20px' }}>
+               For three decades, New Samadhan Shoe Mart has been the preferred choice for Nashik's brave police officers and defense personnel.
+             </p>
+             <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.85, marginBottom: '32px' }}>
+               We understand that for those in uniform, a shoe isn't just footwear — it's a tool of the trade. Our double-welted construction and high-density soles are engineered to withstand the rigors of long patrols and high-intensity duty.
+             </p>
+             <div style={{ display: 'flex', gap: '40px' }}>
+                <div style={{ textAlign: 'left' }}>
+                  <div style={{ fontSize: '32px', fontWeight: 900, color: '#8B0000', fontFamily: "'Playfair Display', serif" }}>34+</div>
+                  <div style={{ fontSize: '9px', fontWeight: 800, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)' }}>Years Service</div>
+                </div>
+                <div style={{ width: '1px', background: 'rgba(255,255,255,0.1)' }}></div>
+                <div style={{ textAlign: 'left' }}>
+                  <div style={{ fontSize: '32px', fontWeight: 900, color: '#8B0000', fontFamily: "'Playfair Display', serif" }}>10k+</div>
+                  <div style={{ fontSize: '9px', fontWeight: 800, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)' }}>Uniforms Fitted</div>
+                </div>
+             </div>
+           </div>
         </div>
       </section>
 
@@ -306,13 +443,13 @@ const AboutPage = () => {
                 <div style={{ aspectRatio: '1/1', overflow: 'hidden', position: 'relative' }}>
                   <img
                     src={resolveImageUrl("/Devloper.jpg")}
-                    alt="Krishna - Developer, New Samadhan Shoe Mart"
+                    alt="Krishna Patil Rajput - Developer & Designer"
                     style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                    onError={e => { e.target.src = 'https://ui-avatars.com/api/?name=KR&background=8B0000&color=fff&size=400'; }}
+                    onError={e => { e.target.src = resolveImageUrl('/New-Samadhan-Shoe-Mart/Devloper.jpg'); }}
                   />
                   <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 55%, rgba(10,10,10,0.9) 100%)' }} />
-                  <div style={{ position: 'absolute', top: '20px', right: '20px', background: '#8B0000', color: 'white', padding: '8px 14px', borderRadius: '10px', fontSize: '9px', fontWeight: 800, letterSpacing: '0.25em', textTransform: 'uppercase', boxShadow: '0 8px 20px rgba(139,0,0,0.5)' }}>
-                    Full Stack Dev
+                  <div style={{ position: 'absolute', top: '20px', right: '20px', background: '#d4af37', color: '#111111', padding: '8px 14px', borderRadius: '10px', fontSize: '9px', fontWeight: 900, letterSpacing: '0.25em', textTransform: 'uppercase', boxShadow: '0 8px 20px rgba(212,175,55,0.4)' }}>
+                    Full Stack Architect
                   </div>
                 </div>
                 <div style={{ padding: '28px 32px' }}>
@@ -499,6 +636,45 @@ const AboutPage = () => {
                   <Footprints size={14} /> Shop Now
                 </Link>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── LEGAL POLICIES ── */}
+      <section id="legal-policies" style={{ padding: '120px 24px', background: '#ffffff', borderTop: '1px solid rgba(17,17,17,0.05)' }}>
+        <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: '80px' }}>
+            <div style={S.badge}><ShieldCheck size={14} color="#8B0000" /><span style={S.label}>Transparency & Trust</span></div>
+            <h2 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 900, fontSize: 'clamp(2rem, 5vw, 4rem)', textTransform: 'uppercase', lineHeight: 0.95, margin: 0 }}>
+              LEGAL &<br /><span style={{ color: '#8B0000', fontStyle: 'italic', fontWeight: 300 }}>POLICIES</span>
+            </h2>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '40px' }}>
+            <div style={{ padding: '40px', background: '#F7F5F0', borderRadius: '24px' }}>
+              <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: '20px', fontWeight: 900, marginBottom: '20px', color: '#111' }}>Privacy Policy</h3>
+              <p style={{ fontSize: '14px', color: '#6B6B6B', lineHeight: 1.7 }}>
+                At New Samadhan Shoe Mart, we value your privacy. We only collect essential information required to process your orders and improve your shopping experience. Your data is encrypted and never shared with third parties for marketing purposes.
+              </p>
+            </div>
+            <div style={{ padding: '40px', background: '#F7F5F0', borderRadius: '24px' }}>
+              <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: '20px', fontWeight: 900, marginBottom: '20px', color: '#111' }}>Terms of Service</h3>
+              <p style={{ fontSize: '14px', color: '#6B6B6B', lineHeight: 1.7 }}>
+                By using our website, you agree to our terms. All products are subject to availability. We reserve the right to refuse service. Prices are subject to change without notice. All handcrafted items may have slight artisan variations.
+              </p>
+            </div>
+            <div style={{ padding: '40px', background: '#F7F5F0', borderRadius: '24px' }}>
+              <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: '20px', fontWeight: 900, marginBottom: '20px', color: '#111' }}>Refund & Returns</h3>
+              <p style={{ fontSize: '14px', color: '#6B6B6B', lineHeight: 1.7 }}>
+                We offer a 7-day return policy for unused products in original packaging. Handcrafted custom orders are only eligible for returns in case of manufacturing defects. Refunds are processed within 5-7 business days.
+              </p>
+            </div>
+            <div style={{ padding: '40px', background: '#F7F5F0', borderRadius: '24px' }}>
+              <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: '20px', fontWeight: 900, marginBottom: '20px', color: '#111' }}>Shipping Policy</h3>
+              <p style={{ fontSize: '14px', color: '#6B6B6B', lineHeight: 1.7 }}>
+                We provide Pan-India shipping. Orders are typically dispatched within 48 hours. Delivery takes 3-7 business days depending on location. Free shipping on orders above ₹2,999. Tracking details provided via SMS/Email.
+              </p>
             </div>
           </div>
         </div>

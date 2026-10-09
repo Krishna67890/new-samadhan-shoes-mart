@@ -5,7 +5,7 @@ import useFetch from '../hooks/useFetch';
 import { Edit, Trash2, Plus, ArrowLeft, Search, Loader2, AlertCircle, Package, Filter, ExternalLink } from 'lucide-react';
 import { resolveImageUrl } from '../utils/urlConfig';
 import localProducts from '../utils/localProducts';
-import { getMergedProducts } from '../utils/productUtils';
+import { getMergedProducts, deleteCustomProduct } from '../utils/productUtils';
 
 const AdminProductList = () => {
   const { loading, error, request } = useFetch();
@@ -44,7 +44,12 @@ const AdminProductList = () => {
 
     setSyncing(true);
     try {
-      await request('/api/admin/sync-vault', 'POST');
+      const demoProducts = JSON.parse(localStorage.getItem('ssm_demo_products') || '[]');
+      await request('/api/admin/sync-vault', 'POST', { products: demoProducts });
+
+      // Clear local demo storage on success to avoid duplicates
+      localStorage.removeItem('ssm_demo_products');
+
       alert('✅ Global Vault Synchronized! All devices can now see your products.');
       fetchProducts();
     } catch (err) {
@@ -81,6 +86,7 @@ const AdminProductList = () => {
         }
 
         // Always remove from Local State/View
+        deleteCustomProduct(id);
         setProducts(prev => prev.filter(p => (p._id || p.id) !== id));
 
         // Clear from Local Storage cache
@@ -133,27 +139,27 @@ const AdminProductList = () => {
             <p className="text-slate-500 font-bold uppercase tracking-[0.2em] text-[10px] mt-2">Vault Catalog • Inventory Access Level 5</p>
           </div>
 
-          <div className="flex gap-4">
+          <div className="flex flex-wrap gap-4 w-full md:w-auto">
              {products.length <= 6 && (
                 <button
                   onClick={handleGlobalSync}
                   disabled={syncing}
-                  className="bg-emerald-600 text-white px-10 py-6 rounded-[2rem] flex items-center gap-3 hover:bg-emerald-700 transition-all shadow-xl shadow-emerald-100 disabled:opacity-50"
+                  className="flex-1 md:flex-none bg-emerald-600 text-white px-6 md:px-10 py-5 md:py-6 rounded-[2rem] flex items-center justify-center gap-3 hover:bg-emerald-700 transition-all shadow-xl shadow-emerald-100 disabled:opacity-50"
                 >
                    {syncing ? <Loader2 className="animate-spin" size={20} /> : <ExternalLink size={20} />}
-                   <span className="font-black uppercase tracking-widest text-xs">Sync Vault</span>
+                   <span className="font-black uppercase tracking-widest text-[10px] md:text-xs">Sync Vault</span>
                 </button>
              )}
-             <div className="bg-white px-8 py-6 rounded-[2rem] border border-[#111]/5 shadow-sm">
-                <span className="text-[9px] font-black text-[#6B6B6B] uppercase tracking-widest block mb-1">Total Items</span>
-                <span className="text-3xl font-black text-[#111]">{stats.total}</span>
+             <div className="flex-1 md:flex-none bg-white px-6 md:px-8 py-5 md:py-6 rounded-[2rem] border border-[#111]/5 shadow-sm text-center md:text-left">
+                <span className="text-[8px] md:text-[9px] font-black text-[#6B6B6B] uppercase tracking-widest block mb-1">Total Items</span>
+                <span className="text-2xl md:text-3xl font-black text-[#111]">{stats.total}</span>
              </div>
              <Link
                to="/admin/product/new"
-               className="bg-[#111] text-white px-10 py-6 rounded-[2rem] flex items-center gap-3 hover:bg-[#8B0000] transition-all shadow-xl shadow-slate-200 group"
+               className="flex-1 md:flex-none bg-[#111] text-white px-6 md:px-10 py-5 md:py-6 rounded-[2rem] flex items-center justify-center gap-3 hover:bg-[#8B0000] transition-all shadow-xl shadow-slate-200 group"
              >
                 <Plus size={20} className="group-hover:rotate-90 transition-transform duration-500" />
-                <span className="font-black uppercase tracking-widest text-xs">Add Product</span>
+                <span className="font-black uppercase tracking-widest text-[10px] md:text-xs text-nowrap">Add Product</span>
              </Link>
           </div>
         </div>

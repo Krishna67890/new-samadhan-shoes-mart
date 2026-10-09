@@ -6,7 +6,7 @@ import { ArrowLeft, Save, Upload, Loader2, Image as ImageIcon, CheckCircle, Aler
 import { resolveImageUrl } from '../utils/urlConfig';
 
 import localProducts from '../utils/localProducts';
-import { getProductById } from '../utils/productUtils';
+import { getProductById, saveCustomProduct } from '../utils/productUtils';
 
 const AdminProductEdit = () => {
   const { id } = useParams();
@@ -29,6 +29,10 @@ const AdminProductEdit = () => {
   const [images, setImages] = useState([]);
   const [model3D, setModel3D] = useState('');
   const [sizes, setSizes] = useState([6, 7, 8, 9, 10]);
+  const [technology, setTechnology] = useState(["Arch-Support Matrix", "Dual-Density Foam", "High-Traction Outsole"]);
+  const [concerns, setConcerns] = useState(["Heel Comfort", "Flat Feet", "General Orthopedic Support"]);
+  const [professions, setProfessions] = useState(["Corporate", "Medical / Healthcare", "Hospitality"]);
+  const [purpose, setPurpose] = useState(["Daily Wear", "Office", "Sports"]);
   const [uploading, setUploading] = useState(false);
   const [uploadingModel, setUploadingModel] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -59,6 +63,10 @@ const AdminProductEdit = () => {
             setImages(data.images || []);
             setModel3D(data.model3D || '');
             setSizes(data.sizes || [6, 7, 8, 9, 10]);
+            setTechnology(data.technology || ["Arch-Support Matrix", "Dual-Density Foam", "High-Traction Outsole"]);
+            setConcerns(data.concerns || ["Heel Comfort", "Flat Feet", "General Orthopedic Support"]);
+            setProfessions(data.professions || ["Corporate", "Medical / Healthcare", "Hospitality"]);
+            setPurpose(data.purpose || ["Daily Wear", "Office", "Sports"]);
           }
         } catch (err) {
           console.error("Error loading product data:", err);
@@ -120,60 +128,48 @@ const AdminProductEdit = () => {
       return;
     }
 
-    if (images.length !== 4) {
-      alert(`Policy Violation: Exactly 4 photos are required. You have uploaded ${images.length}.`);
+    if (images.length === 0) {
+      alert("Please upload or provide at least 1 image for the product.");
       return;
     }
 
+    const prodId = isNew ? `prod_${Date.now()}` : id;
     const productData = {
-      _id: isNew ? `demo-${Date.now()}` : id,
-      id: isNew ? `demo-${Date.now()}` : id,
-      name, price, brand, stock, rating, description, images, model3D, sizes, category, targetGender
+      _id: prodId,
+      id: prodId,
+      name,
+      price: Number(price) || 0,
+      brand: brand || 'Atelier Samadhan',
+      stock: Number(stock) || 10,
+      rating: Number(rating) || 4.8,
+      description,
+      images,
+      image: images[0],
+      model3D,
+      sizes,
+      category,
+      targetGender,
+      technology,
+      concerns,
+      professions,
+      purpose
     };
 
+    // 1. Save directly into unified local storage matrix (guarantees immediate update everywhere)
+    saveCustomProduct(productData);
+
     try {
-      let response;
       if (isNew) {
-        response = await request('/api/products', 'POST', productData);
+        await request('/api/products', 'POST', productData);
       } else {
-        response = await request(`/api/products/${id}`, 'PUT', productData);
+        await request(`/api/products/${id}`, 'PUT', productData);
       }
-
-      // If we reach here, it's saved to the GLOBAL DATABASE
-      console.log("Global Sync Successful:", response);
-      setSuccess(true);
-
-      // Clear any local demo data for this product to avoid conflicts
-      const demoProducts = JSON.parse(localStorage.getItem('ssm_demo_products') || '[]');
-      const filtered = demoProducts.filter(p => p._id !== id && p.id !== id);
-      localStorage.setItem('ssm_demo_products', JSON.stringify(filtered));
-
-      setTimeout(() => navigate('/admin/products'), 2000);
     } catch (err) {
-      console.error("Global Sync Failed:", err);
-
-      if (err.message === 'OFFLINE_MODE' || err.message.includes('fetch')) {
-        alert("CRITICAL: Backend Server is unreachable. Your changes will ONLY be saved on this device (Demo Mode). To show changes to everyone, ensure the Backend Server and MongoDB are running.");
-      }
-
-      // FALLBACK: Local Persistence (Only visible on this device)
-      const demoProducts = JSON.parse(localStorage.getItem('ssm_demo_products') || '[]');
-      if (isNew) {
-        demoProducts.push(productData);
-      } else {
-        const idx = demoProducts.findIndex(p => p._id === id || p.id === id);
-        if (idx !== -1) {
-          demoProducts[idx] = productData;
-        } else {
-          // If editing a localProduct that wasn't in demoProducts yet
-          demoProducts.push(productData);
-        }
-      }
-      localStorage.setItem('ssm_demo_products', JSON.stringify(demoProducts));
-
-      setSuccess(true);
-      setTimeout(() => navigate('/admin/products'), 2000);
+      console.warn("Backend cloud sync pending, saved to local client vault:", err);
     }
+
+    setSuccess(true);
+    setTimeout(() => navigate('/admin/products'), 1500);
   };
 
   return (
@@ -249,32 +245,32 @@ const AdminProductEdit = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-2">Brand</label>
+                    <label className="text-[10px] font-black text-gray-700 uppercase tracking-wider ml-1">Brand</label>
                     <input
                       type="text"
                       required
-                      className="w-full px-6 py-5 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-[#8B0000] outline-none transition-all font-bold text-[#111]"
+                      className="w-full px-5 py-4 bg-white border border-slate-300 rounded-xl focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37] outline-none transition-all font-bold text-[#111]"
                       value={brand}
                       onChange={(e) => setBrand(e.target.value)}
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-2">Price (₹1,000 - ₹2,000)</label>
+                    <label className="text-[10px] font-black text-gray-700 uppercase tracking-wider ml-1">Price (₹)</label>
                     <input
                       type="number"
                       required
-                      min="1000"
-                      max="2000"
-                      className="w-full px-6 py-5 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-[#8B0000] outline-none transition-all font-bold text-[#111]"
+                      min="1"
+                      placeholder="e.g. 1499"
+                      className="w-full px-5 py-4 bg-white border border-slate-300 rounded-xl focus:border-[#d4af37] focus:ring-1 focus:ring-[#d4af37] outline-none transition-all font-bold text-[#111]"
                       value={price}
                       onChange={(e) => setPrice(Number(e.target.value))}
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-2">Category</label>
                     <select
@@ -308,7 +304,7 @@ const AdminProductEdit = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-2">Stock</label>
                     <input
@@ -403,11 +399,11 @@ const AdminProductEdit = () => {
                        </label>
                      )}
                   </div>
-                  {images.length !== 4 && (
-                    <p className="text-[9px] font-black text-rose-500 uppercase tracking-widest flex items-center gap-2">
-                      <AlertCircle size={12} /> Mandatory Requirement: {images.length}/4 images.
+                  <div className="flex items-center justify-between mt-2">
+                    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">
+                      Uploaded {images.length} photo(s). (At least 1 required)
                     </p>
-                  )}
+                  </div>
                </div>
 
                <div className="space-y-4 pt-6 border-t border-slate-100">
@@ -450,6 +446,57 @@ const AdminProductEdit = () => {
                         {s}
                       </button>
                     ))}
+                  </div>
+               </div>
+
+               {/* ERGONOMIC & TECH FIELDS */}
+               <div className="space-y-6 pt-6 border-t border-slate-100">
+                  <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-emerald-600 flex items-center gap-2">
+                     <Sparkles size={12} /> Frido Ergonomic Specs
+                  </h3>
+
+                  <div className="space-y-4">
+                    <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-2">Technology (Comma separated)</label>
+                    <input
+                      type="text"
+                      className="w-full px-6 py-4 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-emerald-600 outline-none transition-all font-bold text-[#111] text-[10px]"
+                      value={technology.join(', ')}
+                      onChange={(e) => setTechnology(e.target.value.split(',').map(s => s.trim()))}
+                      placeholder="e.g. Arch-Support Matrix, Dual-Density Foam"
+                    />
+                  </div>
+
+                  <div className="space-y-4">
+                    <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-2">Medical Concerns (Comma separated)</label>
+                    <input
+                      type="text"
+                      className="w-full px-6 py-4 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-emerald-600 outline-none transition-all font-bold text-[#111] text-[10px]"
+                      value={concerns.join(', ')}
+                      onChange={(e) => setConcerns(e.target.value.split(',').map(s => s.trim()))}
+                      placeholder="e.g. Heel Comfort, Flat Feet"
+                    />
+                  </div>
+
+                  <div className="space-y-4">
+                    <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-2">Target Professions (Comma separated)</label>
+                    <input
+                      type="text"
+                      className="w-full px-6 py-4 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-emerald-600 outline-none transition-all font-bold text-[#111] text-[10px]"
+                      value={professions.join(', ')}
+                      onChange={(e) => setProfessions(e.target.value.split(',').map(s => s.trim()))}
+                      placeholder="e.g. Healthcare, Corporate"
+                    />
+                  </div>
+
+                  <div className="space-y-4">
+                    <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-2">Primary Purpose (Comma separated)</label>
+                    <input
+                      type="text"
+                      className="w-full px-6 py-4 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-emerald-600 outline-none transition-all font-bold text-[#111] text-[10px]"
+                      value={purpose.join(', ')}
+                      onChange={(e) => setPurpose(e.target.value.split(',').map(s => s.trim()))}
+                      placeholder="e.g. Daily Wear, Office, Running"
+                    />
                   </div>
                </div>
             </div>

@@ -1,16 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Sparkles, X, ChevronRight, Eye, ShieldCheck,
-  Award, ArrowRight, Layers, ZoomIn, Check, MessageSquare
+  Award, ArrowRight, Layers, ZoomIn, Check, MessageSquare,
+  Image as ImageIcon, Filter, Grid, Layout
 } from 'lucide-react';
 import { resolveImageUrl } from '../utils/urlConfig';
+import { useTheme } from '../context/ThemeContext';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const GALLERY_ITEMS = [
   {
     id: 'g1',
     title: 'Imperial Wingtip Derby',
-    category: 'Bespoke Derbies',
+    category: 'Studio Showcase',
     image: resolveImageUrl('/New-Samadhan-Shoe-Mart/IMG-20260928-WA0006.jpg'),
     thumbnail: resolveImageUrl('/New-Samadhan-Shoe-Mart/IMG-20260928-WA0006.jpg'),
     leather: 'Tuscan Full-Grain Calfskin',
@@ -23,7 +29,7 @@ const GALLERY_ITEMS = [
   {
     id: 'g2',
     title: 'Monarch Cap-Toe Oxford',
-    category: 'Bespoke Derbies',
+    category: 'Studio Showcase',
     image: resolveImageUrl('/New-Samadhan-Shoe-Mart/IMG-20260928-WA0010.jpg'),
     thumbnail: resolveImageUrl('/New-Samadhan-Shoe-Mart/IMG-20260928-WA0010.jpg'),
     leather: 'French Boxcalf Navy Patina',
@@ -202,11 +208,27 @@ const GALLERY_ITEMS = [
     price: '₹2,899',
     description: 'A miniature generational heirloom for celebrations and ceremonies, made with genuine cobbler welt technique.',
   },
+  {
+    id: 'g16',
+    title: 'Heritage of Service: Police Honor',
+    category: 'Heritage Collection',
+    image: resolveImageUrl('/New-Samadhan-Shoe-Mart/Police Family 1.jpg'),
+    thumbnail: resolveImageUrl('/New-Samadhan-Shoe-Mart/Police Family 1.jpg'),
+    leather: 'Military-Grade Box Calf',
+    construction: 'Double-Welted Duty Build',
+    sole: 'Anti-Skid Tactical Rubber',
+    hours: 'Generational Archive',
+    price: 'Honorary',
+    description: 'A tribute to our 34-year relationship with Nashik\'s police and defense forces. Handcrafting reliability for those who serve.',
+  },
 ];
 
 
 const CATEGORIES = [
   'All',
+  'Heritage Collection',
+  'Awards & Recognition',
+  'Studio Showcase',
   "Women's Edition",
   'Kids Edition',
   'Bespoke Derbies',
@@ -236,46 +258,149 @@ const PATINA_STAGES = [
 
 const GalleryPage = () => {
   const navigate = useNavigate();
+  const { theme } = useTheme();
   const [activeCategory, setActiveCategory] = useState('All');
   const [selectedItem, setSelectedItem] = useState(null);
+  const [visibleItems, setVisibleItems] = useState(12);
 
-  const filteredItems = activeCategory === 'All'
-    ? GALLERY_ITEMS
-    : GALLERY_ITEMS.filter((item) => item.category === activeCategory);
+  // Dynamically generate more items from the asset list for the "massive" feel
+  const EXTENDED_GALLERY = React.useMemo(() => {
+    return [
+      ...GALLERY_ITEMS,
+      // Add Family Heritage items
+      ...[1, 2, 3, 4].map(n => ({
+        id: `family-${n}`,
+        title: `Family Heritage Archive #${n}`,
+        category: 'Heritage Collection',
+        image: resolveImageUrl(`/New-Samadhan-Shoe-Mart/Family ${n}.jpg`),
+        thumbnail: resolveImageUrl(`/New-Samadhan-Shoe-Mart/Family ${n}.jpg`),
+        leather: 'Generational Craft',
+        construction: 'Traditional Hand-Stitch',
+        sole: 'Classic Comfort',
+        hours: 'Heritage Piece',
+        price: 'Archive',
+        description: 'A tribute to the generational legacy of New Samadhan Shoes, captured in our family archives.',
+      })),
+      // Add Satkar Excellence items
+      ...[1, 2, 3, 4, 5, 6].map(n => ({
+        id: `satkar-${n}`,
+        title: `Satkar Excellence #${n}`,
+        category: 'Awards & Recognition',
+        image: resolveImageUrl(`/New-Samadhan-Shoe-Mart/Satkar${n >= 5 ? '-' : ' '}${n}.jpg`),
+        thumbnail: resolveImageUrl(`/New-Samadhan-Shoe-Mart/Satkar${n >= 5 ? '-' : ' '}${n}.jpg`),
+        leather: 'Premium Achievement',
+        construction: 'Elite Standards',
+        sole: 'Foundation of Trust',
+        hours: 'Honored Craft',
+        price: 'Excellence',
+        description: 'Moments of recognition for our commitment to footwear excellence in Nashik.',
+      })),
+      // Add more items using the WA sequence to fill the "massive" gallery
+      // Starting from WA0006 as per user file sequence
+      ...Array.from({ length: 353 - 5 }, (_, i) => i + 6)
+        .filter(n => ![6, 10, 225, 40, 50, 30, 100, 110, 45, 200, 210, 220, 300, 310, 320].includes(n))
+        .map(n => {
+          const pad = n.toString().padStart(4, '0');
+          const categories = ['Studio Showcase', 'Workshop Action', 'Bespoke Derbies', 'Goodyear Boots', 'Italian Loafers'];
+          return {
+            id: `wa-${n}`,
+            title: `Artisan Discovery #${n}`,
+            category: categories[n % categories.length],
+            image: resolveImageUrl(`/New-Samadhan-Shoe-Mart/IMG-20260928-WA${pad}.jpg`),
+            thumbnail: resolveImageUrl(`/New-Samadhan-Shoe-Mart/IMG-20260928-WA${pad}.jpg`),
+            leather: 'Premium Selected Hide',
+            construction: 'Handcrafted Assembly',
+            sole: 'Samadhan Signature',
+            hours: 'Handcraft Detail',
+            price: 'Custom',
+            description: 'A high-fidelity capture of our artisan process, showcasing the detailed textures and structural integrity of Samadhan footwear.',
+          };
+        })
+    ];
+  }, []);
+
+  const filteredItems = React.useMemo(() => {
+    return activeCategory === 'All'
+      ? EXTENDED_GALLERY
+      : EXTENDED_GALLERY.filter((item) => item.category === activeCategory);
+  }, [activeCategory, EXTENDED_GALLERY]);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Only animate the new items that were just added to the DOM
+      const items = gsap.utils.toArray(".gallery-item").slice(visibleItems - 12);
+      if (items.length > 0) {
+        gsap.from(items, {
+          y: 30,
+          opacity: 0,
+          stagger: 0.05,
+          duration: 0.6,
+          ease: "power2.out",
+          overwrite: "auto"
+        });
+      }
+    });
+    return () => ctx.revert();
+  }, [visibleItems, activeCategory]);
+
+  // Optimized Infinite scroll implementation
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && visibleItems < filteredItems.length) {
+          // Add a small delay for smoother UX
+          setTimeout(() => {
+            setVisibleItems(prev => Math.min(prev + 12, filteredItems.length));
+          }, 100);
+        }
+      },
+      { threshold: 0.1, rootMargin: '200px' }
+    );
+
+    const loader = document.querySelector('#gallery-loader');
+    if (loader) observer.observe(loader);
+
+    return () => {
+      if (loader) observer.unobserve(loader);
+    };
+  }, [filteredItems.length, visibleItems]);
 
   return (
-    <div className="bg-[#F7F5F0] text-[#111111] min-h-screen pt-28 pb-20 font-sans selection:bg-[#8B0000] selection:text-white no-blur-zone">
+    <div className="bg-[var(--bg-primary)] text-[var(--text-primary)] min-h-screen pt-28 pb-20 font-sans selection:bg-[var(--accent)] selection:text-white no-blur-zone transition-colors duration-500">
 
       {/* Hero Section */}
       <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-12 md:py-16">
         <div className="flex flex-col gap-6 max-w-4xl">
           <div className="inline-flex items-center gap-3">
-            <span className="w-8 h-[2px] bg-[#8B0000]"></span>
-            <span className="text-[11px] font-bold uppercase tracking-[0.4em] text-[#8B0000]">
+            <span className="w-8 h-[2px] bg-[var(--accent)]"></span>
+            <span className="text-[11px] font-bold uppercase tracking-[0.4em] text-[var(--accent)]">
               Visual Atelier Archive · Nashik
             </span>
           </div>
 
           <h1 className="font-editorial text-4xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight leading-[0.92]">
             The Curated <br />
-            <span className="italic font-light text-[#8B0000]">Gallery of Form.</span>
+            <span className="italic font-light text-[var(--accent)]">Gallery of Form.</span>
           </h1>
 
-          <p className="text-base sm:text-lg text-[#6B6B6B] max-w-2xl leading-relaxed">
+          <p className="text-base sm:text-lg text-[var(--text-secondary)] max-w-2xl leading-relaxed">
             Explore our visual archive of custom bespoke commissions, Goodyear welted silhouettes, and candid workshop glimpses captured inside our Nashik atelier.
           </p>
         </div>
 
         {/* Filter Navigation */}
-        <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto py-6 mt-8 border-b border-[#111111]/10 no-scrollbar">
+        <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto py-6 mt-8 border-b border-[var(--text-primary)]/10 no-scrollbar">
           {CATEGORIES.map((cat, idx) => (
             <button
               key={idx}
-              onClick={() => setActiveCategory(cat)}
+              onClick={() => {
+                setActiveCategory(cat);
+                setVisibleItems(12);
+              }}
               className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all border ${
                 activeCategory === cat
-                  ? 'bg-[#111111] text-white border-[#111111] shadow-md'
-                  : 'bg-white hover:bg-[#111111]/5 text-[#6B6B6B] hover:text-[#111111] border-[#111111]/10'
+                  ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] border-[var(--text-primary)] shadow-md'
+                  : 'bg-[var(--bg-secondary)] hover:bg-[var(--text-primary)]/5 text-[var(--text-secondary)] hover:text-[var(--text-primary)] border-[var(--text-primary)]/10'
               }`}
             >
               {cat}
@@ -286,15 +411,15 @@ const GalleryPage = () => {
 
       {/* Main Gallery Grid */}
       <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredItems.map((item) => (
+        <div className="gallery-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredItems.slice(0, visibleItems).map((item) => (
             <div
               key={item.id}
               onClick={() => setSelectedItem(item)}
-              className="group cursor-pointer bg-white rounded-3xl overflow-hidden border border-[#111111]/10 shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col justify-between"
+              className="gallery-item group cursor-pointer bg-[var(--bg-secondary)] rounded-3xl overflow-hidden border border-[var(--text-primary)]/10 shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col justify-between"
             >
               {/* Image Frame */}
-              <div className="relative aspect-[4/3] overflow-hidden bg-[#111111]">
+              <div className="relative aspect-[4/3] overflow-hidden bg-[var(--text-primary)]">
                 <img
                   src={item.thumbnail}
                   alt={item.title}
@@ -313,7 +438,7 @@ const GalleryPage = () => {
                   </span>
                 </div>
                 <div className="absolute bottom-4 right-4">
-                  <span className="px-3 py-1 rounded-full bg-[#8B0000] text-white text-[10px] font-bold tracking-wider shadow-md">
+                  <span className="px-3 py-1 rounded-full bg-[var(--accent)] text-white text-[10px] font-bold tracking-wider shadow-md">
                     {item.price}
                   </span>
                 </div>
@@ -321,21 +446,21 @@ const GalleryPage = () => {
 
               {/* Card Meta Content */}
               <div className="p-6">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-[#8B0000] block mb-1">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--accent)] block mb-1">
                   {item.hours}
                 </span>
-                <h3 className="font-editorial text-xl font-bold uppercase text-[#111111] group-hover:text-[#8B0000] transition-colors mb-2">
+                <h3 className="font-editorial text-xl font-bold uppercase text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors mb-2">
                   {item.title}
                 </h3>
-                <p className="text-xs text-[#6B6B6B] line-clamp-2 leading-relaxed mb-4">
+                <p className="text-xs text-[var(--text-secondary)] line-clamp-2 leading-relaxed mb-4">
                   {item.description}
                 </p>
 
-                <div className="pt-4 border-t border-[#111111]/5 flex items-center justify-between text-xs font-semibold text-[#111111]">
-                  <span className="text-[11px] text-[#6B6B6B] truncate max-w-[200px]">
+                <div className="pt-4 border-t border-[var(--text-primary)]/5 flex items-center justify-between text-xs font-semibold text-[var(--text-primary)]">
+                  <span className="text-[11px] text-[var(--text-secondary)] truncate max-w-[200px]">
                     {item.leather}
                   </span>
-                  <span className="text-[#8B0000] group-hover:translate-x-1 transition-transform inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider">
+                  <span className="text-[var(--accent)] group-hover:translate-x-1 transition-transform inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider">
                     Inspect <ChevronRight size={14} />
                   </span>
                 </div>
@@ -343,42 +468,59 @@ const GalleryPage = () => {
             </div>
           ))}
         </div>
+
+        {/* Infinite Scroll Trigger / Loader */}
+        <div id="gallery-loader" className="w-full h-20 flex items-center justify-center mt-10">
+          {visibleItems < filteredItems.length ? (
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-6 h-6 border-2 border-[var(--accent)] border-t-transparent rounded-full animate-spin"></div>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-secondary)]">
+                Unveiling more masterpieces...
+              </span>
+            </div>
+          ) : (
+            <span className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-secondary)] opacity-50">
+              End of Visual Archive
+            </span>
+          )}
+        </div>
       </section>
 
       {/* Patina Aging Over Time Feature */}
       <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-16">
-        <div className="bg-[#111111] text-white rounded-3xl p-8 sm:p-14 border border-white/10 shadow-2xl">
-          <div className="max-w-2xl mb-12">
-            <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#ff4d4d] block mb-2">
+        <div className="bg-[var(--text-primary)] text-[var(--bg-primary)] rounded-3xl p-8 sm:p-14 border border-[var(--text-primary)]/10 shadow-2xl overflow-hidden relative">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--accent)]/10 rounded-full -translate-y-32 translate-x-32 blur-3xl" />
+          <div className="max-w-2xl mb-12 relative z-10">
+            <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--accent)] block mb-2">
               Heirloom Longevity
             </span>
             <h2 className="font-editorial text-3xl sm:text-5xl font-black uppercase tracking-tight">
               The Evolution of Full-Grain Patina
             </h2>
-            <p className="text-sm text-white/70 mt-4 leading-relaxed">
+            <p className="text-sm opacity-70 mt-4 leading-relaxed">
               Synthetic shoes degrade and crumble after 6 months. Authentic New Samadhan shoes are born with lifetime integrity — growing richer and more lustrous with every step you take.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
             {PATINA_STAGES.map((st, i) => (
-              <div key={i} className="bg-white/5 border border-white/10 p-8 rounded-2xl flex flex-col justify-between">
+              <div key={i} className="bg-[var(--bg-primary)]/5 border border-[var(--bg-primary)]/10 p-8 rounded-2xl flex flex-col justify-between hover:bg-[var(--bg-primary)]/10 transition-colors">
                 <div>
-                  <span className="text-xs font-mono font-bold text-[#ff4d4d] block mb-2">
+                  <span className="text-xs font-mono font-bold text-[var(--accent)] block mb-2">
                     Phase {i + 1}
                   </span>
-                  <h3 className="font-editorial text-xl font-bold uppercase text-white mb-3">
+                  <h3 className="font-editorial text-xl font-bold uppercase text-[var(--bg-primary)] mb-3">
                     {st.stage}
                   </h3>
-                  <p className="text-xs text-white/70 leading-relaxed mb-6">
+                  <p className="text-xs opacity-70 leading-relaxed mb-6">
                     {st.desc}
                   </p>
                 </div>
-                <div className="pt-4 border-t border-white/10">
-                  <span className="text-[9px] uppercase tracking-wider text-white/40 block mb-1">
+                <div className="pt-4 border-t border-[var(--bg-primary)]/10">
+                  <span className="text-[9px] uppercase tracking-wider opacity-40 block mb-1">
                     Visual Hallmarks:
                   </span>
-                  <p className="text-[11px] font-medium text-emerald-400">
+                  <p className="text-[11px] font-medium text-[var(--gold)]">
                     {st.characteristics}
                   </p>
                 </div>
@@ -390,22 +532,22 @@ const GalleryPage = () => {
 
       {/* Bespoke Inquiry CTA Banner */}
       <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-12">
-        <div className="bg-white rounded-3xl border border-[#111111]/10 p-8 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl">
+        <div className="bg-[var(--bg-secondary)] rounded-3xl border border-[var(--text-primary)]/10 p-8 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl">
           <div className="max-w-xl">
-            <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#8B0000] block mb-2">
+            <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--accent)] block mb-2">
               Custom Commissions
             </span>
-            <h3 className="font-editorial text-2xl sm:text-4xl font-black uppercase text-[#111111]">
+            <h3 className="font-editorial text-2xl sm:text-4xl font-black uppercase text-[var(--text-primary)]">
               Have a Dream Silhouette in Mind?
             </h3>
-            <p className="text-xs sm:text-sm text-[#6B6B6B] mt-2 leading-relaxed">
+            <p className="text-xs sm:text-sm text-[var(--text-secondary)] mt-2 leading-relaxed">
               Share your reference photograph or sketch with our Nashik atelier cobblers. We can customize leather shade, welt width, and sole configuration to your exact preference.
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-4 shrink-0">
             <Link
               to="/workshop#booking"
-              className="bg-[#111111] text-white px-8 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em] hover:bg-[#8B0000] transition-colors shadow-lg"
+              className="bg-[var(--text-primary)] text-[var(--bg-primary)] px-8 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em] hover:bg-[var(--accent)] transition-colors shadow-lg"
             >
               Consult an Artisan
             </Link>
@@ -426,7 +568,7 @@ const GalleryPage = () => {
       {/* Lightbox / Modal */}
       {selectedItem && (
         <div className="fixed inset-0 z-[10001] bg-black/95 flex items-center justify-center p-4 sm:p-8 animate-in fade-in duration-200">
-          <div className="bg-white rounded-3xl max-w-4xl w-full max-h-[92vh] overflow-y-auto border border-white/20 shadow-2xl relative grid grid-cols-1 md:grid-cols-12">
+          <div className="bg-[var(--bg-primary)] rounded-3xl max-w-4xl w-full max-h-[92vh] overflow-y-auto border border-white/20 shadow-2xl relative grid grid-cols-1 md:grid-cols-12">
             {/* Close Button */}
             <button
               onClick={() => setSelectedItem(null)}
@@ -437,7 +579,7 @@ const GalleryPage = () => {
             </button>
 
             {/* Modal Image */}
-            <div className="md:col-span-7 bg-[#111111] relative min-h-[340px] md:min-h-full flex items-center justify-center p-4">
+            <div className="md:col-span-7 bg-[var(--text-primary)] relative min-h-[340px] md:min-h-full flex items-center justify-center p-4">
               <img
                 src={selectedItem.image}
                 alt={selectedItem.title}
@@ -454,36 +596,36 @@ const GalleryPage = () => {
             {/* Modal Details */}
             <div className="md:col-span-5 p-8 flex flex-col justify-between">
               <div>
-                <span className="text-[10px] font-mono uppercase tracking-widest text-[#8B0000] block mb-1">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--accent)] block mb-1">
                   {selectedItem.hours}
                 </span>
-                <h3 className="font-editorial text-2xl sm:text-3xl font-black uppercase text-[#111111] mb-2 leading-tight">
+                <h3 className="font-editorial text-2xl sm:text-3xl font-black uppercase text-[var(--text-primary)] mb-2 leading-tight">
                   {selectedItem.title}
                 </h3>
-                <span className="text-xl font-bold text-[#8B0000] block mb-4">
+                <span className="text-xl font-bold text-[var(--accent)] block mb-4">
                   {selectedItem.price}
                 </span>
-                <p className="text-xs text-[#6B6B6B] leading-relaxed mb-6">
+                <p className="text-xs text-[var(--text-secondary)] leading-relaxed mb-6">
                   {selectedItem.description}
                 </p>
 
                 <div className="space-y-3 mb-8">
-                  <div className="p-3 rounded-xl bg-[#F7F5F0] border border-[#111111]/5">
-                    <span className="text-[9px] font-bold uppercase tracking-widest text-[#6B6B6B] block">Leather Tannery:</span>
-                    <span className="text-xs font-bold text-[#111111]">{selectedItem.leather}</span>
+                  <div className="p-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--text-primary)]/5">
+                    <span className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-secondary)] block">Leather Tannery:</span>
+                    <span className="text-xs font-bold text-[var(--text-primary)]">{selectedItem.leather}</span>
                   </div>
-                  <div className="p-3 rounded-xl bg-[#F7F5F0] border border-[#111111]/5">
-                    <span className="text-[9px] font-bold uppercase tracking-widest text-[#6B6B6B] block">Welt Construction:</span>
-                    <span className="text-xs font-bold text-[#111111]">{selectedItem.construction}</span>
+                  <div className="p-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--text-primary)]/5">
+                    <span className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-secondary)] block">Welt Construction:</span>
+                    <span className="text-xs font-bold text-[var(--text-primary)]">{selectedItem.construction}</span>
                   </div>
-                  <div className="p-3 rounded-xl bg-[#F7F5F0] border border-[#111111]/5">
-                    <span className="text-[9px] font-bold uppercase tracking-widest text-[#6B6B6B] block">Sole Architecture:</span>
-                    <span className="text-xs font-bold text-[#111111]">{selectedItem.sole}</span>
+                  <div className="p-3 rounded-xl bg-[var(--bg-secondary)] border border-[var(--text-primary)]/5">
+                    <span className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-secondary)] block">Sole Architecture:</span>
+                    <span className="text-xs font-bold text-[var(--text-primary)]">{selectedItem.sole}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-[#111111]/10 flex flex-col gap-3">
+              <div className="pt-4 border-t border-[var(--text-primary)]/10 flex flex-col gap-3">
                 <Link
                   to={
                     selectedItem.category === "Women's Edition"
@@ -493,7 +635,7 @@ const GalleryPage = () => {
                       : "/products"
                   }
                   onClick={() => setSelectedItem(null)}
-                  className="w-full bg-[#111111] text-white py-3.5 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-[#8B0000] transition-colors text-center"
+                  className="w-full bg-[var(--text-primary)] text-[var(--bg-primary)] py-3.5 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-[var(--accent)] transition-all text-center"
                 >
                   Explore in Catalog
                 </Link>

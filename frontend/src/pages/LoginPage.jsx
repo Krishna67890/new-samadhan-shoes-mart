@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { useAuth } from '../context/AuthContext';
 import useFetch from '../hooks/useFetch';
-import { Mail, Lock, LogIn, AlertCircle, Loader2, ArrowRight, Sparkles, ShieldCheck, Zap, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, LogIn, AlertCircle, Loader2, ArrowRight, Sparkles, ShieldCheck, Zap, Eye, EyeOff, UserCheck } from 'lucide-react';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -11,38 +11,20 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [localError, setLocalError] = useState(null);
   const containerRef = useRef(null);
-  const leftSideRef = useRef(null);
-  const rightSideRef = useRef(null);
+  const formBoxRef = useRef(null);
 
-  const { user, login, loginAsGuest } = useAuth();
-  const { loading, error, request } = useFetch();
-
+  const { login, loginAsGuest } = useAuth();
+  const { loading, error } = useFetch();
   const navigate = useNavigate();
-  const location = useLocation();
-
   const [guestLoading, setGuestLoading] = useState(false);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from(leftSideRef.current, {
-        x: -100,
-        opacity: 0,
-        duration: 1.5,
-        ease: 'expo.out'
-      });
-      gsap.from(rightSideRef.current, {
-        x: 100,
-        opacity: 0,
-        duration: 1.5,
-        ease: 'expo.out'
-      });
-      gsap.from('.login-animate', {
+      gsap.from(formBoxRef.current, {
         y: 40,
         opacity: 0,
         duration: 1,
-        stagger: 0.1,
-        ease: 'power4.out',
-        delay: 0.3
+        ease: 'power3.out'
       });
     }, containerRef);
     return () => ctx.revert();
@@ -54,7 +36,7 @@ const LoginPage = () => {
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      setLocalError('Invalid identity format. Please enter a valid email.');
+      setLocalError('Please enter a valid email address.');
       return;
     }
 
@@ -66,98 +48,122 @@ const LoginPage = () => {
         navigate('/identity');
       }
     } else {
-      setLocalError(result.message);
+      setLocalError(result.message || 'Invalid credentials. Please try again.');
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#050505] flex items-center justify-center p-6 overflow-hidden relative no-blur-zone" ref={containerRef}>
-      {/* Background Glow - Blur removed for clarity */}
-      <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-blue-600/5 rounded-full"></div>
-      <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-indigo-600/5 rounded-full"></div>
-
-      <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 bg-white/[0.02] rounded-[4rem] overflow-hidden border border-white/10 shadow-2xl relative z-10">
-
-        {/* LEFT SIDE: BRANDING */}
-        <div className="hidden lg:flex flex-col justify-between p-24 bg-white/[0.03] border-r border-white/5 relative overflow-hidden" ref={leftSideRef}>
+    <div
+      ref={containerRef}
+      className="min-h-screen bg-[#faf9f6] flex items-center justify-center p-6 pt-28 pb-16 relative font-sans"
+    >
+      <div
+        ref={formBoxRef}
+        className="w-full max-w-4xl bg-white rounded-[2.5rem] border border-black/10 shadow-2xl overflow-hidden grid lg:grid-cols-12 relative z-10"
+      >
+        {/* LEFT COLUMN: BRAND STORY */}
+        <div className="lg:col-span-5 bg-[#111111] text-white p-10 md:p-14 flex flex-col justify-between relative overflow-hidden">
           <div className="relative z-10">
-            <Link to="/" className="flex items-center gap-4 mb-24 login-animate group">
-              <div className="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-[0_0_30px_rgba(37,99,235,0.3)] group-hover:rotate-12 transition-transform border border-blue-500/50">S</div>
-              <div className="flex flex-col">
-                <span className="font-black text-white tracking-tighter text-2xl uppercase leading-none">Samadhan<span className="text-blue-600">Shoes</span></span>
-                <span className="text-[8px] font-black text-slate-500 uppercase tracking-[0.4em] leading-none mt-1">The Vault 2026</span>
+            <Link to="/" className="inline-flex items-center gap-3 mb-12 group">
+              <div className="w-11 h-11 bg-[#d4af37] text-black font-black text-xl rounded-2xl flex items-center justify-center shadow-lg group-hover:rotate-6 transition-transform">
+                S
+              </div>
+              <div>
+                <span className="font-editorial text-lg font-black uppercase tracking-tight text-white block leading-none">
+                  New Samadhan
+                </span>
+                <span className="text-[9px] font-bold tracking-[0.35em] text-[#d4af37] uppercase">
+                  Shoe Mart • Nashik
+                </span>
               </div>
             </Link>
 
-            <h2 className="text-7xl font-black text-white leading-[0.9] mb-10 tracking-tighter uppercase login-animate">
-              ELITE <br />
-              <span className="text-blue-600">ACCESS.</span>
+            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#d4af37] block mb-3">
+              MEMBER ACCESS
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight leading-tight mb-6">
+              STEP INTO <br />
+              <span className="text-[#d4af37] italic font-editorial">PRIVILEGE.</span>
             </h2>
-            <p className="text-slate-500 text-lg font-medium italic border-l-2 border-blue-600 pl-8 py-2 max-w-sm login-animate">
-              "Entry restricted to verified members. Sync your identity to explore the high-tier catalog."
+
+            <p className="text-gray-400 text-sm leading-relaxed mb-8">
+              Sign in to manage your orders, access bespoke sizing, and receive VIP notifications for limited atelier drops.
             </p>
           </div>
 
-          <div className="relative z-10 flex items-center gap-6 text-[10px] font-black text-slate-700 uppercase tracking-[0.6em] login-animate">
-            <div className="w-12 h-px bg-white/10"></div>
-            ENCRYPTED CONNECTION
+          <div className="relative z-10 pt-8 border-t border-white/10 space-y-3">
+            <div className="flex items-center gap-3 text-xs text-gray-300">
+              <ShieldCheck size={16} className="text-[#d4af37] shrink-0" />
+              <span>100% Secure Encrypted Session</span>
+            </div>
+            <div className="flex items-center gap-3 text-xs text-gray-300">
+              <Zap size={16} className="text-[#d4af37] shrink-0" />
+              <span>Instant Pan-India Order Tracking</span>
+            </div>
           </div>
         </div>
 
-        {/* RIGHT SIDE: FORM */}
-        <div className="p-12 md:p-20 lg:p-28 flex flex-col justify-center" ref={rightSideRef}>
-          <div className="mb-14 login-animate">
-            <div className="flex items-center gap-4 mb-6">
-               <div className="w-12 h-1 bg-blue-600 rounded-full"></div>
-               <p className="text-[11px] font-black text-blue-500 uppercase tracking-[0.4em]">Member Portal</p>
-            </div>
-            <h1 className="text-5xl font-black text-white tracking-tighter uppercase leading-none">Initialize.</h1>
+        {/* RIGHT COLUMN: LOGIN FORM */}
+        <div className="lg:col-span-7 p-8 md:p-14 bg-white flex flex-col justify-center">
+          <div className="mb-8">
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#d4af37] block mb-1">
+              WELCOME BACK
+            </span>
+            <h1 className="text-3xl font-black uppercase tracking-tight text-[#111111]">
+              Sign In to Account
+            </h1>
           </div>
 
           {(error || localError) && (
-            <div className="bg-rose-500/10 border border-rose-500/20 text-rose-500 p-8 rounded-[2.5rem] mb-10 flex items-start login-animate">
-              <AlertCircle className="w-6 h-6 mr-4 mt-0.5 shrink-0" />
-              <div>
-                <p className="font-black text-[10px] uppercase tracking-widest mb-1">Access Refused</p>
-                <p className="text-xs font-bold leading-relaxed opacity-80">{error || localError}</p>
-              </div>
+            <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-2xl mb-6 flex items-start gap-3">
+              <AlertCircle size={18} className="shrink-0 mt-0.5 text-red-600" />
+              <p className="text-xs font-bold leading-relaxed">{error || localError}</p>
             </div>
           )}
 
-          <form onSubmit={submitHandler} className="space-y-10">
-            <div className="space-y-4 login-animate">
-              <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-6">Designation Email</label>
-              <div className="relative group">
-                <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 transition-colors" size={20} />
+          <form onSubmit={submitHandler} className="space-y-6">
+            <div>
+              <label className="text-xs font-black uppercase tracking-wider text-gray-700 block mb-2">
+                Email Address
+              </label>
+              <div className="relative">
+                <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input
                   type="email"
-                  placeholder="name@identity.com"
-                  className="w-full pl-16 pr-8 py-6 bg-white/5 border border-white/5 rounded-[2.5rem] focus:bg-white/10 focus:border-blue-500/50 outline-none transition-all font-black text-white placeholder:text-white/10"
+                  required
+                  placeholder="name@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  required
+                  className="w-full pl-12 pr-4 py-3.5 bg-[#faf9f6] border border-black/15 rounded-xl font-medium text-gray-900 text-sm focus:outline-none focus:border-[#d4af37] focus:bg-white transition-all shadow-xs"
                 />
               </div>
             </div>
 
-            <div className="space-y-4 login-animate">
-              <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-6">Security Phrase</label>
-              <div className="relative group">
-                <Lock className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 transition-colors" size={20} />
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <label className="text-xs font-black uppercase tracking-wider text-gray-700">
+                  Password
+                </label>
+                <Link to="/about" className="text-[11px] font-bold text-[#d4af37] hover:underline">
+                  Need Help?
+                </Link>
+              </div>
+              <div className="relative">
+                <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input
-                  type={showPassword ? "text" : "password"}
+                  type={showPassword ? 'text' : 'password'}
+                  required
                   placeholder="••••••••"
-                  className="w-full pl-16 pr-14 py-6 bg-white/5 border border-white/5 rounded-[2.5rem] focus:bg-white/10 focus:border-blue-500/50 outline-none transition-all font-black text-white placeholder:text-white/10"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  required
+                  className="w-full pl-12 pr-12 py-3.5 bg-[#faf9f6] border border-black/15 rounded-xl font-medium text-gray-900 text-sm focus:outline-none focus:border-[#d4af37] focus:bg-white transition-all shadow-xs"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-black transition-colors"
                 >
-                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
             </div>
@@ -165,40 +171,51 @@ const LoginPage = () => {
             <button
               type="submit"
               disabled={loading || guestLoading}
-              className="w-full bg-white text-black py-7 rounded-[2.5rem] text-[11px] font-black uppercase tracking-[0.4em] transition-all hover:bg-blue-600 hover:text-white shadow-2xl flex items-center justify-center gap-6 group relative overflow-hidden"
+              className="w-full bg-[#111111] text-white py-4 rounded-xl text-xs font-black uppercase tracking-[0.2em] hover:bg-[#d4af37] hover:text-black transition-all duration-300 shadow-lg flex items-center justify-center gap-3 cursor-pointer"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/5 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
-              {loading ? <Loader2 className="animate-spin" /> : <>Access Vault <ArrowRight className="group-hover:translate-x-3 transition-transform" size={20} /></>}
+              {loading ? (
+                <Loader2 className="animate-spin" size={18} />
+              ) : (
+                <>
+                  <span>SIGN IN</span>
+                  <ArrowRight size={16} />
+                </>
+              )}
             </button>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 login-animate">
-               <button
-                 type="button"
-                 onClick={async () => {
-                   setGuestLoading(true);
-                   const result = await loginAsGuest();
-                   setGuestLoading(false);
-                   if (result.success) navigate('/products');
-                 }}
-                 disabled={loading || guestLoading}
-                 className="py-6 rounded-[2rem] bg-white/5 border border-white/10 text-white text-[9px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all flex flex-col items-center justify-center gap-3"
-               >
-                 <Sparkles size={18} /> Elite Guest Access
-               </button>
-               <button
-                 type="button"
-                 onClick={() => navigate('/owner-login')}
-                 className="py-6 rounded-[2rem] bg-red-600/10 border border-red-600/20 text-red-500 text-[9px] font-black uppercase tracking-widest hover:bg-red-600 hover:text-white transition-all flex flex-col items-center justify-center gap-3"
-               >
-                 <ShieldCheck size={18} /> Command Authority
-               </button>
+            {/* Quick Access Buttons */}
+            <div className="grid grid-cols-2 gap-3 pt-2">
+              <button
+                type="button"
+                onClick={async () => {
+                  setGuestLoading(true);
+                  const result = await loginAsGuest();
+                  setGuestLoading(false);
+                  if (result.success) navigate('/products');
+                }}
+                disabled={loading || guestLoading}
+                className="py-3 px-4 rounded-xl border border-black/15 bg-white text-gray-800 text-xs font-bold uppercase tracking-wider hover:border-[#d4af37] hover:bg-[#FAF9F6] transition-all flex items-center justify-center gap-2"
+              >
+                <Sparkles size={14} className="text-[#d4af37]" /> Guest Pass
+              </button>
+
+              <button
+                type="button"
+                onClick={() => navigate('/owner-login')}
+                className="py-3 px-4 rounded-xl border border-red-200 bg-red-50 text-red-700 text-xs font-bold uppercase tracking-wider hover:bg-red-100 transition-all flex items-center justify-center gap-2"
+              >
+                <ShieldCheck size={14} className="text-red-600" /> Owner Portal
+              </button>
             </div>
           </form>
 
-          <div className="mt-16 pt-10 border-t border-white/5 text-center login-animate">
-             <p className="text-slate-500 font-black uppercase tracking-widest text-[9px]">
-                New Identity? <Link to="/identity" className="text-white hover:text-blue-500 ml-2 transition-colors">Sync Identity Now</Link>
-             </p>
+          <div className="mt-8 pt-6 border-t border-black/10 text-center">
+            <p className="text-xs text-gray-600 font-medium">
+              Don't have an account yet?{' '}
+              <Link to="/identity" className="text-[#111111] font-black uppercase tracking-wider hover:text-[#d4af37] ml-1">
+                Create Account
+              </Link>
+            </p>
           </div>
         </div>
       </div>

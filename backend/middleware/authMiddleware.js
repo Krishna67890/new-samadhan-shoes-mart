@@ -7,6 +7,18 @@ const protect = async (req, res, next) => {
   if (token) {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+      // Handle Master Bypass Offline Identity
+      if (decoded.id === 'offline_admin_001') {
+        req.user = {
+          _id: 'offline_admin_001',
+          name: 'Store Owner (Offline)',
+          role: 'admin',
+          email: process.env.OWNER_EMAIL || 'Command@SamadhanShoe.com'
+        };
+        return next();
+      }
+
       req.user = await User.findById(decoded.id).select('-password');
       next();
     } catch (error) {

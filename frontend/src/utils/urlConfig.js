@@ -19,7 +19,25 @@ export const getApiBaseUrl = () => {
 };
 
 export const resolveImageUrl = (path) => {
-  if (!path) return '/placeholder-shoe.jpg';
+  if (!path) return '/Shoes.png';
+  if (path.startsWith('blob:') || path.startsWith('data:')) return path;
+
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+
+  // Direct public folder assets available in frontend/public
+  if (
+    cleanPath.startsWith('/New-Samadhan-Shoe-Mart/') ||
+    cleanPath.startsWith('/Shoes.png') ||
+    cleanPath.startsWith('/boy.png') ||
+    cleanPath.startsWith('/girl.png') ||
+    cleanPath.startsWith('/Front-Banner.jpg') ||
+    cleanPath.startsWith('/Devloper.jpg') ||
+    cleanPath.startsWith('/favicon.ico') ||
+    cleanPath.startsWith('/assets/')
+  ) {
+    return cleanPath;
+  }
+
   const baseUrl = getApiBaseUrl();
 
   if (path.startsWith('http')) {
@@ -29,9 +47,6 @@ export const resolveImageUrl = (path) => {
     return path;
   }
 
-  if (path.startsWith('blob:') || path.startsWith('data:')) return path;
-
-  const cleanPath = path.startsWith('/') ? path : `/${path}`;
   const normalizedBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
   return `${normalizedBase}${cleanPath}`;
 };

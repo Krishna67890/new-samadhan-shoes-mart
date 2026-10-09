@@ -112,7 +112,10 @@ const deleteProduct = async (req, res) => {
 // @access  Private/Admin
 const createProduct = async (req, res) => {
   try {
-    const { name, price, description, images, brand, sizes, stock, category, targetGender, model3D } = req.body;
+    const {
+      name, price, description, images, brand, sizes, stock, category, targetGender, model3D,
+      technology, concerns, professions, purpose
+    } = req.body;
 
     // Validation: Ensure no blob URLs are being saved to the permanent database
     if (images && images.some(img => img.startsWith('blob:'))) {
@@ -125,13 +128,17 @@ const createProduct = async (req, res) => {
       user: req.user._id,
       images: images || ['/images/sample.jpg'],
       model3D,
-      brand: 'New Samadhan Shoe Mart',
+      brand: brand || 'New Samadhan Shoe Mart',
       category: category || 'Formal',
       targetGender: targetGender || 'Men',
       sizes: sizes || [6, 7, 8, 9, 10],
-      stock,
+      stock: stock || 0,
       numReviews: 0,
       description,
+      technology: technology || [],
+      concerns: concerns || [],
+      professions: professions || [],
+      useCases: purpose || [] // Mapping purpose to useCases
     });
 
     const createdProduct = await product.save();
@@ -148,7 +155,10 @@ const createProduct = async (req, res) => {
 // @access  Private/Admin
 const updateProduct = async (req, res) => {
   try {
-    const { name, price, description, images, brand, sizes, stock, category, targetGender, model3D } = req.body;
+    const {
+      name, price, description, images, brand, sizes, stock, category, targetGender, model3D,
+      technology, concerns, professions, purpose
+    } = req.body;
 
     // Only attempt DB lookups for valid ObjectIds to prevent crashes
     if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
@@ -163,11 +173,15 @@ const updateProduct = async (req, res) => {
       product.description = description || product.description;
       product.images = images || product.images;
       product.model3D = model3D !== undefined ? model3D : product.model3D;
-      product.brand = 'New Samadhan Shoe Mart';
+      product.brand = brand || product.brand;
       product.category = category || product.category;
       product.targetGender = targetGender || product.targetGender;
       product.sizes = sizes || product.sizes;
-      product.stock = stock || product.stock;
+      product.stock = stock !== undefined ? stock : product.stock;
+      product.technology = technology || product.technology;
+      product.concerns = concerns || product.concerns;
+      product.professions = professions || product.professions;
+      product.useCases = purpose || product.useCases;
 
       const updatedProduct = await product.save();
       res.json(updatedProduct);

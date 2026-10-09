@@ -60,8 +60,13 @@ app.get('/api/health', (req, res) => {
 const uploadsPath = path.join(__dirname, 'uploads');
 app.use('/uploads', express.static(uploadsPath));
 
-const publicAssetsPath = path.join(__dirname, 'public');
-app.use('/New-Samadhan-Shoe-Mart', express.static(path.join(publicAssetsPath, 'New-Samadhan-Shoe-Mart')));
+// EXPOSE MODELS AND ASSETS FROM BACKEND PUBLIC
+app.use('/assets', express.static(path.join(__dirname, 'public', 'assets')));
+
+// SERVE THE ROOT ASSETS FOLDER - Primary source for New Samadhan Shoes
+const rootAssetsPath = path.join(__dirname, '..', 'Assets', 'New-Samadhan-Shoe-Mart');
+app.use('/New-Samadhan-Shoe-Mart', express.static(rootAssetsPath));
+app.use('/premium-assets', express.static(rootAssetsPath));
 
 // 4. GLOBAL ERROR HANDLER
 app.use((err, req, res, next) => {

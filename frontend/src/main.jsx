@@ -21,29 +21,22 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     </AuthProvider>
     {/* Visual Clarity System (VCS) */}
     <style>{`
-      /* DISABLE ALL SYSTEM BLURS */
-      * {
+      /* Ensure crisp inputs without blur */
+      input, textarea, select, .admin-container, .no-blur-zone {
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
         filter: none !important;
       }
 
-      /* FORCE SHARP RENDERING */
+      /* Sharp rendering for images */
       img {
         image-rendering: -webkit-optimize-contrast;
-        image-rendering: crisp-edges;
       }
 
-      .no-blur-zone *, .no-blur-zone, .blur-none-forced {
-        filter: none !important;
-        backdrop-filter: none !important;
-      }
-
-      /* HIGH CONTRAST ACCESSIBILITY */
+      /* High contrast placeholder styling */
       ::placeholder {
-        color: #64748b !important;
-        opacity: 1 !important;
-        font-weight: 800 !important;
+        color: #94a3b8 !important;
+        opacity: 0.8 !important;
       }
     `}</style>
   </React.StrictMode>

@@ -9,6 +9,40 @@ const modelsByCategory = {
   Sneakers: ['Boost 350', 'Court Classic', 'Retro Mid 1', 'Volt Street Runner', 'Air Zoom Flight']
 };
 
+const technologies = [
+  'Arch-Support Matrix',
+  'Cloud-Comfort Arch Support',
+  'Ergo-Align Spine Support',
+  'Impact-Shield Shock Absorption',
+  'Breathable Nano-Mesh',
+  'Wide Toe Box Design'
+];
+
+const concerns = [
+  'Flat Feet',
+  'Plantar Fasciitis',
+  'Heel Comfort',
+  'Orthopedic Support',
+  'Diabetic Foot Care',
+  'Postural Alignment'
+];
+
+const professions = [
+  'Police & Defense',
+  'Industrial Safety',
+  'Medical / Healthcare',
+  'Corporate',
+  'Hospitality'
+];
+
+const useCases = [
+  'Daily Commute',
+  'High-Performance Gym',
+  'Corporate Excellence',
+  'Long-Distance Travel',
+  'Elite Casual'
+];
+
 const colors = ['Phantom White', 'Midnight Black', 'University Red', 'Royal Blue', 'Caramel Tan', 'Burgundy Wine', 'Rose Gold', 'Triple Black'];
 
 const generateProducts = () => {
@@ -37,6 +71,12 @@ const generateProducts = () => {
 
     const isElite = i % 10 === 0; // Every 10th product is an Elite 3D model
 
+    // Assign technical features randomly for Frido-like experience
+    const productTech = technologies.sort(() => 0.5 - Math.random()).slice(0, 2);
+    const productConcerns = concerns.sort(() => 0.5 - Math.random()).slice(0, 2);
+    const productProfessions = professions.sort(() => 0.5 - Math.random()).slice(0, 1);
+    const productUseCases = useCases.sort(() => 0.5 - Math.random()).slice(0, 1);
+
     products.push({
       name: `${brand} ${model} ${color}`,
       images: [
@@ -44,7 +84,7 @@ const generateProducts = () => {
         `/Shoes.png`
       ],
       model3D: isElite ? '/assets/models/elite_boot.glb' : null,
-      description: `Official premium footwear from New Samadhan Shoe Mart. Handcrafted excellence, featuring our signature comfort-grip technology.`,
+      description: `Official premium footwear from New Samadhan Shoe Mart. Featuring ${productTech.join(' and ')}, specifically designed to help with ${productConcerns.join(' and ')}. Perfect for ${productUseCases[0]}.`,
       brand: brand,
       category: category,
       targetGender: category === 'Women' ? 'Women' : (category === 'Kids' ? 'Kids' : 'Men'),
@@ -52,7 +92,12 @@ const generateProducts = () => {
       countInStock: Math.floor(Math.random() * 20) + 5,
       rating: parseFloat(rating),
       numReviews: reviews,
-      sizes: sizes
+      sizes: sizes,
+      technology: productTech,
+      concerns: productConcerns,
+      professions: productProfessions,
+      useCases: productUseCases,
+      highlights: [`Patent-Pending ${productTech[0]}`, 'Non-Slip Industrial Sole', 'Artisanal NASHIK Craftsmanship']
     });
   }
   return products;

@@ -77,18 +77,7 @@ const CustomCursor = () => {
     };
   }, [location]); // Re-run on route change to ensure new elements get listeners
 
-  return (
-    <>
-      <div
-        ref={cursorRef}
-        className="fixed w-2 h-2 rounded-full pointer-events-none z-[10000] hidden md:block bg-[#111111]"
-      />
-      <div
-        ref={followerRef}
-        className="fixed w-8 h-8 border border-[#111111]/20 rounded-full pointer-events-none z-[9999] hidden md:block"
-      />
-    </>
-  );
+  return null;
 };
 
 export default CustomCursor;

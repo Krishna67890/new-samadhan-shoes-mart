@@ -112,7 +112,7 @@ const CATEGORY_CATALOG = [
     title: 'Kids Collection',
     subtitle: 'Playful Comfort & High-Flex Growth Support',
     desc: 'Specially constructed for dynamic growing feet. Equipped with scuff-resistant reinforced safety toes, flexible non-slip soles, and breathable organic anti-bacterial linings.',
-    image: resolveImageUrl('/New-Samadhan-Shoe-Mart/IMG-20260928-WA0015.jpg'),
+    image: resolveImageUrl('/New-Samadhan-Shoe-Mart/Shoes-Front-kids-8.jpg'),
     tag: 'KIDS'
   },
   {
@@ -147,7 +147,14 @@ const WorkshopPage = () => {
   const floatingShoeRef = useRef(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
+    const mm = gsap.matchMedia();
+
+    mm.add({
+      isDesktop: "(min-width: 1024px)",
+      isMobile: "(max-width: 1023px)"
+    }, (context) => {
+      let { isMobile } = context.conditions;
+
       // Hero Entrance
       gsap.from(".workshop-hero-reveal", {
         y: 60,
@@ -180,9 +187,37 @@ const WorkshopPage = () => {
           start: "top center"
         }
       });
+
+      // Parallax Effect for the Shoe - Performance optimized for mobile
+      if (floatingShoeRef.current) {
+        gsap.to(floatingShoeRef.current, {
+          y: isMobile ? 50 : 150,
+          ease: "none",
+          scrollTrigger: {
+            trigger: workshopHeroRef.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: isMobile ? 0.5 : 1.2
+          }
+        });
+      }
     }, containerRef);
-    return () => ctx.revert();
+
+    return () => mm.revert();
   }, []);
+
+  // Separate effect for station transitions to avoid re-running all animations
+  useEffect(() => {
+    if (selectedStation !== null) {
+      const ctx = gsap.context(() => {
+        gsap.fromTo(".tabs-content",
+          { opacity: 0, x: 20 },
+          { opacity: 1, x: 0, duration: 0.6, ease: "power2.out" }
+        );
+      }, containerRef);
+      return () => ctx.revert();
+    }
+  }, [selectedStation]);
 
   useEffect(() => {
     let interval;
@@ -356,7 +391,7 @@ Requested via New Samadhan Shoes Website`;
               {media.type === 'video' && (
                 <video
                   ref={(el) => (videoRefs.current[idx] = el)}
-                  src={media.url}
+                  src={resolveImageUrl(media.url)}
                   muted
                   loop
                   playsInline
@@ -617,7 +652,7 @@ Requested via New Samadhan Shoes Website`;
           </div>
 
           <div className="flex flex-wrap gap-2">
-            {['All', "Women's Edition", "Kids Edition", 'Bespoke Derbies', 'Goodyear Boots', 'Italian Loafers', 'Minimalist Sneakers', 'Workshop'].map((tab) => (
+            {['All', 'Heritage', 'Men', 'Women', 'Kids', 'Sneakers'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveGalleryTab(tab)}
@@ -759,63 +794,10 @@ Requested via New Samadhan Shoes Website`;
         </div>
       </section>
 
-      {/* Advanced Service & Restoration Hub */}
-      <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-12">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 bg-[#8B0000]/5 border border-[#8B0000]/10 px-4 py-2 rounded-full mb-6">
-            <Wrench size={14} className="text-[#8B0000]" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#8B0000]">Elite Maintenance Hub</span>
-          </div>
-          <h2 className="font-editorial text-4xl sm:text-6xl font-black uppercase tracking-tight mb-6">
-            Restoration <span className="italic font-light text-[#8B0000]">Protocols.</span>
-          </h2>
-          <p className="text-sm text-[#6B6B6B] leading-relaxed italic">
-            "Your grails deserve a lifetime. Beyond creation, we offer molecular-level restoration and anatomical optimization for every pair in your collection."
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            {
-              title: 'Diamond Restoration',
-              desc: 'Deep rejuvenation for premium leathers. Molecular cleaning & pigment re-balancing.',
-              icon: <Sparkles className="text-[#8B0000]" />,
-              features: ['PH-Neutral Cleansing', 'Hand-Rubbed Patina', 'Texture Recovery']
-            },
-            {
-              title: 'Sole Reconstruction',
-              desc: 'Full welt-to-sole replacement using high-durability performance polymers.',
-              icon: <Hammer className="text-[#111111]" />,
-              features: ['Goodyear Welt Sync', 'Portuguese Cork Fill', 'Vibram Outsole Options']
-            },
-            {
-              title: 'Anatomical Re-Fit',
-              desc: 'Modifying the internal volume for perfect ergonomic alignment with your stride.',
-              icon: <Footprints className="text-[#111111]" />,
-              features: ['Last Re-shaping', 'Arch Reinforcement', 'Insole Customization']
-            }
-          ].map((service, idx) => (
-            <div key={idx} className="group bg-white p-10 rounded-[3rem] border border-[#111111]/5 hover:border-[#8B0000]/20 transition-all duration-500 shadow-sm hover:shadow-2xl">
-              <div className="w-16 h-16 bg-[#F7F5F0] rounded-2xl flex items-center justify-center mb-8 group-hover:bg-[#8B0000] group-hover:text-white transition-all duration-500">
-                {React.cloneElement(service.icon, { size: 28 })}
-              </div>
-              <h3 className="text-2xl font-editorial font-bold uppercase mb-4 tracking-tight">{service.title}</h3>
-              <p className="text-xs text-[#6B6B6B] leading-relaxed mb-8 italic">"{service.desc}"</p>
-              <ul className="space-y-3">
-                {service.features.map((f, i) => (
-                  <li key={i} className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-widest text-[#111111]/60">
-                    <div className="w-1.5 h-1.5 rounded-full bg-[#8B0000]"></div>
-                    {f}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Advanced Service Center & Restoration Laboratories */}
+      {/* Consolidated Elite Restoration & Service Center */}
       <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-20 bg-[#111111] text-white rounded-[4rem] my-12 shadow-2xl relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#8B0000]/5 rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
           <div>
             <div className="inline-flex items-center gap-2 bg-[#8B0000]/20 border border-[#8B0000]/40 px-4 py-2 rounded-full mb-6">
@@ -824,28 +806,31 @@ Requested via New Samadhan Shoes Website`;
             </div>
             <h2 className="font-editorial text-4xl sm:text-6xl font-black uppercase tracking-tight mb-6 leading-[0.95]">
               Elite Service <br />
-              <span className="italic font-light text-[#8B0000]">Center.</span>
+              <span className="italic font-light text-[#8B0000]">Protocols.</span>
             </h2>
             <p className="text-sm text-white/60 leading-relaxed italic mb-8 max-w-xl">
-              "Equipped with advanced multi-tier diagnostic tools, natural oil injection baths, and premium welt restoration jigs. We don't just repair; we stabilize material integrity at a molecular level."
+              "Equipped with molecular-level diagnostic tools, natural oil injection baths, and premium welt restoration jigs. We don't just repair; we stabilize material integrity for a lifetime."
             </p>
-            <div className="grid grid-cols-2 gap-8">
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
               {[
-                { label: 'Sole Engineering', value: 'Vibram & Dainite Certified', desc: 'Authorized Resole Center' },
-                { label: 'Leather Science', value: 'Molecular Tissue Revival', desc: 'PH-Balanced Rejuvenation' },
-                { label: 'Anatomy Sync', value: '3D Ergonomic Fitting', desc: 'Personalized Last Mapping' },
-                { label: 'Stitch Integrity', value: '100% Goodyear Protocol', desc: 'Manual Welt Lockstitching' }
+                { label: 'Sole Engineering', value: 'Vibram & Dainite Certified', icon: <Hammer size={18} /> },
+                { label: 'Leather Science', value: 'Molecular Tissue Revival', icon: <Sparkles size={18} /> },
+                { label: 'Anatomy Sync', value: '3D Ergonomic Fitting', icon: <Footprints size={18} /> },
+                { label: 'Stitch Integrity', value: '100% Goodyear Protocol', icon: <Layers size={18} /> }
               ].map((item, idx) => (
-                <div key={idx} className="border-l border-[#8B0000] pl-6">
-                  <span className="text-[9px] font-black uppercase tracking-widest text-[#8B0000] block mb-1">{item.label}</span>
-                  <span className="text-xs font-bold uppercase tracking-tight text-white block">{item.value}</span>
-                  <span className="text-[9px] text-white/40 uppercase mt-1 block">{item.desc}</span>
+                <div key={idx} className="flex gap-4 border-l border-[#8B0000] pl-6 py-2">
+                   <div className="text-[#8B0000]">{item.icon}</div>
+                   <div>
+                    <span className="text-[9px] font-black uppercase tracking-widest text-[#8B0000] block mb-1">{item.label}</span>
+                    <span className="text-xs font-bold uppercase tracking-tight text-white block">{item.value}</span>
+                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="bg-white/10 p-10 rounded-[3rem] border border-white/10 relative overflow-hidden">
+          <div className="bg-white/5 backdrop-blur-sm p-10 rounded-[3rem] border border-white/10 relative overflow-hidden">
             <h3 className="text-2xl font-editorial font-black uppercase mb-8 tracking-tight text-white">Active Maintenance Tiers</h3>
             <div className="space-y-6">
               {[
@@ -872,6 +857,7 @@ Requested via New Samadhan Shoes Website`;
           </div>
         </div>
       </section>
+
 
       {/* Atelier Appointment & Custom Consultation Form */}
       <section id="booking" className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-12 scroll-mt-24">

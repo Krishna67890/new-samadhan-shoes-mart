@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { useAuth } from '../context/AuthContext';
-import { ShieldCheck, Lock, Mail, ArrowRight, Loader2, AlertCircle, Eye, EyeOff } from 'lucide-react';
+import { ShieldCheck, Lock, Mail, ArrowRight, Loader2, AlertCircle, Eye, EyeOff, KeyRound, ArrowLeft } from 'lucide-react';
 
 const OwnerLoginPage = () => {
   const [email, setEmail] = useState('');
@@ -16,11 +16,10 @@ const OwnerLoginPage = () => {
   useEffect(() => {
     if (formRef.current) {
       gsap.from(formRef.current, {
-        y: 50,
+        y: 40,
         opacity: 0,
-        duration: 1.2,
-        ease: 'power4.out',
-        clearProps: "all"
+        duration: 0.9,
+        ease: 'power3.out'
       });
     }
   }, []);
@@ -29,74 +28,91 @@ const OwnerLoginPage = () => {
     e.preventDefault();
     setLocalError(null);
 
-    // Call the central login logic which handles Owner verification
     const result = await login(email, password);
 
     if (result.success) {
       if (result.role === 'admin') {
-        // Force immediate redirect to admin command center
         window.location.href = '/admin';
       } else {
-        setLocalError('Access Denied: Owner Portal requires Command Authority privileges.');
+        setLocalError('Access Denied: Owner Portal requires administrator privileges.');
       }
     } else {
-      // Show the specific error from AuthContext (e.g., Invalid Security Key)
-      setLocalError(result.message || 'Authentication Failed: Identity Not Verified.');
+      setLocalError(result.message || 'Authentication Failed: Invalid Owner Key or Email.');
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#050505] flex items-center justify-center p-6 relative overflow-hidden no-blur-zone">
-      {/* Red Pulse Glow for Security - Sharp edges per Zero-Blur policy */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-red-600/10 rounded-full border border-red-600/5 animate-pulse"></div>
-
+    <div className="min-h-screen bg-[#faf9f6] flex items-center justify-center p-6 pt-28 pb-16 relative font-sans">
       <div className="w-full max-w-lg z-10" ref={formRef}>
-        <div className="bg-white/[0.03] rounded-[3rem] border border-white/10 p-10 md:p-14 shadow-2xl">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-red-600 rounded-3xl mb-6 shadow-[0_0_40px_rgba(220,38,38,0.4)]">
-              <ShieldCheck className="text-white w-10 h-10" />
+        <div className="bg-white rounded-[2.5rem] border border-black/15 p-8 sm:p-12 shadow-2xl relative">
+          {/* Top back link */}
+          <div className="flex items-center justify-between mb-8">
+            <Link
+              to="/login"
+              className="text-xs font-black uppercase tracking-wider text-gray-500 hover:text-black flex items-center gap-1.5 transition-colors"
+            >
+              <ArrowLeft size={16} /> Member Login
+            </Link>
+            <span className="text-[10px] font-black uppercase tracking-[0.25em] text-[#d4af37] px-3 py-1 bg-[#d4af37]/10 rounded-full">
+              COMMAND PORTAL
+            </span>
+          </div>
+
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-[#111111] text-[#d4af37] rounded-2xl mb-4 shadow-lg border border-[#d4af37]/40">
+              <KeyRound className="w-8 h-8" />
             </div>
-            <h1 className="text-4xl font-black text-white tracking-tighter uppercase mb-2">Owner Login</h1>
-            <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.4em]">Proprietor Command Interface</p>
+            <h1 className="text-3xl font-black text-[#111111] tracking-tight uppercase mb-1">
+              Owner Sign In
+            </h1>
+            <p className="text-gray-500 text-xs font-bold uppercase tracking-wider">
+              New Samadhan Shoes Mart Command Center
+            </p>
           </div>
 
           {localError && (
-            <div className="bg-red-500/10 border border-red-500/20 text-red-500 p-6 rounded-2xl mb-8 flex items-center gap-4">
-              <AlertCircle size={20} className="shrink-0" />
-              <p className="text-xs font-bold uppercase tracking-widest">{localError}</p>
+            <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-2xl mb-6 flex items-start gap-3">
+              <AlertCircle size={18} className="shrink-0 mt-0.5 text-red-600" />
+              <p className="text-xs font-bold leading-relaxed">{localError}</p>
             </div>
           )}
 
-          <form onSubmit={handleLogin} className="space-y-8">
-            <div className="space-y-3">
-              <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-4">Owner Email</label>
+          <form onSubmit={handleLogin} className="space-y-6">
+            <div>
+              <label className="text-xs font-black text-gray-700 uppercase tracking-wider block mb-2">
+                Owner Email
+              </label>
               <div className="relative">
-                <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                 <input
                   type="email"
                   required
-                  className="w-full pl-16 pr-8 py-5 bg-white/5 border border-white/5 rounded-2xl focus:bg-white/10 focus:border-red-500/50 outline-none transition-all font-black text-white"
+                  placeholder="admin@samadhan.com"
+                  className="w-full pl-12 pr-4 py-3.5 bg-[#faf9f6] border border-black/15 rounded-xl font-bold text-gray-900 text-sm focus:outline-none focus:border-[#d4af37] focus:bg-white transition-all shadow-xs"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
             </div>
 
-            <div className="space-y-3">
-              <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-4">Security Key</label>
+            <div>
+              <label className="text-xs font-black text-gray-700 uppercase tracking-wider block mb-2">
+                Owner Security Key
+              </label>
               <div className="relative">
-                <Lock className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                 <input
                   type={showPassword ? "text" : "password"}
                   required
-                  className="w-full pl-16 pr-14 py-5 bg-white/5 border border-white/5 rounded-2xl focus:bg-white/10 focus:border-red-500/50 outline-none transition-all font-black text-white"
+                  placeholder="••••••••••••"
+                  className="w-full pl-12 pr-12 py-3.5 bg-[#faf9f6] border border-black/15 rounded-xl font-bold text-gray-900 text-sm focus:outline-none focus:border-[#d4af37] focus:bg-white transition-all shadow-xs"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-black transition-colors"
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
@@ -106,19 +122,23 @@ const OwnerLoginPage = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-red-600 text-white py-6 rounded-2xl text-[11px] font-black uppercase tracking-[0.4em] transition-all hover:bg-red-700 shadow-xl flex items-center justify-center gap-4 group"
+              className="w-full py-4 rounded-xl bg-[#111111] text-[#d4af37] text-xs font-black uppercase tracking-[0.2em] hover:bg-[#d4af37] hover:text-black transition-all duration-300 shadow-xl flex items-center justify-center gap-3 cursor-pointer"
             >
-              {loading ? <Loader2 className="animate-spin" /> : <>Authorize Access <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" /></>}
+              {loading ? (
+                <Loader2 className="animate-spin text-current" size={18} />
+              ) : (
+                <>
+                  <span>UNLOCK VAULT COMMAND</span>
+                  <ArrowRight size={16} />
+                </>
+              )}
             </button>
           </form>
 
-          <div className="mt-12 pt-8 border-t border-white/5 text-center">
-             <button
-               onClick={() => navigate('/login')}
-               className="text-slate-500 hover:text-white text-[9px] font-black uppercase tracking-widest transition-colors"
-             >
-                Return to Member Portal
-             </button>
+          <div className="mt-8 pt-6 border-t border-black/10 text-center">
+            <p className="text-[11px] text-gray-500 font-bold uppercase tracking-wider">
+              Authorized Proprietor Access Only • Nashik HQ
+            </p>
           </div>
         </div>
       </div>

@@ -111,12 +111,21 @@ const AdminDashboard = () => {
   };
 
   const handleSyncVault = async () => {
-    if (window.confirm("Initialize Global Atlas Sync? This will overwrite the cloud database with current elite assets.")) {
+    if (window.confirm("Initialize Global Atlas Sync? This will push all your local demo products to the cloud database for cross-device access.")) {
       setSyncing(true);
       try {
-        const data = await request('/api/admin/sync-vault', 'POST');
+        const demoProducts = JSON.parse(localStorage.getItem('ssm_demo_products') || '[]');
+        const data = await request('/api/admin/sync-vault', 'POST', { products: demoProducts });
         setSyncStatus({ success: true, message: data.message });
-        setTimeout(() => setSyncStatus(null), 5000);
+
+        // On successful sync, clear demo products as they are now in the Cloud Vault
+        localStorage.removeItem('ssm_demo_products');
+
+        // Refresh stats to reflect DB state
+        setTimeout(() => {
+          setSyncStatus(null);
+          window.location.reload();
+        }, 3000);
       } catch (err) {
         setSyncStatus({ success: false, message: err.message });
       } finally {
@@ -205,25 +214,25 @@ const AdminDashboard = () => {
         )}
 
         {/* STATS GRID */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 mb-16">
           {statCards.map((card, index) => (
-            <div key={index} className="bg-white p-10 rounded-[3rem] border border-[#111]/5 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group">
+            <div key={index} className="bg-white p-6 md:p-10 rounded-[2.5rem] md:rounded-[3rem] border border-[#111]/5 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group">
               <div className="flex justify-between items-start mb-6">
                 <div className="p-4 bg-[#F7F5F0] rounded-2xl group-hover:bg-[#111] group-hover:text-white transition-colors duration-500">
-                  {card.icon}
+                  {React.cloneElement(card.icon, { size: 24, className: "md:w-8 md:h-8" })}
                 </div>
                 <div className="flex items-center gap-1 text-[8px] font-black text-emerald-500 uppercase tracking-widest">
                   <TrendingUp size={12} /> +12%
                 </div>
               </div>
               <p className="text-[10px] font-black text-[#6B6B6B] uppercase tracking-widest mb-2">{card.title}</p>
-              <h3 className="text-4xl font-black text-[#111] tracking-tighter">{card.value}</h3>
+              <h3 className="text-2xl md:text-4xl font-black text-[#111] tracking-tighter">{card.value}</h3>
             </div>
           ))}
         </div>
 
         {/* COMMAND MODULES */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {[
             {
               title: 'Catalog Control',
@@ -257,13 +266,13 @@ const AdminDashboard = () => {
             <Link
               key={i}
               to={module.link}
-              className="bg-white p-10 rounded-[3.5rem] border border-[#111]/5 shadow-sm hover:shadow-xl transition-all group flex flex-col h-full"
+              className="bg-white p-8 md:p-10 rounded-[2.5rem] md:rounded-[3.5rem] border border-[#111]/5 shadow-sm hover:shadow-xl transition-all group flex flex-col h-full"
             >
-              <div className="w-16 h-16 bg-[#F7F5F0] rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500">
-                {React.cloneElement(module.icon, { size: 32 })}
+              <div className="w-12 h-12 md:w-16 md:h-16 bg-[#F7F5F0] rounded-2xl flex items-center justify-center mb-6 md:mb-8 group-hover:scale-110 transition-transform duration-500">
+                {React.cloneElement(module.icon, { size: 28, className: "md:w-8 md:h-8" })}
               </div>
-              <h3 className="text-2xl font-editorial font-black text-[#111] mb-4 tracking-tighter uppercase">{module.title}</h3>
-              <p className="text-[#6B6B6B] font-medium leading-relaxed uppercase text-[9px] tracking-widest mb-8 flex-grow">
+              <h3 className="text-xl md:text-2xl font-editorial font-black text-[#111] mb-4 tracking-tighter uppercase">{module.title}</h3>
+              <p className="text-[#6B6B6B] font-medium leading-relaxed uppercase text-[9px] tracking-widest mb-6 md:mb-8 flex-grow">
                 {module.desc}
               </p>
               <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-[0.2em] text-[#111] group-hover:text-[#8B0000] transition-colors">

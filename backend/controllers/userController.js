@@ -6,6 +6,18 @@ import path from 'path';
 // @route   GET /api/users/profile
 // @access  Private
 const getUserProfile = async (req, res) => {
+  // Handle Offline Admin Identity
+  if (req.user._id === 'offline_admin_001') {
+    return res.json({
+      _id: 'offline_admin_001',
+      name: 'Store Owner (Offline)',
+      email: process.env.OWNER_EMAIL || 'Command@SamadhanShoe.com',
+      role: 'admin',
+      identityVerified: true,
+      avatar: '/uploads/avatars/default-avatar.png',
+    });
+  }
+
   const user = await User.findById(req.user._id);
   if (user) {
     res.json({
@@ -25,7 +37,7 @@ const getUserProfile = async (req, res) => {
       avatar: user.avatar,
     });
   } else {
-    res.status(404).json({ message: 'User not found' });
+    res.status(404).json({ message: 'User not found in Vault records.' });
   }
 };
 
@@ -33,6 +45,12 @@ const getUserProfile = async (req, res) => {
 // @route   PUT /api/users/profile
 // @access  Private
 const updateUserProfile = async (req, res) => {
+  if (req.user._id === 'offline_admin_001') {
+    return res.status(403).json({
+      message: 'Profile updates are disabled in Master Bypass Offline Mode. Please restore Database connection.'
+    });
+  }
+
   const user = await User.findById(req.user._id);
 
   if (user) {

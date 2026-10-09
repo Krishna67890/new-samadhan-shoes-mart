@@ -82,6 +82,11 @@ const productSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    technology: [String],
+    concerns: [String],
+    professions: [String],
+    useCases: [String],
+    highlights: [String],
     reviews: [reviewSchema],
   },
   {

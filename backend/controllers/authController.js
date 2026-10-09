@@ -60,17 +60,23 @@ const loginUser = async (req, res) => {
     const email = (inputEmail || '').trim().toLowerCase();
     const password = (inputPassword || '').trim();
 
-    console.log(`🔍 [Auth Attempt] Email: ${email}`);
+    // DEEP DEBUG: Log exactly what the server is comparing (Hidden in production)
+    console.log(`🔍 [Vault Security Audit]
+      Input Email: "${email}"
+      Expected Email: "${ownerEmail}"
+      Match: ${email === ownerEmail ? 'YES' : 'NO'}`);
 
     // Verify JWT Secret Presence
-    if (!process.env.JWT_SECRET) {
-      console.error('❌ [Auth] CRITICAL: JWT_SECRET is missing from environment.');
-      return res.status(500).json({ message: 'Vault Configuration Error: Security Key missing.' });
+    if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 10) {
+      console.error('❌ [Auth] CRITICAL: JWT_SECRET is missing or too short in .env');
+      return res.status(500).json({
+        message: 'Vault Configuration Error: Security Key (JWT_SECRET) is missing from the server .env file.'
+      });
     }
 
     // 2. MASTER BYPASS (Checks .env directly)
     if (email === ownerEmail && password === ownerPassword) {
-      console.log('🛡️ [Auth] Command Authority detected. Verifying Vault session...');
+      console.log('🛡️ [Auth] SUCCESS: Command Authority credentials verified.');
 
       try {
         let owner = await User.findOne({ email: ownerEmail });
