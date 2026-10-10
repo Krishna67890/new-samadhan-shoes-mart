@@ -62,24 +62,26 @@ const Navbar = () => {
         onUpdate: (self) => {
           const isScrolled = self.scroll() > 50;
           const isDark = document.documentElement.classList.contains('dark');
+          const isMobile = window.innerWidth < 768;
+
           gsap.to(navRef.current, {
-            height: isScrolled ? "4.5rem" : "5.5rem",
-            top: isScrolled ? "0px" : "40px",
-            width: isScrolled ? "100%" : "96%",
-            left: isScrolled ? "0%" : "2%",
+            height: isScrolled ? (isMobile ? "4rem" : "4.5rem") : (isMobile ? "4.5rem" : "5.5rem"),
+            top: isScrolled ? "0px" : (isMobile ? "0px" : "40px"),
+            width: isScrolled || isMobile ? "100%" : "96%",
+            left: isScrolled || isMobile ? "0%" : "2%",
             backgroundColor: isScrolled
               ? (isDark ? "rgba(10, 10, 10, 0.95)" : "rgba(255, 255, 255, 0.95)")
               : (isDark ? "rgba(10, 10, 10, 0.8)" : "rgba(255, 255, 255, 0.8)"),
             backdropFilter: "blur(12px)",
             boxShadow: isScrolled ? "0 10px 30px rgba(0,0,0,0.2)" : "0 4px 20px rgba(0,0,0,0.05)",
-            borderRadius: isScrolled ? "0px" : "2.5rem",
+            borderRadius: isScrolled || isMobile ? "0px" : "2.5rem",
             borderBottom: isScrolled ? (isDark ? "1px solid rgba(255,255,255,0.1)" : "1px solid rgba(0,0,0,0.1)") : "1px solid rgba(0,0,0,0)",
             duration: 0.4,
             ease: "power3.out",
             overwrite: "auto"
           });
           gsap.to(logoRef.current, {
-            scale: isScrolled ? 0.8 : 1,
+            scale: isScrolled ? (isMobile ? 0.9 : 0.8) : 1,
             duration: 0.3,
             ease: "power2.out",
             overwrite: "auto"
@@ -143,10 +145,10 @@ const Navbar = () => {
 
         {/* Brand Identity */}
         <Link to="/" ref={logoRef} className="flex flex-col group z-[110] origin-left shrink-0">
-          <span className="font-black text-xl sm:text-2xl md:text-3xl tracking-tighter leading-none uppercase animate-rgb-text group-hover:scale-105 transition-transform duration-300">
+          <span className="font-black text-lg xs:text-xl sm:text-2xl md:text-3xl tracking-tighter leading-none uppercase animate-rgb-text group-hover:scale-105 transition-transform duration-300">
             NEW SAMADHAN
           </span>
-          <span className="font-black text-[10px] sm:text-xs md:text-sm tracking-[0.4em] sm:tracking-[0.6em] uppercase leading-none mt-1 sm:mt-2 animate-rgb-text group-hover:scale-105 transition-all">
+          <span className="font-black text-[8px] xs:text-[10px] sm:text-xs md:text-sm tracking-[0.3em] xs:tracking-[0.4em] sm:tracking-[0.6em] uppercase leading-none mt-1 sm:mt-2 animate-rgb-text group-hover:scale-105 transition-all">
             SHOE MART
           </span>
         </Link>
@@ -175,17 +177,17 @@ const Navbar = () => {
         </div>
 
         {/* Right Interactions */}
-        <div className="flex items-center gap-2 sm:gap-4 z-[110]">
+        <div className="flex items-center gap-1 xs:gap-2 sm:gap-4 z-[110]">
           <button
             onClick={toggleTheme}
-            className="text-black dark:text-white hover:text-[rgb(212,175,55)] transition-all p-2 sm:p-3 hover:bg-black/5 dark:hover:bg-white/5 rounded-xl sm:rounded-2xl flex items-center justify-center border border-black/10 dark:border-white/10 shadow-sm nav-btn-glow"
+            className="text-black dark:text-white hover:text-[rgb(212,175,55)] transition-all p-1.5 xs:p-2 sm:p-3 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg xs:rounded-xl sm:rounded-2xl flex items-center justify-center border border-black/10 dark:border-white/10 shadow-sm nav-btn-glow"
             aria-label="Toggle Theme"
           >
-            {theme === 'light' ? <Moon size={18} className="sm:w-[18px] sm:h-[18px] text-slate-800" /> : <Sun size={18} className="sm:w-[18px] sm:h-[18px] text-amber-400" />}
+            {theme === 'light' ? <Moon size={16} className="xs:w-[18px] xs:h-[18px] text-slate-800" /> : <Sun size={16} className="xs:w-[18px] xs:h-[18px] text-amber-400" />}
           </button>
 
           <button
-            className="flex text-black dark:text-white hover:text-[rgb(212,175,55)] transition-all p-2 sm:p-3 rounded-xl sm:rounded-2xl items-center justify-center nav-btn-glow"
+            className="hidden xs:flex text-black dark:text-white hover:text-[rgb(212,175,55)] transition-all p-2 sm:p-3 rounded-xl sm:rounded-2xl items-center justify-center nav-btn-glow"
             aria-label="Search"
           >
             <Search size={20} className="sm:w-[22px] sm:h-[22px] group-hover:scale-110 transition-transform" />
@@ -193,12 +195,12 @@ const Navbar = () => {
 
           <button
             onClick={() => setIsCartOpen(true)}
-            className="relative p-2.5 sm:p-4 bg-[var(--text-primary)] text-[var(--bg-secondary)] rounded-xl sm:rounded-[1.5rem] group hover:bg-[var(--gold)] transition-all shadow-xl shadow-black/10 cart-icon-target nav-btn-glow"
+            className="relative p-2 xs:p-2.5 sm:p-4 bg-[var(--text-primary)] text-[var(--bg-secondary)] rounded-lg xs:rounded-xl sm:rounded-[1.5rem] group hover:bg-[var(--gold)] transition-all shadow-xl shadow-black/10 cart-icon-target nav-btn-glow"
             aria-label="Cart"
           >
-            <ShoppingBag size={18} className="sm:w-[20px] sm:h-[20px] group-hover:scale-110 transition-transform" />
+            <ShoppingBag size={16} className="xs:w-[18px] xs:h-[18px] sm:w-[20px] sm:h-[20px] group-hover:scale-110 transition-transform" />
             {cartCount > 0 && (
-              <span className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 w-4 h-4 sm:w-6 sm:h-6 bg-[var(--gold)] text-white text-[8px] sm:text-[10px] font-black rounded-full flex items-center justify-center shadow-lg border-2 border-[var(--bg-secondary)]">
+              <span className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-6 sm:h-6 bg-[var(--gold)] text-white text-[7px] xs:text-[8px] sm:text-[10px] font-black rounded-full flex items-center justify-center shadow-lg border-2 border-[var(--bg-secondary)]">
                 {cartCount}
               </span>
             )}
@@ -262,10 +264,10 @@ const Navbar = () => {
               setIsOpen(!isOpen);
               setProfileOpen(false);
             }}
-            className="lg:hidden w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center text-[rgb(0,0,0)] dark:text-[rgb(255,255,255)] hover:bg-[rgb(245,245,245)] dark:hover:bg-[rgb(20,20,20)] rounded-xl sm:rounded-2xl transition-all nav-btn-glow"
+            className="lg:hidden w-8 h-8 xs:w-10 xs:h-10 sm:w-12 sm:h-12 flex items-center justify-center text-[rgb(0,0,0)] dark:text-[rgb(255,255,255)] hover:bg-[rgb(245,245,245)] dark:hover:bg-[rgb(20,20,20)] rounded-lg xs:rounded-xl sm:rounded-2xl transition-all nav-btn-glow"
             aria-label="Toggle Menu"
           >
-            {isOpen ? <X size={20} /> : <Menu size={20} />}
+            {isOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
         </div>
       </div>

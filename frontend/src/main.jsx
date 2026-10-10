@@ -102,6 +102,26 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         content-visibility: auto;
         contain-intrinsic-size: 400px;
       }
+
+      /* Floating Animation for Hero Shoe */
+      @keyframes float-slow {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(2deg); }
+      }
+      .animate-float-slow {
+        animation: float-slow 6s ease-in-out infinite;
+      }
+
+      /* Perspective for 3D Viewer */
+      .perspective-1500 {
+        perspective: 1500px;
+      }
+      .preserve-3d {
+        transform-style: preserve-3d;
+      }
+      .backface-hidden {
+        backface-visibility: hidden;
+      }
     `}</style>
 
 

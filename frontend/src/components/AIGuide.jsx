@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { MessageSquare, Volume2, X, Zap, User, UserCheck, Heart, ShieldCheck, Sparkles, Mic, MicOff, Send, Footprints, Search, Info } from 'lucide-react';
+import { MessageSquare, Volume2, X, Zap, User, UserCheck, Heart, ShieldCheck, Sparkles, Mic, MicOff, Send, Footprints, Search, Info, Bot, Award } from 'lucide-react';
 import { resolveImageUrl } from '../utils/urlConfig';
 import { getMergedProducts } from '../utils/productUtils';
 import useFetch from '../hooks/useFetch';
@@ -14,7 +14,7 @@ const AIGuide = () => {
   const [activeTab, setActiveTab] = useState('chat'); // 'chat', 'voice', or 'fit'
   const [chatInput, setChatInput] = useState('');
   const [messages, setMessages] = useState([
-    { role: 'ai', text: 'Namaste! I am your Heritage Product Expert. I can help you with sizing, style advice, and finding the perfect pair from our latest collection. How can I assist you today?', type: 'text' }
+    { role: 'ai', text: 'Namaste! I am your Heritage AI Agent. I represent 34 years of craftsmanship from the heart of Nashik. I can guide you through our archives, help with precision sizing, or find the perfect build for your lifestyle. How may I serve you today?', type: 'text' }
   ]);
   const [products, setProducts] = useState([]);
   const { request } = useFetch();
@@ -53,8 +53,9 @@ const AIGuide = () => {
     const userName = userData.name || 'my friend';
     const heritageLine = "Finding the perfect fit for your lifestyle and comfort is our heritage.";
 
-    if (path === '/') return `Product Expert Online. Namaste ${userName}. I am your Heritage Guide. How may I assist you today?`;
-    if (path.includes('/product/')) return `A masterpiece of comfort. This build features orthotic-grade support. Shall I explain the technical sole construction?`;
+    if (path === '/') return `Heritage AI Agent Online. Namaste ${userName}. I am your guide to 26+ years of footwear excellence. How may I assist your discovery today?`;
+    if (path.includes('/product/')) return `You are viewing a master-crafted silhouette. This build features our signature orthotic-grade support. Shall I explain the technical heritage behind this sole?`;
+    if (path.includes('/cart')) return `Reviewing your selection? I can help ensure you've selected the perfect size based on our anatomical heritage standards.`;
     return `Hello ${userName}. What can I help you discover today?`;
   }, [location]);
 
@@ -93,7 +94,12 @@ const AIGuide = () => {
 
     // 1. Discovery / Greeting logic
     if (query === 'hi' || query === 'hello' || query === 'namaste') {
-      addMessage('ai', `Namaste ${userName}! It's a pleasure to assist you. Are you looking for something specific, like our handcrafted Formal shoes for an office meeting, or perhaps our new Sneakers collection?`);
+      addMessage('ai', `Namaste ${userName}! It's a privilege to assist you. I am the Heritage Agent for New Samadhan Shoes. Are you looking for our handcrafted Formal classics, or our modern High-Performance Sneakers?`);
+      return;
+    }
+
+    if (query.includes('heritage') || query.includes('history') || query.includes('since') || query.includes('about the shop')) {
+      addMessage('ai', `Our heritage began in 1998 in Nashik. For over 26 years, we have specialized in ergonomic footwear that blends traditional craftsmanship with modern comfort. Every pair is a testament to our commitment to quality and 'Anatomical Arch Balance'.`);
       return;
     }
 
@@ -219,19 +225,19 @@ const AIGuide = () => {
         )}
         <button
           onClick={handleGuideOpen}
-          className="w-16 h-16 sm:w-20 sm:h-20 bg-[#111111] text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-105 active:scale-95 transition-all group relative overflow-hidden border-4 border-white"
+          className="w-16 h-16 sm:w-20 sm:h-20 bg-[#111111] text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-105 active:scale-95 transition-all group relative overflow-hidden border-4 border-[#d4af37]"
         >
           <img
             src={expertAvatar}
             alt="Expert"
             className="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
-            onError={(e) => { e.target.src = 'https://ui-avatars.com/api/?name=Expert&background=111&color=fff'; }}
+            onError={(e) => { e.target.src = 'https://ui-avatars.com/api/?name=Heritage+Agent&background=111&color=d4af37'; }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-          <div className="absolute top-2 right-2 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white z-20"></div>
-          <MessageSquare className="relative z-10 group-hover:scale-110 transition-transform" size={24} />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+          <div className="absolute top-2 right-2 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white z-20 shadow-[0_0_8px_rgba(16,185,129,0.8)]"></div>
+          <Bot className="relative z-10 group-hover:scale-110 transition-transform text-[#d4af37]" size={28} />
         </button>
-        <span className="text-[9px] font-black uppercase tracking-[0.1em] text-[#8B0000] bg-white px-3 py-1 rounded-full shadow-md border border-slate-100">Product Expert</span>
+        <span className="text-[9px] font-black uppercase tracking-[0.15em] text-white bg-[#111111] border border-[#d4af37]/50 px-3 py-1 rounded-full shadow-lg">Heritage Agent</span>
       </div>
 
       {/* Advanced AI Modal */}
@@ -242,34 +248,34 @@ const AIGuide = () => {
           <div className="bg-white w-full max-w-4xl h-[80vh] rounded-[2.5rem] overflow-hidden relative z-10 shadow-2xl border border-slate-100 flex flex-col md:flex-row">
 
             {/* Left Sidebar - AI Profile */}
-            <div className="w-full md:w-1/3 bg-slate-50 border-r border-slate-100 p-8 flex flex-col items-center justify-center text-center">
-              <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-xl mb-6 relative">
-                <img src={expertAvatar} alt="Expert" className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+            <div className="w-full md:w-1/3 bg-[#111111] border-r border-[#d4af37]/20 p-8 flex flex-col items-center justify-center text-center text-white">
+              <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-[#d4af37] shadow-[0_0_20px_rgba(212,175,55,0.3)] mb-6 relative">
+                <img src={expertAvatar} alt="Heritage Agent" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
               </div>
-              <h2 className="text-xl font-black text-[#111111] uppercase tracking-tighter mb-2">Heritage Expert</h2>
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-6 italic">34 Years of Craftsmanship</p>
+              <h2 className="text-xl font-black text-[#d4af37] uppercase tracking-tighter mb-2">Heritage AI Agent</h2>
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-6 italic">26+ Years of Nashik Craftsmanship</p>
 
               <div className="space-y-3 w-full">
-                <div className="p-4 bg-white rounded-2xl border border-slate-100 flex items-center gap-3">
-                  <ShieldCheck className="text-emerald-500" size={18} />
+                <div className="p-4 bg-white/5 rounded-2xl border border-white/10 flex items-center gap-3">
+                  <ShieldCheck className="text-[#d4af37]" size={18} />
                   <div className="text-left">
-                    <p className="text-[9px] font-black text-slate-800 uppercase">Status</p>
-                    <p className="text-[10px] font-bold text-emerald-600 uppercase">Online Now</p>
+                    <p className="text-[9px] font-black text-slate-400 uppercase">Operational Status</p>
+                    <p className="text-[10px] font-bold text-emerald-400 uppercase">Active Concierge</p>
                   </div>
                 </div>
-                <div className="p-4 bg-white rounded-2xl border border-slate-100 flex items-center gap-3">
-                  <Footprints className="text-[#8B0000]" size={18} />
+                <div className="p-4 bg-white/5 rounded-2xl border border-white/10 flex items-center gap-3">
+                  <Award className="text-[#d4af37]" size={18} />
                   <div className="text-left">
-                    <p className="text-[9px] font-black text-slate-800 uppercase">Inventory Aware</p>
-                    <p className="text-[10px] font-bold text-slate-500 uppercase">{products.length} Masterpieces</p>
+                    <p className="text-[9px] font-black text-slate-400 uppercase">Knowledge Base</p>
+                    <p className="text-[10px] font-bold text-slate-300 uppercase">Heritage & Fit Expert</p>
                   </div>
                 </div>
               </div>
 
               <div className="mt-auto pt-8 flex gap-2">
-                 <button onClick={() => setVoiceType('female')} className={`px-4 py-2 rounded-xl text-[9px] font-black uppercase transition-all ${voiceType === 'female' ? 'bg-black text-white' : 'bg-slate-200 text-slate-500'}`}>Female AI</button>
-                 <button onClick={() => setVoiceType('male')} className={`px-4 py-2 rounded-xl text-[9px] font-black uppercase transition-all ${voiceType === 'male' ? 'bg-black text-white' : 'bg-slate-200 text-slate-500'}`}>Male AI</button>
+                 <button onClick={() => setVoiceType('female')} className={`px-4 py-2 rounded-xl text-[9px] font-black uppercase transition-all ${voiceType === 'female' ? 'bg-[#d4af37] text-black' : 'bg-white/10 text-slate-400'}`}>Female Voice</button>
+                 <button onClick={() => setVoiceType('male')} className={`px-4 py-2 rounded-xl text-[9px] font-black uppercase transition-all ${voiceType === 'male' ? 'bg-[#d4af37] text-black' : 'bg-white/10 text-slate-400'}`}>Male Voice</button>
               </div>
             </div>
 
@@ -286,21 +292,21 @@ const AIGuide = () => {
               <div className="flex border-b border-slate-50 px-8 pt-6">
                 <button
                   onClick={() => setActiveTab('chat')}
-                  className={`pb-4 px-6 text-[10px] font-black uppercase tracking-widest transition-all border-b-2 ${activeTab === 'chat' ? 'border-[#8B0000] text-[#111111]' : 'border-transparent text-slate-400'}`}
+                  className={`pb-4 px-6 text-[10px] font-black uppercase tracking-widest transition-all border-b-2 ${activeTab === 'chat' ? 'border-[#d4af37] text-[#111111]' : 'border-transparent text-slate-400'}`}
                 >
-                  Expert Chat
+                  Agent Chat
                 </button>
                 <button
                   onClick={() => setActiveTab('voice')}
-                  className={`pb-4 px-6 text-[10px] font-black uppercase tracking-widest transition-all border-b-2 ${activeTab === 'voice' ? 'border-[#8B0000] text-[#111111]' : 'border-transparent text-slate-400'}`}
+                  className={`pb-4 px-6 text-[10px] font-black uppercase tracking-widest transition-all border-b-2 ${activeTab === 'voice' ? 'border-[#d4af37] text-[#111111]' : 'border-transparent text-slate-400'}`}
                 >
-                  Voice Recognition
+                  Voice Direct
                 </button>
                 <button
                   onClick={() => setActiveTab('fit')}
-                  className={`pb-4 px-6 text-[10px] font-black uppercase tracking-widest transition-all border-b-2 ${activeTab === 'fit' ? 'border-[#8B0000] text-[#111111]' : 'border-transparent text-slate-400'}`}
+                  className={`pb-4 px-6 text-[10px] font-black uppercase tracking-widest transition-all border-b-2 ${activeTab === 'fit' ? 'border-[#d4af37] text-[#111111]' : 'border-transparent text-slate-400'}`}
                 >
-                  Fit & Color Guide
+                  Heritage Fit Guide
                 </button>
               </div>
 

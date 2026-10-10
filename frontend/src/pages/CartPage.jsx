@@ -70,16 +70,18 @@ const CartPage = () => {
             <div className="lg:col-span-8 space-y-6 sm:space-y-8">
               {cartItems.map((item) => (
                 <div key={`${item._id}-${item.size}`} className="group relative bg-white p-6 sm:p-8 rounded-[2rem] sm:rounded-[3.5rem] border border-[#111111]/5 hover:border-[#8B0000]/20 transition-all duration-500 flex flex-col sm:flex-row items-center gap-6 sm:gap-10 shadow-lg">
-                  <div className="w-32 h-32 sm:w-40 sm:h-40 bg-[#F7F5F0] rounded-[1.5rem] sm:rounded-[2.5rem] overflow-hidden shrink-0 border border-[#111111]/5 flex items-center justify-center p-4">
+                  <Link to={`/product/${item._id}`} className="w-32 h-32 sm:w-40 sm:h-40 bg-[#F7F5F0] rounded-[1.5rem] sm:rounded-[2.5rem] overflow-hidden shrink-0 border border-[#111111]/5 flex items-center justify-center p-4 hover:opacity-80 transition-opacity">
                     <img src={resolveImageUrl(item.images[0])} alt={item.name} className="w-full h-full object-contain" />
-                  </div>
+                  </Link>
 
                   <div className="flex-grow text-center sm:text-left">
                     <div className="flex items-center justify-center sm:justify-start gap-4 mb-2 sm:mb-4">
                       <span className="px-3 py-1 bg-[#8B0000]/10 border border-[#8B0000]/20 rounded-full text-[8px] font-bold text-[#8B0000] uppercase tracking-widest">{item.brand}</span>
                       <span className="px-3 py-1 bg-[#111111]/5 border border-[#111111]/10 rounded-full text-[8px] font-bold text-[#6B6B6B] uppercase tracking-widest">Size: {item.size}</span>
                     </div>
-                    <h3 className="text-xl sm:text-2xl font-editorial font-bold text-[#111111] mb-2 sm:mb-4 tracking-tight uppercase leading-none">{item.name}</h3>
+                    <Link to={`/product/${item._id}`} className="hover:text-[#8B0000] transition-colors">
+                      <h3 className="text-xl sm:text-2xl font-editorial font-bold text-[#111111] mb-2 sm:mb-4 tracking-tight uppercase leading-none">{item.name}</h3>
+                    </Link>
                     <div className="text-2xl sm:text-3xl font-black text-[#111111] tracking-tighter tabular-nums">₹{(item.price || 0).toLocaleString()}</div>
                   </div>
 

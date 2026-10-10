@@ -165,7 +165,7 @@ const Reviews = ({ productId, isAdmin = false }) => {
         {/* LEFT: RATINGS SUMMARY */}
         <div className="lg:col-span-1 space-y-10">
           <div>
-            <span className="text-[#8B0000] font-black uppercase tracking-[0.4em] text-[10px] block mb-6">// SATISFACTION INDEX</span>
+            <span className="text-[#d4af37] font-black uppercase tracking-[0.4em] text-[10px] block mb-6">// SATISFACTION INDEX</span>
             <div className="flex justify-between items-end mb-4">
               <h2 className="text-6xl font-editorial font-black uppercase tracking-tighter text-[#111]">Customer <br /> Ratings</h2>
               <div className="flex flex-col items-end gap-2">
@@ -189,7 +189,7 @@ const Reviews = ({ productId, isAdmin = false }) => {
           </div>
 
           <div className="bg-white p-12 rounded-[3rem] border border-[#111]/5 shadow-xl relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-[#8B0000]/5 rounded-bl-full -mr-10 -mt-10 transition-transform group-hover:scale-110"></div>
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#d4af37]/5 rounded-bl-full -mr-10 -mt-10 transition-transform group-hover:scale-110"></div>
 
             <div className="relative z-10">
               <div className="flex items-baseline gap-4 mb-4">
@@ -199,10 +199,10 @@ const Reviews = ({ productId, isAdmin = false }) => {
 
               <div className="flex gap-1 mb-6">
                 {[...Array(5)].map((_, i) => (
-                  <Star
+                    <Star
                     key={i}
                     size={24}
-                    className={`${i < Math.floor(stats.average) ? 'fill-[#8B0000] text-[#8B0000]' : 'text-[#111]/10'}`}
+                    className={`${i < Math.floor(stats.average) ? 'fill-[#d4af37] text-[#d4af37]' : 'text-[#111]/10'}`}
                   />
                 ))}
               </div>
@@ -217,7 +217,7 @@ const Reviews = ({ productId, isAdmin = false }) => {
                     <span className="text-[10px] font-bold w-4 text-[#111]">{num}★</span>
                     <div className="flex-1 h-1.5 bg-[#F7F5F0] rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-[#8B0000] transition-all duration-1000"
+                        className="h-full bg-[#d4af37] transition-all duration-1000"
                         style={{ width: `${stats.breakdown[num] || 0}%` }}
                       />
                     </div>
@@ -229,8 +229,8 @@ const Reviews = ({ productId, isAdmin = false }) => {
           </div>
 
           {stats.total === 0 && (
-            <div className="p-8 border border-dashed border-[#8B0000]/30 rounded-[2rem] bg-[#8B0000]/5 text-center">
-              <Star size={32} className="mx-auto text-[#8B0000] mb-4 opacity-40" />
+            <div className="p-8 border border-dashed border-[#d4af37]/30 rounded-[2rem] bg-[#d4af37]/5 text-center">
+              <Star size={32} className="mx-auto text-[#d4af37] mb-4 opacity-40" />
               <h4 className="font-bold uppercase text-xs tracking-widest mb-2">Be the First</h4>
               <p className="text-[10px] text-[#6B6B6B] leading-relaxed uppercase font-medium">Your experience can help the next customer make the right choice.</p>
             </div>
@@ -257,7 +257,7 @@ const Reviews = ({ productId, isAdmin = false }) => {
                     >
                       <Star
                         size={32}
-                        className={`${(hoverRating || formData.rating) >= num ? 'fill-[#8B0000] text-[#8B0000]' : 'text-[#111]/10'} transition-colors`}
+                        className={`${(hoverRating || formData.rating) >= num ? 'fill-[#d4af37] text-[#d4af37]' : 'text-[#111]/10'} transition-colors`}
                       />
                     </button>
                   ))}
@@ -274,7 +274,7 @@ const Reviews = ({ productId, isAdmin = false }) => {
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="Enter your name"
                     required
-                    className="w-full bg-[#F7F5F0] border-0 rounded-2xl p-6 text-sm font-bold focus:ring-2 focus:ring-[#8B0000] transition-all outline-none"
+                    className="w-full bg-[#F7F5F0] border-0 rounded-2xl p-6 text-sm font-bold focus:ring-2 focus:ring-[#d4af37] transition-all outline-none"
                   />
                 </div>
                 <div className="space-y-4">
@@ -305,14 +305,14 @@ const Reviews = ({ productId, isAdmin = false }) => {
                   placeholder="Tell other customers about your experience..."
                   required
                   rows="4"
-                  className="w-full bg-[#F7F5F0] border-0 rounded-[2rem] p-8 text-sm font-medium leading-relaxed focus:ring-2 focus:ring-[#8B0000] transition-all outline-none resize-none"
+                  className="w-full bg-[#F7F5F0] border-0 rounded-[2rem] p-8 text-sm font-medium leading-relaxed focus:ring-2 focus:ring-[#d4af37] transition-all outline-none resize-none"
                 ></textarea>
               </div>
 
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full py-8 rounded-[2rem] text-[10px] font-black uppercase tracking-[0.4em] transition-all flex items-center justify-center gap-4 shadow-xl ${isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#111] text-white hover:bg-[#8B0000]'}`}
+                className={`w-full py-8 rounded-[2rem] text-[10px] font-black uppercase tracking-[0.4em] transition-all flex items-center justify-center gap-4 shadow-xl ${isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#111] text-white hover:bg-[#d4af37]'}`}
               >
                 {isSubmitting ? (
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
@@ -345,7 +345,7 @@ const Reviews = ({ productId, isAdmin = false }) => {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="bg-transparent text-[10px] font-black uppercase tracking-widest outline-none cursor-pointer border-b-2 border-[#8B0000] pb-1"
+              className="bg-transparent text-[10px] font-black uppercase tracking-widest outline-none cursor-pointer border-b-2 border-[#d4af37] pb-1"
             >
               <option value="recent">Most Recent</option>
               <option value="highest">Highest Rated</option>
@@ -362,13 +362,13 @@ const Reviews = ({ productId, isAdmin = false }) => {
                 key={rev.id}
                 id={`review-${rev.id}`}
                 className={`group p-12 md:p-16 rounded-[4rem] border border-[#111]/5 transition-all hover:shadow-2xl hover:-translate-y-2 relative overflow-hidden bg-white ${
-                  rev.style === 'elegant' ? 'border-l-8 border-l-[#8B0000]' :
+                  rev.style === 'elegant' ? 'border-l-8 border-l-[#d4af37]' :
                   rev.style === 'minimal' ? 'border-0 bg-[#F7F5F0]' : ''
                 }`}
               >
                 <div className="flex flex-col md:flex-row md:items-start gap-10">
                   <div className={`w-20 h-20 rounded-[2rem] flex items-center justify-center text-xl font-black transition-transform group-hover:scale-110 shrink-0 ${
-                    rev.style === 'minimal' ? 'bg-[#111] text-white' : 'bg-[#8B0000] text-white'
+                    rev.style === 'minimal' ? 'bg-[#111] text-white' : 'bg-[#d4af37] text-white'
                   }`}>
                     {rev.avatar || <User size={24} />}
                   </div>
@@ -382,7 +382,7 @@ const Reviews = ({ productId, isAdmin = false }) => {
                             <Star
                               key={i}
                               size={14}
-                              className={`${i < rev.rating ? 'fill-[#8B0000] text-[#8B0000]' : 'text-[#111]/10'}`}
+                              className={`${i < rev.rating ? 'fill-[#d4af37] text-[#d4af37]' : 'text-[#111]/10'}`}
                             />
                           ))}
                         </div>
@@ -401,7 +401,7 @@ const Reviews = ({ productId, isAdmin = false }) => {
                     <div className="flex flex-wrap items-center gap-10 pt-6 border-t border-[#111]/5">
                       <button
                         onClick={() => handleHelpful(rev.id)}
-                        className="flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-[#6B6B6B] hover:text-[#8B0000] transition-colors"
+                        className="flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-[#6B6B6B] hover:text-[#d4af37] transition-colors"
                       >
                         <ThumbsUp size={14} /> Helpful {rev.helpful > 0 && <span>({rev.helpful})</span>}
                       </button>
@@ -413,7 +413,7 @@ const Reviews = ({ productId, isAdmin = false }) => {
                       {isAdmin && (
                         <button
                           onClick={() => handleDelete(rev.id)}
-                          className="ml-auto text-[#8B0000] flex items-center gap-2 text-[10px] font-black uppercase tracking-widest hover:bg-[#8B0000] hover:text-white px-4 py-2 rounded-xl transition-all"
+                          className="ml-auto text-[#d4af37] flex items-center gap-2 text-[10px] font-black uppercase tracking-widest hover:bg-[#d4af37] hover:text-white px-4 py-2 rounded-xl transition-all"
                         >
                           <Trash2 size={14} /> Remove Review
                         </button>

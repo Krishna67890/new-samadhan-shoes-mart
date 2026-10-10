@@ -39,7 +39,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { resolveImageUrl } from '../utils/urlConfig';
 import { getMergedProducts } from '../utils/productUtils';
-import { getReviews, saveReview, deleteReview, syncReviewsWithServer } from '../utils/reviewService';
+import { getReviews, saveReview, deleteReview, syncReviewsWithServer, calculateOverallStats } from '../utils/reviewService';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
@@ -147,53 +147,27 @@ const HomePage = () => {
     city: ''
   });
 
-  // ── Product Expert AI Chatbot ──
+  // ── Heritage AI Agent (Advanced Advanced Concierge) ──
   const [isExpertOpen, setIsExpertOpen] = useState(false);
   const [expertQuery, setExpertQuery] = useState('');
   const [expertMessages, setExpertMessages] = useState([
-    { role: 'bot', text: 'Hello! 👟 I am your personal Product Expert. Which style, occasion, or size are you looking for? (Men, Women, Kids, Formal, Sneakers, Sports — All priced between ₹1000 and ₹3000)' }
+    {
+      role: 'bot',
+      text: 'Namaste! 🙏 I am your Heritage AI Agent. \n\nI represent 26+ years of footwear excellence at New Samadhan Shoes. I can help you find specific styles, explain our anatomical comfort engineering, or guide you through our archives.\n\nWhat can I assist you with today?',
+      type: 'agent'
+    }
   ]);
   const expertEndRef = useRef(null);
 
   // Customer Reviews state
-  const [reviewsList, setReviewsList] = useState([
-    {
-      id: 'rev_1',
-      name: 'Rahul P.',
-      rating: 5,
-      comment: 'Very comfortable and the fitting is excellent. Looks even better in person.',
-      date: 'Oct 24, 2023',
-      verified: true,
-      city: 'Pune'
-    },
-    {
-      id: 'rev_2',
-      name: 'Sneha M.',
-      rating: 5,
-      comment: 'Good quality and stylish design. Delivery was also smooth.',
-      date: 'Sep 12, 2023',
-      verified: true,
-      city: 'Nashik'
-    },
-    {
-      id: 'rev_3',
-      name: 'Vikram R.',
-      rating: 5,
-      comment: 'Best formal leather shoes in Nashik. Wore them to a 3-day wedding, zero blisters.',
-      date: 'Aug 05, 2023',
-      verified: true,
-      city: 'Mumbai'
-    },
-    {
-      id: 'rev_4',
-      name: 'Ananya K.',
-      rating: 5,
-      comment: 'Sneakers are super light and the cushioning feels like walking on air.',
-      date: 'Jul 19, 2023',
-      verified: true,
-      city: 'Thane'
-    }
-  ]);
+  const [reviewsList, setReviewsList] = useState([]);
+  const [overallStats, setOverallStats] = useState({
+    average: 4.8,
+    total: 1420,
+    breakdown: { 5: 78, 4: 16, 3: 4, 2: 1, 1: 1 },
+    rawBreakdown: { 5: 1108, 4: 227, 3: 57, 2: 14, 1: 14 }
+  });
+  const [isSyncing, setIsSyncing] = useState(false);
 
   // Multi-angle real shoe assets for 3D Viewer
   const multiAngleAssets = [
@@ -313,7 +287,7 @@ const HomePage = () => {
   const loadReviewsFromStorage = useCallback(() => {
     try {
       const saved = getReviews();
-      if (saved && Array.isArray(saved) && saved.length > 0) {
+      if (saved && Array.isArray(saved)) {
         const formatted = saved.slice(0, 10).map(r => ({
           id: r.id || `rev_${Date.now()}_${Math.random()}`,
           name: r.name || 'Valued Customer',
@@ -324,11 +298,31 @@ const HomePage = () => {
           city: r.city || 'Nashik'
         }));
         setReviewsList(formatted);
+
+        // Update live stats from all synced reviews
+        const stats = calculateOverallStats();
+        if (stats.total > 0) {
+          setOverallStats(stats);
+        }
       }
     } catch (err) {
       console.warn('Review load error:', err);
     }
   }, []);
+
+  const handleManualSync = async () => {
+    setIsSyncing(true);
+    showToast('Synchronizing reviews across devices...');
+    try {
+      await syncReviewsWithServer();
+      loadReviewsFromStorage();
+      showToast('Reviews synced successfully! ✅');
+    } catch (err) {
+      showToast('Sync failed. Using cached reviews.');
+    } finally {
+      setIsSyncing(false);
+    }
+  };
 
   useEffect(() => {
     loadReviewsFromStorage();
@@ -354,13 +348,7 @@ const HomePage = () => {
       }
     } catch (_) {}
 
-    // Auto-polling every 8 seconds ensures reviews submitted on any device show up everywhere
-    const pollInterval = setInterval(() => {
-      syncReviewsWithServer().then(() => loadReviewsFromStorage()).catch(() => {});
-    }, 8000);
-
     return () => {
-      clearInterval(pollInterval);
       window.removeEventListener('storage', handleStorageSync);
       window.removeEventListener('reviews_updated', loadReviewsFromStorage);
       try { bc?.close(); } catch (_) {}
@@ -377,7 +365,7 @@ const HomePage = () => {
     }
   };
 
-  // ── Advanced Product Expert AI response engine ──
+  // ── Advanced Heritage AI Agent Response Engine ──
   const handleExpertQuery = useCallback((e) => {
     e.preventDefault();
     if (!expertQuery.trim()) return;
@@ -388,73 +376,61 @@ const HomePage = () => {
     let botReply = '';
     const allProds = productsList;
 
-    if (q.includes('all') || q.includes('everything') || q.includes('catalog') || q.includes('collection') || q.includes('whole')) {
-      const menPick = allProds.find(p => p.category === 'Men') || allProds[0];
-      const womenPick = allProds.find(p => p.category === 'Women');
-      const sneakerPick = allProds.find(p => p.category === 'Sneakers');
-      const formalPick = allProds.find(p => p.category === 'Formal');
-      const kidsPick = allProds.find(p => p.category === 'Kids');
-      suggestion = [menPick, womenPick, sneakerPick, formalPick, kidsPick].filter(Boolean);
-      botReply = '🌟 Complete Catalog Highlights across all categories (All ₹1000–₹3000):';
-    } else if (q.includes('formal') || q.includes('office') || q.includes('corporate') || q.includes('derby') || q.includes('oxford')) {
+    // Heritage Specific Responses
+    if (q.includes('heritage') || q.includes('history') || q.includes('since')) {
+      botReply = "Our legacy began in 1998 with a vision to provide Nashik with footwear that balances tradition and orthopedic science. For 26+ years, we've focused on 'Anatomical Arch Support'.";
+      suggestion = allProds.filter(p => p.collection === 'Retro' || p.category === 'Formal').slice(0, 3);
+    } else if (q.includes('arch') || q.includes('comfort') || q.includes('orthopedic') || q.includes('medical')) {
+      botReply = "Precision engineering for comfort is our signature. Our 'Balance-Tech' soles provide superior arch support, reducing fatigue for those standing long hours.";
+      suggestion = allProds.filter(p => p.purpose?.includes('Daily') || p.category === 'Formal').slice(0, 3);
+    } else if (q.includes('all') || q.includes('catalog') || q.includes('collection')) {
+      suggestion = [
+        allProds.find(p => p.category === 'Formal'),
+        allProds.find(p => p.category === 'Sneakers'),
+        allProds.find(p => p.category === 'Men'),
+        allProds.find(p => p.category === 'Women')
+      ].filter(Boolean);
+      botReply = 'Exploring the Heritage Archives? Here is a curated snapshot of our diverse catalog:';
+    } else if (q.includes('formal') || q.includes('office') || q.includes('business')) {
       suggestion = allProds.filter(p => p.category === 'Formal' || p.purpose?.includes('Office')).slice(0, 4);
-      botReply = '👔 Executive Formal & Office Collection:';
-    } else if (q.includes('running') || q.includes('sport') || q.includes('gym') || q.includes('athletic')) {
+      botReply = 'The Executive Heritage Collection: Hand-finished leathers designed for the professional environment.';
+    } else if (q.includes('running') || q.includes('sport') || q.includes('gym')) {
       suggestion = allProds.filter(p => p.purpose?.includes('Running') || p.purpose?.includes('Sports')).slice(0, 4);
-      botReply = '🏃 High-Performance Sports & Running Footwear:';
-    } else if (q.includes('women') || q.includes('ladies') || q.includes('heels') || q.includes('sandals') || q.includes('wedges')) {
+      botReply = 'High-Performance Heritage: Modern athletic engineering for the active lifestyle.';
+    } else if (q.includes('women') || q.includes('ladies') || q.includes('sandals')) {
       suggestion = allProds.filter(p => p.category === 'Women' || p.targetGender === 'Women').slice(0, 4);
-      botReply = '👠 Top Selections from our Women\'s Boutique:';
-    } else if (q.includes('kids') || q.includes('children') || q.includes('school') || q.includes('junior') || q.includes('toddler')) {
+      botReply = 'The Women’s Heritage Boutique: Where elegance meets orthotic stability.';
+    } else if (q.includes('kids') || q.includes('school')) {
       suggestion = allProds.filter(p => p.category === 'Kids').slice(0, 4);
-      botReply = '👟 Ergonomic Footwear for Kids & School Students:';
-    } else if (q.includes('sneaker') || q.includes('casual') || q.includes('college') || q.includes('street')) {
+      botReply = 'Junior Heritage: Protecting developing feet with ergonomic school and casual builds.';
+    } else if (q.includes('sneaker') || q.includes('casual') || q.includes('street')) {
       suggestion = allProds.filter(p => p.category === 'Sneakers').slice(0, 4);
-      botReply = '👟 Trendy Streetwear Sneakers & Casual Lifestyle:';
-    } else if (q.includes('kolhapuri') || q.includes('chappal') || q.includes('jutti') || q.includes('mojari') || q.includes('ethnic') || q.includes('traditional')) {
-      suggestion = allProds.filter(p => p.name.toLowerCase().includes('kolhapuri') || p.name.toLowerCase().includes('chappal') || p.name.toLowerCase().includes('jutti') || p.name.toLowerCase().includes('mojari') || p.purpose?.includes('Ethnic')).slice(0, 4);
-      botReply = '✨ Handcrafted Ethnic, Kolhapuri & Traditional Footwear:';
-    } else if (q.includes('wedding') || q.includes('party') || q.includes('reception') || q.includes('festive')) {
+      botReply = 'Street Heritage: Contemporary silhouettes with our legacy of comfort.';
+    } else if (q.includes('wedding') || q.includes('party') || q.includes('festive')) {
       suggestion = allProds.filter(p => p.purpose?.includes('Party') || p.purpose?.includes('Wedding') || p.collection === 'Limited Edition').slice(0, 4);
-      botReply = '🎉 Grand Wedding & Celebration Footwear:';
-    } else if (q.includes('cheap') || q.includes('budget') || q.includes('under 1500') || q.includes('under 1200') || q.includes('1000') || q.includes('1200')) {
-      suggestion = allProds.filter(p => p.price <= 1350).slice(0, 4);
-      botReply = '💰 Premium Value Picks (₹1000–₹1350):';
-    } else if (q.includes('under 2000') || q.includes('2000')) {
-      suggestion = allProds.filter(p => p.price <= 2000).slice(0, 4);
-      botReply = '🎯 Top Choices Under ₹2000:';
-    } else if (q.includes('bestseller') || q.includes('best') || q.includes('top') || q.includes('popular')) {
-      suggestion = allProds.filter(p => p.collection === 'Bestsellers' || p.rating >= 4.9).slice(0, 4);
-      botReply = '⭐ Most-Loved Bestsellers (4.8+ Stars):';
-    } else if (q.includes('new') || q.includes('latest') || q.includes('arrival')) {
-      suggestion = allProds.filter(p => p.collection === 'New Arrivals' || p.isNew).slice(0, 4);
-      botReply = '✨ Fresh Arrivals Just In Stock:';
-    } else if (q.includes('police') || q.includes('safety') || q.includes('boot') || q.includes('industrial') || q.includes('trek')) {
-      suggestion = allProds.filter(p => p.name.toLowerCase().includes('boot') || p.professions?.some(pr => pr.toLowerCase().includes('police') || pr.toLowerCase().includes('industrial'))).slice(0, 4);
-      botReply = '🛡️ Rugged Outdoor, Uniform & Safety Boots:';
+      botReply = 'Celebration Heritage: Exquisite builds for life\'s most significant moments.';
+    } else if (q.includes('police') || q.includes('safety') || q.includes('boot') || q.includes('trek')) {
+      suggestion = allProds.filter(p => p.name.toLowerCase().includes('boot') || p.professions?.some(pr => pr.toLowerCase().includes('police'))).slice(0, 4);
+      botReply = 'Duty Heritage: Rugged, professional-grade boots for high-intensity environments.';
     } else {
       const matched = allProds.filter(p => 
         p.name.toLowerCase().includes(q) || 
-        (p.description || '').toLowerCase().includes(q) ||
         (p.category || '').toLowerCase().includes(q)
       );
       if (matched.length > 0) {
         suggestion = matched.slice(0, 4);
-        botReply = `🔎 Matching Shoes for "${expertQuery}":`;
+        botReply = `Heritage Search: I've located these matches for "${expertQuery}":`;
       } else {
         suggestion = allProds.filter(p => p.collection === 'Bestsellers' || p.rating >= 4.8).slice(0, 4);
-        botReply = '🌟 Handpicked Top Recommendations for You:';
+        botReply = 'I couldn\'t find a direct match, but here are our most-acclaimed Heritage Bestsellers:';
       }
     }
 
-    const suggestionText = suggestion.length > 0
-      ? suggestion.map(p => `• ${p.name} — ₹${p.price?.toLocaleString('en-IN')} (⭐${p.rating}/5)`).join('\n')
-      : 'No direct shoe match found. Please try searching by category or budget.';
-
     const botMsg = { 
       role: 'bot', 
-      text: botReply + '\n\n' + suggestionText + '\n\n📞 For custom sizes or assistance, call: 94232 28843 / 88886 44021',
-      products: suggestion
+      text: botReply + '\n\n📞 For Concierge Assistance: 94232 28843',
+      products: suggestion,
+      type: 'agent'
     };
     setExpertMessages(prev => [...prev, userMsg, botMsg]);
     setExpertQuery('');
@@ -520,9 +496,13 @@ const HomePage = () => {
     const touch = e.touches[0];
     const deltaX = touch.clientX - dragStartRef.current.x;
     const deltaY = touch.clientY - dragStartRef.current.y;
+
+    // Scale sensitivity by viewport width
+    const sensitivity = window.innerWidth < 640 ? 0.6 : 0.4;
+
     setTiltCoords({
-      x: Math.max(-25, Math.min(25, deltaX * 0.4)),
-      y: Math.max(-25, Math.min(25, -deltaY * 0.4))
+      x: Math.max(-30, Math.min(30, deltaX * sensitivity)),
+      y: Math.max(-30, Math.min(30, -deltaY * sensitivity))
     });
   };
 
@@ -530,7 +510,6 @@ const HomePage = () => {
     setIsDraggingViewer(false);
     setTiltCoords({ x: 0, y: 0 });
   };
-
   // ==========================================
   // GSAP SCROLLTRIGGER ORCHESTRATION
   // ==========================================
@@ -693,7 +672,7 @@ const HomePage = () => {
     >
       {/* LUXURY TOP ANNOUNCEMENT TICKER */}
       <div className="bg-[#111111] text-white py-3 border-b border-[#d4af37]/30 select-none overflow-hidden relative z-30">
-        <div className="flex whitespace-nowrap animate-marquee">
+        <div className="flex whitespace-nowrap animate-marquee will-change-transform">
           {[...Array(2)].map((_, i) => (
             <div key={i} className="flex items-center gap-16 mx-8">
               <span className="text-[11px] font-bold uppercase tracking-[0.35em] flex items-center gap-3 text-white">
@@ -780,53 +759,53 @@ const HomePage = () => {
         <div className="absolute w-[600px] h-[600px] border border-[#d4af37]/15 rounded-full pointer-events-none animate-[spin_40s_linear_infinite]" />
         <div className="absolute w-[450px] h-[450px] border border-black/5 rounded-full pointer-events-none animate-[spin_25s_linear_infinite_reverse]" />
 
-        <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-12 gap-8 items-center relative z-10 py-12 md:py-20">
+        <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10 py-8 xs:py-12 md:py-20">
           {/* Left Column: Brand & Editorial Typography */}
-          <div ref={heroTextRef} className="lg:col-span-5 text-left">
-            <div className="inline-flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-white border border-[#d4af37]/30 shadow-sm mb-6">
-              <span className="w-2 h-2 rounded-full bg-[#d4af37] animate-ping" />
-              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#111111]">
+          <div ref={heroTextRef} className="lg:col-span-5 text-center lg:text-left px-4 sm:px-0">
+            <div className="inline-flex items-center gap-2 xs:gap-3 px-2.5 xs:px-3.5 py-1 xs:py-1.5 rounded-full bg-white border border-[#d4af37]/30 shadow-sm mb-4 xs:mb-6">
+              <span className="w-1.5 h-1.5 xs:w-2 xs:h-2 rounded-full bg-[#d4af37] animate-ping" />
+              <span className="text-[8px] xs:text-[10px] font-black uppercase tracking-[0.3em] xs:tracking-[0.4em] text-[#111111]">
                 EST. 1998 • NASHIK ATELIER
               </span>
             </div>
 
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight leading-[0.9] text-[#111111] mb-6">
+            <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tight leading-[0.9] text-[#111111] mb-4 xs:mb-6">
               NEW SAMADHAN <br />
               <span className="text-[#d4af37] italic font-editorial">SHOES MART</span>
             </h1>
 
-            <div className="h-1 w-20 bg-[#d4af37] mb-6 rounded-full" />
+            <div className="h-1 w-16 xs:w-20 bg-[#d4af37] mb-4 xs:mb-6 rounded-full mx-auto lg:mx-0" />
 
-            <h2 className="text-xl sm:text-2xl font-black uppercase tracking-widest text-black/80 mb-4">
+            <h2 className="text-lg xs:text-xl sm:text-2xl font-black uppercase tracking-widest text-black/80 mb-3 xs:mb-4">
               STEP INTO YOUR STYLE.
             </h2>
 
-            <p className="text-base sm:text-lg text-gray-600 font-medium leading-relaxed mb-8 max-w-lg">
+            <p className="text-sm xs:text-base sm:text-lg text-gray-600 font-medium leading-relaxed mb-6 xs:mb-8 max-w-lg mx-auto lg:mx-0">
               Premium footwear for every occasion. Meticulously handcrafted silhouettes blending ergonomic comfort with high-fashion distinction.
             </p>
 
-            <div className="flex flex-wrap items-center gap-4">
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 xs:gap-4">
               <button
                 onClick={() => {
                   const el = document.getElementById('all-products-showcase');
                   el?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="bg-[#111111] text-white px-8 py-4 rounded-full text-xs font-black uppercase tracking-[0.2em] hover:bg-[#d4af37] hover:text-black transition-all duration-300 shadow-xl shadow-black/15 flex items-center gap-3 group cursor-pointer"
+                className="bg-[#111111] text-white px-6 xs:px-8 py-3 xs:py-4 rounded-full text-[10px] xs:text-xs font-black uppercase tracking-[0.2em] hover:bg-[#d4af37] hover:text-black transition-all duration-300 shadow-xl shadow-black/15 flex items-center gap-2 xs:gap-3 group cursor-pointer"
               >
                 <span>SHOP COLLECTION</span>
-                <ArrowRight size={16} className="group-hover:translate-x-1.5 transition-transform" />
+                <ArrowRight size={14} className="xs:w-4 xs:h-4 group-hover:translate-x-1.5 transition-transform" />
               </button>
 
               <button
                 onClick={() => setFullScreenModal('heroShoe')}
-                className="bg-white text-[#111111] border border-black/15 px-8 py-4 rounded-full text-xs font-black uppercase tracking-[0.2em] hover:border-[#d4af37] hover:text-[#d4af37] transition-all duration-300 shadow-sm flex items-center gap-2 cursor-pointer"
+                className="bg-white text-[#111111] border border-black/15 px-6 xs:px-8 py-3 xs:py-4 rounded-full text-[10px] xs:text-xs font-black uppercase tracking-[0.2em] hover:border-[#d4af37] hover:text-[#d4af37] transition-all duration-300 shadow-sm flex items-center gap-1.5 xs:gap-2 cursor-pointer"
               >
-                <Maximize2 size={15} /> FULL SCREEN VIEW
+                <Maximize2 size={13} className="xs:w-[15px] xs:h-[15px]" /> FULL SCREEN
               </button>
             </div>
 
             {/* Quick Metrics */}
-            <div className="grid grid-cols-3 gap-6 mt-12 pt-8 border-t border-black/10">
+            <div className="grid grid-cols-3 gap-3 xs:gap-6 mt-8 xs:mt-12 pt-6 xs:pt-8 border-t border-black/10">
               <div>
                 <p className="text-2xl font-black text-[#111111]">26+</p>
                 <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Years Crafting</p>
@@ -850,14 +829,28 @@ const HomePage = () => {
             {/* Dynamic Shoe Element with Full Screen Button */}
             <div
               ref={heroShoeRef}
-              className="relative z-10 w-full max-w-[540px] transform -rotate-12 transition-transform duration-700 select-none cursor-pointer group"
+              className="relative z-10 w-full max-w-[540px] transform -rotate-12 transition-transform duration-700 select-none cursor-pointer group animate-float-slow"
               onClick={() => setFullScreenModal('heroShoe')}
             >
-              <img
-                src={resolveImageUrl('/New-Samadhan-Shoe-Mart/Main-Shoe.png')}
-                alt="New Samadhan Shoes Mart Hero Shoe"
-                className="w-full h-auto object-contain drop-shadow-[0_45px_35px_rgba(0,0,0,0.25)] group-hover:scale-105 transition-transform duration-500"
-              />
+              {/* Gemini / Star Style Decorative Overlays */}
+              <div className="absolute -top-10 -left-6 text-[#d4af37] animate-pulse pointer-events-none z-20">
+                <Sparkles size={48} className="drop-shadow-[0_0_15px_rgba(212,175,55,0.6)]" />
+              </div>
+              <div className="absolute -bottom-8 -right-4 text-[#d4af37] animate-bounce pointer-events-none z-20 delay-500">
+                <Star size={32} fill="#d4af37" className="opacity-80" />
+              </div>
+              <div className="absolute top-1/2 -left-12 text-[#d4af37] animate-pulse pointer-events-none z-20 delay-300 opacity-50">
+                <Sparkles size={24} />
+              </div>
+
+              {/* Animated Shoe Container */}
+              <div className="animate-float-slow">
+                <img
+                  src={resolveImageUrl('/New-Samadhan-Shoe-Mart/Main-Shoe.png')}
+                  alt="New Samadhan Shoes Mart Hero Shoe"
+                  className="w-full h-auto object-contain drop-shadow-[0_45px_35px_rgba(0,0,0,0.25)] group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
 
               {/* Expand to Full Screen overlay badge */}
               <div className="absolute top-4 right-4 bg-black/80 text-white px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1.5 shadow-lg">
@@ -874,25 +867,25 @@ const HomePage = () => {
             {/* Floating Technical Feature Badges */}
             <div
               ref={heroBadgesRef}
-              className="absolute inset-0 pointer-events-none flex flex-col justify-between py-6 px-2 opacity-90"
+              className="absolute inset-0 pointer-events-none flex flex-col justify-between py-4 xs:py-6 px-1 xs:px-2 opacity-90"
             >
-              <div className="self-end bg-white/95 backdrop-blur-md border border-[#d4af37]/30 shadow-lg px-4 py-2.5 rounded-2xl flex items-center gap-3 transform translate-y-4">
-                <div className="w-8 h-8 rounded-full bg-[#d4af37]/20 flex items-center justify-center text-[#d4af37]">
-                  <Sparkles size={16} />
+              <div className="self-end bg-white/95 backdrop-blur-md border border-[#d4af37]/30 shadow-lg px-3 xs:px-4 py-2 xs:py-2.5 rounded-xl xs:rounded-2xl flex items-center gap-2 xs:gap-3 transform translate-y-2 xs:translate-y-4">
+                <div className="w-6 h-6 xs:w-8 h-8 rounded-full bg-[#d4af37]/20 flex items-center justify-center text-[#d4af37]">
+                  <Sparkles size={12} className="xs:w-4 xs:h-4" />
                 </div>
                 <div>
-                  <span className="text-[9px] font-black uppercase tracking-widest text-[#d4af37] block">CRAFT STANDARD</span>
-                  <span className="text-xs font-bold text-gray-900">Anatomical Arch Balance</span>
+                  <span className="text-[8px] xs:text-[9px] font-black uppercase tracking-widest text-[#d4af37] block">CRAFT STANDARD</span>
+                  <span className="text-[10px] xs:text-xs font-bold text-gray-900">Anatomical Arch Balance</span>
                 </div>
               </div>
 
-              <div className="self-start bg-white/95 backdrop-blur-md border border-black/10 shadow-lg px-4 py-2.5 rounded-2xl flex items-center gap-3 transform -translate-y-4">
-                <div className="w-8 h-8 rounded-full bg-black text-[#d4af37] flex items-center justify-center">
-                  <ShieldCheck size={16} />
+              <div className="self-start bg-white/95 backdrop-blur-md border border-black/10 shadow-lg px-3 xs:px-4 py-2 xs:py-2.5 rounded-xl xs:rounded-2xl flex items-center gap-2 xs:gap-3 transform -translate-y-2 xs:-translate-y-4">
+                <div className="w-6 h-6 xs:w-8 h-8 rounded-full bg-black text-[#d4af37] flex items-center justify-center">
+                  <ShieldCheck size={12} className="xs:w-4 xs:h-4" />
                 </div>
                 <div>
-                  <span className="text-[9px] font-black uppercase tracking-widest text-gray-500 block">DURABILITY GRADE</span>
-                  <span className="text-xs font-bold text-gray-900">Vulcanized High-Grip Sole</span>
+                  <span className="text-[8px] xs:text-[9px] font-black uppercase tracking-widest text-gray-500 block">DURABILITY GRADE</span>
+                  <span className="text-[10px] xs:text-xs font-bold text-gray-900">Vulcanized High-Grip Sole</span>
                 </div>
               </div>
             </div>
@@ -1026,7 +1019,7 @@ const HomePage = () => {
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
               {filteredProducts.map((product) => {
                 const isFav = wishlist.includes(product.id || product._id);
                 const displayImg = product.images?.[0] || product.image || '/New-Samadhan-Shoe-Mart/Main-Shoe.png';
@@ -1143,7 +1136,7 @@ const HomePage = () => {
                             ₹{product.price?.toLocaleString()}
                           </span>
                           <span className="text-xs text-gray-400 line-through ml-2">
-                            ₹{(Math.round(product.price * 1.45)).toLocaleString()}
+                            ₹{(Math.round((product.price || 0) * 1.45)).toLocaleString()}
                           </span>
                         </div>
                         <span className="text-[10px] font-black uppercase tracking-wider text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
@@ -1202,12 +1195,12 @@ const HomePage = () => {
           </div>
 
           {/* Interactive 3D Showcase Box */}
-          <div className="spotlight-viewer-container bg-white rounded-[2.5rem] border border-black/10 p-8 lg:p-14 shadow-2xl grid lg:grid-cols-12 gap-12 items-center">
+          <div className="spotlight-viewer-container bg-white rounded-[2rem] border border-black/10 p-6 sm:p-8 lg:p-14 shadow-2xl grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             {/* Left: 3D Shoe Visualizer with Perspective & Tilt */}
-            <div className="lg:col-span-7 flex flex-col items-center">
+            <div className="lg:col-span-7 flex flex-col items-center w-full">
               {/* Studio Canvas with Perspective */}
               <div
-                className="w-full aspect-[4/3] rounded-3xl bg-[#faf9f6] border border-black/10 relative flex items-center justify-center p-8 select-none overflow-hidden cursor-grab active:cursor-grabbing perspective-1500"
+                className="w-full aspect-square sm:aspect-[4/3] rounded-3xl bg-[#faf9f6] border border-black/10 relative flex items-center justify-center p-4 sm:p-8 select-none overflow-hidden cursor-grab active:cursor-grabbing perspective-1500"
                 onMouseMove={handleMouseMoveViewer}
                 onMouseLeave={handleMouseLeaveViewer}
                 onTouchStart={handleTouchStartViewer}
@@ -1256,27 +1249,27 @@ const HomePage = () => {
                 </div>
 
                 {/* Zoom Controls */}
-                <div className="absolute bottom-6 right-6 flex items-center gap-2 bg-white/95 backdrop-blur-md p-1.5 rounded-full border border-black/10 shadow-sm">
+                <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 flex items-center gap-1.5 sm:gap-2 bg-white/95 backdrop-blur-md p-1 sm:p-1.5 rounded-full border border-black/10 shadow-sm">
                   <button
                     onClick={() => setZoomLevel(prev => Math.min(1.4, prev + 0.15))}
-                    className="w-8 h-8 rounded-full hover:bg-black hover:text-white flex items-center justify-center transition-colors"
+                    className="w-7 h-7 sm:w-8 sm:h-8 rounded-full hover:bg-black hover:text-white flex items-center justify-center transition-colors"
                     title="Zoom In"
                   >
-                    <ZoomIn size={15} />
+                    <ZoomIn size={14} />
                   </button>
                   <button
                     onClick={() => setZoomLevel(prev => Math.max(0.85, prev - 0.15))}
-                    className="w-8 h-8 rounded-full hover:bg-black hover:text-white flex items-center justify-center transition-colors"
+                    className="w-7 h-7 sm:w-8 sm:h-8 rounded-full hover:bg-black hover:text-white flex items-center justify-center transition-colors"
                     title="Zoom Out"
                   >
-                    <ZoomOut size={15} />
+                    <ZoomOut size={14} />
                   </button>
                   <button
                     onClick={() => { setZoomLevel(1); setTiltCoords({ x: 0, y: 0 }); }}
-                    className="w-8 h-8 rounded-full hover:bg-black hover:text-white flex items-center justify-center transition-colors"
+                    className="w-7 h-7 sm:w-8 sm:h-8 rounded-full hover:bg-black hover:text-white flex items-center justify-center transition-colors"
                     title="Reset View"
                   >
-                    <RotateCcw size={15} />
+                    <RotateCcw size={14} />
                   </button>
                 </div>
               </div>
@@ -1456,59 +1449,64 @@ const HomePage = () => {
       >
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-            <div>
-              <span className="text-[11px] font-black uppercase tracking-[0.4em] text-[#d4af37] block mb-3">
-                PHASE 05 // VERIFIED VOICES
-              </span>
-              <h2 className="text-4xl sm:text-6xl font-black uppercase tracking-tight text-[#111111]">
-                CUSTOMER <span className="text-[#d4af37] italic font-editorial">RATINGS & REVIEWS</span>
-              </h2>
-            </div>
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+              <div>
+                <span className="text-[11px] font-black uppercase tracking-[0.4em] text-[#d4af37] block mb-3">
+                  PHASE 05 // VERIFIED VOICES
+                </span>
+                <h2 className="text-4xl sm:text-6xl font-black uppercase tracking-tight text-[#111111]">
+                  CUSTOMER <span className="text-[#d4af37] italic font-editorial">RATINGS & REVIEWS</span>
+                </h2>
+              </div>
 
-            <button
-              onClick={() => setIsReviewModalOpen(true)}
-              className="bg-[#111111] text-white px-8 py-3.5 rounded-full text-xs font-black uppercase tracking-[0.2em] hover:bg-[#d4af37] hover:text-black transition-all self-start md:self-auto shadow-md cursor-pointer"
-            >
-              WRITE A REVIEW
-            </button>
-          </div>
+              <div className="flex flex-wrap items-center gap-3">
+                <button
+                  onClick={handleManualSync}
+                  disabled={isSyncing}
+                  className="bg-white text-black border border-black/10 px-6 py-3.5 rounded-full text-xs font-black uppercase tracking-[0.2em] hover:bg-black hover:text-white transition-all flex items-center gap-2 shadow-sm cursor-pointer disabled:opacity-50"
+                >
+                  <RotateCcw size={14} className={isSyncing ? 'animate-spin' : ''} />
+                  {isSyncing ? 'SYNCING...' : 'SYNC NOW'}
+                </button>
+
+                <button
+                  onClick={() => setIsReviewModalOpen(true)}
+                  className="bg-[#111111] text-white px-8 py-3.5 rounded-full text-xs font-black uppercase tracking-[0.2em] hover:bg-[#d4af37] hover:text-black transition-all shadow-md cursor-pointer"
+                >
+                  WRITE A REVIEW
+                </button>
+              </div>
+            </div>
 
           <div className="grid lg:grid-cols-12 gap-10">
             {/* Left: Overall Score Card with Breakdown Bars */}
             <div className="lg:col-span-4 bg-[#faf9f6] p-8 rounded-3xl border border-black/10 shadow-xs">
               <div className="text-center pb-8 border-b border-black/10">
                 <div className="text-6xl font-black text-[#111111] tracking-tighter mb-2">
-                  4.8 <span className="text-2xl text-gray-400 font-normal">/ 5</span>
+                  {overallStats.average} <span className="text-2xl text-gray-400 font-normal">/ 5</span>
                 </div>
                 <div className="flex justify-center text-[#d4af37] mb-3">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={22} className="fill-[#d4af37]" />
+                    <Star key={i} size={22} className={i < Math.round(overallStats.average) ? "fill-[#d4af37]" : "text-gray-300"} />
                   ))}
                 </div>
                 <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">
-                  Based on 1,420+ Customer Reviews
+                  Based on {overallStats.total?.toLocaleString()}+ Customer Reviews
                 </p>
               </div>
 
               {/* Breakdown Bars */}
               <div className="space-y-3 pt-6">
-                {[
-                  { star: 5, pct: 78, count: '1,108' },
-                  { star: 4, pct: 16, count: '227' },
-                  { star: 3, pct: 4, count: '57' },
-                  { star: 2, pct: 1, count: '14' },
-                  { star: 1, pct: 1, count: '14' }
-                ].map((item) => (
-                  <div key={item.star} className="flex items-center gap-3 text-xs">
-                    <span className="w-8 font-black text-gray-800">{item.star} ★</span>
+                {[5, 4, 3, 2, 1].map((star) => (
+                  <div key={star} className="flex items-center gap-3 text-xs">
+                    <span className="w-8 font-black text-gray-800">{star} ★</span>
                     <div className="flex-1 h-2.5 bg-gray-200 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-[#d4af37] rounded-full transition-all duration-1000"
-                        style={{ width: `${item.pct}%` }}
+                        style={{ width: `${overallStats.breakdown[star]}%` }}
                       />
                     </div>
-                    <span className="w-10 text-right text-gray-400 font-medium">{item.pct}%</span>
+                    <span className="w-10 text-right text-gray-400 font-medium">{overallStats.breakdown[star]}%</span>
                   </div>
                 ))}
               </div>
@@ -2061,8 +2059,8 @@ const HomePage = () => {
                 </div>
 
                 <div className="flex items-baseline gap-3 mb-4">
-                  <span className="text-3xl font-black text-[#111111]">₹{modalProduct.price?.toLocaleString()}</span>
-                  <span className="text-sm text-gray-400 line-through">₹{(Math.round(modalProduct.price * 1.45)).toLocaleString()}</span>
+                  <span className="text-3xl font-black text-[#111111]">₹{modalProduct.price?.toLocaleString() || 0}</span>
+                  <span className="text-sm text-gray-400 line-through">₹{(Math.round((modalProduct.price || 0) * 1.45)).toLocaleString()}</span>
                 </div>
 
                 <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-6">
@@ -2101,7 +2099,7 @@ const HomePage = () => {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="grid grid-cols-2 gap-3 pt-4 border-t border-black/5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4 border-t border-black/5">
                   <button
                     onClick={() => {
                       handleAddToCart(modalProduct, modalSize, modalQty);
@@ -2118,7 +2116,7 @@ const HomePage = () => {
                     rel="noopener noreferrer"
                     className="py-3.5 rounded-full bg-[#25D366] text-black hover:bg-[#1ebe5d] hover:text-white text-xs font-black uppercase tracking-wider transition-all text-center cursor-pointer shadow-md flex items-center justify-center gap-1.5"
                   >
-                    <MessageSquare size={15} /> ORDER ON WHATSAPP
+                    <MessageSquare size={15} /> WHATSAPP
                   </a>
                 </div>
 
@@ -2166,7 +2164,7 @@ const HomePage = () => {
             </h3>
 
             <form onSubmit={handleReviewSubmit} className="space-y-4">
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs font-bold uppercase tracking-wider text-gray-700 block mb-1.5">
                     Your Name:
@@ -2245,65 +2243,77 @@ const HomePage = () => {
       )}
 
       {/* ========================================================
-          PRODUCT EXPERT AI CHATBOT (Floating Widget)
+          HERITAGE AI AGENT (Floating Widget)
           ======================================================== */}
       {/* Floating Trigger Button */}
       <button
         onClick={() => setIsExpertOpen(!isExpertOpen)}
-        className="fixed bottom-24 right-5 sm:right-8 z-50 w-14 h-14 rounded-full bg-[#d4af37] text-black shadow-2xl flex items-center justify-center hover:scale-110 transition-transform duration-300 cursor-pointer group"
-        title="Product Expert — Footwear Assistant"
-        aria-label="Open Product Expert"
+        className="fixed bottom-24 right-5 sm:right-8 z-50 w-14 h-14 rounded-full bg-[#111111] text-[#d4af37] border-2 border-[#d4af37] shadow-[0_0_20px_rgba(212,175,55,0.4)] flex items-center justify-center hover:scale-110 transition-transform duration-300 cursor-pointer group"
+        title="Heritage AI Agent — Advanced Footwear Concierge"
+        aria-label="Open Heritage Agent"
       >
         {isExpertOpen ? <X size={22} /> : <Bot size={22} />}
         {!isExpertOpen && (
-          <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white animate-pulse" />
+          <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#d4af37] rounded-full border-2 border-[#111111] animate-pulse" />
         )}
       </button>
 
-      {/* Chat Window */}
+      {/* Chat Window - Centered Modal Style */}
       {isExpertOpen && (
-        <div className="fixed bottom-44 right-5 sm:right-8 z-50 w-[min(380px,calc(100vw-24px))] bg-white rounded-3xl shadow-2xl border border-[#d4af37]/30 flex flex-col overflow-hidden"
-          style={{ maxHeight: 'min(520px, calc(100vh - 180px))' }}
+        <div
+          className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-300"
+          onClick={() => setIsExpertOpen(false)}
         >
-          {/* Header */}
-          <div className="bg-[#111111] px-5 py-4 flex items-center justify-between shrink-0">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-[#d4af37] flex items-center justify-center">
-                <Bot size={18} className="text-black" />
+          <div
+            className="w-[min(500px,95vw)] bg-white rounded-[2.5rem] shadow-2xl border-4 border-[#111111] flex flex-col overflow-hidden animate-in zoom-in-95 duration-300"
+            style={{ maxHeight: '85vh' }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="bg-[#111111] px-8 py-6 flex items-center justify-between shrink-0 border-b border-[#d4af37]/30">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-[#d4af37] flex items-center justify-center shadow-lg shadow-[#d4af37]/40 ring-2 ring-white/10">
+                  <Bot size={24} className="text-black" />
+                </div>
+                <div>
+                  <p className="text-white text-base font-black uppercase tracking-widest">Heritage AI Agent</p>
+                  <p className="text-[#d4af37] text-[9px] font-black flex items-center gap-1.5 uppercase tracking-tighter">
+                    <span className="w-2 h-2 rounded-full bg-[#d4af37] animate-pulse shadow-[0_0_5px_#d4af37]" />
+                    Advanced Agent • 26+ Years Knowledge
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="text-white text-sm font-black uppercase tracking-wider">Product Expert</p>
-                <p className="text-[#d4af37] text-[10px] font-bold">Live Footwear Concierge • Online</p>
-              </div>
+              <button
+                onClick={() => setIsExpertOpen(false)}
+                className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-[#d4af37] hover:bg-white/10 transition-all cursor-pointer border border-white/10"
+              >
+                <X size={24} />
+              </button>
             </div>
-            <button onClick={() => setIsExpertOpen(false)} className="text-gray-400 hover:text-white cursor-pointer">
-              <X size={18} />
-            </button>
-          </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-[#faf9f6]">
+          <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-[#f8f8f8]">
             {expertMessages.map((msg, idx) => (
               <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                 {msg.role === 'bot' && (
-                  <div className="w-7 h-7 rounded-full bg-[#d4af37] flex items-center justify-center mr-2 shrink-0 mt-1">
-                    <Bot size={14} className="text-black" />
+                  <div className="w-8 h-8 rounded-full bg-[#111111] flex items-center justify-center mr-3 shrink-0 mt-1 shadow-md">
+                    <Bot size={16} className="text-[#d4af37]" />
                   </div>
                 )}
-                <div className={`max-w-[85%] px-4 py-3 rounded-2xl text-xs leading-relaxed whitespace-pre-line ${
+                <div className={`max-w-[85%] px-5 py-4 rounded-3xl text-sm leading-relaxed whitespace-pre-line shadow-sm border ${
                   msg.role === 'user'
-                    ? 'bg-[#111111] text-white rounded-br-none'
-                    : 'bg-white text-gray-800 border border-black/10 rounded-bl-none shadow-sm'
+                    ? 'bg-[#111111] text-white rounded-br-none border-white/10'
+                    : 'bg-white text-gray-800 border-black/5 rounded-bl-none'
                 }`}>
-                  <div>{msg.text}</div>
+                  <div className={msg.role === 'bot' ? 'font-medium' : ''}>{msg.text}</div>
 
-                  {/* Interactive Shoe Cards Suggested by Product Expert */}
+                  {/* Interactive Shoe Cards Suggested by Agent */}
                   {msg.products && msg.products.length > 0 && (
-                    <div className="mt-3 pt-3 border-t border-black/10 space-y-2">
-                      <p className="text-[10px] font-black uppercase tracking-wider text-[#d4af37]">
-                        Tap to View &amp; Customize:
+                    <div className="mt-4 pt-4 border-t border-black/10 space-y-3">
+                      <p className="text-[10px] font-black uppercase tracking-widest text-[#d4af37] flex items-center gap-2">
+                        <Zap size={10} /> Expert Selection:
                       </p>
-                      <div className="grid grid-cols-1 gap-2">
+                      <div className="grid grid-cols-1 gap-2.5">
                         {msg.products.map((p) => (
                           <div
                             key={p.id || p._id}
@@ -2311,19 +2321,19 @@ const HomePage = () => {
                               setModalProduct(p);
                               setIsExpertOpen(false);
                             }}
-                            className="flex items-center gap-2.5 p-2 rounded-xl bg-gray-50 hover:bg-[#d4af37]/15 border border-black/5 hover:border-[#d4af37]/40 cursor-pointer transition-all"
+                            className="flex items-center gap-3 p-3 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-md border border-black/5 hover:border-[#d4af37]/40 cursor-pointer transition-all group"
                           >
                             <img
                               src={resolveImageUrl(p.images?.[0] || p.image || '/New-Samadhan-Shoe-Mart/Main-Shoe.png')}
                               alt={p.name}
-                              className="w-10 h-10 object-contain bg-white rounded-lg p-1 border border-black/5 shrink-0"
+                              className="w-12 h-12 object-contain bg-white rounded-xl p-1.5 border border-black/5 shrink-0 group-hover:scale-105 transition-transform"
                             />
                             <div className="flex-1 min-w-0">
-                              <p className="text-[11px] font-bold text-gray-900 truncate">{p.name}</p>
-                              <p className="text-[10px] text-gray-500">₹{p.price?.toLocaleString()} • ⭐{p.rating}</p>
+                              <p className="text-xs font-black text-gray-900 truncate uppercase tracking-tight">{p.name}</p>
+                              <p className="text-[10px] font-bold text-gray-500 uppercase tracking-tighter">₹{p.price?.toLocaleString()} • {p.category}</p>
                             </div>
-                            <span className="text-[9px] font-black uppercase tracking-wider text-black bg-[#d4af37] px-2 py-1 rounded-md shrink-0">
-                              VIEW
+                            <span className="text-[9px] font-black uppercase tracking-widest text-black bg-[#d4af37] px-3 py-1.5 rounded-lg shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                              OPEN
                             </span>
                           </div>
                         ))}
@@ -2367,7 +2377,8 @@ const HomePage = () => {
             </button>
           </form>
         </div>
-      )}
+      </div>
+    )}
 
       {/* ========================================================
           LIVE TOAST NOTIFICATION
