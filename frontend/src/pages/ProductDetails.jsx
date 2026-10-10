@@ -424,6 +424,12 @@ const ProductDetails = () => {
                  <span className="text-[var(--text-secondary)] font-bold text-[9px] uppercase tracking-[0.2em]">{product?.rating || '5.0'} Elite Rating</span>
                  <div className="h-4 w-px bg-[var(--border-color)] mx-2"></div>
                  <span className="text-[var(--text-secondary)] font-bold text-[9px] uppercase tracking-[0.2em]">{product?.numReviews || 0} Reviews</span>
+                 <button
+                   onClick={() => document.getElementById('reviews-section')?.scrollIntoView({ behavior: 'smooth' })}
+                   className="ml-auto text-[9px] font-black text-[var(--accent)] uppercase tracking-widest border border-[var(--accent)]/20 px-3 py-1 rounded-full hover:bg-[var(--accent)] hover:text-white transition-all"
+                 >
+                   Sync Reviews
+                 </button>
               </div>
 
               <h1 className="text-4xl md:text-6xl font-editorial font-black text-[var(--text-primary)] mb-6 tracking-tighter uppercase leading-[0.9]">
@@ -484,15 +490,15 @@ const ProductDetails = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                  <button
                    onClick={handleAddToCart}
-                   className={`py-7 rounded-[2rem] text-[10px] font-black uppercase tracking-[0.3em] transition-all shadow-xl flex items-center justify-center gap-4 group ${added ? 'bg-emerald-500 text-white' : 'bg-[var(--text-primary)] text-[var(--bg-primary)] hover:bg-[var(--accent)]'}`}
+                   className={`py-7 rounded-[2.5rem] text-[11px] font-black uppercase tracking-[0.3em] transition-all shadow-2xl flex items-center justify-center gap-4 group border-2 ${added ? 'bg-emerald-500 text-white border-emerald-400' : 'bg-white text-black border-black hover:bg-black hover:text-white dark:bg-black dark:text-white dark:border-white dark:hover:bg-white dark:hover:text-black'}`}
                  >
-                    {added ? <CheckCircle size={20} /> : <ShoppingBag size={20} className="cart-icon-target" />} {added ? 'Secured' : 'Add to Collection'}
+                    {added ? <CheckCircle size={20} /> : <ShoppingBag size={20} className="cart-icon-target" />} {added ? 'Secured in Bag' : 'Add to Collection'}
                  </button>
                  <button
                    onClick={handleWhatsAppOrder}
-                   className="bg-emerald-500/10 text-emerald-600 border-2 border-emerald-500/20 py-7 rounded-[2rem] text-[10px] font-black uppercase tracking-[0.3em] hover:bg-emerald-500 hover:text-white transition-all shadow-lg flex items-center justify-center gap-4 sm:col-span-2"
+                   className="bg-emerald-500 text-white border-2 border-emerald-400 py-7 rounded-[2.5rem] text-[11px] font-black uppercase tracking-[0.3em] hover:bg-emerald-600 transition-all shadow-xl flex items-center justify-center gap-4 sm:col-span-2"
                  >
-                    <MessageCircle size={20} /> Pay via WhatsApp
+                    <MessageCircle size={22} /> Instant Checkout via WhatsApp
                  </button>
               </div>
             </div>
@@ -541,12 +547,12 @@ const ProductDetails = () => {
                     ))}
                 </div>
 
-                <div className="mt-12 p-8 bg-emerald-500/5 rounded-3xl border border-emerald-500/20 flex items-center gap-6 group">
-                   <div className="w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center text-white shadow-[0_0_20px_rgba(16,185,129,0.3)] group-hover:scale-110 transition-transform">
+                <div className="mt-12 p-8 bg-[#d4af37]/5 rounded-3xl border border-[#d4af37]/20 flex items-center gap-6 group">
+                   <div className="w-16 h-16 bg-[#d4af37] rounded-full flex items-center justify-center text-black shadow-[0_0_20px_rgba(212,175,55,0.3)] group-hover:scale-110 transition-transform">
                       <ShieldCheck size={32} />
                    </div>
                    <div>
-                      <h4 className="text-xs font-black uppercase tracking-widest text-emerald-600 mb-1">SECURE WHATSAPP ESCROW</h4>
+                      <h4 className="text-xs font-black uppercase tracking-widest text-[#d4af37] mb-1">SECURE WHATSAPP ESCROW</h4>
                       <p className="text-[10px] font-bold text-gray-500 uppercase tracking-tight">Your payment is only processed after a human expert verifies your size & stock.</p>
                    </div>
                 </div>
@@ -555,7 +561,7 @@ const ProductDetails = () => {
         </div>
 
         {/* REVIEWS SYSTEM */}
-        <div className="reveal-item mt-24">
+        <div id="reviews-section" className="reveal-item mt-24">
           <Reviews productId={product.id || product._id} isAdmin={user?.role === 'admin'} />
         </div>
       </div>

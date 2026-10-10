@@ -136,9 +136,9 @@ const AdminDashboard = () => {
 
   const statCards = [
     { title: 'Total Revenue', value: `₹${(stats.revenue || 0).toLocaleString()}`, icon: <DollarSign className="w-8 h-8 text-[#111]" />, bg: 'bg-white' },
-    { title: 'Total Orders', value: stats.totalOrders, icon: <ShoppingBag className="w-8 h-8 text-[#8B0000]" />, bg: 'bg-white' },
-    { title: 'Vault Inventory', value: `${stats.totalStockCount} Units`, icon: <Package className="w-8 h-8 text-blue-600" />, bg: 'bg-white' },
-    { title: 'Matrix Valuation', value: `₹${(stats.valuation || 0).toLocaleString()}`, icon: <Zap className="w-8 h-8 text-emerald-600" />, bg: 'bg-white' },
+    { title: 'Total Orders', value: stats.totalOrders, icon: <ShoppingBag className="w-8 h-8 text-[#d4af37]" />, bg: 'bg-white' },
+    { title: 'Vault Inventory', value: `${stats.totalStockCount} Units`, icon: <Package className="w-8 h-8 text-[#d4af37]" />, bg: 'bg-white' },
+    { title: 'Matrix Valuation', value: `₹${(stats.valuation || 0).toLocaleString()}`, icon: <Zap className="w-8 h-8 text-[#d4af37]" />, bg: 'bg-white' },
   ];
 
   const quickActions = [
@@ -155,7 +155,7 @@ const AdminDashboard = () => {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16">
           <div>
             <div className="flex items-center gap-3 mb-4">
-              <div className="px-3 py-1 bg-[#8B0000] text-white text-[8px] font-black uppercase tracking-[0.2em] rounded-full flex items-center gap-2">
+              <div className="px-3 py-1 bg-[#111] text-[#d4af37] text-[8px] font-black uppercase tracking-[0.2em] rounded-full flex items-center gap-2 border border-[#d4af37]/20">
                 <ShieldCheck size={10} /> Secure Node
               </div>
               <div className="px-3 py-1 bg-white text-[#111] border border-[#111]/10 text-[8px] font-black uppercase tracking-[0.2em] rounded-full">
@@ -170,7 +170,7 @@ const AdminDashboard = () => {
             <button
               onClick={handleSyncVault}
               disabled={syncing}
-              className="bg-emerald-600 text-white px-8 py-5 rounded-[2rem] font-black uppercase tracking-widest text-[10px] flex items-center gap-3 shadow-xl hover:-translate-y-1 transition-all duration-300 disabled:opacity-50"
+              className="bg-[#111] text-[#d4af37] border border-[#d4af37]/20 px-8 py-5 rounded-[2rem] font-black uppercase tracking-widest text-[10px] flex items-center gap-3 shadow-xl hover:-translate-y-1 transition-all duration-300 disabled:opacity-50"
             >
               {syncing ? <Loader2 className="animate-spin" size={18} /> : <Zap size={18} />}
               Sync Vault
@@ -186,7 +186,7 @@ const AdminDashboard = () => {
             ))}
             <button
               onClick={handleFactoryReset}
-              className="bg-rose-50 text-rose-600 px-6 py-5 rounded-[2rem] border border-rose-100 hover:bg-rose-600 hover:text-white transition-all flex items-center font-black uppercase tracking-widest text-[10px] shadow-sm"
+              className="bg-white text-red-600 px-6 py-5 rounded-[2rem] border border-red-100 hover:bg-red-600 hover:text-white transition-all flex items-center font-black uppercase tracking-widest text-[10px] shadow-sm"
             >
               <RotateCcw className="w-4 h-4 mr-2" /> Reset Vault
             </button>
@@ -194,7 +194,7 @@ const AdminDashboard = () => {
         </div>
 
         {success && (
-           <div className="bg-emerald-600 text-white p-6 rounded-[2.5rem] mb-12 flex items-center shadow-xl border-4 border-white animate-in zoom-in-95 no-blur-zone">
+           <div className="bg-[#111] text-[#d4af37] p-6 rounded-[2.5rem] mb-12 flex items-center shadow-xl border border-[#d4af37]/20 animate-in zoom-in-95 no-blur-zone">
               <CheckCircle className="w-8 h-8 mr-4" />
               <div>
                  <p className="font-black uppercase tracking-widest text-lg">System Wipe Successful</p>
@@ -204,7 +204,7 @@ const AdminDashboard = () => {
         )}
 
         {syncStatus && (
-           <div className={`${syncStatus.success ? 'bg-emerald-600' : 'bg-rose-600'} text-white p-6 rounded-[2.5rem] mb-12 flex items-center shadow-xl border-4 border-white animate-in slide-in-from-top-4 no-blur-zone`}>
+           <div className={`${syncStatus.success ? 'bg-[#111] text-[#d4af37]' : 'bg-red-600 text-white'} p-6 rounded-[2.5rem] mb-12 flex items-center shadow-xl border border-[#d4af37]/20 animate-in slide-in-from-top-4 no-blur-zone`}>
               {syncStatus.success ? <CheckCircle className="w-8 h-8 mr-4" /> : <ShieldCheck className="w-8 h-8 mr-4" />}
               <div>
                  <p className="font-black uppercase tracking-widest text-lg">{syncStatus.success ? 'Vault Synchronized' : 'Sync Protocol Failed'}</p>
@@ -218,10 +218,10 @@ const AdminDashboard = () => {
           {statCards.map((card, index) => (
             <div key={index} className="bg-white p-6 md:p-10 rounded-[2.5rem] md:rounded-[3rem] border border-[#111]/5 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group">
               <div className="flex justify-between items-start mb-6">
-                <div className="p-4 bg-[#F7F5F0] rounded-2xl group-hover:bg-[#111] group-hover:text-white transition-colors duration-500">
+                <div className="p-4 bg-[#F7F5F0] rounded-2xl group-hover:bg-[#111] group-hover:text-[#d4af37] transition-colors duration-500">
                   {React.cloneElement(card.icon, { size: 24, className: "md:w-8 md:h-8" })}
                 </div>
-                <div className="flex items-center gap-1 text-[8px] font-black text-emerald-500 uppercase tracking-widest">
+                <div className="flex items-center gap-1 text-[8px] font-black text-[#d4af37] uppercase tracking-widest">
                   <TrendingUp size={12} /> +12%
                 </div>
               </div>
@@ -237,28 +237,28 @@ const AdminDashboard = () => {
             {
               title: 'Catalog Control',
               desc: 'Manage elite inventory and adjust valuations.',
-              icon: <Package className="text-blue-600" />,
+              icon: <Package className="text-[#d4af37]" />,
               link: '/admin/products',
               label: 'Inventory Matrix'
             },
             {
               title: 'Logistics Hub',
               desc: 'Monitor user orders and delivery vectors.',
-              icon: <Truck className="text-emerald-500" />,
+              icon: <Truck className="text-[#d4af37]" />,
               link: '/admin/orders',
               label: 'Shipment Stream'
             },
             {
               title: 'Gallery Assets',
               desc: 'Update workshop videos and heritage photos.',
-              icon: <ImageIcon className="text-indigo-500" />,
+              icon: <ImageIcon className="text-[#d4af37]" />,
               link: '/admin/gallery',
               label: 'Media Vault'
             },
             {
               title: 'Feedback Review',
               desc: 'Audit customer interactions and reputation.',
-              icon: <MessageSquare className="text-amber-500" />,
+              icon: <MessageSquare className="text-[#d4af37]" />,
               link: '/admin/reviews',
               label: 'Interaction Audit'
             }
@@ -275,7 +275,7 @@ const AdminDashboard = () => {
               <p className="text-[#6B6B6B] font-medium leading-relaxed uppercase text-[9px] tracking-widest mb-6 md:mb-8 flex-grow">
                 {module.desc}
               </p>
-              <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-[0.2em] text-[#111] group-hover:text-[#8B0000] transition-colors">
+              <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-[0.2em] text-[#111] group-hover:text-[#d4af37] transition-colors">
                 <span>{module.label}</span>
                 <ChevronRight size={16} className="group-hover:translate-x-2 transition-transform" />
               </div>

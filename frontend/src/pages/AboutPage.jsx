@@ -169,22 +169,22 @@ const AboutPage = () => {
     <div ref={containerRef} className="no-blur-zone" style={{ background: '#F7F5F0', color: '#111111', fontFamily: "'Inter', sans-serif", overflowX: 'hidden' }}>
 
       {/* ── HERO ── */}
-      <section style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', padding: '120px 24px 80px', overflow: 'hidden', background: '#0a0a0a' }}>
+      <section style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', padding: '120px 24px 80px', overflow: 'hidden', background: '#F7F5F0' }}>
 
         {/* TECHNICAL OVERLAYS */}
         <div className="absolute inset-0 pointer-events-none z-10">
-          <div className="about-hud absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle, rgba(139,0,0,0.15) 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
-          <div className="about-hud absolute top-10 left-10 w-20 h-20 border-t-2 border-l-2 border-[#8B0000]"></div>
-          <div className="about-hud absolute bottom-10 right-10 w-20 h-20 border-b-2 border-r-2 border-[#8B0000]"></div>
-          <div className="about-hud absolute top-12 left-32 font-mono text-[8px] text-[#8B0000] tracking-[0.4em]">
+          <div className="about-hud absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle, rgba(139,0,0,0.2) 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
+          <div className="about-hud absolute top-10 left-10 w-20 h-20 border-t-2 border-l-2 border-[#8B0000]/30"></div>
+          <div className="about-hud absolute bottom-10 right-10 w-20 h-20 border-b-2 border-r-2 border-[#8B0000]/30"></div>
+          <div className="about-hud absolute top-12 left-32 font-mono text-[8px] text-[#8B0000] tracking-[0.4em] opacity-60">
             SYSTEM_TYPE: HERITAGE_CORE<br/>LOAD_VAL: 1990_STABLE
           </div>
         </div>
 
-        <div style={{ position: 'absolute', bottom: '5%', left: '-2vw', fontSize: '22vw', fontFamily: "'Playfair Display', serif", fontWeight: 900, color: 'rgba(139,0,0,0.05)', whiteSpace: 'nowrap', pointerEvents: 'none', letterSpacing: '-0.05em', userSelect: 'none' }}>SAMADHAN</div>
+        <div style={{ position: 'absolute', bottom: '5%', left: '-2vw', fontSize: '22vw', fontFamily: "'Playfair Display', serif", fontWeight: 900, color: 'rgba(139,0,0,0.03)', whiteSpace: 'nowrap', pointerEvents: 'none', letterSpacing: '-0.05em', userSelect: 'none' }}>SAMADHAN</div>
 
         <div style={{ maxWidth: '1280px', width: '100%', margin: '0 auto', position: 'relative', zIndex: 20 }}>
-          <div className="about-hero-reveal" style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '7px 18px', background: 'rgba(139,0,0,0.1)', borderRadius: '24px', marginBottom: '36px', border: '1px solid rgba(139,0,0,0.2)' }}>
+          <div className="about-hero-reveal" style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '7px 18px', background: 'rgba(139,0,0,0.05)', borderRadius: '24px', marginBottom: '36px', border: '1px solid rgba(139,0,0,0.1)' }}>
             <Cpu size={14} color="#8B0000" />
             <span style={{ fontSize: '10px', fontWeight: 800, letterSpacing: '0.45em', color: '#8B0000', textTransform: 'uppercase' }}>ESTABLISHED 1990 · NASHIK</span>
           </div>
@@ -194,17 +194,17 @@ const AboutPage = () => {
             { text: 'SAMADHAN', italic: true },
           ].map((w, i) => (
             <div key={i} style={{ overflow: 'hidden', marginBottom: i < 2 ? '12px' : '32px' }}>
-              <h1 style={{ margin: 0, fontFamily: "'Playfair Display', serif", fontWeight: w.italic ? 300 : 900, lineHeight: 0.9, letterSpacing: '-0.03em', textTransform: 'uppercase', fontSize: 'clamp(3rem, 9vw, 10rem)', fontStyle: w.italic ? 'italic' : 'normal', color: w.italic ? '#8B0000' : 'white' }}>
+              <h1 style={{ margin: 0, fontFamily: "'Playfair Display', serif", fontWeight: w.italic ? 300 : 900, lineHeight: 0.9, letterSpacing: '-0.03em', textTransform: 'uppercase', fontSize: 'clamp(3rem, 9vw, 10rem)', fontStyle: w.italic ? 'italic' : 'normal', color: w.italic ? '#8B0000' : '#111111' }}>
                 <span className="about-hero-word" style={{ display: 'inline-block' }}>{w.text}</span>
               </h1>
             </div>
           ))}
           <div className="about-hero-sub" style={{ maxWidth: '620px' }}>
-            <p style={{ fontSize: '18px', lineHeight: 1.8, color: 'rgba(255,255,255,0.6)', margin: 0, fontWeight: 500, fontStyle: 'italic' }}>
-              "In Sanskrit and Marathi, <strong style={{ color: 'white' }}>'Samadhan'</strong> means absolute inner contentment. This philosophy is the foundation of our high-fidelity cobbler guild."
+            <p style={{ fontSize: '18px', lineHeight: 1.8, color: '#111111', opacity: 0.7, margin: 0, fontWeight: 500, fontStyle: 'italic' }}>
+              "In Sanskrit and Marathi, <strong style={{ color: '#111111' }}>'Samadhan'</strong> means absolute inner contentment. This philosophy is the foundation of our high-fidelity cobbler guild."
             </p>
             <div style={{ display: 'flex', gap: '20px', marginTop: '48px', flexWrap: 'wrap' }}>
-              <Link to="/products" style={{ background: '#8B0000', color: 'white', padding: '20px 48px', borderRadius: '16px', fontSize: '11px', fontWeight: 900, letterSpacing: '0.4em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '14px', boxShadow: '0 20px 50px rgba(139,0,0,0.3)' }}>
+              <Link to="/products" style={{ background: '#8B0000', color: 'white', padding: '20px 48px', borderRadius: '16px', fontSize: '11px', fontWeight: 900, letterSpacing: '0.4em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '14px', boxShadow: '0 20px 50px rgba(139,0,0,0.2)' }}>
                 EXPLORE COLLECTION <ArrowRight size={18} />
               </Link>
             </div>
@@ -214,14 +214,14 @@ const AboutPage = () => {
         {/* 3D FLOATING ASSET */}
         <div ref={shoeRef} className="about-shoe-trigger" style={{ position: 'absolute', right: '5%', top: '20%', width: '40vw', pointerEvents: 'none', zIndex: 15, perspective: '6000px', transformStyle: 'preserve-3d' }}>
            <div className="relative w-full h-full transform-gpu">
-             <img src={resolveImageUrl("/New-Samadhan-Shoe-Mart/Main-Shoe.png")} alt="Handcrafted Excellence" style={{ width: '100%', filter: 'drop-shadow(0 50px 100px rgba(139,0,0,0.4))' }} />
+             <img src={resolveImageUrl("/New-Samadhan-Shoe-Mart/Main-Shoe.png")} alt="Handcrafted Excellence" style={{ width: '100%', filter: 'drop-shadow(0 50px 100px rgba(0,0,0,0.2)) brightness(1.1) contrast(1.05)' }} />
              {/* VIRTUAL SHINE LAYER */}
-             <div className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-40"
+             <div className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-30"
                   style={{ background: 'linear-gradient(110deg, transparent 40%, rgba(255,255,255,0.8) 50%, transparent 60%)', backgroundSize: '200% 100%', animation: 'shine 4s infinite linear' }}>
              </div>
            </div>
            {/* SCAN LINE */}
-           <div className="absolute top-0 left-0 w-full h-[2px] bg-[#8B0000] shadow-[0_0_20px_#8B0000] animate-scan-slow opacity-50"></div>
+           <div className="absolute top-0 left-0 w-full h-[2px] bg-[#8B0000] shadow-[0_0_20px_#8B0000] animate-scan-slow opacity-30"></div>
         </div>
       </section>
 

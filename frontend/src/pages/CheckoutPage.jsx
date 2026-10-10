@@ -211,6 +211,7 @@ const CheckoutPage = () => {
                             name="name"
                             value={formData.name}
                             onChange={handleInputChange}
+                            onKeyDown={(e) => e.stopPropagation()}
                             className="w-full pl-12 sm:pl-16 pr-6 sm:pr-8 py-4 sm:py-6 bg-[var(--bg-primary)] rounded-[1.5rem] sm:rounded-[2rem] font-bold text-[var(--text-primary)] outline-none border border-[var(--border-color)] focus:border-[var(--accent)]/30 transition-all placeholder:text-[var(--text-primary)]/20 text-sm sm:text-base"
                             placeholder="Elite Member Name"
                           />
@@ -224,6 +225,7 @@ const CheckoutPage = () => {
                             name="phone"
                             value={formData.phone}
                             onChange={handleInputChange}
+                            onKeyDown={(e) => e.stopPropagation()}
                             className="w-full pl-12 sm:pl-16 pr-6 sm:pr-8 py-4 sm:py-6 bg-[var(--bg-primary)] rounded-[1.5rem] sm:rounded-[2rem] font-bold text-[var(--text-primary)] outline-none border border-[var(--border-color)] focus:border-[var(--accent)]/30 transition-all placeholder:text-[var(--text-primary)]/20 text-sm sm:text-base"
                             placeholder="+91 XXXXX XXXXX"
                           />
@@ -262,6 +264,7 @@ const CheckoutPage = () => {
                           name="address"
                           value={formData.address}
                           onChange={handleInputChange}
+                          onKeyDown={(e) => e.stopPropagation()}
                           className="w-full pl-12 sm:pl-16 pr-6 sm:pr-8 py-4 sm:py-6 bg-[var(--bg-primary)] rounded-[1.5rem] sm:rounded-[2rem] font-bold text-[var(--text-primary)] outline-none border border-[var(--border-color)] focus:border-[var(--accent)]/30 transition-all min-h-[120px] sm:min-h-[140px] placeholder:text-[var(--text-primary)]/20 text-sm sm:text-base"
                           placeholder="Complete Street Address & Landmarks"
                         />
@@ -299,6 +302,7 @@ const CheckoutPage = () => {
                             name="city"
                             value={formData.city}
                             onChange={handleInputChange}
+                            onKeyDown={(e) => e.stopPropagation()}
                             className="w-full px-6 sm:px-8 py-4 sm:py-6 bg-[var(--bg-primary)] rounded-[1.5rem] sm:rounded-[2rem] font-bold text-[var(--text-primary)] outline-none border border-[var(--border-color)] focus:border-[var(--accent)]/30 transition-all placeholder:text-[var(--text-primary)]/20 text-sm sm:text-base"
                             placeholder="Enter City"
                           />
@@ -310,6 +314,7 @@ const CheckoutPage = () => {
                           name="pincode"
                           value={formData.pincode}
                           onChange={handleInputChange}
+                          onKeyDown={(e) => e.stopPropagation()}
                           className="w-full px-6 sm:px-8 py-4 sm:py-6 bg-[var(--bg-primary)] rounded-[1.5rem] sm:rounded-[2rem] font-bold text-[var(--text-primary)] outline-none border border-[var(--border-color)] focus:border-[var(--accent)]/30 transition-all placeholder:text-[var(--text-primary)]/20 text-sm sm:text-base"
                           placeholder="6 Digits"
                         />

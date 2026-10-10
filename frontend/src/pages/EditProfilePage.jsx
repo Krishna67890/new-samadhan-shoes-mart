@@ -104,7 +104,7 @@ const EditProfilePage = () => {
     : '/boy.png'));
 
   return (
-    <div className="min-h-screen bg-[#F7F5F0] text-[#111111] pt-36 pb-24 px-4 sm:px-10 lg:px-20 relative overflow-x-hidden no-blur-zone" ref={containerRef}>
+    <div className="min-h-screen bg-[#F7F5F0] text-[#111111] pt-32 pb-24 px-4 sm:px-10 lg:px-20 relative overflow-x-hidden no-blur-zone" ref={containerRef}>
       {/* Background patterns */}
       <div className="fixed inset-0 bg-[radial-gradient(#111111_1px,transparent_1px)] [background-size:32px_32px] pointer-events-none opacity-[0.02]"></div>
 
@@ -195,14 +195,14 @@ const EditProfilePage = () => {
                 <div className="space-y-2">
                   <label className="label-text-lux">Full Name</label>
                   <div className="relative">
-                    <input name="name" value={formData.name} onChange={handleInputChange} type="text" className="form-input-lux" placeholder="Krishna Patil Rajput" required />
+                    <input name="name" value={formData.name} onChange={handleInputChange} onKeyDown={(e) => e.stopPropagation()} type="text" className="form-input-lux" placeholder="Krishna Patil Rajput" required />
                     <User className="input-icon-lux" size={16} />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <label className="label-text-lux">WhatsApp Number</label>
                   <div className="relative">
-                    <input name="phone" value={formData.phone} onChange={handleInputChange} type="tel" className="form-input-lux" placeholder="8888888888" required />
+                    <input name="phone" value={formData.phone} onChange={handleInputChange} onKeyDown={(e) => e.stopPropagation()} type="tel" className="form-input-lux" placeholder="8888888888" required />
                     <Phone className="input-icon-lux" size={16} />
                   </div>
                 </div>
@@ -211,7 +211,7 @@ const EditProfilePage = () => {
               <div className="space-y-2">
                 <label className="label-text-lux">Physical Address</label>
                 <div className="relative">
-                  <input name="address" value={formData.address} onChange={handleInputChange} type="text" className="form-input-lux" placeholder="Building, Street, Landmark" required />
+                  <input name="address" value={formData.address} onChange={handleInputChange} onKeyDown={(e) => e.stopPropagation()} type="text" className="form-input-lux" placeholder="Building, Street, Landmark" required />
                   <MapPin className="input-icon-lux" size={16} />
                 </div>
               </div>
@@ -225,11 +225,11 @@ const EditProfilePage = () => {
                 </div>
                 <div className="space-y-2">
                   <label className="label-text-lux">City Node</label>
-                  <input name="city" value={formData.city} onChange={handleInputChange} type="text" className="form-input-lux" placeholder="Nashik" required />
+                  <input name="city" value={formData.city} onChange={handleInputChange} onKeyDown={(e) => e.stopPropagation()} type="text" className="form-input-lux" placeholder="Nashik" required />
                 </div>
                 <div className="space-y-2">
                   <label className="label-text-lux">Pincode Vector</label>
-                  <input name="pincode" value={formData.pincode} onChange={handleInputChange} type="text" className="form-input-lux" placeholder="422001" required />
+                  <input name="pincode" value={formData.pincode} onChange={handleInputChange} onKeyDown={(e) => e.stopPropagation()} type="text" className="form-input-lux" placeholder="422001" required />
                 </div>
               </div>
 

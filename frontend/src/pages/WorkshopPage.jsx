@@ -281,19 +281,20 @@ Requested via New Samadhan Shoes Website`;
   };
 
   return (
-    <div ref={containerRef} className="bg-[#F7F5F0] text-[#111111] min-h-screen pt-28 pb-20 font-sans selection:bg-[#8B0000] selection:text-white overflow-x-hidden no-blur-zone">
+    <div ref={containerRef} className="bg-[#F7F5F0] text-[#111111] min-h-screen pt-32 pb-20 font-sans selection:bg-[#8B0000] selection:text-white overflow-x-hidden no-blur-zone">
 
       {/* Hero Section with Front-Banner.jpg strictly integrated as primary background hero */}
-      <section ref={workshopHeroRef} className="relative min-h-[85vh] flex items-center px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto rounded-[4rem] overflow-hidden my-6 shadow-2xl bg-[#050505]">
+      <section ref={workshopHeroRef} className="relative min-h-[85vh] flex items-center px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto rounded-[4rem] overflow-hidden my-6 shadow-2xl bg-[#f5f5f5]">
         <div className="absolute inset-0 z-0">
           <img
             src={resolveImageUrl("/New-Samadhan-Shoe-Mart/Front-Banner.jpg")}
             alt="New Samadhan Master Atelier Banner"
-            className="w-full h-full object-cover filter brightness-[0.3] contrast-[1.2]"
+            className="w-full h-full object-cover filter brightness-105 contrast-100"
           />
           {/* TECHNICAL HUD OVERLAYS */}
           <div className="absolute inset-0 pointer-events-none">
-            <div className="workshop-hud absolute inset-0 opacity-0" style={{ backgroundImage: 'radial-gradient(circle, rgba(139,0,0,0.15) 1px, transparent 1px)', backgroundSize: '60px 60px' }}></div>
+            <div className="absolute inset-0 bg-white/20"></div>
+            <div className="workshop-hud absolute inset-0 opacity-0" style={{ backgroundImage: 'radial-gradient(circle, rgba(139,0,0,0.05) 1px, transparent 1px)', backgroundSize: '60px 60px' }}></div>
             <div className="workshop-hud absolute top-20 left-20 w-32 h-32 border-t-2 border-l-2 border-[#8B0000] opacity-0"></div>
             <div className="workshop-hud absolute bottom-20 right-20 w-32 h-32 border-b-2 border-r-2 border-[#8B0000] opacity-0"></div>
             <div className="workshop-hud absolute top-24 left-60 font-mono text-[9px] text-[#8B0000] tracking-[0.5em] opacity-0">
@@ -302,7 +303,7 @@ Requested via New Samadhan Shoes Website`;
           </div>
         </div>
 
-        <div className="relative z-10 flex flex-col gap-8 max-w-4xl text-white">
+        <div className="relative z-10 flex flex-col gap-8 max-w-4xl text-[#111111]">
           <div className="workshop-hero-reveal inline-flex items-center gap-4">
             <div className="w-12 h-[3px] bg-[#8B0000]"></div>
             <span className="text-[11px] font-black uppercase tracking-[0.6em] text-[#8B0000]">
@@ -310,12 +311,12 @@ Requested via New Samadhan Shoes Website`;
             </span>
           </div>
 
-          <h1 className="workshop-hero-reveal font-playfair text-5xl sm:text-7xl lg:text-[9rem] font-black uppercase tracking-tighter leading-[0.85] text-white">
+          <h1 className="workshop-hero-reveal font-playfair text-5xl sm:text-7xl lg:text-[9rem] font-black uppercase tracking-tighter leading-[0.85] text-[#111111]">
             MASTER <br />
             <span className="italic font-light text-[#8B0000]">CRAFT.</span>
           </h1>
 
-          <p className="workshop-hero-reveal text-lg sm:text-xl text-white/60 max-w-2xl leading-relaxed font-medium italic">
+          <p className="workshop-hero-reveal text-lg sm:text-xl text-[#111111]/70 max-w-2xl leading-relaxed font-medium italic">
             "Welcome to the engine room of Nashik's heritage. Since 1990, we have prioritized anatomical integrity and industrial-grade construction over fast-fashion trends."
           </p>
 
@@ -957,6 +958,7 @@ Requested via New Samadhan Shoes Website`;
                         required
                         value={formData.name}
                         onChange={handleInputChange}
+                        onKeyDown={(e) => e.stopPropagation()}
                         placeholder="e.g. KRISHNA RAJPUT"
                         className="w-full bg-[#F7F5F0] px-6 py-5 rounded-2xl border border-transparent focus:bg-white focus:border-[#8B0000]/30 text-xs font-bold uppercase tracking-widest outline-none transition-all"
                       />
@@ -971,6 +973,7 @@ Requested via New Samadhan Shoes Website`;
                         required
                         value={formData.phone}
                         onChange={handleInputChange}
+                        onKeyDown={(e) => e.stopPropagation()}
                         placeholder="+91 XXXXX XXXXX"
                         className="w-full bg-[#F7F5F0] px-6 py-5 rounded-2xl border border-transparent focus:bg-white focus:border-[#8B0000]/30 text-xs font-bold uppercase tracking-widest outline-none transition-all"
                       />
@@ -987,6 +990,7 @@ Requested via New Samadhan Shoes Website`;
                         name="email"
                         value={formData.email}
                         onChange={handleInputChange}
+                        onKeyDown={(e) => e.stopPropagation()}
                         placeholder="CLIENT@SAMADHAN.COM"
                         className="w-full bg-[#F7F5F0] px-6 py-5 rounded-2xl border border-transparent focus:bg-white focus:border-[#8B0000]/30 text-xs font-bold uppercase tracking-widest outline-none transition-all"
                       />
@@ -1021,6 +1025,7 @@ Requested via New Samadhan Shoes Website`;
                         required
                         value={formData.preferredDate}
                         onChange={handleInputChange}
+                        onKeyDown={(e) => e.stopPropagation()}
                         className="w-full bg-[#F7F5F0] px-6 py-5 rounded-2xl border border-transparent focus:bg-white focus:border-[#8B0000]/30 text-xs font-bold uppercase tracking-widest outline-none transition-all"
                       />
                     </div>
@@ -1051,6 +1056,7 @@ Requested via New Samadhan Shoes Website`;
                       rows={3}
                       value={formData.notes}
                       onChange={handleInputChange}
+                      onKeyDown={(e) => e.stopPropagation()}
                       placeholder="SPECIFY FOOT REQUIREMENTS, BRANDS, OR RESTORATION NEEDS..."
                       className="w-full bg-[#F7F5F0] p-6 rounded-2xl border border-transparent focus:bg-white focus:border-[#8B0000]/30 text-xs font-bold uppercase tracking-widest outline-none transition-all resize-none"
                     ></textarea>

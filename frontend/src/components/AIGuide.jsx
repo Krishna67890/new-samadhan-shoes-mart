@@ -404,6 +404,7 @@ const AIGuide = () => {
                       type="text"
                       value={chatInput}
                       onChange={(e) => setChatInput(e.target.value)}
+                      onKeyDown={(e) => e.stopPropagation()}
                       placeholder="Ask about foot size, sneakers, or latest arrivals..."
                       className="flex-1 bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-[#8B0000]/20"
                     />

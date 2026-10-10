@@ -82,36 +82,38 @@ const ProductsPage = () => {
         { y: 0, opacity: 1, duration: 0.5, stagger: 0.05, ease: 'power2.out' }
       );
 
-      // 3D Tilt Effect
-      gsap.utils.toArray(".product-card-3d").forEach(card => {
-        card.addEventListener("mousemove", e => {
-          const rect = card.getBoundingClientRect();
-          const x = e.clientX - rect.left;
-          const y = e.clientY - rect.top;
-          const centerX = rect.width / 2;
-          const centerY = rect.height / 2;
-          const rotateX = (y - centerY) / 15;
-          const rotateY = (centerX - x) / 15;
+      // 3D Tilt Effect - Desktop Only
+      if (window.innerWidth >= 1024) {
+        gsap.utils.toArray(".product-card-3d").forEach(card => {
+          card.addEventListener("mousemove", e => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = (y - centerY) / 15;
+            const rotateY = (centerX - x) / 15;
 
-          gsap.to(card.querySelector(".card-image-container"), {
-            rotateX: rotateX,
-            rotateY: rotateY,
-            scale: 1.05,
-            duration: 0.5,
-            ease: "power2.out"
+            gsap.to(card.querySelector(".card-image-container"), {
+              rotateX: rotateX,
+              rotateY: rotateY,
+              scale: 1.05,
+              duration: 0.5,
+              ease: "power2.out"
+            });
+          });
+
+          card.addEventListener("mouseleave", () => {
+            gsap.to(card.querySelector(".card-image-container"), {
+              rotateX: 0,
+              rotateY: 0,
+              scale: 1,
+              duration: 0.5,
+              ease: "power2.out"
+            });
           });
         });
-
-        card.addEventListener("mouseleave", () => {
-          gsap.to(card.querySelector(".card-image-container"), {
-            rotateX: 0,
-            rotateY: 0,
-            scale: 1,
-            duration: 0.5,
-            ease: "power2.out"
-          });
-        });
-      });
+      }
 
       // Magnetic Buttons
       const magneticBtns = document.querySelectorAll('.magnetic-btn');
@@ -202,7 +204,7 @@ const ProductsPage = () => {
   });
 
   return (
-    <div className="bg-[#F7F5F0] min-h-screen pt-32 pb-24 relative overflow-hidden no-blur-zone">
+    <div className="bg-[#F7F5F0] min-h-screen pt-20 md:pt-32 pb-12 md:pb-24 relative overflow-hidden no-blur-zone">
       {/* Background Glow Effect */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-[#8B0000]/5 rounded-full pointer-events-none"></div>
 
@@ -215,7 +217,7 @@ const ProductsPage = () => {
                <Sparkles size={12} /> Established 1990 · Nashik Atelier
             </div>
           </div>
-          <h1 className="text-4xl sm:text-7xl md:text-8xl font-editorial font-black text-[#111111] mb-6 tracking-tighter uppercase leading-none">
+          <h1 className="text-4xl sm:text-7xl md:text-8xl font-editorial font-black mb-6 tracking-tighter uppercase leading-none bg-gradient-to-r from-[#111111] via-[#8B0000] to-[#111111] bg-clip-text text-transparent">
             The Collection.
           </h1>
 

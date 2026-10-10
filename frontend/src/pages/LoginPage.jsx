@@ -96,7 +96,7 @@ const LoginPage = ({ initialMode = 'login' }) => {
   return (
     <div
       ref={containerRef}
-      className="min-h-screen bg-[#faf9f6] flex items-center justify-center p-6 pt-28 pb-16 relative font-sans"
+      className="min-h-screen bg-[#faf9f6] flex items-center justify-center p-6 pb-16 relative font-sans"
     >
       <div
         ref={formBoxRef}
@@ -189,15 +189,15 @@ const LoginPage = ({ initialMode = 'login' }) => {
           </div>
 
           {successMessage && (
-            <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 p-4 rounded-2xl mb-6 flex items-start gap-3">
-              <CheckCircle size={18} className="shrink-0 mt-0.5 text-emerald-600" />
+            <div className="bg-[#111] border border-[#d4af37]/20 text-[#d4af37] p-4 rounded-2xl mb-6 flex items-start gap-3">
+              <CheckCircle size={18} className="shrink-0 mt-0.5 text-[#d4af37]" />
               <p className="text-xs font-bold leading-relaxed">{successMessage}</p>
             </div>
           )}
 
           {(error || localError) && (
-            <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-2xl mb-6 flex items-start gap-3">
-              <AlertCircle size={18} className="shrink-0 mt-0.5 text-red-600" />
+            <div className="bg-[#111] border border-red-500/20 text-red-500 p-4 rounded-2xl mb-6 flex items-start gap-3">
+              <AlertCircle size={18} className="shrink-0 mt-0.5 text-red-500" />
               <p className="text-xs font-bold leading-relaxed">{error || localError}</p>
             </div>
           )}
@@ -216,6 +216,7 @@ const LoginPage = ({ initialMode = 'login' }) => {
                     placeholder="e.g. Ramesh Patil"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
+                    onKeyDown={(e) => e.stopPropagation()}
                     className="w-full pl-12 pr-4 py-3 bg-[#faf9f6] border border-black/15 rounded-xl font-medium text-gray-900 text-sm focus:outline-none focus:border-[#d4af37] focus:bg-white transition-all shadow-xs"
                   />
                 </div>
@@ -234,6 +235,7 @@ const LoginPage = ({ initialMode = 'login' }) => {
                   placeholder="name@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  onKeyDown={(e) => e.stopPropagation()}
                   className="w-full pl-12 pr-4 py-3 bg-[#faf9f6] border border-black/15 rounded-xl font-medium text-gray-900 text-sm focus:outline-none focus:border-[#d4af37] focus:bg-white transition-all shadow-xs"
                 />
               </div>
@@ -258,6 +260,7 @@ const LoginPage = ({ initialMode = 'login' }) => {
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  onKeyDown={(e) => e.stopPropagation()}
                   className="w-full pl-12 pr-12 py-3 bg-[#faf9f6] border border-black/15 rounded-xl font-medium text-gray-900 text-sm focus:outline-none focus:border-[#d4af37] focus:bg-white transition-all shadow-xs"
                 />
                 <button
@@ -283,6 +286,7 @@ const LoginPage = ({ initialMode = 'login' }) => {
                     placeholder="••••••••"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
+                    onKeyDown={(e) => e.stopPropagation()}
                     className="w-full pl-12 pr-4 py-3 bg-[#faf9f6] border border-black/15 rounded-xl font-medium text-gray-900 text-sm focus:outline-none focus:border-[#d4af37] focus:bg-white transition-all shadow-xs"
                   />
                 </div>
@@ -323,9 +327,9 @@ const LoginPage = ({ initialMode = 'login' }) => {
               <button
                 type="button"
                 onClick={() => navigate('/owner-login')}
-                className="py-3 px-4 rounded-xl border border-red-200 bg-red-50 text-red-700 text-xs font-bold uppercase tracking-wider hover:bg-red-100 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className="py-3 px-4 rounded-xl border border-black/15 bg-white text-[#111111] text-xs font-bold uppercase tracking-wider hover:border-[#d4af37] hover:bg-[#FAF9F6] transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
-                <ShieldCheck size={14} className="text-red-600" /> Owner Portal
+                <ShieldCheck size={14} className="text-[#d4af37]" /> Owner Portal
               </button>
             </div>
           </form>

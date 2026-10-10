@@ -123,23 +123,23 @@ const IdentityPage = () => {
   return (
     <div className="bg-[#050505] min-h-screen pt-32 pb-24 px-6 relative overflow-hidden no-blur-zone" ref={containerRef}>
       {/* Background Glow */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-600/5 rounded-full"></div>
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#d4af37]/5 rounded-full"></div>
 
       <div className="max-w-4xl mx-auto relative z-10">
 
         {isVerified && (
           <div className="fixed inset-0 bg-[#050505] z-[100] flex flex-col items-center justify-center text-center animate-in fade-in zoom-in duration-500">
-             <div className="w-32 h-32 bg-blue-600 rounded-[3rem] flex items-center justify-center text-white mb-10 shadow-[0_0_50px_rgba(37,99,235,0.4)] border border-blue-400/50">
+             <div className="w-32 h-32 bg-[#d4af37] rounded-[3rem] flex items-center justify-center text-black mb-10 shadow-[0_0_50px_rgba(212,175,55,0.4)] border border-[#d4af37]/50">
                 <Check size={56} strokeWidth={3} />
              </div>
              <h2 className="text-5xl font-black text-white uppercase tracking-tighter">Identity Synced</h2>
-             <p className="text-blue-500 font-black text-[10px] uppercase tracking-[0.6em] mt-6 italic animate-pulse">Accessing Vault Content...</p>
+             <p className="text-[#d4af37] font-black text-[10px] uppercase tracking-[0.6em] mt-6 italic animate-pulse">Accessing Vault Content...</p>
           </div>
         )}
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-16 identity-reveal">
            <div className="flex items-center gap-6">
-              <div className="w-16 h-16 bg-blue-600 rounded-[2rem] flex items-center justify-center text-white shadow-[0_0_30px_rgba(37,99,235,0.3)]">
+              <div className="w-16 h-16 bg-[#d4af37] rounded-[2rem] flex items-center justify-center text-black shadow-[0_0_30px_rgba(212,175,55,0.3)]">
                  <ShieldCheck size={32} />
               </div>
               <div>
@@ -149,14 +149,14 @@ const IdentityPage = () => {
            </div>
            <button
              onClick={playGuide}
-             className="px-8 py-4 bg-white/5 rounded-2xl text-blue-500 hover:bg-blue-600 hover:text-white transition-all border border-white/5 flex items-center gap-4 text-[10px] font-black uppercase tracking-widest"
+             className="px-8 py-4 bg-white/5 rounded-2xl text-[#d4af37] hover:bg-[#d4af37] hover:text-black transition-all border border-white/5 flex items-center gap-4 text-[10px] font-black uppercase tracking-widest"
            >
              <Volume2 size={18} /> Audio Protocol
            </button>
         </div>
 
         {error && (
-          <div className="mb-10 p-6 bg-rose-500/10 border border-rose-500/20 text-rose-500 rounded-[2rem] font-black text-[10px] uppercase tracking-widest flex items-center gap-4">
+          <div className="mb-10 p-6 bg-red-500/10 border border-red-500/20 text-red-500 rounded-[2rem] font-black text-[10px] uppercase tracking-widest flex items-center gap-4">
             <Info size={18} /> {error}
           </div>
         )}
@@ -168,14 +168,14 @@ const IdentityPage = () => {
              <div className="bg-white/5 p-10 rounded-[4rem] border border-white/10 shadow-2xl flex flex-col items-center">
                 <div
                   onClick={() => fileInputRef.current.click()}
-                  className="w-48 h-48 rounded-[3rem] bg-[#111] border-2 border-dashed border-white/10 flex items-center justify-center cursor-pointer overflow-hidden group hover:border-blue-500/50 transition-all mb-10 relative"
+                  className="w-48 h-48 rounded-[3rem] bg-[#111] border-2 border-dashed border-white/10 flex items-center justify-center cursor-pointer overflow-hidden group hover:border-[#d4af37]/50 transition-all mb-10 relative"
                 >
                   {preview ? (
                     <img src={resolveImageUrl(preview)} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" alt="Avatar" />
                   ) : (
-                    <Camera className="text-slate-700 group-hover:text-blue-500 transition-colors" size={48} />
+                    <Camera className="text-slate-700 group-hover:text-[#d4af37] transition-colors" size={48} />
                   )}
-                  <div className="absolute inset-0 bg-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <div className="absolute inset-0 bg-[#d4af37]/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                      <span className="text-[9px] font-black text-white uppercase tracking-widest">Update Image</span>
                   </div>
                 </div>
@@ -184,21 +184,21 @@ const IdentityPage = () => {
                 <div className="grid grid-cols-2 gap-4 w-full">
                   <button
                     onClick={() => setFormData({...formData, gender: 'boy'})}
-                    className={`py-5 rounded-2xl text-[9px] font-black uppercase tracking-widest transition-all ${formData.gender === 'boy' ? 'bg-blue-600 text-white shadow-xl shadow-blue-500/20' : 'bg-white/5 text-slate-500 hover:bg-white/10 border border-white/5'}`}
+                    className={`py-5 rounded-2xl text-[9px] font-black uppercase tracking-widest transition-all ${formData.gender === 'boy' ? 'bg-[#d4af37] text-black shadow-xl shadow-[#d4af37]/20' : 'bg-white/5 text-slate-500 hover:bg-white/10 border border-white/5'}`}
                   >
                     Men
                   </button>
                   <button
                     onClick={() => setFormData({...formData, gender: 'girl'})}
-                    className={`py-5 rounded-2xl text-[9px] font-black uppercase tracking-widest transition-all ${formData.gender === 'girl' ? 'bg-rose-600 text-white shadow-xl shadow-rose-500/20' : 'bg-white/5 text-slate-500 hover:bg-white/10 border border-white/5'}`}
+                    className={`py-5 rounded-2xl text-[9px] font-black uppercase tracking-widest transition-all ${formData.gender === 'girl' ? 'bg-[#d4af37] text-black shadow-xl shadow-[#d4af37]/20' : 'bg-white/5 text-slate-500 hover:bg-white/10 border border-white/5'}`}
                   >
                     Female
                   </button>
                 </div>
              </div>
 
-             <div className="bg-blue-600/5 p-8 rounded-[2.5rem] border border-blue-500/10">
-                <div className="flex items-center gap-4 text-blue-500 mb-4">
+             <div className="bg-[#d4af37]/5 p-8 rounded-[2.5rem] border border-[#d4af37]/10">
+                <div className="flex items-center gap-4 text-[#d4af37] mb-4">
                    <Zap size={20} />
                    <span className="text-[10px] font-black uppercase tracking-widest">Security Protocol</span>
                 </div>
@@ -215,14 +215,14 @@ const IdentityPage = () => {
                   <div className="space-y-4">
                      <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-6">Legal Designation</label>
                      <div className="relative">
-                        <input name="name" value={formData.name} onChange={handleInputChange} className="w-full pl-16 pr-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-blue-500/50 transition-all" placeholder="FULL NAME" />
+                        <input name="name" value={formData.name} onChange={handleInputChange} onKeyDown={(e) => e.stopPropagation()} className="w-full pl-16 pr-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-[#d4af37]/50 transition-all" placeholder="FULL NAME" />
                         <User className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
                      </div>
                   </div>
                   <div className="space-y-4">
                      <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-6">Encryption Email</label>
                      <div className="relative">
-                        <input name="email" value={formData.email} onChange={handleInputChange} className="w-full pl-16 pr-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-blue-500/50 transition-all" placeholder="EMAIL ADDRESS" />
+                        <input name="email" value={formData.email} onChange={handleInputChange} onKeyDown={(e) => e.stopPropagation()} className="w-full pl-16 pr-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-[#d4af37]/50 transition-all" placeholder="EMAIL ADDRESS" />
                         <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
                      </div>
                   </div>
@@ -231,7 +231,7 @@ const IdentityPage = () => {
                <div className="space-y-4 mb-10">
                   <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-6">WhatsApp Sync Number</label>
                   <div className="relative">
-                     <input name="phone" value={formData.phone} onChange={handleInputChange} className="w-full pl-16 pr-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-blue-500/50 transition-all" placeholder="10 DIGIT MOBILE" />
+                     <input name="phone" value={formData.phone} onChange={handleInputChange} onKeyDown={(e) => e.stopPropagation()} className="w-full pl-16 pr-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-[#d4af37]/50 transition-all" placeholder="10 DIGIT MOBILE" />
                      <Phone className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
                   </div>
                </div>
@@ -239,7 +239,7 @@ const IdentityPage = () => {
                <div className="space-y-4 mb-10">
                   <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-6">Shipping Coordinates</label>
                   <div className="relative">
-                     <textarea name="address" value={formData.address} onChange={handleInputChange} className="w-full pl-16 pr-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-blue-500/50 transition-all min-h-[120px]" placeholder="STREET ADDRESS, AREA, LANDMARK" />
+                     <textarea name="address" value={formData.address} onChange={handleInputChange} onKeyDown={(e) => e.stopPropagation()} className="w-full pl-16 pr-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-[#d4af37]/50 transition-all min-h-[120px]" placeholder="STREET ADDRESS, AREA, LANDMARK" />
                      <MapPin className="absolute left-6 top-8 text-slate-500" size={18} />
                   </div>
                </div>
@@ -247,7 +247,7 @@ const IdentityPage = () => {
                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
                   <div className="space-y-4">
                      <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-6">State</label>
-                     <select name="state" value={formData.state} onChange={handleInputChange} className="w-full px-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-blue-500/50 transition-all appearance-none cursor-pointer">
+                     <select name="state" value={formData.state} onChange={handleInputChange} className="w-full px-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-[#d4af37]/50 transition-all appearance-none cursor-pointer">
                         <option value="" className="bg-[#111]">SELECT STATE</option>
                         {Array.isArray(indiaData?.states) && indiaData.states.map(s => <option key={s} value={s} className="bg-[#111]">{s}</option>)}
                      </select>
@@ -255,24 +255,24 @@ const IdentityPage = () => {
                   <div className="space-y-4">
                      <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-6">City</label>
                      {Array.isArray(indiaData?.citiesByState?.[formData.state]) ? (
-                        <select name="city" value={formData.city} onChange={handleInputChange} className="w-full px-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-blue-500/50 transition-all appearance-none cursor-pointer">
+                        <select name="city" value={formData.city} onChange={handleInputChange} className="w-full px-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-[#d4af37]/50 transition-all appearance-none cursor-pointer">
                            <option value="" className="bg-[#111]">SELECT CITY</option>
                            {indiaData.citiesByState[formData.state].map(c => <option key={c} value={c} className="bg-[#111]">{c}</option>)}
                         </select>
                      ) : (
-                        <input name="city" value={formData.city} onChange={handleInputChange} className="w-full px-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-blue-500/50 transition-all" placeholder="CITY" />
+                        <input name="city" value={formData.city} onChange={handleInputChange} onKeyDown={(e) => e.stopPropagation()} className="w-full px-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-[#d4af37]/50 transition-all" placeholder="CITY" />
                      )}
                   </div>
                   <div className="space-y-4">
                      <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-6">Pincode</label>
-                     <input name="pincode" value={formData.pincode} onChange={handleInputChange} className="w-full px-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-blue-500/50 transition-all" placeholder="6 DIGITS" />
+                     <input name="pincode" value={formData.pincode} onChange={handleInputChange} onKeyDown={(e) => e.stopPropagation()} className="w-full px-8 py-6 bg-white/5 rounded-[2rem] font-black text-white outline-none focus:bg-white/10 border border-white/5 focus:border-[#d4af37]/50 transition-all" placeholder="6 DIGITS" />
                   </div>
                </div>
 
                <button
                  onClick={handleComplete}
                  disabled={!isFormComplete || uploading}
-                 className="w-full py-7 bg-white text-black rounded-[2rem] font-black uppercase tracking-[0.4em] text-[11px] hover:bg-blue-600 hover:text-white transition-all shadow-2xl disabled:opacity-20 flex items-center justify-center gap-6 relative overflow-hidden group"
+                 className="w-full py-7 bg-white text-black rounded-[2rem] font-black uppercase tracking-[0.4em] text-[11px] hover:bg-[#d4af37] hover:text-black transition-all shadow-2xl disabled:opacity-20 flex items-center justify-center gap-6 relative overflow-hidden group"
                >
                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/5 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
                  {uploading ? <Loader2 className="animate-spin" /> : <>Commit to Vault <ArrowLeft className="rotate-180" size={20} /></>}

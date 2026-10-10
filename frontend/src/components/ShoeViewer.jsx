@@ -131,8 +131,10 @@ const ShoeViewer = ({ modelUrl, autoRotate = true }) => {
   // Combine hover and touch/click selection for mobile compatibility
   const activePart = hoveredPart || selectedPart;
 
+  const container = useRef();
+
   return (
-    <div className="w-full h-full min-h-[500px] relative bg-transparent group overflow-hidden rounded-[3rem]">
+    <div ref={container} className="w-full h-full min-h-[500px] relative bg-transparent group overflow-hidden rounded-[3rem]">
       {/* Atelier Overlay UI */}
       <div className="absolute top-8 left-8 z-20 flex flex-col gap-2 pointer-events-none">
         <div className="flex items-center gap-3">
@@ -158,12 +160,13 @@ const ShoeViewer = ({ modelUrl, autoRotate = true }) => {
 
       <Canvas
         shadows
-        dpr={[1, 1.5]}
+        dpr={[1, 2]}
+        eventSource={container}
+        eventPrefix="client"
         camera={{ position: [0, 0.2, 0.8], fov: 35 }}
         gl={{
           antialias: true,
           toneMapping: THREE.ACESFilmicToneMapping,
-          outputEncoding: THREE.sRGBEncoding,
           alpha: true,
           powerPreference: "high-performance"
         }}
@@ -172,7 +175,6 @@ const ShoeViewer = ({ modelUrl, autoRotate = true }) => {
           <AtelierStage />
 
           <PresentationControls
-            global
             config={{ mass: 2, tension: 500 }}
             snap={{ mass: 4, tension: 1500 }}
             rotation={[0, 0.3, 0]}
@@ -229,9 +231,9 @@ const ShoeViewer = ({ modelUrl, autoRotate = true }) => {
           enableRotate={false}
           enablePan={false}
           enableZoom={true}
+          enableKeys={false}
           minDistance={0.5}
           maxDistance={1.5}
-          makeDefault
         />
       </Canvas>
 

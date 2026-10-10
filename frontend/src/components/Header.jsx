@@ -43,12 +43,17 @@ const Header = () => {
       <div className="container mx-auto px-4 flex justify-between items-center">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 group">
-          <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white transform group-hover:rotate-12 transition-transform">
-            <ShoppingBag size={24} />
+          <div className="w-10 h-10 bg-[#111111] rounded-xl flex items-center justify-center text-[#d4af37] transform group-hover:rotate-12 transition-transform shadow-lg shadow-black/10">
+            <ShoppingBag size={22} />
           </div>
-          <span className={`text-xl font-black tracking-tighter ${scrolled || location.pathname !== '/' ? 'text-slate-900' : 'text-white'}`}>
-            SAMADHAN <span className="text-blue-500">SHOES</span>
-          </span>
+          <div className="flex flex-col">
+            <span className={`text-lg font-black tracking-tighter leading-none ${scrolled || location.pathname !== '/' ? 'text-slate-900' : 'text-white'}`}>
+              NEW SAMADHAN
+            </span>
+            <span className="text-[8px] font-black tracking-[0.3em] text-[#d4af37] uppercase">
+              SHOE MART
+            </span>
+          </div>
         </Link>
 
         {/* Desktop Navigation */}
@@ -57,10 +62,10 @@ const Header = () => {
             <Link
               key={link.path}
               to={link.path}
-              className={`font-bold text-sm uppercase tracking-widest transition-colors ${
+              className={`font-bold text-[11px] uppercase tracking-[0.2em] transition-colors ${
                 location.pathname === link.path
-                  ? 'text-blue-500'
-                  : scrolled || location.pathname !== '/' ? 'text-slate-600 hover:text-blue-500' : 'text-white/80 hover:text-white'
+                  ? 'text-[#d4af37]'
+                  : scrolled || location.pathname !== '/' ? 'text-slate-600 hover:text-[#d4af37]' : 'text-white/80 hover:text-white'
               }`}
             >
               {link.name}
@@ -77,7 +82,7 @@ const Header = () => {
           <Link to="/cart" className="relative group p-2">
             <ShoppingCart size={22} className={scrolled || location.pathname !== '/' ? 'text-slate-800' : 'text-white'} />
             {cartCount > 0 && (
-              <span className="absolute top-0 right-0 bg-blue-600 text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center border-2 border-white animate-bounce">
+              <span className="absolute top-0 right-0 bg-[#111111] text-[#d4af37] text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center border-2 border-white animate-bounce shadow-md">
                 {cartCount}
               </span>
             )}

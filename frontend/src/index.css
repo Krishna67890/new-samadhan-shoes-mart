@@ -9,7 +9,7 @@
   --bg-secondary: #FFFFFF;
   --text-primary: #111111;
   --text-secondary: #6B6B6B;
-  --accent: #8B0000; /* Deep Burgundy/Red */
+  --accent: #d4af37; /* Gold - Luxury Branding */
   --gold: #d4af37;
   --border-color: #e5e7eb;
   --hero-shadow: rgba(0,0,0,0.3);
@@ -20,8 +20,8 @@
   --bg-secondary: #1a1a1a;
   --text-primary: #f7f5f0;
   --text-secondary: #a1a1aa;
-  --accent: #ff3333;
-  --gold: #f59e0b;
+  --accent: #d4af37;
+  --gold: #d4af37;
   --border-color: #27272a;
   --hero-shadow: rgba(212,175,55,0.2);
 }
@@ -33,6 +33,13 @@ body {
   overflow-x: hidden;
   transition: background-color 0.3s ease, color 0.3s ease;
   scroll-behavior: smooth;
+  padding-top: 130px; /* Exact height for Banner (40px) + Navbar (90px) */
+}
+
+@media (max-width: 640px) {
+  body {
+    padding-top: 120px;
+  }
 }
 
 /* Ensure no transparency on fixed elements when requested */

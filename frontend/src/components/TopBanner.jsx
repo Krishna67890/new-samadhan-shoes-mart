@@ -31,21 +31,21 @@ const TopBanner = () => {
   const duplicatedOffers = [...offers, ...offers];
 
   return (
-    <div className="fixed top-0 w-full z-[2000] bg-black py-3 overflow-hidden border-b border-white/10 shadow-2xl">
+    <div className="fixed top-0 w-full z-[2000] bg-black h-10 flex items-center overflow-hidden border-b border-white/10 shadow-2xl">
       <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black z-10 pointer-events-none opacity-50"></div>
       <div
         ref={tickerRef}
-        className="flex whitespace-nowrap items-center gap-16"
+        className="flex whitespace-nowrap items-center gap-16 px-4"
       >
         {duplicatedOffers.map((offer, idx) => (
           <div key={idx} className="flex items-center gap-4 group cursor-default">
-            <div className="p-1.5 bg-white/5 rounded-lg group-hover:bg-white/10 transition-colors">
+            <div className="p-1 bg-white/5 rounded group-hover:bg-white/10 transition-colors">
               {offer.icon}
             </div>
-            <span className="text-[11px] font-black uppercase tracking-[0.3em] text-white/90 group-hover:text-white transition-colors">
+            <span className="text-[9px] font-black uppercase tracking-[0.2em] text-white/90 group-hover:text-white transition-colors">
               {offer.text}
             </span>
-            <div className="w-2 h-2 rounded-full bg-white/20"></div>
+            <div className="w-1.5 h-1.5 rounded-full bg-white/20"></div>
           </div>
         ))}
       </div>

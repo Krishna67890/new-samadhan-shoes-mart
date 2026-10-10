@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Star, ShieldCheck, ThumbsUp, Trash2, Send, User } from 'lucide-react';
+import { Star, ShieldCheck, ThumbsUp, Trash2, Send, User, RefreshCcw } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
@@ -7,7 +7,8 @@ import {
   saveReview,
   deleteReview,
   calculateProductStats,
-  voteHelpful
+  voteHelpful,
+  syncReviewsWithServer
 } from '../utils/reviewService';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -17,6 +18,9 @@ const Reviews = ({ productId, isAdmin = false }) => {
   const [stats, setStats] = useState({ average: 0, total: 0, breakdown: {} });
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState('recent');
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [syncMessage, setSyncMessage] = useState('');
+  const [hasSynced, setHasSynced] = useState(false);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -136,6 +140,22 @@ const Reviews = ({ productId, isAdmin = false }) => {
     }
   };
 
+  const handleManualSync = async () => {
+    setIsSyncing(true);
+    setSyncMessage('');
+    try {
+      await syncReviewsWithServer();
+      loadData();
+      setHasSynced(true);
+      setSyncMessage('Successfully synced with cloud!');
+      setTimeout(() => setSyncMessage(''), 3000);
+    } catch (err) {
+      setSyncMessage('Sync failed. Please try again.');
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
   if (loading) return null;
 
   return (
@@ -146,7 +166,26 @@ const Reviews = ({ productId, isAdmin = false }) => {
         <div className="lg:col-span-1 space-y-10">
           <div>
             <span className="text-[#8B0000] font-black uppercase tracking-[0.4em] text-[10px] block mb-6">// SATISFACTION INDEX</span>
-            <h2 className="text-6xl font-editorial font-black uppercase tracking-tighter text-[#111]">Customer <br /> Ratings</h2>
+            <div className="flex justify-between items-end mb-4">
+              <h2 className="text-6xl font-editorial font-black uppercase tracking-tighter text-[#111]">Customer <br /> Ratings</h2>
+              <div className="flex flex-col items-end gap-2">
+                <button
+                  onClick={handleManualSync}
+                  className={`p-3 rounded-full bg-black text-white hover:bg-[#d4af37] transition-all flex items-center gap-2 group ${isSyncing ? 'animate-pulse' : ''}`}
+                  title="Sync reviews across devices"
+                >
+                  <RefreshCcw size={16} className={`${isSyncing ? 'animate-spin' : 'group-hover:rotate-180 transition-transform duration-500'}`} />
+                </button>
+                {syncMessage && <span className="text-[8px] font-black uppercase text-emerald-600 tracking-tighter whitespace-nowrap">{syncMessage}</span>}
+              </div>
+            </div>
+            {!hasSynced && (
+              <div className="p-4 bg-amber-50 border border-amber-200 rounded-2xl mb-6 animate-pulse">
+                <p className="text-[10px] font-black text-amber-800 uppercase tracking-widest text-center leading-relaxed">
+                  ⚠️ Please click on sync button to view your ratings and reviews and comments from other members' devices.
+                </p>
+              </div>
+            )}
           </div>
 
           <div className="bg-white p-12 rounded-[3rem] border border-[#111]/5 shadow-xl relative overflow-hidden group">
@@ -317,7 +356,7 @@ const Reviews = ({ productId, isAdmin = false }) => {
         </div>
 
         <div className="space-y-12" ref={listRef}>
-          {sortedReviews.length > 0 ? (
+          {hasSynced && sortedReviews.length > 0 ? (
             sortedReviews.map((rev) => (
               <div
                 key={rev.id}
@@ -384,6 +423,17 @@ const Reviews = ({ productId, isAdmin = false }) => {
                 </div>
               </div>
             ))
+          ) : !hasSynced ? (
+            <div className="py-32 text-center bg-gray-50 rounded-[4rem] border border-dashed border-gray-200">
+              <RefreshCcw size={64} className="mx-auto text-gray-200 mb-8" />
+              <h5 className="text-2xl font-editorial font-black uppercase text-gray-300">Sync required to load feed.</h5>
+              <button
+                onClick={handleManualSync}
+                className="mt-6 px-8 py-3 bg-black text-white text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-[#d4af37] transition-all"
+              >
+                Click to Sync Now
+              </button>
+            </div>
           ) : (
             <div className="py-32 text-center bg-gray-50 rounded-[4rem] border border-dashed border-gray-200">
               <Star size={64} className="mx-auto text-gray-200 mb-8" />

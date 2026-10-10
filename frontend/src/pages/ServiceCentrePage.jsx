@@ -68,8 +68,8 @@ const ServiceCentrePage = () => {
     {
       title: 'Diamond Restoration',
       description: 'The ultimate rejuvenation for your premium leather and suede grails. Molecular-level deep cleaning.',
-      icon: <ShieldCheck className="w-8 h-8 text-[#8B0000]" />,
-      color: 'bg-[#8B0000]/5'
+      icon: <ShieldCheck className="w-8 h-8 text-[#d4af37]" />,
+      color: 'bg-[#d4af37]/10'
     },
     {
       title: 'Sole Reconstruction',
@@ -97,28 +97,28 @@ const ServiceCentrePage = () => {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-10 border-b border-[#111111]/10 pb-16">
             <div className="max-w-2xl">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-px bg-[#8B0000]"></div>
-                <p className="text-[10px] font-sans font-bold text-[#8B0000] uppercase tracking-[0.4em]">Maintenance Node 2026</p>
-                <div className="ml-4 px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full flex items-center gap-2 border border-emerald-100">
-                  <div className="w-1.5 h-1.5 bg-emerald-600 rounded-full animate-pulse"></div>
+                <div className="w-10 h-px bg-[#d4af37]"></div>
+                <p className="text-[10px] font-sans font-bold text-[#d4af37] uppercase tracking-[0.4em]">Maintenance Node 2026</p>
+                <div className="ml-4 px-3 py-1 bg-[#d4af37]/10 text-[#d4af37] rounded-full flex items-center gap-2 border border-[#d4af37]/20">
+                  <div className="w-1.5 h-1.5 bg-[#d4af37] rounded-full animate-pulse"></div>
                   <span className="text-[8px] font-sans font-bold uppercase tracking-widest">Active</span>
                 </div>
               </div>
               <h1 className="text-6xl sm:text-7xl lg:text-9xl font-editorial font-black text-[#111111] tracking-tighter leading-[0.85] uppercase">
                 ELITE <br />
-                <span className="italic font-light text-[#8B0000]">RESTORATION.</span>
+                <span className="italic font-light text-[#d4af37]">RESTORATION.</span>
               </h1>
             </div>
 
             {/* Visiting Card Display */}
             <div className="relative group max-w-sm w-full">
-               <div className="absolute -inset-2 bg-gradient-to-r from-[#8B0000] to-[#111111] rounded-[2rem] opacity-20 group-hover:opacity-40 transition duration-1000"></div>
+               <div className="absolute -inset-2 bg-gradient-to-r from-[#d4af37] to-[#111111] rounded-[2rem] opacity-20 group-hover:opacity-40 transition duration-1000"></div>
                <img
                  src={resolveImageUrl("/New-Samadhan-Shoe-Mart/New-Card.jpg")}
                  alt="New Samadhan Shoes Mart Visiting Card"
                  className="relative rounded-[1.5rem] border border-white/20 shadow-2xl w-full h-auto object-cover transform hover:scale-[1.02] transition-transform duration-500"
                />
-               <div className="absolute top-4 right-4 bg-[#8B0000] text-white p-2 rounded-full shadow-lg">
+               <div className="absolute top-4 right-4 bg-[#111111] text-[#d4af37] p-2 rounded-full shadow-lg border border-[#d4af37]/30">
                   <ShieldCheck size={16} />
                </div>
             </div>
@@ -128,13 +128,13 @@ const ServiceCentrePage = () => {
         {/* --- PREMIUM SERVICES GRID --- */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
           {services.map((service, index) => (
-            <div key={index} className="group bg-white p-10 rounded-[2.5rem] border border-[#111111]/5 hover:border-[#8B0000]/20 transition-all duration-700 svc-reveal shadow-[0_40px_80px_rgba(0,0,0,0.02)]">
+            <div key={index} className="group bg-white p-10 rounded-[2.5rem] border border-[#111111]/5 hover:border-[#d4af37]/20 transition-all duration-700 svc-reveal shadow-[0_40px_80px_rgba(0,0,0,0.02)]">
               <div className={`w-16 h-16 ${service.color} rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500 border border-[#111111]/5`}>
                 {service.icon}
               </div>
               <h3 className="text-2xl font-editorial font-bold text-[#111111] mb-5 tracking-tight uppercase leading-none">{service.title}</h3>
               <p className="text-[#111111]/50 font-medium leading-relaxed italic mb-8 text-sm">"{service.description}"</p>
-              <div className="flex items-center gap-2 text-[9px] font-sans font-bold text-[#8B0000] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="flex items-center gap-2 text-[9px] font-sans font-bold text-[#d4af37] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
                  Start Protocol <ArrowRight size={14} />
               </div>
             </div>
@@ -145,11 +145,11 @@ const ServiceCentrePage = () => {
         <div className="mb-12 svc-reveal">
            <div className="bg-white p-4 rounded-3xl border border-[#111111]/5 shadow-sm flex flex-col md:flex-row gap-4">
               <div className="flex-1 relative group">
-                 <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-[#111111]/30 group-focus-within:text-[#8B0000] transition-colors" size={18} />
+                 <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-[#111111]/30 group-focus-within:text-[#d4af37] transition-colors" size={18} />
                  <input
                     type="text"
                     placeholder="Search maintenance node..."
-                    className="w-full pl-16 pr-6 py-4 bg-[#F7F5F0] rounded-2xl font-sans font-bold text-[#111111] outline-none focus:bg-white border border-transparent focus:border-[#111111]/10 transition-all text-[11px] uppercase tracking-wider placeholder:text-[#111111]/20"
+                    className="w-full pl-16 pr-6 py-4 bg-[#F7F5F0] rounded-2xl font-sans font-bold text-[#111111] outline-none focus:bg-white border border-transparent focus:border-[#d4af37]/30 transition-all text-[11px] uppercase tracking-wider placeholder:text-[#111111]/20"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                  />
@@ -173,7 +173,7 @@ const ServiceCentrePage = () => {
         {/* --- SERVICE CENTERS LIST --- */}
         {loading ? (
           <div className="flex flex-col items-center justify-center py-32 svc-reveal">
-             <div className="w-10 h-10 border-2 border-[#8B0000] border-t-transparent rounded-full animate-spin mb-6"></div>
+             <div className="w-10 h-10 border-2 border-[#d4af37] border-t-transparent rounded-full animate-spin mb-6"></div>
              <p className="text-[#111111]/30 font-sans font-bold tracking-[0.4em] uppercase text-[9px]">Accessing Secure Protocols...</p>
           </div>
         ) : (
@@ -198,8 +198,8 @@ const ServiceCentrePage = () => {
 
                  <div className="p-10 sm:p-14">
                     <div className="flex items-center gap-3 mb-6">
-                       <div className="w-8 h-1 bg-[#8B0000] rounded-full"></div>
-                       <p className="text-[9px] font-sans font-bold text-[#8B0000] uppercase tracking-[0.2em] italic">Direct Intervention Protocol</p>
+                       <div className="w-8 h-1 bg-[#d4af37] rounded-full"></div>
+                       <p className="text-[9px] font-sans font-bold text-[#d4af37] uppercase tracking-[0.2em] italic">Direct Intervention Protocol</p>
                     </div>
                     <h2 className="text-4xl font-editorial font-bold text-[#111111] tracking-tight uppercase mb-6 leading-none">{selectedCenter.name}</h2>
                     <p className="text-[#111111]/50 font-medium mb-10 italic text-base leading-relaxed">"Your grail restoration starts here. Choose your secure communication channel for node access."</p>
@@ -209,15 +209,15 @@ const ServiceCentrePage = () => {
                           <div className="bg-[#F7F5F0] p-6 rounded-2xl border border-[#111111]/5">
                              <p className="text-[8px] font-sans font-bold text-[#111111]/40 uppercase tracking-widest mb-3">Location Matrix</p>
                              <div className="flex gap-3">
-                                <MapPin size={20} className="text-[#8B0000] shrink-0" />
+                                <MapPin size={20} className="text-[#d4af37] shrink-0" />
                                 <p className="text-sm font-sans font-bold text-[#111111] leading-tight uppercase tracking-tight">{selectedCenter.address}, {selectedCenter.city}</p>
                              </div>
                           </div>
-                          <div className="bg-emerald-50 p-6 rounded-2xl border border-emerald-100 flex flex-col justify-center">
-                             <p className="text-[8px] font-sans font-bold text-emerald-700/60 uppercase tracking-widest mb-3">Operational Status</p>
+                          <div className="bg-[#d4af37]/10 p-6 rounded-2xl border border-[#d4af37]/20 flex flex-col justify-center">
+                             <p className="text-[8px] font-sans font-bold text-[#d4af37] uppercase tracking-widest mb-3">Operational Status</p>
                              <div className="flex items-center gap-3">
-                                <div className="w-2.5 h-2.5 bg-emerald-600 rounded-full animate-pulse"></div>
-                                <p className="text-sm font-sans font-bold text-emerald-700 leading-tight uppercase tracking-tight">ACTIVE NODE</p>
+                                <div className="w-2.5 h-2.5 bg-[#d4af37] rounded-full animate-pulse"></div>
+                                <p className="text-sm font-sans font-bold text-[#d4af37] leading-tight uppercase tracking-tight">ACTIVE NODE</p>
                              </div>
                           </div>
                        </div>
@@ -229,7 +229,7 @@ const ServiceCentrePage = () => {
                                 const num = Math.random() > 0.5 ? '9423228843' : '8888644021';
                                 window.location.href = `tel:+91${num}`;
                              }}
-                             className="bg-[#111111] text-white py-5 rounded-xl text-[10px] font-sans font-bold uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-[#8B0000] transition-all shadow-md"
+                             className="bg-[#111111] text-white py-5 rounded-xl text-[10px] font-sans font-bold uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-[#d4af37] hover:text-[#111111] transition-all shadow-md border border-white/10"
                           >
                              <Phone size={18} /> Call Node
                           </button>
@@ -243,7 +243,7 @@ const ServiceCentrePage = () => {
                                    window.open(`https://wa.me/918888644021?text=${encodedMsg}`, '_blank');
                                 }, 600);
                              }}
-                             className="bg-emerald-600 text-white py-5 rounded-xl text-[10px] font-sans font-bold uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-emerald-700 transition-all shadow-md"
+                             className="bg-[#d4af37] text-[#111111] py-5 rounded-xl text-[10px] font-sans font-bold uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-[#111111] hover:text-[#d4af37] transition-all shadow-md border border-[#d4af37]/30"
                           >
                              <MessageCircle size={18} /> WhatsApp
                           </button>
@@ -257,7 +257,7 @@ const ServiceCentrePage = () => {
         {/* --- TRUST BAR --- */}
         <div className="mt-32 pt-12 border-t border-[#111111]/5 flex flex-wrap justify-between items-center gap-8 svc-reveal opacity-30 hover:opacity-100 transition-all duration-1000">
            <div className="flex items-center gap-3 font-sans font-bold uppercase tracking-[0.2em] text-[9px] text-[#111111]/40">
-              <ShieldAlert size={20} className="text-[#8B0000]" /> Global Craftsmanship Standards Applied
+              <ShieldAlert size={20} className="text-[#d4af37]" /> Global Craftsmanship Standards Applied
            </div>
            <div className="flex gap-8 font-sans font-bold uppercase tracking-widest text-[8px] text-[#111111]/30">
               <span>Vision 2026 Authorized</span>

@@ -366,30 +366,65 @@ const GalleryPage = () => {
   }, [filteredItems.length, visibleItems]);
 
   return (
-    <div className="bg-[var(--bg-primary)] text-[var(--text-primary)] min-h-screen pt-28 pb-20 font-sans selection:bg-[var(--accent)] selection:text-white no-blur-zone transition-colors duration-500">
+    <div className="bg-[var(--bg-primary)] text-[var(--text-primary)] min-h-screen pt-32 pb-20 font-sans selection:bg-[var(--accent)] selection:text-white no-blur-zone transition-colors duration-500">
 
       {/* Hero Section */}
-      <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-12 md:py-16">
-        <div className="flex flex-col gap-6 max-w-4xl">
-          <div className="inline-flex items-center gap-3">
-            <span className="w-8 h-[2px] bg-[var(--accent)]"></span>
-            <span className="text-[11px] font-bold uppercase tracking-[0.4em] text-[var(--accent)]">
-              Visual Atelier Archive · Nashik
-            </span>
+      <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-20 md:py-28 relative overflow-hidden">
+        {/* Background Accent Text */}
+        <div className="absolute top-0 right-[-5%] text-[20vw] font-editorial font-black text-[var(--text-primary)] opacity-[0.03] select-none pointer-events-none whitespace-nowrap">
+          ATELIER
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+          <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-4">
+              <div className="inline-flex items-center gap-4">
+                <div className="w-12 h-[1px] bg-[var(--accent)]"></div>
+                <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[var(--accent)]">
+                  Archive Vol. 01 / Nashik Showcase
+                </span>
+              </div>
+
+              <h1 className="font-editorial font-black uppercase tracking-tighter leading-[0.85] text-5xl sm:text-7xl lg:text-9xl">
+                Visual <br />
+                <span className="italic font-light text-[var(--accent)]">Atelier</span> <br />
+                <span>Archive.</span>
+              </h1>
+            </div>
+
+            <div className="flex flex-col gap-8">
+              <p className="text-lg sm:text-xl text-[var(--text-secondary)] leading-relaxed font-medium max-w-xl">
+                A curated photographic record of bespoke footwear commissions, artisan processes, and heritage milestones captured within our Nashik workshop. Each image represents a chapter of our 34-year dedication to the craft.
+              </p>
+              <div className="flex flex-col gap-2 border-l border-[var(--text-primary)]/10 pl-6 pb-2">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-primary)]">Archive Stats</span>
+                <div className="flex gap-6">
+                  <div>
+                    <div className="text-2xl font-editorial font-bold text-[var(--accent)]">350+</div>
+                    <div className="text-[9px] font-bold uppercase tracking-tighter text-[var(--text-secondary)]">Captures</div>
+                  </div>
+                  <div>
+                    <div className="text-2xl font-editorial font-bold text-[var(--accent)]">1990</div>
+                    <div className="text-[9px] font-bold uppercase tracking-tighter text-[var(--text-secondary)]">Origin</div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <h1 className="font-editorial text-4xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight leading-[0.92]">
-            The Curated <br />
-            <span className="italic font-light text-[var(--accent)]">Gallery of Form.</span>
-          </h1>
-
-          <p className="text-base sm:text-lg text-[var(--text-secondary)] max-w-2xl leading-relaxed">
-            Explore our visual archive of custom bespoke commissions, Goodyear welted silhouettes, and candid workshop glimpses captured inside our Nashik atelier.
-          </p>
+          <div className="relative hidden lg:block">
+             <div className="absolute inset-0 bg-gradient-to-tr from-[var(--accent)]/10 to-transparent rounded-full blur-3xl -z-10 animate-pulse"></div>
+             <img
+               src={resolveImageUrl('/New-Samadhan-Shoe-Mart/Main-Shoe.png')}
+               alt="Masterpiece Shoe"
+               className="w-full h-auto drop-shadow-[0_50px_50px_rgba(0,0,0,0.3)] hover:scale-105 transition-transform duration-700 pointer-events-none"
+             />
+          </div>
         </div>
 
         {/* Filter Navigation */}
-        <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto py-6 mt-8 border-b border-[var(--text-primary)]/10 no-scrollbar">
+        <div className="flex items-center gap-3 overflow-x-auto py-10 mt-12 border-t border-b border-[var(--text-primary)]/10 no-scrollbar">
+          <span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-primary)] mr-4 shrink-0">Filter By:</span>
           {CATEGORIES.map((cat, idx) => (
             <button
               key={idx}
@@ -397,10 +432,10 @@ const GalleryPage = () => {
                 setActiveCategory(cat);
                 setVisibleItems(12);
               }}
-              className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all border ${
+              className={`px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] whitespace-nowrap transition-all duration-300 border-2 ${
                 activeCategory === cat
-                  ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] border-[var(--text-primary)] shadow-md'
-                  : 'bg-[var(--bg-secondary)] hover:bg-[var(--text-primary)]/5 text-[var(--text-secondary)] hover:text-[var(--text-primary)] border-[var(--text-primary)]/10'
+                  ? 'bg-[var(--accent)] text-white border-[var(--accent)] shadow-xl shadow-red-900/20 -translate-y-1'
+                  : 'bg-transparent text-[var(--text-secondary)] hover:text-[var(--text-primary)] border-[var(--text-primary)]/5 hover:border-[var(--text-primary)]/20'
               }`}
             >
               {cat}
@@ -487,40 +522,47 @@ const GalleryPage = () => {
       </section>
 
       {/* Patina Aging Over Time Feature */}
-      <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-16">
-        <div className="bg-[var(--text-primary)] text-[var(--bg-primary)] rounded-3xl p-8 sm:p-14 border border-[var(--text-primary)]/10 shadow-2xl overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--accent)]/10 rounded-full -translate-y-32 translate-x-32 blur-3xl" />
-          <div className="max-w-2xl mb-12 relative z-10">
-            <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--accent)] block mb-2">
-              Heirloom Longevity
-            </span>
-            <h2 className="font-editorial text-3xl sm:text-5xl font-black uppercase tracking-tight">
-              The Evolution of Full-Grain Patina
+      <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-24">
+        <div className="bg-[var(--text-primary)] text-[var(--bg-primary)] rounded-[3rem] p-8 sm:p-20 border border-[var(--text-primary)]/10 shadow-3xl overflow-hidden relative">
+          {/* Decorative Elements */}
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--accent)]/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-[120px]" />
+          <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-[var(--gold)]/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-[100px]" />
+
+          <div className="max-w-3xl mb-16 relative z-10">
+            <div className="inline-flex items-center gap-3 mb-6 bg-[var(--bg-primary)]/5 px-4 py-2 rounded-full border border-[var(--bg-primary)]/10">
+              <Sparkles size={14} className="text-[var(--accent)]" />
+              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[var(--accent)]">
+                Heirloom Longevity
+              </span>
+            </div>
+            <h2 className="font-editorial text-4xl sm:text-6xl font-black uppercase tracking-tighter leading-[0.9] mb-8">
+              The Alchemy of <br />
+              <span className="italic font-light text-[var(--accent)]">Full-Grain Patina.</span>
             </h2>
-            <p className="text-sm opacity-70 mt-4 leading-relaxed">
-              Synthetic shoes degrade and crumble after 6 months. Authentic New Samadhan shoes are born with lifetime integrity — growing richer and more lustrous with every step you take.
+            <p className="text-lg opacity-60 leading-relaxed font-medium">
+              Unlike synthetic footwear that degrades with use, authentic Samadhan leather is a living material. It evolves, absorbing its environment and your journey to create a unique visual history.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
             {PATINA_STAGES.map((st, i) => (
-              <div key={i} className="bg-[var(--bg-primary)]/5 border border-[var(--bg-primary)]/10 p-8 rounded-2xl flex flex-col justify-between hover:bg-[var(--bg-primary)]/10 transition-colors">
+              <div key={i} className="group bg-[var(--bg-primary)]/5 border border-[var(--bg-primary)]/10 p-10 rounded-[2rem] flex flex-col justify-between hover:bg-[var(--bg-primary)]/10 transition-all duration-500 hover:-translate-y-2">
                 <div>
-                  <span className="text-xs font-mono font-bold text-[var(--accent)] block mb-2">
-                    Phase {i + 1}
-                  </span>
-                  <h3 className="font-editorial text-xl font-bold uppercase text-[var(--bg-primary)] mb-3">
+                  <div className="w-12 h-12 rounded-2xl bg-[var(--accent)] flex items-center justify-center text-white font-editorial text-2xl font-bold mb-8 shadow-lg shadow-red-900/40 group-hover:scale-110 transition-transform">
+                    {i + 1}
+                  </div>
+                  <h3 className="font-editorial text-2xl font-bold uppercase text-[var(--bg-primary)] mb-4 tracking-tight">
                     {st.stage}
                   </h3>
-                  <p className="text-xs opacity-70 leading-relaxed mb-6">
+                  <p className="text-sm opacity-50 leading-relaxed mb-8 font-medium">
                     {st.desc}
                   </p>
                 </div>
-                <div className="pt-4 border-t border-[var(--bg-primary)]/10">
-                  <span className="text-[9px] uppercase tracking-wider opacity-40 block mb-1">
+                <div className="pt-6 border-t border-[var(--bg-primary)]/10">
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--accent)] block mb-2">
                     Visual Hallmarks:
                   </span>
-                  <p className="text-[11px] font-medium text-[var(--gold)]">
+                  <p className="text-xs font-bold text-[var(--gold)] uppercase tracking-wider">
                     {st.characteristics}
                   </p>
                 </div>

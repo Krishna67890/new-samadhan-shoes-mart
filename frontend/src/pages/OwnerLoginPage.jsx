@@ -71,8 +71,8 @@ const OwnerLoginPage = () => {
           </div>
 
           {localError && (
-            <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-2xl mb-6 flex items-start gap-3">
-              <AlertCircle size={18} className="shrink-0 mt-0.5 text-red-600" />
+            <div className="bg-[#111] border border-red-500/20 text-red-500 p-4 rounded-2xl mb-6 flex items-start gap-3">
+              <AlertCircle size={18} className="shrink-0 mt-0.5 text-red-500" />
               <p className="text-xs font-bold leading-relaxed">{localError}</p>
             </div>
           )}
@@ -91,6 +91,7 @@ const OwnerLoginPage = () => {
                   className="w-full pl-12 pr-4 py-3.5 bg-[#faf9f6] border border-black/15 rounded-xl font-bold text-gray-900 text-sm focus:outline-none focus:border-[#d4af37] focus:bg-white transition-all shadow-xs"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  onKeyDown={(e) => e.stopPropagation()}
                 />
               </div>
             </div>
@@ -108,6 +109,7 @@ const OwnerLoginPage = () => {
                   className="w-full pl-12 pr-12 py-3.5 bg-[#faf9f6] border border-black/15 rounded-xl font-bold text-gray-900 text-sm focus:outline-none focus:border-[#d4af37] focus:bg-white transition-all shadow-xs"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  onKeyDown={(e) => e.stopPropagation()}
                 />
                 <button
                   type="button"

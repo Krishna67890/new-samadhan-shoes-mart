@@ -53,6 +53,11 @@ const HomePage = () => {
   const { user } = useAuth();
   const isOwner = user?.role === 'admin' || user?.email === 'admin@samadhanshoes.com' || (typeof window !== 'undefined' && Boolean(localStorage.getItem('samadhan_admin_token')));
 
+  // Reset scroll on load to fix position issues
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // Root container ref for GSAP context
   const containerRef = useRef(null);
 
@@ -535,11 +540,12 @@ const HomePage = () => {
     const ctx = gsap.context(() => {
       // DESKTOP & TABLET SCROLLTRIGGER TIMELINE (>= 768px)
       mm.add("(min-width: 768px)", () => {
+        // Reduced hero pinning to focus more on product showcase
         const heroTimeline = gsap.timeline({
           scrollTrigger: {
             trigger: heroPinRef.current,
             start: "top top",
-            end: "+=1600",
+            end: "+=800",
             pin: true,
             scrub: 1.2,
             anticipatePin: 1
@@ -549,19 +555,19 @@ const HomePage = () => {
         // 1. Initial State: Shoe scales up, rotates smoothly, moves to center
         heroTimeline
           .to(heroShoeRef.current, {
-            scale: 1.35,
-            y: 30,
+            scale: 1.2,
+            y: 20,
             rotation: 0,
             ease: "power2.inOut"
           }, 0)
           .to(heroShadowRef.current, {
-            scale: 1.4,
+            scale: 1.2,
             opacity: 0.35,
-            y: 40,
+            y: 30,
             ease: "power2.inOut"
           }, 0)
           .to(heroTextRef.current, {
-            y: -120,
+            y: -80,
             opacity: 0,
             ease: "power2.in"
           }, 0)
@@ -570,34 +576,34 @@ const HomePage = () => {
             y: 0,
             stagger: 0.1,
             ease: "back.out(1.5)"
-          }, 0.3)
+          }, 0.2)
           .to(heroShoeRef.current, {
-            rotationY: 18,
-            rotationZ: -4,
-            scale: 1.25,
-            x: -30,
+            rotationY: 12,
+            rotationZ: -2,
+            scale: 1.1,
+            x: -20,
             ease: "power2.out"
-          }, 0.6)
+          }, 0.4)
           .to(".phase1-reveal-layer", {
             opacity: 1,
             y: 0,
             ease: "power2.out"
-          }, 0.7);
+          }, 0.5);
 
         // Product Cards Scroll Reveals
         gsap.utils.toArray(".product-scroll-card").forEach((card, idx) => {
           gsap.from(card, {
             scrollTrigger: {
               trigger: card,
-              start: "top 88%",
+              start: "top 92%",
               toggleActions: "play none none reverse"
             },
-            y: 50,
-            scale: 0.95,
+            y: 40,
+            scale: 0.98,
             opacity: 0,
-            duration: 0.8,
-            delay: (idx % 3) * 0.1,
-            ease: "power3.out"
+            duration: 0.6,
+            delay: (idx % 3) * 0.05,
+            ease: "power2.out"
           });
         });
 
@@ -708,7 +714,7 @@ const HomePage = () => {
       </div>
 
       {/* QUICK SUB-BAR WITH 10 WORKING FILTER TABS */}
-      <div className="sticky top-20 z-40 bg-white/95 backdrop-blur-md border-b border-black/10 py-3.5 px-6 shadow-xs">
+      <div className="sticky top-16 md:top-20 z-40 bg-white/95 backdrop-blur-md border-b border-black/10 py-2 md:py-3.5 px-4 md:px-6 shadow-xs">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 overflow-x-auto scrollbar-hide">
           <div className="flex items-center gap-2">
             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#d4af37] hidden sm:inline-block">
@@ -962,6 +968,7 @@ const HomePage = () => {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => e.stopPropagation()}
                 placeholder="Search by name, style, category, or price..."
                 className="w-full pl-11 pr-4 py-2.5 rounded-full bg-white border border-black/15 text-sm font-medium focus:outline-none focus:border-[#d4af37] transition-colors"
               />
@@ -1658,25 +1665,22 @@ const HomePage = () => {
 
           {/* Flagship Showroom Banner with Radiant Gold Ambient Glow */}
           <div className="relative mb-14 max-w-5xl mx-auto rounded-3xl sm:rounded-[2.5rem] overflow-hidden p-1.5 bg-gradient-to-r from-[#d4af37]/70 via-[#ffecb3]/90 to-[#d4af37]/70 shadow-[0_0_55px_rgba(212,175,55,0.48)] group">
-            <div className="relative rounded-[22px] sm:rounded-[36px] overflow-hidden bg-black">
+            <div className="relative rounded-[22px] sm:rounded-[36px] overflow-hidden bg-white">
               <img
                 src={resolveImageUrl("/New-Samadhan-Shoe-Mart/Front-Banner.jpg")}
                 alt="New Samadhan Shoes Mart Flagship Showroom Nashik"
-                className="w-full h-[220px] sm:h-[340px] md:h-[420px] object-cover filter brightness-95 contrast-105 group-hover:scale-105 transition-transform duration-700"
-                style={{
-                  filter: 'drop-shadow(0 0 30px rgba(212, 175, 55, 0.45))'
-                }}
+                className="w-full h-[220px] sm:h-[340px] md:h-[420px] object-cover filter brightness-110 contrast-95 group-hover:scale-105 transition-transform duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-white/20 pointer-events-none" />
               <div className="absolute bottom-6 left-6 right-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                 <div>
                   <span className="inline-block px-3 py-1 rounded-full bg-[#d4af37] text-black text-[9px] font-black uppercase tracking-[0.25em] mb-2 shadow-md">
                     ✨ NASHIK PHYSICAL FLAGSHIP SHOWROOM
                   </span>
-                  <h3 className="text-xl sm:text-3xl font-black text-white tracking-tight uppercase">
+                  <h3 className="text-xl sm:text-3xl font-black text-[#111111] tracking-tight uppercase">
                     NEW SAMADHAN SHOE MART
                   </h3>
-                  <p className="text-xs sm:text-sm text-gray-300 font-medium">
+                  <p className="text-xs sm:text-sm text-[#111111]/70 font-medium">
                     Plot No 29, Santkrupa Niwas, Factory Rd, Nashik • Since 1998
                   </p>
                 </div>
@@ -2172,6 +2176,7 @@ const HomePage = () => {
                     required
                     value={reviewFormData.name}
                     onChange={(e) => setReviewFormData({ ...reviewFormData, name: e.target.value })}
+                    onKeyDown={(e) => e.stopPropagation()}
                     placeholder="e.g. Rahul Patil"
                     className="w-full px-3 py-2.5 rounded-xl bg-gray-50 border border-black/10 text-sm focus:outline-none focus:border-[#d4af37] text-gray-900"
                   />
@@ -2184,6 +2189,7 @@ const HomePage = () => {
                     type="text"
                     value={reviewFormData.city}
                     onChange={(e) => setReviewFormData({ ...reviewFormData, city: e.target.value })}
+                    onKeyDown={(e) => e.stopPropagation()}
                     placeholder="e.g. Nashik"
                     className="w-full px-3 py-2.5 rounded-xl bg-gray-50 border border-black/10 text-sm focus:outline-none focus:border-[#d4af37] text-gray-900"
                   />
@@ -2221,6 +2227,7 @@ const HomePage = () => {
                   rows={4}
                   value={reviewFormData.comment}
                   onChange={(e) => setReviewFormData({ ...reviewFormData, comment: e.target.value })}
+                  onKeyDown={(e) => e.stopPropagation()}
                   placeholder="Tell us about the comfort, leather finish, sole grip, sizing..."
                   className="w-full px-4 py-2.5 rounded-xl bg-gray-50 border border-black/10 text-sm focus:outline-none focus:border-[#d4af37] text-gray-900 resize-none"
                 />
@@ -2348,6 +2355,7 @@ const HomePage = () => {
               type="text"
               value={expertQuery}
               onChange={(e) => setExpertQuery(e.target.value)}
+              onKeyDown={(e) => e.stopPropagation()}
               placeholder="Ask about shoes (e.g. formal, running, kids)..."
               className="flex-1 px-3 py-2 rounded-full bg-gray-50 border border-black/10 text-xs text-gray-900 focus:outline-none focus:border-[#d4af37]"
             />
