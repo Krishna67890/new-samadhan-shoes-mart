@@ -149,6 +149,15 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         background: #b8962e;
       }
 
+      /* Hide scrollbar but keep functionality */
+      .agent-scrollbar-hide::-webkit-scrollbar {
+        display: none;
+      }
+      .agent-scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
       /* Centering Utility */
       .flex-center {
         display: flex;

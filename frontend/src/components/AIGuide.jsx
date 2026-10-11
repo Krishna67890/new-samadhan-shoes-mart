@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { MessageSquare, Volume2, X, Zap, User, UserCheck, Heart, ShieldCheck, Sparkles, Mic, MicOff, Send, Footprints, Search, Info, Bot, Award } from 'lucide-react';
+import { MessageSquare, Volume2, X, Zap, User, UserCheck, Heart, ShieldCheck, Sparkles, Mic, MicOff, Send, Footprints, Search, Info, Bot, Award, Loader2 } from 'lucide-react';
 import { resolveImageUrl } from '../utils/urlConfig';
 import { getMergedProducts } from '../utils/productUtils';
 import useFetch from '../hooks/useFetch';
@@ -11,7 +11,7 @@ const AIGuide = () => {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [voiceType, setVoiceType] = useState('male');
-  const [activeTab, setActiveTab] = useState('chat'); // 'chat', 'voice', or 'fit'
+  const [activeTab, setActiveTab] = useState('chat'); // 'chat', 'voice', 'heritage', 'products'
   const [chatInput, setChatInput] = useState('');
   const [messages, setMessages] = useState([
     { role: 'ai', text: 'Namaste! I am your Heritage AI Agent. I represent 34 years of craftsmanship from the heart of Nashik. I can guide you through our archives, help with precision sizing, or find the perfect build for your lifestyle. How may I serve you today?', type: 'text' }
@@ -220,6 +220,15 @@ const AIGuide = () => {
     }
   };
 
+  const handleTabClick = (tab, e) => {
+    setActiveTab(tab);
+    e.currentTarget.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'center'
+    });
+  };
+
   return (
     <>
       {/* Floating Trigger */}
@@ -258,15 +267,19 @@ const AIGuide = () => {
           <div className="bg-white w-full max-w-4xl h-[80vh] rounded-[2.5rem] overflow-hidden relative z-10 shadow-2xl border border-slate-100 flex flex-col md:flex-row">
 
             {/* Left Sidebar - AI Profile */}
-            <div className="w-full md:w-1/3 bg-[#111111] border-r border-[#d4af37]/20 p-8 flex flex-col items-center justify-center text-center text-white">
-              <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-[#d4af37] shadow-[0_0_20px_rgba(212,175,55,0.3)] mb-6 relative">
-                <img src={expertAvatar} alt="Heritage Agent" className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+            <div className="w-full md:w-1/3 bg-[#111111] border-r border-[#d4af37]/20 p-6 md:p-8 flex flex-row md:flex-col items-center justify-between md:justify-center text-center text-white shrink-0">
+              <div className="flex flex-row md:flex-col items-center gap-4 md:gap-0">
+                <div className="w-16 h-16 md:w-32 md:h-32 rounded-full overflow-hidden border-2 md:border-4 border-[#d4af37] shadow-[0_0_20px_rgba(212,175,55,0.3)] md:mb-6 relative shrink-0">
+                  <img src={expertAvatar} alt="Heritage Agent" className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                </div>
+                <div className="text-left md:text-center">
+                  <h2 className="text-sm md:text-xl font-black text-[#d4af37] uppercase tracking-tighter md:mb-2">Heritage AI</h2>
+                  <p className="text-[8px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest italic hidden md:block">26+ Years of Nashik Craftsmanship</p>
+                </div>
               </div>
-              <h2 className="text-xl font-black text-[#d4af37] uppercase tracking-tighter mb-2">Heritage AI Agent</h2>
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-6 italic">26+ Years of Nashik Craftsmanship</p>
 
-              <div className="space-y-3 w-full">
+              <div className="hidden md:block space-y-3 w-full">
                 <div className="p-4 bg-white/5 rounded-2xl border border-white/10 flex items-center gap-3">
                   <ShieldCheck className="text-[#d4af37]" size={18} />
                   <div className="text-left">
@@ -283,9 +296,9 @@ const AIGuide = () => {
                 </div>
               </div>
 
-              <div className="mt-auto pt-8 flex gap-2">
-                 <button onClick={() => setVoiceType('female')} className={`px-4 py-2 rounded-xl text-[9px] font-black uppercase transition-all ${voiceType === 'female' ? 'bg-[#d4af37] text-black' : 'bg-white/10 text-slate-400'}`}>Female Voice</button>
-                 <button onClick={() => setVoiceType('male')} className={`px-4 py-2 rounded-xl text-[9px] font-black uppercase transition-all ${voiceType === 'male' ? 'bg-[#d4af37] text-black' : 'bg-white/10 text-slate-400'}`}>Male Voice</button>
+              <div className="md:mt-auto flex gap-2">
+                 <button onClick={() => setVoiceType('female')} className={`px-3 md:px-4 py-1.5 md:py-2 rounded-lg md:rounded-xl text-[8px] md:text-[9px] font-black uppercase transition-all ${voiceType === 'female' ? 'bg-[#d4af37] text-black' : 'bg-white/10 text-slate-400'}`}>F</button>
+                 <button onClick={() => setVoiceType('male')} className={`px-3 md:px-4 py-1.5 md:py-2 rounded-lg md:rounded-xl text-[8px] md:text-[9px] font-black uppercase transition-all ${voiceType === 'male' ? 'bg-[#d4af37] text-black' : 'bg-white/10 text-slate-400'}`}>M</button>
               </div>
             </div>
 
@@ -299,82 +312,139 @@ const AIGuide = () => {
               </button>
 
               {/* Chat Tabs */}
-              <div className="flex border-b border-slate-50 px-8 pt-6">
+              <div className="flex border-b border-slate-50 px-8 pt-6 overflow-x-auto agent-scrollbar whitespace-nowrap bg-white sticky top-0 z-20 pb-2">
                 <button
-                  onClick={() => setActiveTab('chat')}
+                  onClick={(e) => handleTabClick('chat', e)}
                   className={`pb-4 px-6 text-[10px] font-black uppercase tracking-widest transition-all border-b-2 ${activeTab === 'chat' ? 'border-[#d4af37] text-[#111111]' : 'border-transparent text-slate-400'}`}
                 >
                   Agent Chat
                 </button>
                 <button
-                  onClick={() => setActiveTab('voice')}
+                  onClick={(e) => handleTabClick('products', e)}
+                  className={`pb-4 px-6 text-[10px] font-black uppercase tracking-widest transition-all border-b-2 ${activeTab === 'products' ? 'border-[#d4af37] text-[#111111]' : 'border-transparent text-slate-400'}`}
+                >
+                  Product AI
+                </button>
+                <button
+                  onClick={(e) => handleTabClick('heritage', e)}
+                  className={`pb-4 px-6 text-[10px] font-black uppercase tracking-widest transition-all border-b-2 ${activeTab === 'heritage' ? 'border-[#d4af37] text-[#111111]' : 'border-transparent text-slate-400'}`}
+                >
+                  Heritage Vault
+                </button>
+                <button
+                  onClick={(e) => handleTabClick('voice', e)}
                   className={`pb-4 px-6 text-[10px] font-black uppercase tracking-widest transition-all border-b-2 ${activeTab === 'voice' ? 'border-[#d4af37] text-[#111111]' : 'border-transparent text-slate-400'}`}
                 >
                   Voice Direct
                 </button>
-                <button
-                  onClick={() => setActiveTab('fit')}
-                  className={`pb-4 px-6 text-[10px] font-black uppercase tracking-widest transition-all border-b-2 ${activeTab === 'fit' ? 'border-[#d4af37] text-[#111111]' : 'border-transparent text-slate-400'}`}
-                >
-                  Heritage Fit Guide
-                </button>
               </div>
 
-              {/* Chat Area */}
-              <div className="flex-1 overflow-y-auto p-8 space-y-6 agent-scrollbar">
-                {activeTab === 'fit' ? (
-                  <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                    <div className="bg-slate-50 p-6 rounded-3xl border border-slate-100">
-                      <h3 className="text-xs font-black uppercase tracking-widest text-[#8B0000] mb-4 flex items-center gap-2">
-                        <Footprints size={14} /> Proper Foot Sizing
+              {/* Chat Area - Scrollable with custom scrollbar */}
+              <div className="flex-1 overflow-y-auto p-8 space-y-6 agent-scrollbar bg-slate-50/30 scroll-smooth">
+                {activeTab === 'heritage' ? (
+                  <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-2xl mx-auto flex flex-col items-center">
+                    <div className="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-xl shadow-slate-200/50 w-full">
+                      <h3 className="text-sm font-black uppercase tracking-[0.2em] text-[#8B0000] mb-6 flex items-center justify-center gap-3">
+                        <Footprints size={18} /> Anatomical Heritage Sizing
                       </h3>
-                      <p className="text-xs font-bold text-slate-600 leading-relaxed mb-4">
-                        Measure your foot from heel to longest toe in centimeters for the best accuracy. Our heritage builds usually follow UK/India sizing.
+                      <p className="text-xs font-bold text-slate-500 leading-relaxed mb-6 text-center">
+                        For 26 years, we've mastered the 'Nashik Arch'. Measure your foot from heel to longest toe. Our builds typically follow standard UK/Indian sizing with extra width for comfort.
                       </p>
-                      <div className="grid grid-cols-2 gap-2">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {[
-                          { size: 'UK 6', cm: '25.1 cm' },
-                          { size: 'UK 7', cm: '25.9 cm' },
-                          { size: 'UK 8', cm: '26.7 cm' },
-                          { size: 'UK 9', cm: '27.6 cm' },
-                          { size: 'UK 10', cm: '28.4 cm' }
+                          { size: 'UK 6', cm: '25.1 cm', label: 'Classic' },
+                          { size: 'UK 7', cm: '25.9 cm', label: 'Executive' },
+                          { size: 'UK 8', cm: '26.7 cm', label: 'Standard' },
+                          { size: 'UK 9', cm: '27.6 cm', label: 'Professional' },
+                          { size: 'UK 10', cm: '28.4 cm', label: 'Grand' }
                         ].map(s => (
-                          <div key={s.size} className="bg-white p-3 rounded-xl border border-slate-200 flex justify-between items-center">
-                            <span className="text-[10px] font-black">{s.size}</span>
-                            <span className="text-[9px] font-bold text-slate-400">{s.cm}</span>
+                          <div key={s.size} className="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex justify-between items-center group hover:bg-[#111] hover:text-[#d4af37] transition-all">
+                            <div>
+                                <span className="text-[11px] font-black block">{s.size}</span>
+                                <span className="text-[8px] font-bold text-slate-400 uppercase group-hover:text-[#d4af37]/60">{s.label}</span>
+                            </div>
+                            <span className="text-[10px] font-bold opacity-60">{s.cm}</span>
                           </div>
                         ))}
                       </div>
                     </div>
 
-                    <div className="bg-slate-50 p-6 rounded-3xl border border-slate-100">
-                      <h3 className="text-xs font-black uppercase tracking-widest text-slate-800 mb-4 flex items-center gap-2">
-                        <Sparkles size={14} className="text-yellow-500" /> Color Selection
+                    <div className="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-xl shadow-slate-200/50 w-full">
+                      <h3 className="text-sm font-black uppercase tracking-[0.2em] text-slate-800 mb-6 flex items-center justify-center gap-3">
+                        <Sparkles size={18} className="text-yellow-500" /> Premium Shade Selection
                       </h3>
-                      <div className="space-y-3">
-                         <div className="flex items-center gap-3">
-                           <div className="w-8 h-8 rounded-full bg-[#3B2F2F] shadow-inner"></div>
+                      <div className="grid grid-cols-1 gap-4">
+                         <div className="flex items-center gap-4 p-4 rounded-2xl border border-slate-50 hover:bg-slate-50 transition-colors">
+                           <div className="w-12 h-12 rounded-2xl bg-[#3B2F2F] shadow-lg border-2 border-white"></div>
                            <div>
-                             <p className="text-[10px] font-black uppercase">Heritage Tan</p>
-                             <p className="text-[8px] font-bold text-slate-400 uppercase">Best for Navy & Grey Suits</p>
+                             <p className="text-[11px] font-black uppercase tracking-wider">Heritage Tan</p>
+                             <p className="text-[9px] font-bold text-slate-400 uppercase">Natural Bark Extract Tanning</p>
                            </div>
                          </div>
-                         <div className="flex items-center gap-3">
-                           <div className="w-8 h-8 rounded-full bg-[#000000] shadow-inner"></div>
+                         <div className="flex items-center gap-4 p-4 rounded-2xl border border-slate-50 hover:bg-slate-50 transition-colors">
+                           <div className="w-12 h-12 rounded-2xl bg-[#000000] shadow-lg border-2 border-white"></div>
                            <div>
-                             <p className="text-[10px] font-black uppercase">Classic Black</p>
-                             <p className="text-[8px] font-bold text-slate-400 uppercase">Essential for Formal Wear</p>
-                           </div>
-                         </div>
-                         <div className="flex items-center gap-3">
-                           <div className="w-8 h-8 rounded-full bg-[#1A1A2E] shadow-inner"></div>
-                           <div>
-                             <p className="text-[10px] font-black uppercase">Midnight Blue</p>
-                             <p className="text-[8px] font-bold text-slate-400 uppercase">Modern Street Style</p>
+                             <p className="text-[11px] font-black uppercase tracking-wider">Coal Black</p>
+                             <p className="text-[9px] font-bold text-slate-400 uppercase">High-Shine Formal Finish</p>
                            </div>
                          </div>
                       </div>
                     </div>
+
+                    <div className="bg-black/5 p-8 rounded-[2rem] border border-black/5 text-center w-full">
+                        <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 mb-2">Heritage Promise</h4>
+                        <p className="text-[9px] font-bold text-slate-400 uppercase leading-loose">
+                           Each pair is inspected by our senior craftsmen in Nashik.<br/>
+                           Quality is not an act, it is a habit since 1998.
+                        </p>
+                    </div>
+                  </div>
+                ) : activeTab === 'products' ? (
+                  <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-2xl mx-auto">
+                     <div className="flex items-center justify-between mb-4 px-2">
+                        <h3 className="text-xs font-black uppercase tracking-widest text-[#111111]">Intelligent Product Discovery</h3>
+                        <div className="flex items-center gap-2">
+                            <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                            <span className="text-[9px] font-black uppercase text-slate-400">Live Inventory</span>
+                        </div>
+                     </div>
+
+                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        {products.length > 0 ? products.slice(0, 8).map(prod => (
+                           <div
+                             key={prod._id}
+                             onClick={() => { navigate(`/product/${prod._id}`); setIsOpen(false); }}
+                             className="bg-white p-6 rounded-[2.5rem] border border-slate-100 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all cursor-pointer group"
+                           >
+                              <div className="w-full aspect-square bg-slate-50 rounded-3xl mb-5 overflow-hidden p-6 relative">
+                                 <img src={resolveImageUrl(prod.images?.[0])} className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700" />
+                                 <div className="absolute top-4 right-4 bg-white/80 backdrop-blur-md px-3 py-1 rounded-full border border-slate-100">
+                                    <span className="text-[8px] font-black uppercase text-slate-900">{prod.category}</span>
+                                 </div>
+                              </div>
+                              <h4 className="text-[11px] font-black uppercase tracking-tight text-slate-900 line-clamp-1 mb-1">{prod.name}</h4>
+                              <p className="text-[9px] font-bold text-slate-400 uppercase mb-3 line-clamp-1">{prod.purpose || 'Heritage Collection'}</p>
+                              <div className="flex items-center justify-between mt-auto">
+                                 <p className="text-[12px] font-black text-[#d4af37]">₹{prod.price?.toLocaleString()}</p>
+                                 <div className="w-8 h-8 bg-black text-white rounded-full flex items-center justify-center group-hover:bg-[#d4af37] group-hover:text-black transition-colors">
+                                    <Zap size={14} />
+                                 </div>
+                              </div>
+                           </div>
+                        )) : (
+                          <div className="col-span-full py-32 text-center">
+                              <Loader2 className="w-10 h-10 animate-spin mx-auto text-[#d4af37] mb-6" />
+                              <p className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400">Synchronizing Vault Assets...</p>
+                          </div>
+                        )}
+                     </div>
+
+                     <button
+                        onClick={() => { navigate('/products'); setIsOpen(false); }}
+                        className="w-full py-6 rounded-3xl bg-[#111] text-[#d4af37] text-[11px] font-black uppercase tracking-[0.3em] hover:bg-[#d4af37] hover:text-black transition-all shadow-xl hover:shadow-[#d4af37]/20"
+                     >
+                        Enter Full Product Archives
+                     </button>
                   </div>
                 ) : (
                   <>
