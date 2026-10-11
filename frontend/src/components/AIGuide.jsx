@@ -231,8 +231,8 @@ const AIGuide = () => {
 
   return (
     <>
-      {/* Floating Trigger */}
-      <div className="fixed bottom-6 right-6 sm:bottom-8 sm:left-8 z-[200] flex flex-col items-center gap-2">
+      {/* Floating Trigger - Centered on Mobile for visibility */}
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 sm:left-8 sm:right-auto sm:translate-x-0 sm:bottom-8 z-[200] flex flex-col items-center gap-2">
         {isSpeaking && (
           <div className="bg-white px-4 py-2 rounded-2xl shadow-xl border border-slate-100 animate-bounce mb-2">
             <div className="flex gap-1">
@@ -267,19 +267,19 @@ const AIGuide = () => {
           <div className="bg-white w-full max-w-4xl h-[80vh] rounded-[2.5rem] overflow-hidden relative z-10 shadow-2xl border border-slate-100 flex flex-col md:flex-row">
 
             {/* Left Sidebar - AI Profile */}
-            <div className="w-full md:w-1/3 bg-[#111111] border-r border-[#d4af37]/20 p-6 md:p-8 flex flex-row md:flex-col items-center justify-between md:justify-center text-center text-white shrink-0">
+            <div className="w-full md:w-1/3 bg-[#111111] border-b md:border-b-0 md:border-r border-[#d4af37]/20 p-4 md:p-8 flex flex-row md:flex-col items-center justify-between md:justify-center text-center text-white shrink-0">
               <div className="flex flex-row md:flex-col items-center gap-4 md:gap-0">
-                <div className="w-16 h-16 md:w-32 md:h-32 rounded-full overflow-hidden border-2 md:border-4 border-[#d4af37] shadow-[0_0_20px_rgba(212,175,55,0.3)] md:mb-6 relative shrink-0">
+                <div className="w-12 h-12 md:w-32 md:h-32 rounded-full overflow-hidden border-2 md:border-4 border-[#d4af37] shadow-[0_0_20px_rgba(212,175,55,0.3)] md:mb-6 relative shrink-0">
                   <img src={expertAvatar} alt="Heritage Agent" className="w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                 </div>
                 <div className="text-left md:text-center">
                   <h2 className="text-sm md:text-xl font-black text-[#d4af37] uppercase tracking-tighter md:mb-2">Heritage AI</h2>
-                  <p className="text-[8px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest italic hidden md:block">26+ Years of Nashik Craftsmanship</p>
+                  <p className="text-[8px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest italic">26+ Years of Heritage</p>
                 </div>
               </div>
 
-              <div className="hidden md:block space-y-3 w-full">
+              <div className="hidden md:block space-y-3 w-full mt-8">
                 <div className="p-4 bg-white/5 rounded-2xl border border-white/10 flex items-center gap-3">
                   <ShieldCheck className="text-[#d4af37]" size={18} />
                   <div className="text-left">
@@ -311,29 +311,29 @@ const AIGuide = () => {
                 <X size={24} />
               </button>
 
-              {/* Chat Tabs */}
-              <div className="flex border-b border-slate-50 px-8 pt-6 overflow-x-auto agent-scrollbar whitespace-nowrap bg-white sticky top-0 z-20 pb-2">
+              {/* Chat Tabs - Enhanced Horizontal Scroll for Mobile Visibility */}
+              <div className="flex border-b border-slate-50 px-2 sm:px-8 pt-6 overflow-x-auto agent-scrollbar whitespace-nowrap bg-white sticky top-0 z-20 pb-2 w-full">
                 <button
                   onClick={(e) => handleTabClick('chat', e)}
-                  className={`pb-4 px-6 text-[10px] font-black uppercase tracking-widest transition-all border-b-2 ${activeTab === 'chat' ? 'border-[#d4af37] text-[#111111]' : 'border-transparent text-slate-400'}`}
+                  className={`pb-4 px-4 sm:px-6 text-[10px] font-black uppercase tracking-widest transition-all border-b-2 flex-shrink-0 ${activeTab === 'chat' ? 'border-[#d4af37] text-[#111111]' : 'border-transparent text-slate-400'}`}
                 >
                   Agent Chat
                 </button>
                 <button
                   onClick={(e) => handleTabClick('products', e)}
-                  className={`pb-4 px-6 text-[10px] font-black uppercase tracking-widest transition-all border-b-2 ${activeTab === 'products' ? 'border-[#d4af37] text-[#111111]' : 'border-transparent text-slate-400'}`}
+                  className={`pb-4 px-4 sm:px-6 text-[10px] font-black uppercase tracking-widest transition-all border-b-2 flex-shrink-0 ${activeTab === 'products' ? 'border-[#d4af37] text-[#111111]' : 'border-transparent text-slate-400'}`}
                 >
                   Product AI
                 </button>
                 <button
                   onClick={(e) => handleTabClick('heritage', e)}
-                  className={`pb-4 px-6 text-[10px] font-black uppercase tracking-widest transition-all border-b-2 ${activeTab === 'heritage' ? 'border-[#d4af37] text-[#111111]' : 'border-transparent text-slate-400'}`}
+                  className={`pb-4 px-4 sm:px-6 text-[10px] font-black uppercase tracking-widest transition-all border-b-2 flex-shrink-0 ${activeTab === 'heritage' ? 'border-[#d4af37] text-[#111111]' : 'border-transparent text-slate-400'}`}
                 >
                   Heritage Vault
                 </button>
                 <button
                   onClick={(e) => handleTabClick('voice', e)}
-                  className={`pb-4 px-6 text-[10px] font-black uppercase tracking-widest transition-all border-b-2 ${activeTab === 'voice' ? 'border-[#d4af37] text-[#111111]' : 'border-transparent text-slate-400'}`}
+                  className={`pb-4 px-4 sm:px-6 text-[10px] font-black uppercase tracking-widest transition-all border-b-2 flex-shrink-0 ${activeTab === 'voice' ? 'border-[#d4af37] text-[#111111]' : 'border-transparent text-slate-400'}`}
                 >
                   Voice Direct
                 </button>
@@ -412,8 +412,8 @@ const AIGuide = () => {
                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         {products.length > 0 ? products.slice(0, 8).map(prod => (
                            <div
-                             key={prod._id}
-                             onClick={() => { navigate(`/product/${prod._id}`); setIsOpen(false); }}
+                             key={prod._id || prod.id}
+                             onClick={() => { navigate(`/product/${prod._id || prod.id}`); setIsOpen(false); }}
                              className="bg-white p-6 rounded-[2.5rem] border border-slate-100 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all cursor-pointer group"
                            >
                               <div className="w-full aspect-square bg-slate-50 rounded-3xl mb-5 overflow-hidden p-6 relative">
