@@ -21,11 +21,16 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     </AuthProvider>
     {/* Visual Clarity System (VCS) */}
     <style>{`
-      /* Ensure crisp inputs without blur */
-      input, textarea, select, .admin-container, .no-blur-zone {
+      /* Ensure crisp inputs without blur and fix backdrop-filter issues */
+      input, textarea, select, .admin-container, .no-blur-zone, .login-portal-container {
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
         filter: none !important;
+        background-color: rgba(255, 255, 255, 1) !important;
+      }
+
+      .dark input, .dark textarea, .dark select, .dark .login-portal-container {
+        background-color: rgba(10, 10, 10, 1) !important;
       }
 
       /* Sharp rendering for images */
@@ -121,6 +126,34 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       }
       .backface-hidden {
         backface-visibility: hidden;
+      }
+
+      /* Custom Scrollbar for Agent Interfaces - FIXING ACCESSIBILITY */
+      .agent-scrollbar {
+        scrollbar-width: thin;
+        scrollbar-color: #d4af37 rgba(0, 0, 0, 0.05);
+      }
+      .agent-scrollbar::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      .agent-scrollbar::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
+      }
+      .agent-scrollbar::-webkit-scrollbar-thumb {
+        background: #d4af37;
+        border-radius: 10px;
+      }
+      .agent-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #b8962e;
+      }
+
+      /* Centering Utility */
+      .flex-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
     `}</style>
 

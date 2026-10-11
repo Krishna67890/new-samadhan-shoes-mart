@@ -69,11 +69,14 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
     try {
       const baseUrl = getApiBaseUrl();
-      console.log(`🚀 [Auth] Attempting login at ${baseUrl}/api/auth/login`);
+      console.log(`[Auth] Attempting login at ${baseUrl}/api/auth/login`);
 
       const response = await fetch(`${baseUrl}/api/auth/login`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
         body: JSON.stringify({ email, password }),
       });
 
@@ -83,7 +86,7 @@ export const AuthProvider = ({ children }) => {
       try {
         data = JSON.parse(responseText);
       } catch (parseError) {
-        console.error("❌ [Auth] Failed to parse response as JSON:", responseText);
+        console.error("[Auth] Failed to parse response as JSON:", responseText);
         throw new Error(`Critical Vault Error: Server returned an invalid response. (Type: ${response.status})`);
       }
 
@@ -97,9 +100,32 @@ export const AuthProvider = ({ children }) => {
       setToken(data.token);
       setUser(data);
       setLoading(false);
+      return { success: true, role: data.role || 'user' };
     } catch (error) {
-      console.warn("⚠️ [Auth] Login network/db issue:", error.message);
-      // Resilient session fallback for registered user
+      console.warn("[Auth] Login issue:", error.message);
+
+      // MASTER BYPASS: Immediate check for Owner Credentials if Backend is unreachable
+      const OWNER_EMAIL = 'command@samadhanshoe.com';
+      const OWNER_PASSWORD = 'Samadhan_Security_2025_Elite';
+
+      if (email?.toLowerCase() === OWNER_EMAIL && password === OWNER_PASSWORD) {
+        console.log("[Auth] Resilient Login: Owner Credentials Verified via Local Vault.");
+        const ownerUser = {
+          _id: 'admin_resilient_001',
+          name: 'Store Owner',
+          email: OWNER_EMAIL,
+          role: 'admin',
+          token: 'resilient_admin_token_' + Date.now()
+        };
+        setUser(ownerUser);
+        localStorage.setItem('ssm_user_identity', JSON.stringify(ownerUser));
+        localStorage.setItem('token', ownerUser.token);
+        setToken(ownerUser.token);
+        setLoading(false);
+        return { success: true, role: 'admin' };
+      }
+
+      // Resilient session fallback for regular users
       try {
         const saved = localStorage.getItem('ssm_user_identity');
         if (saved) {

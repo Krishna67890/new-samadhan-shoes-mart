@@ -29,19 +29,27 @@ export const syncReviewsWithServer = async () => {
     const res = await fetch(`${baseUrl}/api/reviews`, {
       headers: { 'Accept': 'application/json' }
     });
-    if (res.ok) {
-      const serverReviews = await res.json();
-      if (Array.isArray(serverReviews)) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(serverReviews));
-        broadcastSync();
-        return serverReviews;
-      }
+
+    if (!res.ok) {
+      throw new Error(`Server responded with ${res.status}`);
     }
-    throw new Error(`Server responded with ${res.status}`);
+
+    const contentType = res.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      throw new Error("Server returned non-JSON response (likely HTML redirect)");
+    }
+
+    const serverReviews = await res.json();
+    if (Array.isArray(serverReviews)) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(serverReviews));
+      broadcastSync();
+      return serverReviews;
+    }
+    return null;
   } catch (err) {
     const now = Date.now();
     if (now - lastSyncErrorTime > ERROR_THROTTLE_MS) {
-      console.warn('Sync failed; using local cache.', err.message);
+      console.warn("Review Sync Notice: Operating in local/resilient mode.", err.message);
       lastSyncErrorTime = now;
     }
     throw err;
@@ -237,17 +245,32 @@ export const calculateProductStats = (productId) => {
 
 // Automatic background sync on startup & window focus
 if (typeof window !== 'undefined') {
+  // Silent background sync
+  const silentSync = async () => {
+    try {
+      const baseUrl = getApiBaseUrl();
+      const res = await fetch(`${baseUrl}/api/reviews`, {
+        headers: { 'Accept': 'application/json' }
+      });
+      const contentType = res.headers.get("content-type");
+      if (res.ok && contentType && contentType.includes("application/json")) {
+        const serverReviews = await res.json();
+        if (Array.isArray(serverReviews)) {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(serverReviews));
+          broadcastSync();
+        }
+      }
+    } catch (e) {
+      // Intentionally silent for background tasks
+    }
+  };
+
   // Sync immediately
-  syncReviewsWithServer().catch(() => {});
+  silentSync();
 
-  // Sync on window focus (e.g., user returns from another app/tab)
-  window.addEventListener('focus', () => {
-    syncReviewsWithServer().catch(() => {});
-  });
+  // Sync on window focus
+  window.addEventListener('focus', silentSync);
 
-  // Background interval sync every 30 seconds across all devices & browsers
-  // Increased from 12s to reduce network load when backend is down
-  setInterval(() => {
-    syncReviewsWithServer().catch(() => {});
-  }, 30000);
+  // Background interval sync every 60 seconds
+  setInterval(silentSync, 60000);
 }

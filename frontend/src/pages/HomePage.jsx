@@ -27,13 +27,10 @@ import {
   Layers,
   Eye,
   CheckCircle2,
-  Send,
-  Minimize2,
-  Bot,
   MessageSquare,
-  Lightbulb,
-  ChevronDown,
-  Trash2
+  Send,
+  Trash2,
+  Volume2
 } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -146,18 +143,6 @@ const HomePage = () => {
     comment: '',
     city: ''
   });
-
-  // ── Heritage AI Agent (Advanced Advanced Concierge) ──
-  const [isExpertOpen, setIsExpertOpen] = useState(false);
-  const [expertQuery, setExpertQuery] = useState('');
-  const [expertMessages, setExpertMessages] = useState([
-    {
-      role: 'bot',
-      text: 'Namaste! 🙏 I am your Heritage AI Agent. \n\nI represent 26+ years of footwear excellence at New Samadhan Shoes. I can help you find specific styles, explain our anatomical comfort engineering, or guide you through our archives.\n\nWhat can I assist you with today?',
-      type: 'agent'
-    }
-  ]);
-  const expertEndRef = useRef(null);
 
   // Customer Reviews state
   const [reviewsList, setReviewsList] = useState([]);
@@ -365,78 +350,6 @@ const HomePage = () => {
     }
   };
 
-  // ── Advanced Heritage AI Agent Response Engine ──
-  const handleExpertQuery = useCallback((e) => {
-    e.preventDefault();
-    if (!expertQuery.trim()) return;
-    const q = expertQuery.toLowerCase().trim();
-    const userMsg = { role: 'user', text: expertQuery };
-    
-    let suggestion = [];
-    let botReply = '';
-    const allProds = productsList;
-
-    // Heritage Specific Responses
-    if (q.includes('heritage') || q.includes('history') || q.includes('since')) {
-      botReply = "Our legacy began in 1998 with a vision to provide Nashik with footwear that balances tradition and orthopedic science. For 26+ years, we've focused on 'Anatomical Arch Support'.";
-      suggestion = allProds.filter(p => p.collection === 'Retro' || p.category === 'Formal').slice(0, 3);
-    } else if (q.includes('arch') || q.includes('comfort') || q.includes('orthopedic') || q.includes('medical')) {
-      botReply = "Precision engineering for comfort is our signature. Our 'Balance-Tech' soles provide superior arch support, reducing fatigue for those standing long hours.";
-      suggestion = allProds.filter(p => p.purpose?.includes('Daily') || p.category === 'Formal').slice(0, 3);
-    } else if (q.includes('all') || q.includes('catalog') || q.includes('collection')) {
-      suggestion = [
-        allProds.find(p => p.category === 'Formal'),
-        allProds.find(p => p.category === 'Sneakers'),
-        allProds.find(p => p.category === 'Men'),
-        allProds.find(p => p.category === 'Women')
-      ].filter(Boolean);
-      botReply = 'Exploring the Heritage Archives? Here is a curated snapshot of our diverse catalog:';
-    } else if (q.includes('formal') || q.includes('office') || q.includes('business')) {
-      suggestion = allProds.filter(p => p.category === 'Formal' || p.purpose?.includes('Office')).slice(0, 4);
-      botReply = 'The Executive Heritage Collection: Hand-finished leathers designed for the professional environment.';
-    } else if (q.includes('running') || q.includes('sport') || q.includes('gym')) {
-      suggestion = allProds.filter(p => p.purpose?.includes('Running') || p.purpose?.includes('Sports')).slice(0, 4);
-      botReply = 'High-Performance Heritage: Modern athletic engineering for the active lifestyle.';
-    } else if (q.includes('women') || q.includes('ladies') || q.includes('sandals')) {
-      suggestion = allProds.filter(p => p.category === 'Women' || p.targetGender === 'Women').slice(0, 4);
-      botReply = 'The Women’s Heritage Boutique: Where elegance meets orthotic stability.';
-    } else if (q.includes('kids') || q.includes('school')) {
-      suggestion = allProds.filter(p => p.category === 'Kids').slice(0, 4);
-      botReply = 'Junior Heritage: Protecting developing feet with ergonomic school and casual builds.';
-    } else if (q.includes('sneaker') || q.includes('casual') || q.includes('street')) {
-      suggestion = allProds.filter(p => p.category === 'Sneakers').slice(0, 4);
-      botReply = 'Street Heritage: Contemporary silhouettes with our legacy of comfort.';
-    } else if (q.includes('wedding') || q.includes('party') || q.includes('festive')) {
-      suggestion = allProds.filter(p => p.purpose?.includes('Party') || p.purpose?.includes('Wedding') || p.collection === 'Limited Edition').slice(0, 4);
-      botReply = 'Celebration Heritage: Exquisite builds for life\'s most significant moments.';
-    } else if (q.includes('police') || q.includes('safety') || q.includes('boot') || q.includes('trek')) {
-      suggestion = allProds.filter(p => p.name.toLowerCase().includes('boot') || p.professions?.some(pr => pr.toLowerCase().includes('police'))).slice(0, 4);
-      botReply = 'Duty Heritage: Rugged, professional-grade boots for high-intensity environments.';
-    } else {
-      const matched = allProds.filter(p => 
-        p.name.toLowerCase().includes(q) || 
-        (p.category || '').toLowerCase().includes(q)
-      );
-      if (matched.length > 0) {
-        suggestion = matched.slice(0, 4);
-        botReply = `Heritage Search: I've located these matches for "${expertQuery}":`;
-      } else {
-        suggestion = allProds.filter(p => p.collection === 'Bestsellers' || p.rating >= 4.8).slice(0, 4);
-        botReply = 'I couldn\'t find a direct match, but here are our most-acclaimed Heritage Bestsellers:';
-      }
-    }
-
-    const botMsg = { 
-      role: 'bot', 
-      text: botReply + '\n\n📞 For Concierge Assistance: 94232 28843',
-      products: suggestion,
-      type: 'agent'
-    };
-    setExpertMessages(prev => [...prev, userMsg, botMsg]);
-    setExpertQuery('');
-    setTimeout(() => expertEndRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
-  }, [expertQuery, productsList]);
-
   // Handle Review Submission
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
@@ -601,18 +514,20 @@ const HomePage = () => {
         });
 
         // Review section trigger
-        gsap.from(".review-card-item", {
-          scrollTrigger: {
-            trigger: "#reviews-phase-section",
-            start: "top 80%",
-            toggleActions: "play none none reverse"
-          },
-          y: 40,
-          opacity: 0,
-          stagger: 0.15,
-          duration: 0.8,
-          ease: "power2.out"
-        });
+        if (document.querySelectorAll(".review-card-item").length > 0) {
+          gsap.from(".review-card-item", {
+            scrollTrigger: {
+              trigger: "#reviews-phase-section",
+              start: "top 80%",
+              toggleActions: "play none none reverse"
+            },
+            y: 40,
+            opacity: 0,
+            stagger: 0.15,
+            duration: 0.8,
+            ease: "power2.out"
+          });
+        }
 
         // Conversion Banner
         gsap.from(".cta-conversion-box", {
@@ -2241,144 +2156,6 @@ const HomePage = () => {
           </div>
         </div>
       )}
-
-      {/* ========================================================
-          HERITAGE AI AGENT (Floating Widget)
-          ======================================================== */}
-      {/* Floating Trigger Button */}
-      <button
-        onClick={() => setIsExpertOpen(!isExpertOpen)}
-        className="fixed bottom-24 right-5 sm:right-8 z-50 w-14 h-14 rounded-full bg-[#111111] text-[#d4af37] border-2 border-[#d4af37] shadow-[0_0_20px_rgba(212,175,55,0.4)] flex items-center justify-center hover:scale-110 transition-transform duration-300 cursor-pointer group"
-        title="Heritage AI Agent — Advanced Footwear Concierge"
-        aria-label="Open Heritage Agent"
-      >
-        {isExpertOpen ? <X size={22} /> : <Bot size={22} />}
-        {!isExpertOpen && (
-          <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#d4af37] rounded-full border-2 border-[#111111] animate-pulse" />
-        )}
-      </button>
-
-      {/* Chat Window - Centered Modal Style */}
-      {isExpertOpen && (
-        <div
-          className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-300"
-          onClick={() => setIsExpertOpen(false)}
-        >
-          <div
-            className="w-[min(500px,95vw)] bg-white rounded-[2.5rem] shadow-2xl border-4 border-[#111111] flex flex-col overflow-hidden animate-in zoom-in-95 duration-300"
-            style={{ maxHeight: '85vh' }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Header */}
-            <div className="bg-[#111111] px-8 py-6 flex items-center justify-between shrink-0 border-b border-[#d4af37]/30">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-[#d4af37] flex items-center justify-center shadow-lg shadow-[#d4af37]/40 ring-2 ring-white/10">
-                  <Bot size={24} className="text-black" />
-                </div>
-                <div>
-                  <p className="text-white text-base font-black uppercase tracking-widest">Heritage AI Agent</p>
-                  <p className="text-[#d4af37] text-[9px] font-black flex items-center gap-1.5 uppercase tracking-tighter">
-                    <span className="w-2 h-2 rounded-full bg-[#d4af37] animate-pulse shadow-[0_0_5px_#d4af37]" />
-                    Advanced Agent • 26+ Years Knowledge
-                  </p>
-                </div>
-              </div>
-              <button
-                onClick={() => setIsExpertOpen(false)}
-                className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-[#d4af37] hover:bg-white/10 transition-all cursor-pointer border border-white/10"
-              >
-                <X size={24} />
-              </button>
-            </div>
-
-          {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-[#f8f8f8]">
-            {expertMessages.map((msg, idx) => (
-              <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                {msg.role === 'bot' && (
-                  <div className="w-8 h-8 rounded-full bg-[#111111] flex items-center justify-center mr-3 shrink-0 mt-1 shadow-md">
-                    <Bot size={16} className="text-[#d4af37]" />
-                  </div>
-                )}
-                <div className={`max-w-[85%] px-5 py-4 rounded-3xl text-sm leading-relaxed whitespace-pre-line shadow-sm border ${
-                  msg.role === 'user'
-                    ? 'bg-[#111111] text-white rounded-br-none border-white/10'
-                    : 'bg-white text-gray-800 border-black/5 rounded-bl-none'
-                }`}>
-                  <div className={msg.role === 'bot' ? 'font-medium' : ''}>{msg.text}</div>
-
-                  {/* Interactive Shoe Cards Suggested by Agent */}
-                  {msg.products && msg.products.length > 0 && (
-                    <div className="mt-4 pt-4 border-t border-black/10 space-y-3">
-                      <p className="text-[10px] font-black uppercase tracking-widest text-[#d4af37] flex items-center gap-2">
-                        <Zap size={10} /> Expert Selection:
-                      </p>
-                      <div className="grid grid-cols-1 gap-2.5">
-                        {msg.products.map((p) => (
-                          <div
-                            key={p.id || p._id}
-                            onClick={() => {
-                              setModalProduct(p);
-                              setIsExpertOpen(false);
-                            }}
-                            className="flex items-center gap-3 p-3 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-md border border-black/5 hover:border-[#d4af37]/40 cursor-pointer transition-all group"
-                          >
-                            <img
-                              src={resolveImageUrl(p.images?.[0] || p.image || '/New-Samadhan-Shoe-Mart/Main-Shoe.png')}
-                              alt={p.name}
-                              className="w-12 h-12 object-contain bg-white rounded-xl p-1.5 border border-black/5 shrink-0 group-hover:scale-105 transition-transform"
-                            />
-                            <div className="flex-1 min-w-0">
-                              <p className="text-xs font-black text-gray-900 truncate uppercase tracking-tight">{p.name}</p>
-                              <p className="text-[10px] font-bold text-gray-500 uppercase tracking-tighter">₹{p.price?.toLocaleString()} • {p.category}</p>
-                            </div>
-                            <span className="text-[9px] font-black uppercase tracking-widest text-black bg-[#d4af37] px-3 py-1.5 rounded-lg shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                              OPEN
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-            <div ref={expertEndRef} />
-          </div>
-
-          {/* Quick suggestion chips */}
-          <div className="px-3 py-2 bg-white border-t border-black/5 flex gap-1.5 overflow-x-auto scrollbar-hide shrink-0">
-            {['All Products', 'Formal Shoes', 'Sneakers', 'Men Collection', 'Women Collection', 'Kids Shoes', 'Kolhapuri Chappals', 'Budget Under ₹1500', 'Bestsellers'].map(chip => (
-              <button
-                key={chip}
-                onClick={() => { setExpertQuery(chip); }}
-                className="px-3 py-1.5 rounded-full bg-[#d4af37]/10 text-[#111111] text-[10px] font-bold whitespace-nowrap hover:bg-[#d4af37] hover:text-black transition-colors cursor-pointer border border-[#d4af37]/30 shrink-0"
-              >
-                {chip}
-              </button>
-            ))}
-          </div>
-
-          {/* Input */}
-          <form onSubmit={handleExpertQuery} className="p-3 bg-white border-t border-black/10 flex gap-2 shrink-0">
-            <input
-              type="text"
-              value={expertQuery}
-              onChange={(e) => setExpertQuery(e.target.value)}
-              onKeyDown={(e) => e.stopPropagation()}
-              placeholder="Ask about shoes (e.g. formal, running, kids)..."
-              className="flex-1 px-3 py-2 rounded-full bg-gray-50 border border-black/10 text-xs text-gray-900 focus:outline-none focus:border-[#d4af37]"
-            />
-            <button
-              type="submit"
-              className="w-9 h-9 rounded-full bg-[#d4af37] text-black flex items-center justify-center hover:bg-[#111111] hover:text-[#d4af37] transition-colors cursor-pointer"
-            >
-              <Send size={14} />
-            </button>
-          </form>
-        </div>
-      </div>
-    )}
 
       {/* ========================================================
           LIVE TOAST NOTIFICATION

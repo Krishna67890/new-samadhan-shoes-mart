@@ -60,15 +60,9 @@ const loginUser = async (req, res) => {
     const email = (inputEmail || '').trim().toLowerCase();
     const password = (inputPassword || '').trim();
 
-    // DEEP DEBUG: Log exactly what the server is comparing (Hidden in production)
-    console.log(`🔍 [Vault Security Audit]
-      Input Email: "${email}"
-      Expected Email: "${ownerEmail}"
-      Match: ${email === ownerEmail ? 'YES' : 'NO'}`);
-
     // Verify JWT Secret Presence
     if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 10) {
-      console.error('❌ [Auth] CRITICAL: JWT_SECRET is missing or too short in .env');
+      console.error('[Auth] CRITICAL: JWT_SECRET is missing or too short in .env');
       return res.status(500).json({
         message: 'Vault Configuration Error: Security Key (JWT_SECRET) is missing from the server .env file.'
       });
@@ -76,20 +70,20 @@ const loginUser = async (req, res) => {
 
     // 2. MASTER BYPASS (Checks .env directly)
     if (email === ownerEmail && password === ownerPassword) {
-      console.log('🛡️ [Auth] SUCCESS: Command Authority credentials verified.');
+      console.log('[Auth] SUCCESS: Command Authority credentials verified.');
 
       try {
         let owner = await User.findOne({ email: ownerEmail });
 
         if (!owner) {
-          console.log('📝 [Auth] Creating Owner identity in DB...');
+          console.log('[Auth] Creating Owner identity in DB...');
           owner = await User.create({
             name: 'Store Owner',
             email: ownerEmail,
             password: ownerPassword, // Hashed by model pre-save
             role: 'admin'
           });
-          console.log('✅ [Auth] New Owner identity registered in Global Vault.');
+          console.log('[Auth] New Owner identity registered in Global Vault.');
         } else {
           // Ensure role is admin if using master credentials
           if (owner.role !== 'admin') {
@@ -110,7 +104,7 @@ const loginUser = async (req, res) => {
           token: generateToken(owner._id),
         });
       } catch (dbError) {
-        console.warn('⚠️ [Auth] Vault DB Sync failed. Entering Offline Admin mode.', dbError.message);
+        console.warn('[Auth] Vault DB Sync failed. Entering Offline Admin mode.');
         return res.json({
           _id: 'offline_admin_001',
           name: 'Store Owner (Offline)',
@@ -144,11 +138,11 @@ const loginUser = async (req, res) => {
       });
     }
 
-    console.log(`❌ [Auth] Failed: Credentials do not match Vault records for ${email}`);
+    console.log(`[Auth] Failed: Credentials do not match Vault records for ${email}`);
     return res.status(401).json({ message: 'Identity Verification Failed: Invalid email or security key.' });
 
   } catch (error) {
-    console.error('❌ [Auth] Unhandled Exception:', error);
+    console.error('[Auth] Unhandled Exception:', error);
     return res.status(500).json({
       message: 'Vault Internal Error. Check server logs.',
       details: error.message

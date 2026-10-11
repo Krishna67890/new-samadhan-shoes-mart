@@ -4,18 +4,23 @@
 export const getApiBaseUrl = () => {
   const { hostname, protocol } = window.location;
 
-  // 1. If we are on a known cloud domain, use relative paths or the production URL
-  if (hostname.includes('vercel.app') || hostname.includes('render.com')) {
-    return import.meta.env.VITE_API_URL || '';
+  // 1. Check if VITE_API_URL is explicitly set and use it if it's a full URL
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (envUrl && envUrl.startsWith('http')) {
+    return envUrl;
   }
 
-  // 2. FOR ALL LOCAL/NETWORK ENVIRONMENTS:
-  // We force Port 5055 to ensure we hit the Backend Engine directly.
-  // This bypasses the 405 Method Not Allowed error on the Vite port.
-  const targetHost = (hostname === 'localhost' || hostname === '::1' || !hostname) ? '127.0.0.1' : hostname;
-  const resolvedUrl = `${protocol}//${targetHost}:5055`;
+  // 2. Production/Cloud domain check
+  if (hostname.includes('vercel.app') || hostname.includes('render.com')) {
+    // Return empty for relative paths if rewrites are handled by the platform,
+    // otherwise fallback to a hardcoded production URL if available.
+    return envUrl || '';
+  }
 
-  return resolvedUrl;
+  // 3. FOR ALL LOCAL/NETWORK ENVIRONMENTS:
+  // Force Port 5055 to ensure we hit the Backend Engine directly.
+  const targetHost = (hostname === 'localhost' || hostname === '::1' || !hostname) ? '127.0.0.1' : hostname;
+  return `${protocol}//${targetHost}:5055`;
 };
 
 export const resolveImageUrl = (path) => {

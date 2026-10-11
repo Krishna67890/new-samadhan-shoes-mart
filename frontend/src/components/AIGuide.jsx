@@ -74,7 +74,11 @@ const AIGuide = () => {
   };
 
   const addMessage = (role, text, type = 'text', data = null) => {
-    setMessages(prev => [...prev, { role, text, type, data }]);
+    // Add Concierge phone only to specific AI help messages or greetings to avoid clutter
+    const needsPhone = role === 'ai' && (text.includes('Concierge') || text.includes('assist') || text.includes('Namaste') || type === 'recommendation');
+    const displayChatText = needsPhone ? `${text}\n\n📞 Concierge: 94232 28843` : text;
+
+    setMessages(prev => [...prev, { role, text: displayChatText, type, data }]);
     if (role === 'ai') speak(text);
   };
 
@@ -114,6 +118,11 @@ const AIGuide = () => {
       addMessage('ai', "A perfect fit is the foundation of comfort. We use UK standards. I recommend measuring your foot in centimeters—you can find our detailed conversion chart in the 'Fit & Color Guide' tab. Should I show you our best-fitting orthopedic options?");
       return;
     }
+
+    if (query.includes('arch') || query.includes('comfort') || query.includes('orthopedic') || query.includes('medical')) {
+      addMessage('ai', "Precision engineering for comfort is our signature. Our 'Balance-Tech' soles provide superior arch support, reducing fatigue for those standing long hours. Shall I show you our most comfortable ergonomic builds?");
+      return;
+    }
     if (query.includes('color') || query.includes('colour') || query.includes('shade')) {
       addMessage('ai', "We take great pride in our leather finishes. Our 'Heritage Tan' is a favorite for versatility, while 'Classic Black' remains the gold standard for formals. Which palette are you leaning towards today?");
       return;
@@ -132,7 +141,8 @@ const AIGuide = () => {
       { keys: ['slipper', 'flip flop', 'slide'], category: 'Slippers', label: 'Relaxed Slippers' },
       { keys: ['heel', 'stiletto', 'pump'], category: 'Women', label: 'Elegant Heels' },
       { keys: ['boot', 'trek', 'hike'], category: 'Boots', label: 'Rugged Boots' },
-      { keys: ['police', 'army', 'defense', 'safety', 'industrial'], category: 'Men', purpose: 'Industrial Safety', label: 'Professional Grade Footwear' }
+      { keys: ['police', 'army', 'defense', 'safety', 'industrial'], category: 'Men', purpose: 'Industrial Safety', label: 'Professional Grade Footwear' },
+      { keys: ['kids', 'junior', 'school', 'children'], category: 'Kids', label: 'Junior Heritage' }
     ];
 
     let match = mappings.find(m => m.keys.some(k => query.includes(k)));
@@ -311,7 +321,7 @@ const AIGuide = () => {
               </div>
 
               {/* Chat Area */}
-              <div className="flex-1 overflow-y-auto p-8 space-y-6">
+              <div className="flex-1 overflow-y-auto p-8 space-y-6 agent-scrollbar">
                 {activeTab === 'fit' ? (
                   <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                     <div className="bg-slate-50 p-6 rounded-3xl border border-slate-100">

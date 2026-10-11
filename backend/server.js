@@ -25,9 +25,12 @@ const app = express();
 // 1. GLOBAL MIDDLEWARE
 app.use(cors({
   origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
 }));
+
+// Fallback for missing favicon to prevent 404/405 noise
+app.get('/favicon.ico', (req, res) => res.status(204).end());
 
 app.use((req, res, next) => {
   res.setHeader('X-Vault-Engine', 'Samadhan-Shoes-Elite');

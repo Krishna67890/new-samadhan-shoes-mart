@@ -14,12 +14,18 @@ const OwnerLoginPage = () => {
   const formRef = useRef(null);
 
   useEffect(() => {
+    // Force immediate visual clarity on mount
+    document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+
+    // Kill any inherited filters from parent wrappers
     if (formRef.current) {
+      gsap.set(formRef.current, { clearProps: "all" });
       gsap.from(formRef.current, {
         y: 40,
         opacity: 0,
         duration: 0.9,
-        ease: 'power3.out'
+        ease: 'power3.out',
+        clearProps: "transform,filter"
       });
     }
   }, []);
@@ -42,8 +48,39 @@ const OwnerLoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#faf9f6] flex items-center justify-center p-6 pt-28 pb-16 relative font-sans">
-      <div className="w-full max-w-lg z-10" ref={formRef}>
+    <div className="min-h-screen bg-[#faf9f6] flex items-center justify-center p-6 pt-28 pb-16 relative font-sans login-portal-container">
+      {/* High-Specificity Visibility Override */}
+      <style>{`
+        .login-portal-container,
+        .login-portal-container *,
+        .login-portal-container *:before,
+        .login-portal-container *:after {
+          backdrop-filter: none !important;
+          -webkit-backdrop-filter: none !important;
+          filter: none !important;
+          will-change: auto !important;
+          transform: none !important;
+        }
+
+        /* Restore transform only for the animated form ref, but keep filters killed */
+        .login-portal-form-wrapper {
+           filter: none !important;
+           -webkit-filter: none !important;
+           backdrop-filter: none !important;
+           transform: none !important;
+           opacity: 1 !important;
+        }
+
+        input {
+          image-rendering: auto !important;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          filter: none !important;
+          backdrop-filter: none !important;
+        }
+      `}</style>
+
+      <div className="w-full max-w-lg z-10 login-portal-form-wrapper" ref={formRef}>
         <div className="bg-white rounded-[2.5rem] border border-black/15 p-8 sm:p-12 shadow-2xl relative">
           {/* Top back link */}
           <div className="flex items-center justify-between mb-8">
