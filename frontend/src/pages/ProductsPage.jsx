@@ -217,7 +217,7 @@ const ProductsPage = () => {
                <Sparkles size={12} /> Established 1990 · Nashik Atelier
             </div>
           </div>
-          <h1 className="text-4xl sm:text-7xl md:text-8xl font-editorial font-black mb-6 tracking-tighter uppercase leading-none bg-gradient-to-r from-[#111111] via-[#8B0000] to-[#111111] bg-clip-text text-transparent">
+          <h1 className="text-4xl sm:text-7xl md:text-8xl font-editorial font-black mb-6 tracking-tighter uppercase leading-none bg-gradient-to-r from-[#111111] via-[#d4af37] to-[#111111] dark:from-white dark:via-[#d4af37] dark:to-white bg-clip-text text-transparent">
             The Collection.
           </h1>
 

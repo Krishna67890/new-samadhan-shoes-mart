@@ -177,7 +177,7 @@ const Navbar = () => {
         </div>
 
         {/* Right Interactions */}
-        <div className="flex items-center gap-1 xs:gap-2 sm:gap-4 z-[110]">
+        <div className="flex items-center gap-1 xs:gap-2 sm:gap-4 z-[5000]">
           <button
             onClick={toggleTheme}
             className="text-black dark:text-white hover:text-[rgb(212,175,55)] transition-all p-1.5 xs:p-2 sm:p-3 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg xs:rounded-xl sm:rounded-2xl flex items-center justify-center border border-black/10 dark:border-white/10 shadow-sm nav-btn-glow"
@@ -194,7 +194,10 @@ const Navbar = () => {
           </button>
 
           <button
-            onClick={() => setIsCartOpen(true)}
+            onClick={() => {
+              setIsCartOpen(true);
+              setIsOpen(false);
+            }}
             className="relative p-2 xs:p-2.5 sm:p-4 bg-[var(--text-primary)] text-[var(--bg-secondary)] rounded-lg xs:rounded-xl sm:rounded-[1.5rem] group hover:bg-[var(--gold)] transition-all shadow-xl shadow-black/10 cart-icon-target nav-btn-glow"
             aria-label="Cart"
           >
@@ -264,7 +267,7 @@ const Navbar = () => {
               setIsOpen(!isOpen);
               setProfileOpen(false);
             }}
-            className="lg:hidden w-8 h-8 xs:w-10 xs:h-10 sm:w-12 sm:h-12 flex items-center justify-center text-[rgb(0,0,0)] dark:text-[rgb(255,255,255)] hover:bg-[rgb(245,245,245)] dark:hover:bg-[rgb(20,20,20)] rounded-lg xs:rounded-xl sm:rounded-2xl transition-all nav-btn-glow"
+            className="lg:hidden w-8 h-8 xs:w-10 xs:h-10 sm:w-12 sm:h-12 flex items-center justify-center text-[rgb(0,0,0)] dark:text-[rgb(255,255,255)] hover:bg-[rgb(245,245,245)] dark:hover:bg-[rgb(20,20,20)] rounded-lg xs:rounded-xl sm:rounded-2xl transition-all nav-btn-glow z-[5001]"
             aria-label="Toggle Menu"
           >
             {isOpen ? <X size={18} /> : <Menu size={18} />}
@@ -376,6 +379,23 @@ const Navbar = () => {
 
             <div className="h-px bg-black/5 dark:bg-white/5 my-4"></div>
 
+            <button
+              onClick={() => {
+                setIsCartOpen(true);
+                setIsOpen(false);
+              }}
+              className="flex items-center justify-between p-6 bg-[var(--gold)]/10 dark:bg-[var(--gold)]/20 rounded-3xl border border-[var(--gold)]/20 transition-all group"
+            >
+              <div className="flex items-center gap-4">
+                <ShoppingBag size={20} className="text-[var(--gold)]" />
+                <span className="text-sm font-black uppercase tracking-[0.2em] text-black dark:text-white">Your Bag</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="bg-[var(--gold)] text-white text-[10px] font-black px-3 py-1 rounded-full">{cartCount}</span>
+                <ArrowRight size={18} className="text-[var(--gold)] group-hover:translate-x-2 transition-transform" />
+              </div>
+            </button>
+
             {[{name: 'Collection', path: '/collection'}, {name: 'Workshop', path: '/workshop'}, {name: 'Gallery', path: '/gallery'}, {name: 'About', path: '/about'}].map((item, idx) => (
               <Link
                 key={idx}
@@ -410,7 +430,7 @@ const Navbar = () => {
             onClick={() => setIsCartOpen(false)}
           />
           <div className="absolute top-0 right-0 h-full w-full max-w-md bg-[var(--bg-secondary)] text-[var(--text-primary)] shadow-2xl flex flex-col animate-in slide-in-from-right duration-500">
-            <div className="p-8 border-b border-[var(--border-color)] flex justify-between items-center">
+            <div className="p-8 border-b border-[var(--border-color)] flex justify-between items-center relative z-[5002]">
               <div>
                 <h2 className="text-2xl font-black uppercase tracking-tighter">Your Bag</h2>
                 <p className="text-[10px] font-bold text-[var(--text-secondary)] uppercase tracking-widest mt-1">{cartCount} Items Selected</p>
