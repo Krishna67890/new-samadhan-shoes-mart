@@ -21,11 +21,11 @@ const TopBanner = () => {
   }, []);
 
   const offers = [
-    { text: "SHOP OVER ₹999 & GET A ₹500 LUXURY VOUCHER", icon: <Zap size={14} className="text-yellow-400 fill-yellow-400" /> },
-    { text: "FREE PAN-INDIA DELIVERY ON ALL PREPAID ORDERS", icon: <Sparkles size={14} className="text-blue-400" /> },
-    { text: "NEW ARRIVAL: POLICE ELITE SERIES 2.0", icon: <ArrowRight size={14} className="text-emerald-400" /> },
-    { text: "B2B SPECIAL: 40% OFF ON INDUSTRIAL BULK ORDERS", icon: <Zap size={14} className="text-yellow-400 fill-yellow-400" /> },
-    { text: "CERTIFIED ORTHOTIC SUPPORT IN EVERY STEP", icon: <ShieldCheck size={14} className="text-blue-500" /> },
+    { text: "SHOP OVER ₹999 & GET A ₹500 LUXURY VOUCHER", icon: <Zap size={14} className="text-[#d4af37] fill-[#d4af37]" /> },
+    { text: "FREE PAN-INDIA DELIVERY ON ALL PREPAID ORDERS", icon: <Sparkles size={14} className="text-[#d4af37]" /> },
+    { text: "NEW ARRIVAL: POLICE ELITE SERIES 2.0", icon: <ArrowRight size={14} className="text-[#d4af37]" /> },
+    { text: "B2B SPECIAL: 40% OFF ON INDUSTRIAL BULK ORDERS", icon: <Zap size={14} className="text-[#d4af37] fill-[#d4af37]" /> },
+    { text: "CERTIFIED ORTHOTIC SUPPORT IN EVERY STEP", icon: <ShieldCheck size={14} className="text-[#d4af37]" /> },
   ];
 
   const duplicatedOffers = [...offers, ...offers];

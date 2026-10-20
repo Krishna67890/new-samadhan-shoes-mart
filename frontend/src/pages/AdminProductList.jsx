@@ -144,7 +144,7 @@ const AdminProductList = () => {
                 <button
                   onClick={handleGlobalSync}
                   disabled={syncing}
-                  className="flex-1 md:flex-none bg-emerald-600 text-white px-6 md:px-10 py-5 md:py-6 rounded-[2rem] flex items-center justify-center gap-3 hover:bg-emerald-700 transition-all shadow-xl shadow-emerald-100 disabled:opacity-50"
+                  className="flex-1 md:flex-none bg-[#111] text-[#d4af37] border border-[#d4af37]/20 px-6 md:px-10 py-5 md:py-6 rounded-[2rem] flex items-center justify-center gap-3 hover:bg-[#d4af37] hover:text-black transition-all shadow-xl disabled:opacity-50"
                 >
                    {syncing ? <Loader2 className="animate-spin" size={20} /> : <ExternalLink size={20} />}
                    <span className="font-black uppercase tracking-widest text-[10px] md:text-xs">Sync Vault</span>
@@ -224,10 +224,10 @@ const AdminProductList = () => {
                   <div className="col-span-1">
                     <span className="text-[9px] font-black text-[#6B6B6B] uppercase tracking-widest block mb-2">Inventory</span>
                     <div className="flex items-center gap-2">
-                      <div className={`w-2 h-2 rounded-full ${(product.stock !== undefined ? product.stock : 12) > 10 ? 'bg-emerald-500' : 'bg-red-500 animate-pulse'}`}></div>
+                      <div className={`w-2 h-2 rounded-full ${(product.stock !== undefined ? product.stock : 12) > 10 ? 'bg-[#d4af37]' : 'bg-red-500 animate-pulse'}`}></div>
                       <span className="text-[10px] font-black uppercase tracking-widest">{product.stock !== undefined ? product.stock : 12} Units</span>
                     </div>
-                    {(product.stock !== undefined ? product.stock : 12) < 5 && <span className="text-[8px] text-red-600 font-bold uppercase block mt-1">Critical Low Stock</span>}
+                    {(product.stock !== undefined ? product.stock : 12) < 5 && <span className="text-[8px] text-[#111] font-black uppercase block mt-1">Critical Low Stock</span>}
                   </div>
 
                   <div className="col-span-1 flex justify-end gap-3">
@@ -239,7 +239,7 @@ const AdminProductList = () => {
                     </Link>
                     <button
                       onClick={() => deleteHandler(product._id)}
-                      className="p-4 bg-rose-50 text-rose-600 rounded-2xl hover:bg-rose-600 hover:text-white transition-all"
+                      className="p-4 bg-[#111] text-[#d4af37] rounded-2xl hover:bg-red-600 hover:text-white transition-all"
                     >
                       <Trash2 size={18} />
                     </button>

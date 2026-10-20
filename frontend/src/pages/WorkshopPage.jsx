@@ -401,7 +401,7 @@ Requested via New Samadhan Shoes Website`;
               )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
               <div className="absolute bottom-10 left-10 text-white">
-                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#ff4d4d] block mb-2">Live Atelier Stream</span>
+                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#d4af37] block mb-2">Live Atelier Stream</span>
                 <h3 className="text-3xl font-editorial font-black uppercase tracking-tight">{media.title}</h3>
               </div>
             </div>
@@ -539,7 +539,7 @@ Requested via New Samadhan Shoes Website`;
                 className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8 text-white">
-                <span className="text-[10px] font-mono font-bold tracking-[0.3em] uppercase text-[#ff4d4d] mb-1">
+                <span className="text-[10px] font-mono font-bold tracking-[0.3em] uppercase text-[#d4af37] mb-1">
                   Active Station #{WORKSHOP_STATIONS[selectedStation].step}
                 </span>
                 <h3 className="font-editorial text-2xl sm:text-3xl font-black uppercase">
@@ -610,22 +610,22 @@ Requested via New Samadhan Shoes Website`;
         <div className="bg-gradient-to-br from-[#111111] to-[#222222] text-white rounded-[3rem] p-8 sm:p-14 relative overflow-hidden shadow-2xl border border-white/5">
           <div className="max-w-3xl relative z-10">
             <div className="inline-flex items-center gap-2 bg-[#d4af37]/30 border border-[#d4af37]/60 px-3.5 py-1.5 rounded-full mb-6">
-              <Sparkles size={14} className="text-[#ff4d4d]" />
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#ff7373]">
+              <Sparkles size={14} className="text-[#d4af37]" />
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#d4af37]">
                 Premium Leather Benchmark Focus
               </span>
             </div>
 
             <h2 className="font-editorial text-3xl sm:text-5xl font-black uppercase tracking-tight leading-tight mb-6">
               ART 1401 GOAT LEATHER <br />
-              <span className="italic font-light text-[#ff7373]">The Elite TPR Sole Standard.</span>
+              <span className="italic font-light text-[#d4af37]">The Elite TPR Sole Standard.</span>
             </h2>
 
             <p className="text-sm text-white/70 leading-relaxed mb-6">
               Our newest luxury design incorporates premium hand-selected full-grain goat leather—admired for its unmatched featherlight flexibility, rich organic grain definitions, and immediate softness. Complemented with a thermo-plastic rubber (TPR) performance outsole engineered strictly for elite all-weather grip and ergonomic anti-shock balance.
             </p>
 
-            <div className="inline-flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-[#ff4d4d]">
+            <div className="inline-flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-[#d4af37]">
               <span>New Samadhan Shoe Mart Masterclass Architecture</span>
               <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
               <span>Guaranteed 5.0 Rating</span>
@@ -682,7 +682,7 @@ Requested via New Samadhan Shoes Website`;
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
-                <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#ff4d4d] mb-2">{item.category}</span>
+                <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#d4af37] mb-2">{item.category}</span>
                 <h4 className="text-white text-lg font-editorial font-bold uppercase tracking-tight leading-tight">{item.title}</h4>
                 <div className="flex items-center justify-between mt-2">
                    <span className="text-xs font-mono text-white/70">{item.price}</span>
@@ -762,15 +762,15 @@ Requested via New Samadhan Shoes Website`;
 
           <div className="max-w-2xl relative z-10">
             <div className="inline-flex items-center gap-2 bg-[#d4af37]/20 border border-[#d4af37]/40 px-3.5 py-1.5 rounded-full mb-6">
-              <Sparkles size={14} className="text-[#ff4d4d]" />
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#ff7373]">
+              <Sparkles size={14} className="text-[#d4af37]" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#d4af37]">
                 Zero Compromise Standard
               </span>
             </div>
 
             <h2 className="font-editorial text-3xl sm:text-5xl font-black uppercase tracking-tight leading-tight mb-6">
               120 Rigorous Steps. <br />
-              <span className="italic font-light text-[#ff7373]">Zero Shortcuts.</span>
+              <span className="italic font-light text-[#d4af37]">Zero Shortcuts.</span>
             </h2>
 
             <p className="text-sm text-white/70 leading-relaxed mb-8">
@@ -779,15 +779,15 @@ Requested via New Samadhan Shoes Website`;
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-4 border-t border-white/10">
               <div>
-                <span className="text-2xl font-bold font-editorial text-[#ff4d4d] block">3 Weeks</span>
+                <span className="text-2xl font-bold font-editorial text-[#d4af37] block">3 Weeks</span>
                 <span className="text-xs text-white/60">Minimum Lasting & Curing</span>
               </div>
               <div>
-                <span className="text-2xl font-bold font-editorial text-[#ff4d4d] block">3x Audit</span>
+                <span className="text-2xl font-bold font-editorial text-[#d4af37] block">3x Audit</span>
                 <span className="text-xs text-white/60">Guild Master Verification</span>
               </div>
               <div>
-                <span className="text-2xl font-bold font-editorial text-[#ff4d4d] block">Lifetime</span>
+                <span className="text-2xl font-bold font-editorial text-[#d4af37] block">Lifetime</span>
                 <span className="text-xs text-white/60">Free Minor Stitch Servicing</span>
               </div>
             </div>
@@ -802,8 +802,8 @@ Requested via New Samadhan Shoes Website`;
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
           <div>
             <div className="inline-flex items-center gap-2 bg-[#d4af37]/20 border border-[#d4af37]/40 px-4 py-2 rounded-full mb-6">
-              <div className="w-2 h-2 rounded-full bg-[#ff4d4d] animate-pulse"></div>
-              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#ff7373]">Advanced Restoration Node</span>
+              <div className="w-2 h-2 rounded-full bg-[#d4af37] animate-pulse"></div>
+              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#d4af37]">Advanced Restoration Node</span>
             </div>
             <h2 className="font-editorial text-4xl sm:text-6xl font-black uppercase tracking-tight mb-6 leading-[0.95]">
               Elite Service <br />
@@ -922,7 +922,7 @@ Requested via New Samadhan Shoes Website`;
             <div className="lg:col-span-7 bg-white p-8 sm:p-14 rounded-[3rem] shadow-2xl">
               {bookingStatus === 'confirmed' ? (
                 <div className="py-20 text-center flex flex-col items-center justify-center animate-in zoom-in-95 duration-500">
-                  <div className="w-24 h-24 rounded-[2rem] bg-emerald-50 text-emerald-600 flex items-center justify-center mb-8 border border-emerald-100 shadow-xl shadow-emerald-500/10">
+                  <div className="w-24 h-24 rounded-[2rem] bg-[#d4af37]/10 text-[#d4af37] flex items-center justify-center mb-8 border border-[#d4af37]/20 shadow-xl shadow-[#d4af37]/10">
                     <CheckCircle2 size={48} strokeWidth={2.5} />
                   </div>
                   <h3 className="font-editorial text-4xl font-black uppercase text-[#111111] mb-4 tracking-tight">
@@ -949,7 +949,7 @@ Requested via New Samadhan Shoes Website`;
                 <form onSubmit={handleSubmitBooking} className="space-y-6">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <label className="text-[9px] font-black uppercase tracking-[0.3em] text-[#6B6B6B] ml-4">
+                      <label className="text-[9px] font-black uppercase tracking-[0.3em] text-[#d4af37] ml-4">
                         Full Designation
                       </label>
                       <input
@@ -964,7 +964,7 @@ Requested via New Samadhan Shoes Website`;
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[9px] font-black uppercase tracking-[0.3em] text-[#6B6B6B] ml-4">
+                      <label className="text-[9px] font-black uppercase tracking-[0.3em] text-[#d4af37] ml-4">
                         WhatsApp Contact
                       </label>
                       <input
@@ -982,7 +982,7 @@ Requested via New Samadhan Shoes Website`;
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <label className="text-[9px] font-black uppercase tracking-[0.3em] text-[#6B6B6B] ml-4">
+                      <label className="text-[9px] font-black uppercase tracking-[0.3em] text-[#d4af37] ml-4">
                         Encryption Email
                       </label>
                       <input
@@ -996,7 +996,7 @@ Requested via New Samadhan Shoes Website`;
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[9px] font-black uppercase tracking-[0.3em] text-[#6B6B6B] ml-4">
+                      <label className="text-[9px] font-black uppercase tracking-[0.3em] text-[#d4af37] ml-4">
                         Selected Protocol
                       </label>
                       <select
@@ -1016,7 +1016,7 @@ Requested via New Samadhan Shoes Website`;
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <label className="text-[9px] font-black uppercase tracking-[0.3em] text-[#6B6B6B] ml-4">
+                      <label className="text-[9px] font-black uppercase tracking-[0.3em] text-[#d4af37] ml-4">
                         Preferred Date
                       </label>
                       <input
@@ -1030,7 +1030,7 @@ Requested via New Samadhan Shoes Website`;
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[9px] font-black uppercase tracking-[0.3em] text-[#6B6B6B] ml-4">
+                      <label className="text-[9px] font-black uppercase tracking-[0.3em] text-[#d4af37] ml-4">
                         Time Slot
                       </label>
                       <select

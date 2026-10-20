@@ -176,7 +176,7 @@ const Reviews = ({ productId, isAdmin = false }) => {
                 >
                   <RefreshCcw size={16} className={`${isSyncing ? 'animate-spin' : 'group-hover:rotate-180 transition-transform duration-500'}`} />
                 </button>
-                {syncMessage && <span className="text-[8px] font-black uppercase text-emerald-600 tracking-tighter whitespace-nowrap">{syncMessage}</span>}
+                {syncMessage && <span className="text-[8px] font-black uppercase text-[#d4af37] tracking-tighter whitespace-nowrap">{syncMessage}</span>}
               </div>
             </div>
             {!hasSynced && (
@@ -323,7 +323,7 @@ const Reviews = ({ productId, isAdmin = false }) => {
 
               {showSuccess && (
                 <div className="absolute inset-0 bg-white/95 rounded-[4rem] flex flex-col items-center justify-center text-center p-12 z-20 animate-in fade-in zoom-in duration-500">
-                  <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-6">
+                  <div className="w-20 h-20 bg-[#d4af37]/10 text-[#d4af37] rounded-full flex items-center justify-center mb-6 border border-[#d4af37]/20">
                     <ShieldCheck size={40} />
                   </div>
                   <h4 className="text-3xl font-editorial font-black uppercase mb-4 text-[#111]">Thank You!</h4>
@@ -406,7 +406,7 @@ const Reviews = ({ productId, isAdmin = false }) => {
                         <ThumbsUp size={14} /> Helpful {rev.helpful > 0 && <span>({rev.helpful})</span>}
                       </button>
 
-                      <div className="flex items-center gap-2 text-emerald-600 text-[10px] font-black uppercase tracking-widest">
+                      <div className="flex items-center gap-2 text-[#d4af37] text-[10px] font-black uppercase tracking-widest">
                         <ShieldCheck size={14} /> Verified Purchase
                       </div>
 

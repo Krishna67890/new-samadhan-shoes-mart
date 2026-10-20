@@ -198,10 +198,10 @@ const AdminProductEdit = () => {
         </div>
 
       {success && (
-         <div className="bg-green-600 text-white p-6 rounded-2xl mb-8 flex items-center shadow-xl border-4 border-white animate-in zoom-in-95">
+         <div className="bg-[#111] text-[#d4af37] p-6 rounded-2xl mb-8 flex items-center shadow-xl border border-[#d4af37]/20 animate-in zoom-in-95">
             <CheckCircle className="w-8 h-8 mr-3" />
             <div>
-               <p className="font-black uppercase tracking-widest text-lg">Update Successfull</p>
+               <p className="font-black uppercase tracking-widest text-lg">Update Successful</p>
                <p className="text-xs opacity-80 font-bold uppercase tracking-tighter">The product has been updated in the catalog.</p>
             </div>
          </div>
@@ -344,7 +344,7 @@ const AdminProductEdit = () => {
 
             {/* Right Column: Images & Sizes */}
             <div className="space-y-8">
-               <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-600 border-b border-[#111]/5 pb-4 flex items-center">
+               <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#d4af37] border-b border-[#111]/5 pb-4 flex items-center">
                  Media & Options
                </h3>
 
@@ -379,7 +379,7 @@ const AdminProductEdit = () => {
                            <button
                              type="button"
                              onClick={() => setImages(images.filter((_, i) => i !== idx))}
-                             className="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1.5 shadow-lg"
+                             className="absolute top-2 right-2 bg-[#111] text-[#d4af37] rounded-full p-1.5 shadow-lg hover:bg-red-600 hover:text-white transition-colors"
                            >
                              <ArrowLeft className="w-3 h-3 rotate-45" />
                            </button>
@@ -412,18 +412,18 @@ const AdminProductEdit = () => {
                     <input
                       type="text"
                       placeholder="3D Model URL (e.g. /uploads/model.glb)"
-                      className="flex-1 px-6 py-4 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-blue-600 outline-none transition-all font-bold text-[#111] text-[10px]"
+                      className="flex-1 px-6 py-4 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-[#d4af37] outline-none transition-all font-bold text-[#111] text-[10px]"
                       value={model3D}
                       onChange={(e) => setModel3D(e.target.value)}
                     />
-                    <label className="px-6 py-4 bg-blue-600 text-white rounded-2xl cursor-pointer hover:bg-blue-700 transition-all flex items-center gap-2 text-[10px] font-black uppercase">
+                    <label className="px-6 py-4 bg-[#111] text-[#d4af37] rounded-2xl cursor-pointer hover:bg-[#d4af37] hover:text-black transition-all flex items-center gap-2 text-[10px] font-black uppercase border border-[#d4af37]/20">
                       {uploadingModel ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload size={16} />}
                       <span>{model3D ? 'Change' : 'Upload'}</span>
                       <input type="file" className="hidden" accept=".glb,.gltf" onChange={uploadModelHandler} />
                     </label>
                   </div>
                   {model3D && (
-                    <div className="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-lg text-[9px] font-black uppercase tracking-widest">
+                    <div className="flex items-center gap-2 px-4 py-2 bg-[#d4af37]/10 text-[#d4af37] rounded-lg text-[9px] font-black uppercase tracking-widest">
                       <CheckCircle size={12} /> Model Synced: {model3D.split('/').pop()}
                     </div>
                   )}
@@ -451,7 +451,7 @@ const AdminProductEdit = () => {
 
                {/* ERGONOMIC & TECH FIELDS */}
                <div className="space-y-6 pt-6 border-t border-slate-100">
-                  <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-emerald-600 flex items-center gap-2">
+                  <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#d4af37] flex items-center gap-2">
                      <Sparkles size={12} /> Frido Ergonomic Specs
                   </h3>
 
@@ -459,7 +459,7 @@ const AdminProductEdit = () => {
                     <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-2">Technology (Comma separated)</label>
                     <input
                       type="text"
-                      className="w-full px-6 py-4 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-emerald-600 outline-none transition-all font-bold text-[#111] text-[10px]"
+                      className="w-full px-6 py-4 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-[#d4af37] outline-none transition-all font-bold text-[#111] text-[10px]"
                       value={technology.join(', ')}
                       onChange={(e) => setTechnology(e.target.value.split(',').map(s => s.trim()))}
                       placeholder="e.g. Arch-Support Matrix, Dual-Density Foam"
@@ -470,7 +470,7 @@ const AdminProductEdit = () => {
                     <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-2">Medical Concerns (Comma separated)</label>
                     <input
                       type="text"
-                      className="w-full px-6 py-4 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-emerald-600 outline-none transition-all font-bold text-[#111] text-[10px]"
+                      className="w-full px-6 py-4 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-[#d4af37] outline-none transition-all font-bold text-[#111] text-[10px]"
                       value={concerns.join(', ')}
                       onChange={(e) => setConcerns(e.target.value.split(',').map(s => s.trim()))}
                       placeholder="e.g. Heel Comfort, Flat Feet"
@@ -481,7 +481,7 @@ const AdminProductEdit = () => {
                     <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-2">Target Professions (Comma separated)</label>
                     <input
                       type="text"
-                      className="w-full px-6 py-4 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-emerald-600 outline-none transition-all font-bold text-[#111] text-[10px]"
+                      className="w-full px-6 py-4 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-[#d4af37] outline-none transition-all font-bold text-[#111] text-[10px]"
                       value={professions.join(', ')}
                       onChange={(e) => setProfessions(e.target.value.split(',').map(s => s.trim()))}
                       placeholder="e.g. Healthcare, Corporate"
@@ -492,7 +492,7 @@ const AdminProductEdit = () => {
                     <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-2">Primary Purpose (Comma separated)</label>
                     <input
                       type="text"
-                      className="w-full px-6 py-4 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-emerald-600 outline-none transition-all font-bold text-[#111] text-[10px]"
+                      className="w-full px-6 py-4 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-[#d4af37] outline-none transition-all font-bold text-[#111] text-[10px]"
                       value={purpose.join(', ')}
                       onChange={(e) => setPurpose(e.target.value.split(',').map(s => s.trim()))}
                       placeholder="e.g. Daily Wear, Office, Running"

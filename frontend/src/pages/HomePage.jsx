@@ -1438,7 +1438,7 @@ const HomePage = () => {
               </div>
 
               <div className="mt-8 pt-6 border-t border-black/10 bg-white p-4 rounded-2xl flex items-center gap-3 border border-black/5">
-                <ShieldCheck size={24} className="text-emerald-600 shrink-0" />
+                <ShieldCheck size={24} className="text-[#d4af37] shrink-0" />
                 <p className="text-[11px] text-gray-600 leading-snug">
                   100% Verified Purchases from New Samadhan Shoes Mart Nashik Atelier & Digital Store.
                 </p>
@@ -1462,7 +1462,7 @@ const HomePage = () => {
                           <h4 className="text-sm font-black uppercase tracking-tight text-gray-900">
                             {rev.name}
                           </h4>
-                          <span className="text-[10px] text-emerald-600 font-bold flex items-center gap-1">
+                          <span className="text-[10px] text-[#d4af37] font-bold flex items-center gap-1">
                             <CheckCircle2 size={11} /> Verified Purchase
                           </span>
                         </div>
@@ -1476,7 +1476,7 @@ const HomePage = () => {
                           <button
                             type="button"
                             onClick={(e) => handleDeleteReview(rev.id, e)}
-                            className="p-1.5 rounded-full text-red-500 hover:bg-red-50 hover:text-red-700 transition-colors cursor-pointer"
+                            className="p-1.5 rounded-full text-[#111] hover:bg-[#d4af37] hover:text-black transition-colors cursor-pointer"
                             title="Delete this review (Owner Action)"
                           >
                             <Trash2 size={13} />
@@ -1502,7 +1502,7 @@ const HomePage = () => {
 
                   <div className="mt-6 pt-4 border-t border-black/10 flex items-center justify-between text-[10px] font-bold text-gray-400 uppercase tracking-widest">
                     <span>{rev.city || 'Nashik Customer'}</span>
-                    <span className="text-emerald-700 font-black">Shoe Fit: Perfect (True to Size)</span>
+                    <span className="text-[#d4af37] font-black">Shoe Fit: Perfect (True to Size)</span>
                   </div>
                 </div>
               ))}

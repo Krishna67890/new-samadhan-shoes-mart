@@ -186,7 +186,7 @@ const AdminDashboard = () => {
             ))}
             <button
               onClick={handleFactoryReset}
-              className="bg-white text-red-600 px-6 py-5 rounded-[2rem] border border-red-100 hover:bg-red-600 hover:text-white transition-all flex items-center font-black uppercase tracking-widest text-[10px] shadow-sm"
+              className="bg-white text-[#111] px-6 py-5 rounded-[2rem] border border-[#111]/10 hover:bg-[#111] hover:text-[#d4af37] transition-all flex items-center font-black uppercase tracking-widest text-[10px] shadow-sm"
             >
               <RotateCcw className="w-4 h-4 mr-2" /> Reset Vault
             </button>
@@ -204,7 +204,7 @@ const AdminDashboard = () => {
         )}
 
         {syncStatus && (
-           <div className={`${syncStatus.success ? 'bg-[#111] text-[#d4af37]' : 'bg-red-600 text-white'} p-6 rounded-[2.5rem] mb-12 flex items-center shadow-xl border border-[#d4af37]/20 animate-in slide-in-from-top-4 no-blur-zone`}>
+           <div className={`${syncStatus.success ? 'bg-[#111] text-[#d4af37]' : 'bg-[#111] text-red-500'} p-6 rounded-[2.5rem] mb-12 flex items-center shadow-xl border border-[#d4af37]/20 animate-in slide-in-from-top-4 no-blur-zone`}>
               {syncStatus.success ? <CheckCircle className="w-8 h-8 mr-4" /> : <ShieldCheck className="w-8 h-8 mr-4" />}
               <div>
                  <p className="font-black uppercase tracking-widest text-lg">{syncStatus.success ? 'Vault Synchronized' : 'Sync Protocol Failed'}</p>
