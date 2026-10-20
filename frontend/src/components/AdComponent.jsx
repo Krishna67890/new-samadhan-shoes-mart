@@ -4,38 +4,70 @@ const AdComponent = ({ adSlot, style = { display: 'block' }, adFormat = 'auto', 
   const adRef = useRef(null);
 
   useEffect(() => {
+    let retryInterval = null;
+    let retries = 0;
+    const MAX_RETRIES = 10;
+
     const pushAd = () => {
       try {
-        if (window.adsbygoogle && adRef.current) {
-          // Prevent duplicate initialization
-          if (adRef.current.getAttribute('data-adsbygoogle-status')) {
-            return;
-          }
+        if (!adRef.current) return;
 
-          // Ensure the element is visible and has width to prevent "availableWidth=0" error
-          if (adRef.current.offsetWidth > 0) {
+        // 1. Check if AdSense script is loaded/ready
+        if (!window.adsbygoogle) {
+          if (retries < MAX_RETRIES) {
+            retries++;
+            setTimeout(pushAd, 1000); // Wait longer for script load
+          }
+          return;
+        }
+
+        // 2. Prevent duplicate initialization
+        const status = adRef.current.getAttribute('data-adsbygoogle-status');
+        if (status === 'done' || status === 'processed' || adRef.current.innerHTML.trim().length > 0) {
+          return;
+        }
+
+        // 3. Ensure width is available and element is actually visible in DOM
+        const width = adRef.current.offsetWidth;
+        if (width > 0) {
+          // Final check to prevent race conditions
+          if (!adRef.current.getAttribute('data-adsbygoogle-status')) {
             (window.adsbygoogle = window.adsbygoogle || []).push({});
-          } else {
-            // If width is 0, wait for a bit and try again (up to a few times)
-            let retries = 0;
-            const retryInterval = setInterval(() => {
+          }
+        } else {
+          // Retry logic if width is not yet available (common on slow refreshes or hidden tabs)
+          if (!retryInterval && retries < MAX_RETRIES) {
+            retryInterval = setInterval(() => {
               retries++;
               if (adRef.current && adRef.current.offsetWidth > 0) {
-                (window.adsbygoogle = window.adsbygoogle || []).push({});
+                if (!adRef.current.getAttribute('data-adsbygoogle-status')) {
+                  try {
+                    (window.adsbygoogle = window.adsbygoogle || []).push({});
+                  } catch (innerErr) {
+                    // Silent catch for internal AdSense settling
+                  }
+                }
                 clearInterval(retryInterval);
               }
-              if (retries > 5) clearInterval(retryInterval); // Stop after 5 retries
+              if (retries >= MAX_RETRIES) clearInterval(retryInterval);
             }, 1000);
           }
         }
       } catch (e) {
-        console.error('AdSense error:', e);
+        // Silencing common AdSense initialization noise during page transitions/refreshes
+        if (process.env.NODE_ENV === 'development') {
+          console.debug('AdSense init (expected during refresh):', e.message);
+        }
       }
     };
 
-    // Small delay to ensure the DOM is fully rendered and has width
-    const timer = setTimeout(pushAd, 500);
-    return () => clearTimeout(timer);
+    // Delay initialization to allow React DOM and CSS to fully settle
+    const timer = setTimeout(pushAd, 2000);
+
+    return () => {
+      clearTimeout(timer);
+      if (retryInterval) clearInterval(retryInterval);
+    };
   }, [adSlot]);
 
   return (
