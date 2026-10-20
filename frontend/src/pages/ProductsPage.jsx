@@ -250,8 +250,8 @@ const ProductsPage = () => {
                     setSearchParams(params);
                   }}
                   className={`px-8 py-3.5 rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] transition-all duration-500 shadow-sm border ${
-                    {/* isActive
-                      ? 'bg-[#111111] text-white border-[#111111] shadow-xl scale-105'
+                    isActive
+                      ? 'bg-[#111111] text-[#d4af37] border-[#111111] shadow-xl scale-105'
                       : 'bg-white text-[#6B6B6B] hover:text-[#111111] border-[#111111]/5 hover:border-[#d4af37]/30'
                   }`}
                 >
