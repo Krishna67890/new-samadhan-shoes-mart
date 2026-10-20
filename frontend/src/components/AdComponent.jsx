@@ -6,8 +6,27 @@ const AdComponent = ({ adSlot, style = { display: 'block' }, adFormat = 'auto', 
   useEffect(() => {
     const pushAd = () => {
       try {
-        if (window.adsbygoogle && adRef.current && !adRef.current.getAttribute('data-adsbygoogle-status')) {
-          (window.adsbygoogle = window.adsbygoogle || []).push({});
+        if (window.adsbygoogle && adRef.current) {
+          // Prevent duplicate initialization
+          if (adRef.current.getAttribute('data-adsbygoogle-status')) {
+            return;
+          }
+
+          // Ensure the element is visible and has width to prevent "availableWidth=0" error
+          if (adRef.current.offsetWidth > 0) {
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+          } else {
+            // If width is 0, wait for a bit and try again (up to a few times)
+            let retries = 0;
+            const retryInterval = setInterval(() => {
+              retries++;
+              if (adRef.current && adRef.current.offsetWidth > 0) {
+                (window.adsbygoogle = window.adsbygoogle || []).push({});
+                clearInterval(retryInterval);
+              }
+              if (retries > 5) clearInterval(retryInterval); // Stop after 5 retries
+            }, 1000);
+          }
         }
       } catch (e) {
         console.error('AdSense error:', e);
