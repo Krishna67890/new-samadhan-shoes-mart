@@ -42,7 +42,7 @@ const ShopListing = () => {
 
              {/* Search Input */}
              <div className="flex-1 w-full flex items-center gap-4 px-6 py-4 bg-[#F7F5F0] rounded-xl border border-transparent focus-within:border-[#111111]/20 transition-all group">
-                <Search size={18} className="text-[#8B0000]" />
+                <Search size={18} className="text-[#d4af37]" />
                 <input
                   type="text"
                   placeholder="SEARCH EXCLUSIVE DEALERS..."
@@ -65,7 +65,7 @@ const ShopListing = () => {
              </div>
 
              {/* Action Button */}
-             <button className="w-full md:w-auto bg-[#111111] text-white px-10 py-4.5 rounded-xl text-[11px] font-sans font-bold uppercase tracking-[0.2em] flex items-center justify-center gap-3 hover:bg-[#8B0000] transition-all shadow-md">
+             <button className="w-full md:w-auto bg-[#111111] text-white px-10 py-4.5 rounded-xl text-[11px] font-sans font-bold uppercase tracking-[0.2em] flex items-center justify-center gap-3 hover:bg-[#d4af37] transition-all shadow-md">
                 SCAN VERIFIED MARTS <ArrowRight size={14} />
              </button>
          </div>
@@ -76,8 +76,8 @@ const ShopListing = () => {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-16 shop-reveal">
            <div>
               <div className="flex items-center gap-2 mb-3">
-                 <Compass size={14} className="text-[#8B0000] animate-spin-[duration:10s]" />
-                 <p className="text-[10px] font-sans font-bold text-[#8B0000] uppercase tracking-[0.4em]">DISTRIBUTION NETWORKS</p>
+                 <Compass size={14} className="text-[#d4af37] animate-spin-[duration:10s]" />
+                 <p className="text-[10px] font-sans font-bold text-[#d4af37] uppercase tracking-[0.4em]">DISTRIBUTION NETWORKS</p>
               </div>
               <h1 className="text-5xl md:text-7xl font-editorial font-black text-[#111111] tracking-tighter uppercase leading-none">
                 {city ? `NODES IN ${city.toUpperCase()}` : 'THE VERIFIED NETWORKS'}
@@ -106,13 +106,13 @@ const ShopListing = () => {
           <div className="grid grid-cols-1 gap-8 shop-reveal">
             {shops.length > 0 ? (
               shops.map((shop) => (
-                <div key={shop._id} className="bg-white rounded-[2rem] p-8 border border-[#111111]/5 shadow-[0_30px_60px_rgba(0,0,0,0.015)] transition-all hover:border-[#8B0000]/20 duration-500">
+                <div key={shop._id} className="bg-white rounded-[2rem] p-8 border border-[#111111]/5 shadow-[0_30px_60px_rgba(0,0,0,0.015)] transition-all hover:border-[#d4af37]/20 duration-500">
                   <ShopCard shop={shop} />
                 </div>
               ))
             ) : (
               <div className="text-center py-32 bg-white rounded-[2.5rem] border border-[#111111]/5 shadow-inner flex flex-col items-center justify-center">
-                 <Sparkles size={36} className="text-[#8B0000] opacity-40 mb-4" />
+                 <Sparkles size={36} className="text-[#d4af37] opacity-40 mb-4" />
                  <h3 className="text-xl font-editorial font-bold text-[#111111] uppercase tracking-wide">No Regional Nodes Found</h3>
                  <p className="text-[#111111]/40 text-[10px] font-sans font-bold uppercase tracking-widest mt-2">Try searching for main authorized flagship hubs</p>
               </div>

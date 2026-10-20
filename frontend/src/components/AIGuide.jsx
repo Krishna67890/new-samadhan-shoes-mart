@@ -237,7 +237,7 @@ const AIGuide = () => {
           <div className="bg-white px-4 py-2 rounded-2xl shadow-xl border border-slate-100 animate-bounce mb-2">
             <div className="flex gap-1">
               {[1, 2, 3, 4].map(i => (
-                <div key={i} className="w-1.5 h-4 bg-[#8B0000] rounded-full animate-pulse" style={{ animationDelay: `${i * 0.1}s` }}></div>
+                <div key={i} className="w-1.5 h-4 bg-[#d4af37] rounded-full animate-pulse" style={{ animationDelay: `${i * 0.1}s` }}></div>
               ))}
             </div>
           </div>
@@ -344,7 +344,7 @@ const AIGuide = () => {
                 {activeTab === 'heritage' ? (
                   <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-2xl mx-auto flex flex-col items-center">
                     <div className="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-xl shadow-slate-200/50 w-full">
-                      <h3 className="text-sm font-black uppercase tracking-[0.2em] text-[#8B0000] mb-6 flex items-center justify-center gap-3">
+                      <h3 className="text-sm font-black uppercase tracking-[0.2em] text-[#d4af37] mb-6 flex items-center justify-center gap-3">
                         <Footprints size={18} /> Anatomical Heritage Sizing
                       </h3>
                       <p className="text-xs font-bold text-slate-500 leading-relaxed mb-6 text-center">
@@ -460,14 +460,14 @@ const AIGuide = () => {
                                 <div
                                   key={prod._id || prod.id}
                                   onClick={() => { navigate(`/product/${prod._id || prod.id}`); setIsOpen(false); }}
-                                  className="bg-white p-3 rounded-xl flex items-center gap-3 border border-slate-200 hover:border-[#8B0000] cursor-pointer group transition-all"
+                                  className="bg-white p-3 rounded-xl flex items-center gap-3 border border-slate-200 hover:border-[#d4af37] cursor-pointer group transition-all"
                                 >
                                   <div className="w-12 h-12 bg-slate-50 rounded-lg overflow-hidden flex-shrink-0">
                                     <img src={resolveImageUrl(prod.images?.[0] || '/Shoes.png')} className="w-full h-full object-contain" />
                                   </div>
                                   <div className="flex-1">
                                     <p className="text-[10px] font-black text-slate-900 uppercase line-clamp-1">{prod.name}</p>
-                                    <p className="text-[9px] font-bold text-[#8B0000]">₹{prod.price?.toLocaleString()}</p>
+                                    <p className="text-[9px] font-bold text-[#d4af37]">₹{prod.price?.toLocaleString()}</p>
                                   </div>
                                   <Zap size={12} className="text-slate-300 group-hover:text-yellow-500" />
                                 </div>
@@ -492,7 +492,7 @@ const AIGuide = () => {
                       onChange={(e) => setChatInput(e.target.value)}
                       onKeyDown={(e) => e.stopPropagation()}
                       placeholder="Ask about foot size, sneakers, or latest arrivals..."
-                      className="flex-1 bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-[#8B0000]/20"
+                      className="flex-1 bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold focus:ring-2 focus:ring-[#d4af37]/20"
                     />
                     <button
                       type="button"
@@ -503,7 +503,7 @@ const AIGuide = () => {
                     </button>
                     <button
                       type="submit"
-                      className="w-14 h-14 bg-[#111111] text-white rounded-2xl flex items-center justify-center hover:bg-[#8B0000] transition-all"
+                      className="w-14 h-14 bg-[#111111] text-white rounded-2xl flex items-center justify-center hover:bg-[#d4af37] transition-all"
                     >
                       <Send size={20} />
                     </button>

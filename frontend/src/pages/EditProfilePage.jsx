@@ -148,15 +148,15 @@ const EditProfilePage = () => {
       <div className="max-w-5xl mx-auto relative z-10">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-16 profile-reveal">
           <div>
-            <button onClick={() => navigate(-1)} className="group flex items-center gap-3 text-[#111111]/50 hover:text-[#8B0000] transition-all mb-4">
+            <button onClick={() => navigate(-1)} className="group flex items-center gap-3 text-[#111111]/50 hover:text-[#d4af37] transition-all mb-4">
               <ArrowLeft size={16} />
               <span className="font-sans font-bold text-[10px] uppercase tracking-[0.3em]">Return</span>
             </button>
             <h1 className="text-5xl md:text-7xl font-editorial font-black text-[#111111] tracking-tighter uppercase leading-none">
-              IDENTITY <span className="italic font-light text-[#8B0000]">SYNC.</span>
+              IDENTITY <span className="italic font-light text-[#d4af37]">SYNC.</span>
             </h1>
           </div>
-          <button onClick={playEliteGuide} className="flex items-center gap-2 bg-white px-6 py-3 border border-[#111111]/5 rounded-full font-sans font-bold text-[10px] uppercase tracking-widest text-[#8B0000] shadow-sm hover:bg-[#111111] hover:text-white transition-all">
+          <button onClick={playEliteGuide} className="flex items-center gap-2 bg-white px-6 py-3 border border-[#111111]/5 rounded-full font-sans font-bold text-[10px] uppercase tracking-widest text-[#d4af37] shadow-sm hover:bg-[#111111] hover:text-white transition-all">
               <Volume2 size={14} /> AI Voice Guide
           </button>
         </div>
@@ -164,7 +164,7 @@ const EditProfilePage = () => {
         <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           <div className="lg:col-span-4 space-y-8 profile-reveal">
             <div className="bg-white rounded-[2.5rem] p-10 border border-[#111111]/5 shadow-[0_40px_80px_rgba(0,0,0,0.03)] text-center relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-full h-1.5 bg-[#8B0000]"></div>
+              <div className="absolute top-0 left-0 w-full h-1.5 bg-[#d4af37]"></div>
               <div className="w-44 h-44 bg-[#F7F5F0] rounded-[2rem] mx-auto flex items-center justify-center overflow-hidden border-4 border-white shadow-xl">
                 <img src={displayAvatar} alt="Profile" className="w-full h-full object-cover" />
               </div>
@@ -173,9 +173,9 @@ const EditProfilePage = () => {
             </div>
 
             <div className="bg-[#111111] rounded-[2rem] p-8 text-white relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-24 h-24 bg-[#8B0000]/10 rounded-full"></div>
+              <div className="absolute top-0 right-0 w-24 h-24 bg-[#d4af37]/10 rounded-full"></div>
               <div className="flex items-center gap-3 mb-4">
-                <ShieldCheck size={16} className="text-[#8B0000]" />
+                <ShieldCheck size={16} className="text-[#d4af37]" />
                 <span className="text-[9px] font-sans font-bold uppercase tracking-widest text-[#F7F5F0]/80">Local-First Architecture</span>
               </div>
               <p className="text-xs font-medium text-[#F7F5F0]/60 leading-relaxed italic">"Data is strictly secured in your personal browser vault. Encrypted node protection ensures complete privacy and zero lag."</p>
@@ -237,7 +237,7 @@ const EditProfilePage = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-[#111111] text-white py-5 rounded-xl font-sans font-bold uppercase tracking-[0.3em] text-[11px] shadow-lg hover:bg-[#8B0000] transition-all duration-500 flex items-center justify-center gap-3 disabled:opacity-50"
+                  className="w-full bg-[#111111] text-white py-5 rounded-xl font-sans font-bold uppercase tracking-[0.3em] text-[11px] shadow-lg hover:bg-[#d4af37] transition-all duration-500 flex items-center justify-center gap-3 disabled:opacity-50"
                 >
                   {loading ? <Loader2 className="animate-spin" size={16} /> : <><Save size={16} /> Sync Identity & Enter Vault</>}
                 </button>

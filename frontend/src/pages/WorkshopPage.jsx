@@ -281,7 +281,7 @@ Requested via New Samadhan Shoes Website`;
   };
 
   return (
-    <div ref={containerRef} className="bg-[#F7F5F0] text-[#111111] min-h-screen pt-32 pb-20 font-sans selection:bg-[#8B0000] selection:text-white overflow-x-hidden no-blur-zone">
+    <div ref={containerRef} className="bg-[#F7F5F0] text-[#111111] min-h-screen pt-32 pb-20 font-sans selection:bg-[#d4af37] selection:text-white overflow-x-hidden no-blur-zone">
 
       {/* Hero Section with Front-Banner.jpg strictly integrated as primary background hero */}
       <section ref={workshopHeroRef} className="relative min-h-[85vh] flex items-center px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto rounded-[4rem] overflow-hidden my-6 shadow-2xl bg-[#f5f5f5]">
@@ -294,10 +294,10 @@ Requested via New Samadhan Shoes Website`;
           {/* TECHNICAL HUD OVERLAYS */}
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute inset-0 bg-white/20"></div>
-            <div className="workshop-hud absolute inset-0 opacity-0" style={{ backgroundImage: 'radial-gradient(circle, rgba(139,0,0,0.05) 1px, transparent 1px)', backgroundSize: '60px 60px' }}></div>
-            <div className="workshop-hud absolute top-20 left-20 w-32 h-32 border-t-2 border-l-2 border-[#8B0000] opacity-0"></div>
-            <div className="workshop-hud absolute bottom-20 right-20 w-32 h-32 border-b-2 border-r-2 border-[#8B0000] opacity-0"></div>
-            <div className="workshop-hud absolute top-24 left-60 font-mono text-[9px] text-[#8B0000] tracking-[0.5em] opacity-0">
+            <div className="workshop-hud absolute inset-0 opacity-0" style={{ backgroundImage: 'radial-gradient(circle, rgba(212,175,55,0.05) 1px, transparent 1px)', backgroundSize: '60px 60px' }}></div>
+            <div className="workshop-hud absolute top-20 left-20 w-32 h-32 border-t-2 border-l-2 border-[#d4af37] opacity-0"></div>
+            <div className="workshop-hud absolute bottom-20 right-20 w-32 h-32 border-b-2 border-r-2 border-[#d4af37] opacity-0"></div>
+            <div className="workshop-hud absolute top-24 left-60 font-mono text-[9px] text-[#d4af37] tracking-[0.5em] opacity-0">
                ATELIER_STATUS: OPERATIONAL<br/>UNIT_LOC: NASHIK_HQ
             </div>
           </div>
@@ -305,15 +305,15 @@ Requested via New Samadhan Shoes Website`;
 
         <div className="relative z-10 flex flex-col gap-8 max-w-4xl text-[#111111]">
           <div className="workshop-hero-reveal inline-flex items-center gap-4">
-            <div className="w-12 h-[3px] bg-[#8B0000]"></div>
-            <span className="text-[11px] font-black uppercase tracking-[0.6em] text-[#8B0000]">
+            <div className="w-12 h-[3px] bg-[#d4af37]"></div>
+            <span className="text-[11px] font-black uppercase tracking-[0.6em] text-[#d4af37]">
               THE HIGH-FIDELITY ATELIER
             </span>
           </div>
 
           <h1 className="workshop-hero-reveal font-playfair text-5xl sm:text-7xl lg:text-[9rem] font-black uppercase tracking-tighter leading-[0.85] text-[#111111]">
             MASTER <br />
-            <span className="italic font-light text-[#8B0000]">CRAFT.</span>
+            <span className="italic font-light text-[#d4af37]">CRAFT.</span>
           </h1>
 
           <p className="workshop-hero-reveal text-lg sm:text-xl text-[#111111]/70 max-w-2xl leading-relaxed font-medium italic">
@@ -323,13 +323,13 @@ Requested via New Samadhan Shoes Website`;
           <div className="workshop-hero-reveal flex flex-wrap items-center gap-6 pt-6">
             <a
               href="#booking"
-              className="bg-[#8B0000] text-white px-12 py-7 rounded-2xl text-[10px] font-black uppercase tracking-[0.4em] hover:bg-white hover:text-[#111111] transition-all inline-flex items-center gap-6 shadow-2xl group"
+              className="bg-[#d4af37] text-[#111111] px-12 py-7 rounded-2xl text-[10px] font-black uppercase tracking-[0.4em] hover:bg-white hover:text-[#111111] transition-all inline-flex items-center gap-6 shadow-2xl group"
             >
               BOOK ATELIER VISIT <Calendar size={18} className="group-hover:rotate-12 transition-transform" />
             </a>
             <Link
               to="/products"
-              className="bg-white/10 border border-white/10 text-white px-12 py-7 rounded-2xl text-[10px] font-black uppercase tracking-[0.4em] hover:bg-[#8B0000] transition-all inline-flex items-center gap-6 group"
+              className="bg-white/10 border border-white/10 text-white px-12 py-7 rounded-2xl text-[10px] font-black uppercase tracking-[0.4em] hover:bg-[#d4af37] hover:text-[#111111] transition-all inline-flex items-center gap-6 group"
             >
               EXPLORE GUILD <ArrowRight size={18} className="group-hover:translate-x-3 transition-transform" />
             </Link>
@@ -342,7 +342,7 @@ Requested via New Samadhan Shoes Website`;
              <img
               src={resolveImageUrl("/New-Samadhan-Shoe-Mart/Main-Shoe.png")}
               alt="New Samadhan Shoes"
-              className="w-full h-auto object-contain transform rotate-[-15deg] scale-110 drop-shadow-[0_100px_150px_rgba(139,0,0,0.3)]"
+              className="w-full h-auto object-contain transform rotate-[-15deg] scale-110 drop-shadow-[0_100px_150px_rgba(212,175,55,0.3)]"
              />
              {/* VIRTUAL SHINE LAYER */}
              <div className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-40"
@@ -350,8 +350,8 @@ Requested via New Samadhan Shoes Website`;
              </div>
            </div>
            {/* IMAGE HOTSPOTS */}
-           <div className="absolute top-1/3 left-1/4 w-4 h-4 bg-[#8B0000] rounded-full animate-ping"></div>
-           <div className="absolute bottom-1/3 right-1/2 w-4 h-4 bg-[#8B0000] rounded-full animate-ping" style={{ animationDelay: '1s' }}></div>
+           <div className="absolute top-1/3 left-1/4 w-4 h-4 bg-[#d4af37] rounded-full animate-ping"></div>
+           <div className="absolute bottom-1/3 right-1/2 w-4 h-4 bg-[#d4af37] rounded-full animate-ping" style={{ animationDelay: '1s' }}></div>
         </div>
       </section>
 
@@ -365,7 +365,7 @@ Requested via New Samadhan Shoes Website`;
             { value: '12', label: 'Master Cobblers', sub: 'Over 280 Yrs Combined' },
           ].map((stat, idx) => (
             <div key={idx} className="bg-white/90 p-6 rounded-2xl border border-[#111111]/5 shadow-sm">
-              <span className="font-editorial text-3xl sm:text-4xl font-black text-[#8B0000] block mb-1">
+              <span className="font-editorial text-3xl sm:text-4xl font-black text-[#d4af37] block mb-1">
                 {stat.value}
               </span>
               <span className="text-xs font-bold uppercase tracking-wider text-[#111111] block">
@@ -411,7 +411,7 @@ Requested via New Samadhan Shoes Website`;
           <div className="absolute bottom-10 right-10 z-20 flex items-center gap-4">
              <button
               onClick={() => setIsAutoPlaying(!isAutoPlaying)}
-              className="w-12 h-12 rounded-full bg-white/20 border border-white/20 flex items-center justify-center text-white hover:bg-[#8B0000] transition-all"
+              className="w-12 h-12 rounded-full bg-white/20 border border-white/20 flex items-center justify-center text-white hover:bg-[#d4af37] transition-all"
              >
                {isAutoPlaying ? <Pause size={20} /> : <Play size={20} />}
              </button>
@@ -421,7 +421,7 @@ Requested via New Samadhan Shoes Website`;
                     key={idx}
                     onClick={() => setCurrentMediaIdx(idx)}
                     className={`h-1.5 transition-all rounded-full ${
-                      idx === currentMediaIdx ? 'w-8 bg-[#8B0000]' : 'w-2 bg-white/30 hover:bg-white/50'
+                      idx === currentMediaIdx ? 'w-8 bg-[#d4af37]' : 'w-2 bg-white/30 hover:bg-white/50'
                     }`}
                   />
                 ))}
@@ -433,7 +433,7 @@ Requested via New Samadhan Shoes Website`;
       {/* Expanded Workshop Scope: Full Product Catalog Categories Showcase */}
       <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-16 bg-white/80 rounded-[3rem] my-12 border border-[#111111]/5">
         <div className="max-w-3xl mb-12">
-          <span className="text-[10px] font-black uppercase tracking-[0.35em] text-[#8B0000] block mb-2">
+          <span className="text-[10px] font-black uppercase tracking-[0.35em] text-[#d4af37] block mb-2">
             Expanded Atelier Scope
           </span>
           <h2 className="font-editorial text-3xl sm:text-5xl font-black uppercase tracking-tight">
@@ -467,14 +467,14 @@ Requested via New Samadhan Shoes Website`;
                   <h3 className="font-editorial text-xl font-black uppercase tracking-tight text-[#111111] mb-1">
                     {cat.title}
                   </h3>
-                  <span className="text-[11px] font-bold text-[#8B0000] block mb-3">
+                  <span className="text-[11px] font-bold text-[#d4af37] block mb-3">
                     {cat.subtitle}
                   </span>
                   <p className="text-xs text-[#6B6B6B] leading-relaxed mb-4">
                     {cat.desc}
                   </p>
                 </div>
-                <div className="pt-4 border-t border-[#111111]/5 flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[#111111] group-hover:text-[#8B0000] transition-colors">
+                <div className="pt-4 border-t border-[#111111]/5 flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[#111111] group-hover:text-[#d4af37] transition-colors">
                   <span>Explore Guild Drops</span>
                   <ChevronRight size={16} />
                 </div>
@@ -488,7 +488,7 @@ Requested via New Samadhan Shoes Website`;
       <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-12">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#8B0000] block mb-2">
+            <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#d4af37] block mb-2">
               Interactive Atelier Walkthrough
             </span>
             <h2 className="font-editorial text-3xl sm:text-5xl font-black uppercase tracking-tight">
@@ -513,7 +513,7 @@ Requested via New Samadhan Shoes Website`;
               }`}
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="text-[10px] font-mono font-bold text-[#8B0000]">
+                <span className="text-[10px] font-mono font-bold text-[#d4af37]">
                   {st.step}
                 </span>
                 <span className={`text-[9px] uppercase tracking-widest ${selectedStation === i ? 'text-white/60' : 'text-[#6B6B6B]'}`}>
@@ -554,7 +554,7 @@ Requested via New Samadhan Shoes Website`;
             {/* Narrative & Details Column */}
             <div className="lg:col-span-5 p-8 sm:p-12 flex flex-col justify-between">
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#8B0000] block mb-2">
+                <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#d4af37] block mb-2">
                   Station Specifications
                 </span>
                 <h4 className="text-lg font-black uppercase text-[#111111] tracking-tight mb-4">
@@ -575,7 +575,7 @@ Requested via New Samadhan Shoes Website`;
                         key={idx}
                         className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#F7F5F0] text-[#111111] border border-[#111111]/10 text-xs font-semibold"
                       >
-                        <CheckCircle2 size={13} className="text-[#8B0000]" />
+                        <CheckCircle2 size={13} className="text-[#d4af37]" />
                         {sp}
                       </span>
                     ))}
@@ -590,12 +590,12 @@ Requested via New Samadhan Shoes Website`;
                 >
                   ← Previous
                 </button>
-                <span className="text-xs font-mono font-bold text-[#8B0000]">
+                <span className="text-xs font-mono font-bold text-[#d4af37]">
                   {selectedStation + 1} / {WORKSHOP_STATIONS.length}
                 </span>
                 <button
                   onClick={() => setSelectedStation((prev) => (prev < WORKSHOP_STATIONS.length - 1 ? prev + 1 : 0))}
-                  className="text-xs font-bold uppercase tracking-widest text-[#8B0000] hover:text-[#111111] transition-colors"
+                  className="text-xs font-bold uppercase tracking-widest text-[#d4af37] hover:text-[#111111] transition-colors"
                 >
                   Next Station →
                 </button>
@@ -609,7 +609,7 @@ Requested via New Samadhan Shoes Website`;
       <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-12">
         <div className="bg-gradient-to-br from-[#111111] to-[#222222] text-white rounded-[3rem] p-8 sm:p-14 relative overflow-hidden shadow-2xl border border-white/5">
           <div className="max-w-3xl relative z-10">
-            <div className="inline-flex items-center gap-2 bg-[#8B0000]/30 border border-[#8B0000]/60 px-3.5 py-1.5 rounded-full mb-6">
+            <div className="inline-flex items-center gap-2 bg-[#d4af37]/30 border border-[#d4af37]/60 px-3.5 py-1.5 rounded-full mb-6">
               <Sparkles size={14} className="text-[#ff4d4d]" />
               <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#ff7373]">
                 Premium Leather Benchmark Focus
@@ -636,16 +636,16 @@ Requested via New Samadhan Shoes Website`;
 
       {/* Advanced Workshop Gallery Archive: Integration of Humans, Advertisement & Product Categories */}
       <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-20 bg-white rounded-[4rem] my-12 border border-[#111111]/5 shadow-2xl relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-[#8B0000]/5 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+        <div className="absolute top-0 left-0 w-96 h-96 bg-[#d4af37]/5 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
 
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16 relative z-10">
           <div>
-            <div className="inline-flex items-center gap-2 bg-[#8B0000]/10 text-[#8B0000] px-3 py-1 rounded-full mb-4">
+            <div className="inline-flex items-center gap-2 bg-[#d4af37]/10 text-[#d4af37] px-3 py-1 rounded-full mb-4">
               <Sparkles size={12} />
               <span className="text-[9px] font-black uppercase tracking-[0.3em]">The Visual Archive</span>
             </div>
             <h2 className="font-editorial text-4xl sm:text-6xl font-black uppercase tracking-tight">
-              Workshop <span className="italic font-light text-[#8B0000]">Gallery.</span>
+              Workshop <span className="italic font-light text-[#d4af37]">Gallery.</span>
             </h2>
             <p className="text-sm text-[#6B6B6B] mt-4 max-w-xl leading-relaxed">
               Explore the human heartbeat and advertisement heritage of New Samadhan. From our master guild family to the latest high-fidelity product launches across Men, Women, Kids, and Sneakers.
@@ -660,7 +660,7 @@ Requested via New Samadhan Shoes Website`;
                 className={`px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all border ${
                   activeGalleryTab === tab
                     ? 'bg-[#111111] text-white border-[#111111] shadow-lg scale-105'
-                    : 'bg-transparent text-[#111111] border-[#111111]/10 hover:border-[#8B0000]'
+                    : 'bg-transparent text-[#111111] border-[#111111]/10 hover:border-[#d4af37]'
                 }`}
               >
                 {tab}
@@ -705,7 +705,7 @@ Requested via New Samadhan Shoes Website`;
       {/* The Master Cobblers of New Samadhan */}
       <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-12">
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <span className="text-[10px] font-bold uppercase tracking-[0.35em] text-[#8B0000] block mb-3">
+          <span className="text-[10px] font-bold uppercase tracking-[0.35em] text-[#d4af37] block mb-3">
             The Living Hands
           </span>
           <h2 className="font-editorial text-3xl sm:text-5xl font-black uppercase tracking-tight">
@@ -723,10 +723,10 @@ Requested via New Samadhan Shoes Website`;
               className="bg-white rounded-3xl p-8 border border-[#111111]/10 shadow-sm hover:shadow-xl transition-all flex flex-col justify-between relative group"
             >
               <div>
-                <div className="w-14 h-14 rounded-2xl bg-[#8B0000]/10 text-[#8B0000] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <div className="w-14 h-14 rounded-2xl bg-[#d4af37]/10 text-[#d4af37] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                   <Award size={28} />
                 </div>
-                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#8B0000] block mb-1">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#d4af37] block mb-1">
                   {cobbler.exp}
                 </span>
                 <h3 className="font-editorial text-2xl font-bold uppercase text-[#111111] mb-2">
@@ -744,7 +744,7 @@ Requested via New Samadhan Shoes Website`;
                 <span className="text-[9px] font-bold uppercase tracking-widest text-[#111111] block mb-1">
                   Signature Specialty:
                 </span>
-                <p className="text-[11px] text-[#8B0000] font-medium italic">
+                <p className="text-[11px] text-[#d4af37] font-medium italic">
                   {cobbler.specialty}
                 </p>
               </div>
@@ -761,7 +761,7 @@ Requested via New Samadhan Shoes Website`;
           </div>
 
           <div className="max-w-2xl relative z-10">
-            <div className="inline-flex items-center gap-2 bg-[#8B0000]/20 border border-[#8B0000]/40 px-3.5 py-1.5 rounded-full mb-6">
+            <div className="inline-flex items-center gap-2 bg-[#d4af37]/20 border border-[#d4af37]/40 px-3.5 py-1.5 rounded-full mb-6">
               <Sparkles size={14} className="text-[#ff4d4d]" />
               <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#ff7373]">
                 Zero Compromise Standard
@@ -797,17 +797,17 @@ Requested via New Samadhan Shoes Website`;
 
       {/* Consolidated Elite Restoration & Service Center */}
       <section className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-20 bg-[#111111] text-white rounded-[4rem] my-12 shadow-2xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#8B0000]/5 rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#d4af37]/5 rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
           <div>
-            <div className="inline-flex items-center gap-2 bg-[#8B0000]/20 border border-[#8B0000]/40 px-4 py-2 rounded-full mb-6">
+            <div className="inline-flex items-center gap-2 bg-[#d4af37]/20 border border-[#d4af37]/40 px-4 py-2 rounded-full mb-6">
               <div className="w-2 h-2 rounded-full bg-[#ff4d4d] animate-pulse"></div>
               <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#ff7373]">Advanced Restoration Node</span>
             </div>
             <h2 className="font-editorial text-4xl sm:text-6xl font-black uppercase tracking-tight mb-6 leading-[0.95]">
               Elite Service <br />
-              <span className="italic font-light text-[#8B0000]">Protocols.</span>
+              <span className="italic font-light text-[#d4af37]">Protocols.</span>
             </h2>
             <p className="text-sm text-white/60 leading-relaxed italic mb-8 max-w-xl">
               "Equipped with molecular-level diagnostic tools, natural oil injection baths, and premium welt restoration jigs. We don't just repair; we stabilize material integrity for a lifetime."
@@ -820,10 +820,10 @@ Requested via New Samadhan Shoes Website`;
                 { label: 'Anatomy Sync', value: '3D Ergonomic Fitting', icon: <Footprints size={18} /> },
                 { label: 'Stitch Integrity', value: '100% Goodyear Protocol', icon: <Layers size={18} /> }
               ].map((item, idx) => (
-                <div key={idx} className="flex gap-4 border-l border-[#8B0000] pl-6 py-2">
-                   <div className="text-[#8B0000]">{item.icon}</div>
+                <div key={idx} className="flex gap-4 border-l border-[#d4af37] pl-6 py-2">
+                   <div className="text-[#d4af37]">{item.icon}</div>
                    <div>
-                    <span className="text-[9px] font-black uppercase tracking-widest text-[#8B0000] block mb-1">{item.label}</span>
+                    <span className="text-[9px] font-black uppercase tracking-widest text-[#d4af37] block mb-1">{item.label}</span>
                     <span className="text-xs font-bold uppercase tracking-tight text-white block">{item.value}</span>
                    </div>
                 </div>
@@ -839,11 +839,11 @@ Requested via New Samadhan Shoes Website`;
                 { name: 'Full Sole Reconstruction', time: '7-10 Days', price: '₹4,500', detail: 'Complete welt-down replacement' },
                 { name: 'Anatomical Comfort Optimization', time: '3-5 Days', price: '₹2,500', detail: 'Internal volume & arch adjustment' }
               ].map((tier, idx) => (
-                <div key={idx} className="flex justify-between items-start border-b border-white/10 pb-5 group hover:border-[#8B0000] transition-colors">
+                <div key={idx} className="flex justify-between items-start border-b border-white/10 pb-5 group hover:border-[#d4af37] transition-colors">
                   <div>
-                    <h4 className="text-xs font-black uppercase tracking-wider text-white group-hover:text-[#8B0000] transition-colors">{tier.name}</h4>
+                    <h4 className="text-xs font-black uppercase tracking-wider text-white group-hover:text-[#d4af37] transition-colors">{tier.name}</h4>
                     <p className="text-[10px] text-white/40 italic mt-1">{tier.detail}</p>
-                    <p className="text-[9px] font-bold text-[#8B0000] uppercase mt-2 tracking-widest">Protocol Timeline: {tier.time}</p>
+                    <p className="text-[9px] font-bold text-[#d4af37] uppercase mt-2 tracking-widest">Protocol Timeline: {tier.time}</p>
                   </div>
                   <span className="text-lg font-editorial font-black text-white tracking-tight">{tier.price}</span>
                 </div>
@@ -851,7 +851,7 @@ Requested via New Samadhan Shoes Website`;
             </div>
             <button
               onClick={() => document.getElementById('booking').scrollIntoView({ behavior: 'smooth' })}
-              className="w-full bg-[#8B0000] text-white py-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-white hover:text-[#111111] transition-all mt-10 shadow-xl shadow-red-900/20"
+              className="w-full bg-[#d4af37] text-[#111111] py-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-white hover:text-[#111111] transition-all mt-10 shadow-xl shadow-amber-900/20"
             >
               Initiate Diagnostic Order
             </button>
@@ -863,18 +863,18 @@ Requested via New Samadhan Shoes Website`;
       {/* Atelier Appointment & Custom Consultation Form */}
       <section id="booking" className="px-6 md:px-12 lg:px-24 max-w-[1440px] mx-auto py-12 scroll-mt-24">
         <div className="bg-[#111111] rounded-[4rem] p-8 sm:p-20 shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#8B0000]/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#d4af37]/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 relative z-10">
             
             <div className="lg:col-span-5 flex flex-col justify-between">
               <div>
-                <div className="inline-flex items-center gap-2 text-[#8B0000] text-[10px] font-black uppercase tracking-[0.4em] mb-6">
+                <div className="inline-flex items-center gap-2 text-[#d4af37] text-[10px] font-black uppercase tracking-[0.4em] mb-6">
                   <Zap size={16} /> Direct Node Access
                 </div>
                 <h2 className="font-editorial text-4xl sm:text-6xl font-black uppercase tracking-tight text-white mb-8 leading-[0.9]">
                   Bespoke <br />
-                  <span className="italic font-light text-[#8B0000]">Experience.</span>
+                  <span className="italic font-light text-[#d4af37]">Experience.</span>
                 </h2>
                 <p className="text-sm text-white/50 leading-relaxed mb-10 italic">
                   "Book your consultation for a bespoke creation or elite restoration. Your request will be transmitted directly to our Master Cobbler via secured WhatsApp protocol."
@@ -882,7 +882,7 @@ Requested via New Samadhan Shoes Website`;
 
                 <div className="space-y-6">
                   <div className="flex items-start gap-4 p-6 rounded-3xl bg-white/10 border border-white/10">
-                    <MapPin size={24} className="text-[#8B0000] shrink-0 mt-1" />
+                    <MapPin size={24} className="text-[#d4af37] shrink-0 mt-1" />
                     <div>
                       <span className="text-[10px] font-black uppercase tracking-widest text-white block mb-1">
                         Atelier Coordinates
@@ -894,7 +894,7 @@ Requested via New Samadhan Shoes Website`;
                   </div>
 
                   <div className="flex items-start gap-4 p-6 rounded-3xl bg-white/10 border border-white/10">
-                    <ShieldCheck size={24} className="text-[#8B0000] shrink-0 mt-1" />
+                    <ShieldCheck size={24} className="text-[#d4af37] shrink-0 mt-1" />
                     <div>
                       <span className="text-[10px] font-black uppercase tracking-widest text-white block mb-1">
                         Verified Craftsmanship
@@ -910,7 +910,7 @@ Requested via New Samadhan Shoes Website`;
               <div className="pt-12 mt-12 border-t border-white/10">
                 <span className="text-[9px] font-black uppercase tracking-[0.5em] text-white/30 block mb-4 italic">Direct Appointment Hotline</span>
                 <div className="flex items-center gap-6">
-                   <div className="w-12 h-12 rounded-2xl bg-[#8B0000]/20 flex items-center justify-center text-[#8B0000]">
+                   <div className="w-12 h-12 rounded-2xl bg-[#d4af37]/20 flex items-center justify-center text-[#d4af37]">
                       <Phone size={24} />
                    </div>
                    <span className="text-2xl font-editorial font-black text-white tracking-widest">+91 8888644021</span>
@@ -929,7 +929,7 @@ Requested via New Samadhan Shoes Website`;
                     Transmission Success
                   </h3>
                   <p className="text-sm text-[#6B6B6B] max-w-md mb-10 leading-relaxed italic">
-                    "Thank you, <strong className="text-[#111111]">{formData.name}</strong>. Your appointment request for <strong className="text-[#8B0000]">{formData.service}</strong> is now in our master queue. Our concierge will reach you shortly."
+                    "Thank you, <strong className="text-[#111111]">{formData.name}</strong>. Your appointment request for <strong className="text-[#d4af37]">{formData.service}</strong> is now in our master queue. Our concierge will reach you shortly."
                   </p>
                   <button
                     onClick={() => {
@@ -940,7 +940,7 @@ Requested via New Samadhan Shoes Website`;
                         preferredDate: '', preferredTime: '11:00 AM', notes: ''
                       });
                     }}
-                    className="bg-[#111111] text-white px-10 py-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#8B0000] transition-all shadow-xl"
+                    className="bg-[#111111] text-white px-10 py-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#d4af37] hover:text-[#111111] transition-all shadow-xl"
                   >
                     Initiate New Protocol
                   </button>
@@ -960,7 +960,7 @@ Requested via New Samadhan Shoes Website`;
                         onChange={handleInputChange}
                         onKeyDown={(e) => e.stopPropagation()}
                         placeholder="e.g. KRISHNA RAJPUT"
-                        className="w-full bg-[#F7F5F0] px-6 py-5 rounded-2xl border border-transparent focus:bg-white focus:border-[#8B0000]/30 text-xs font-bold uppercase tracking-widest outline-none transition-all"
+                        className="w-full bg-[#F7F5F0] px-6 py-5 rounded-2xl border border-transparent focus:bg-white focus:border-[#d4af37]/30 text-xs font-bold uppercase tracking-widest outline-none transition-all"
                       />
                     </div>
                     <div className="space-y-2">
@@ -975,7 +975,7 @@ Requested via New Samadhan Shoes Website`;
                         onChange={handleInputChange}
                         onKeyDown={(e) => e.stopPropagation()}
                         placeholder="+91 XXXXX XXXXX"
-                        className="w-full bg-[#F7F5F0] px-6 py-5 rounded-2xl border border-transparent focus:bg-white focus:border-[#8B0000]/30 text-xs font-bold uppercase tracking-widest outline-none transition-all"
+                        className="w-full bg-[#F7F5F0] px-6 py-5 rounded-2xl border border-transparent focus:bg-white focus:border-[#d4af37]/30 text-xs font-bold uppercase tracking-widest outline-none transition-all"
                       />
                     </div>
                   </div>
@@ -992,7 +992,7 @@ Requested via New Samadhan Shoes Website`;
                         onChange={handleInputChange}
                         onKeyDown={(e) => e.stopPropagation()}
                         placeholder="CLIENT@SAMADHAN.COM"
-                        className="w-full bg-[#F7F5F0] px-6 py-5 rounded-2xl border border-transparent focus:bg-white focus:border-[#8B0000]/30 text-xs font-bold uppercase tracking-widest outline-none transition-all"
+                        className="w-full bg-[#F7F5F0] px-6 py-5 rounded-2xl border border-transparent focus:bg-white focus:border-[#d4af37]/30 text-xs font-bold uppercase tracking-widest outline-none transition-all"
                       />
                     </div>
                     <div className="space-y-2">
@@ -1003,7 +1003,7 @@ Requested via New Samadhan Shoes Website`;
                         name="service"
                         value={formData.service}
                         onChange={handleInputChange}
-                        className="w-full bg-[#F7F5F0] px-6 py-5 rounded-2xl border border-transparent focus:bg-white focus:border-[#8B0000]/30 text-xs font-bold uppercase tracking-widest outline-none transition-all appearance-none cursor-pointer"
+                        className="w-full bg-[#F7F5F0] px-6 py-5 rounded-2xl border border-transparent focus:bg-white focus:border-[#d4af37]/30 text-xs font-bold uppercase tracking-widest outline-none transition-all appearance-none cursor-pointer"
                       >
                         <option value="Bespoke Foot Fitting">Bespoke Fitting & Measurement</option>
                         <option value="Diamond Restoration">Diamond Restoration Service</option>
@@ -1026,7 +1026,7 @@ Requested via New Samadhan Shoes Website`;
                         value={formData.preferredDate}
                         onChange={handleInputChange}
                         onKeyDown={(e) => e.stopPropagation()}
-                        className="w-full bg-[#F7F5F0] px-6 py-5 rounded-2xl border border-transparent focus:bg-white focus:border-[#8B0000]/30 text-xs font-bold uppercase tracking-widest outline-none transition-all"
+                        className="w-full bg-[#F7F5F0] px-6 py-5 rounded-2xl border border-transparent focus:bg-white focus:border-[#d4af37]/30 text-xs font-bold uppercase tracking-widest outline-none transition-all"
                       />
                     </div>
                     <div className="space-y-2">
@@ -1037,7 +1037,7 @@ Requested via New Samadhan Shoes Website`;
                         name="preferredTime"
                         value={formData.preferredTime}
                         onChange={handleInputChange}
-                        className="w-full bg-[#F7F5F0] px-6 py-5 rounded-2xl border border-transparent focus:bg-white focus:border-[#8B0000]/30 text-xs font-bold uppercase tracking-widest outline-none transition-all appearance-none cursor-pointer"
+                        className="w-full bg-[#F7F5F0] px-6 py-5 rounded-2xl border border-transparent focus:bg-white focus:border-[#d4af37]/30 text-xs font-bold uppercase tracking-widest outline-none transition-all appearance-none cursor-pointer"
                       >
                         <option value="11:00 AM">Morning (11:00 AM)</option>
                         <option value="02:30 PM">Afternoon (02:30 PM)</option>
@@ -1058,14 +1058,14 @@ Requested via New Samadhan Shoes Website`;
                       onChange={handleInputChange}
                       onKeyDown={(e) => e.stopPropagation()}
                       placeholder="SPECIFY FOOT REQUIREMENTS, BRANDS, OR RESTORATION NEEDS..."
-                      className="w-full bg-[#F7F5F0] p-6 rounded-2xl border border-transparent focus:bg-white focus:border-[#8B0000]/30 text-xs font-bold uppercase tracking-widest outline-none transition-all resize-none"
+                      className="w-full bg-[#F7F5F0] p-6 rounded-2xl border border-transparent focus:bg-white focus:border-[#d4af37]/30 text-xs font-bold uppercase tracking-widest outline-none transition-all resize-none"
                     ></textarea>
                   </div>
 
                   <button
                     type="submit"
                     disabled={bookingStatus === 'submitting'}
-                    className="w-full bg-[#8B0000] text-white py-6 rounded-2xl text-[10px] font-black uppercase tracking-[0.4em] hover:bg-[#111111] transition-all flex items-center justify-center gap-4 shadow-xl shadow-red-900/10 group"
+                    className="w-full bg-[#d4af37] text-[#111111] py-6 rounded-2xl text-[10px] font-black uppercase tracking-[0.4em] hover:bg-[#111111] hover:text-white transition-all flex items-center justify-center gap-4 shadow-xl shadow-amber-900/10 group"
                   >
                     {bookingStatus === 'submitting' ? (
                       <Loader2 size={20} className="animate-spin" />

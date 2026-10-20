@@ -9,6 +9,7 @@ import { resolveImageUrl } from '../utils/urlConfig';
 import localProducts from '../utils/localProducts';
 import { getMergedProducts, CATEGORIES, COLLECTIONS, CONCERNS, PROFESSIONS, PURPOSES } from '../utils/productUtils';
 import { calculateProductStats } from '../utils/reviewService';
+import AdComponent from '../components/AdComponent';
 
 const ProductsPage = () => {
   const { user, isAuthenticated, isAdmin } = useContext(AuthContext);
@@ -206,15 +207,15 @@ const ProductsPage = () => {
   return (
     <div className="bg-[#F7F5F0] min-h-screen pt-20 md:pt-32 pb-12 md:pb-24 relative overflow-hidden no-blur-zone">
       {/* Background Glow Effect */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-[#8B0000]/5 rounded-full pointer-events-none"></div>
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-[#d4af37]/5 rounded-full pointer-events-none"></div>
 
       <div className="container mx-auto px-6 max-w-7xl relative z-10">
 
         {/* Clean Luxury Header */}
         <div className="mb-16 text-center">
           <div className="flex justify-center mb-6">
-            <div className="px-5 py-2 bg-white/70 border border-[#111111]/5 text-[#8B0000] text-[10px] font-black uppercase tracking-[0.4em] rounded-full flex items-center gap-2 shadow-sm">
-               <Sparkles size={12} /> Established 1990 · Nashik Atelier
+            <div className="px-5 py-2 bg-white/70 border border-[#111111]/5 text-[#d4af37] text-[10px] font-black uppercase tracking-[0.4em] rounded-full flex items-center gap-2 shadow-sm">
+               <Sparkles size={12} /> Established 1998 · Nashik Atelier
             </div>
           </div>
           <h1 className="text-4xl sm:text-7xl md:text-8xl font-editorial font-black mb-6 tracking-tighter uppercase leading-none bg-gradient-to-r from-[#111111] via-[#d4af37] to-[#111111] dark:from-white dark:via-[#d4af37] dark:to-white bg-clip-text text-transparent">
@@ -225,7 +226,7 @@ const ProductsPage = () => {
             <div className="flex justify-center mb-8">
               <button
                 onClick={() => navigate(`/admin/product/new?category=${activeCategory !== 'All' ? activeCategory : 'Formal'}`)}
-                className="bg-[#8B0000] text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-black transition-all flex items-center shadow-xl shadow-red-100"
+                className="bg-[#111111] text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-[#d4af37] hover:text-black transition-all flex items-center shadow-xl shadow-black/10"
               >
                 <PlusCircle className="w-4 h-4 mr-2" /> Add New {activeCategory !== 'All' ? activeCategory : 'Product'}
               </button>
@@ -249,9 +250,9 @@ const ProductsPage = () => {
                     setSearchParams(params);
                   }}
                   className={`px-8 py-3.5 rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] transition-all duration-500 shadow-sm border ${
-                    isActive
+                    {/* isActive
                       ? 'bg-[#111111] text-white border-[#111111] shadow-xl scale-105'
-                      : 'bg-white text-[#6B6B6B] hover:text-[#111111] border-[#111111]/5 hover:border-[#8B0000]/30'
+                      : 'bg-white text-[#6B6B6B] hover:text-[#111111] border-[#111111]/5 hover:border-[#d4af37]/30'
                   }`}
                 >
                   {col}
@@ -275,8 +276,8 @@ const ProductsPage = () => {
                   }}
                   className={`px-5 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${
                     isActive
-                      ? 'bg-[#8B0000] text-white shadow-md'
-                      : 'bg-white/60 text-slate-500 border border-transparent hover:border-[#8B0000]/20'
+                      ? 'bg-[#111111] text-[#d4af37] shadow-md'
+                      : 'bg-white/60 text-slate-500 border border-transparent hover:border-[#d4af37]/20'
                   }`}
                 >
                   {cat}
@@ -286,9 +287,12 @@ const ProductsPage = () => {
           </div>
         </div>
 
+        {/* AdSense Unit */}
+        <AdComponent adSlot="9012345678" />
+
         {loading ? (
           <div className="flex flex-col items-center justify-center py-40">
-             <div className="w-16 h-16 border-4 border-[#8B0000] border-t-transparent rounded-full animate-spin mb-8 shadow-[0_0_30px_rgba(139,0,0,0.1)]"></div>
+             <div className="w-16 h-16 border-4 border-[#d4af37] border-t-transparent rounded-full animate-spin mb-8 shadow-[0_0_30px_rgba(212,175,55,0.1)]"></div>
              <p className="text-[#6B6B6B] font-bold tracking-[0.5em] uppercase text-[10px]">Accessing Vault Catalog...</p>
           </div>
         ) : (filteredProducts && filteredProducts.length > 0) ? (
@@ -301,13 +305,13 @@ const ProductsPage = () => {
               return (
                 <div
                   key={prodId}
-                  className="product-card product-card-3d group bg-white p-5 rounded-[2.5rem] overflow-hidden border border-[#111111]/5 hover:border-[#8B0000]/30 transition-all duration-500 shadow-md hover:shadow-2xl flex flex-col justify-between relative"
+                  className="product-card product-card-3d group bg-white p-5 rounded-[2.5rem] overflow-hidden border border-[#111111]/5 hover:border-[#d4af37]/30 transition-all duration-500 shadow-md hover:shadow-2xl flex flex-col justify-between relative"
                   style={{ perspective: '1000px' }}
                 >
                   {/* Heritage Expert Pick Badge */}
                   {(product.rating >= 4.9 || product.collection === 'Limited Edition' || product.concerns?.length > 0) && (
                     <div className="absolute top-8 right-8 z-20 pointer-events-none" style={{ transform: 'translateZ(100px)' }}>
-                       <div className="bg-[#8B0000] text-white text-[7px] font-black uppercase tracking-[0.3em] px-3 py-1.5 rounded-full shadow-2xl flex items-center gap-1.5 animate-pulse border border-white/20">
+                       <div className="bg-[#111111] text-[#d4af37] text-[7px] font-black uppercase tracking-[0.3em] px-3 py-1.5 rounded-full shadow-2xl flex items-center gap-1.5 animate-pulse border border-[#d4af37]/20">
                           <Sparkles size={8} /> Expert Pick
                        </div>
                     </div>
@@ -342,14 +346,14 @@ const ProductsPage = () => {
                   <div className="pt-6 pb-2">
                     <h3
                       onClick={() => handleProductClick(prodId)}
-                      className="text-base font-editorial font-bold text-[#111111] hover:text-[#8B0000] transition-colors mb-2 line-clamp-1 uppercase tracking-tight cursor-pointer"
+                      className="text-base font-editorial font-bold text-[#111111] hover:text-[#d4af37] transition-colors mb-2 line-clamp-1 uppercase tracking-tight cursor-pointer"
                     >
                       {product?.name}
                     </h3>
 
                     <div className="flex items-center gap-1 mb-4 opacity-75">
                       {[...Array(5)].map((_, i) => (
-                        <Star key={i} size={11} className={`${i < Math.floor(calculateProductStats(prodId).average || product?.rating || 5) ? 'fill-[#8B0000] text-[#8B0000]' : 'text-[#111111]/15'}`} />
+                        <Star key={i} size={11} className={`${i < Math.floor(calculateProductStats(prodId).average || product?.rating || 5) ? 'fill-[#d4af37] text-[#d4af37]' : 'text-[#111111]/15'}`} />
                       ))}
                       <span className="text-[10px] text-[#6B6B6B] font-bold ml-2">({calculateProductStats(prodId).average || product?.rating || '4.9'})</span>
                     </div>
@@ -425,7 +429,7 @@ const ProductsPage = () => {
                         </button>
                         <button
                           onClick={() => handleProductClick(prodId)}
-                          className="w-11 h-11 rounded-xl flex items-center justify-center transition-all shadow-sm bg-[#111111] text-white hover:bg-[#8B0000] active:scale-95"
+                          className="w-11 h-11 rounded-xl flex items-center justify-center transition-all shadow-sm bg-[#111111] text-white hover:bg-[#d4af37] hover:text-black active:scale-95"
                           title="View Product"
                         >
                           <ChevronRight size={18} />
@@ -439,10 +443,10 @@ const ProductsPage = () => {
           </div>
         ) : (
           <div className="text-center py-40 bg-white/50 backdrop-blur-sm rounded-[3rem] border border-[#111111]/5 p-16 shadow-inner relative overflow-hidden">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-[#8B0000]/5 rounded-full blur-3xl -z-10"></div>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-[#d4af37]/5 rounded-full blur-3xl -z-10"></div>
             <div className="flex justify-center mb-8">
               <div className="w-24 h-24 bg-[#F7F5F0] rounded-full flex items-center justify-center border border-[#111111]/5">
-                <ShoppingBag size={40} className="text-[#8B0000]/20" />
+                <ShoppingBag size={40} className="text-[#d4af37]/20" />
               </div>
             </div>
             <h3 className="text-2xl font-editorial font-black text-[#111111] mb-4 uppercase tracking-tighter">
@@ -455,12 +459,17 @@ const ProductsPage = () => {
               onClick={() => {
                 setSearchParams({});
               }}
-              className="px-10 py-4 bg-[#111111] text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#8B0000] transition-all shadow-xl hover:shadow-red-900/20 active:scale-95 flex items-center gap-3 mx-auto"
+              className="px-10 py-4 bg-[#111111] text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#d4af37] hover:text-black transition-all shadow-xl hover:shadow-black/20 active:scale-95 flex items-center gap-3 mx-auto"
             >
               View Full Archive <ArrowRight size={14} />
             </button>
           </div>
         )}
+
+        {/* Bottom AdSense Unit */}
+        <div className="mt-16">
+           <AdComponent adSlot="0123456789" />
+        </div>
       </div>
     </div>
   );

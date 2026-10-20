@@ -40,6 +40,7 @@ import { getReviews, saveReview, deleteReview, syncReviewsWithServer, calculateO
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
+import AdComponent from '../components/AdComponent';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -828,6 +829,11 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* Responsive Ad Unit - Top Showcase */}
+      <div className="max-w-7xl mx-auto px-6">
+        <AdComponent adSlot="7890123456" />
+      </div>
+
       {/* ========================================================
           ALL PRODUCTS SHOWCASE WITH 10 WORKING FILTER TABS
           (Categories and Featured removed & unified directly here)
@@ -1354,6 +1360,11 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+
+      {/* Mid-Page Responsive Ad Unit */}
+      <div className="max-w-7xl mx-auto px-6">
+        <AdComponent adSlot="8901234567" />
+      </div>
 
       {/* ========================================================
           PHASE 5 — CUSTOMER RATINGS & REVIEWS

@@ -150,7 +150,7 @@ const ProductDetails = () => {
               z: isDesktop ? 800 : (isTablet ? 400 : 200),
               scale: isDesktop ? 1.25 : (isTablet ? 1.1 : 1),
               opacity: 0.9,
-              filter: `brightness(1.2) contrast(1.1) drop-shadow(0 ${isDesktop ? '100px 150px' : '60px 100px'} ${theme === 'dark' ? 'rgba(0,0,0,0.8)' : 'rgba(139,0,0,0.3)'})`,
+              filter: `brightness(1.2) contrast(1.1) drop-shadow(0 ${isDesktop ? '100px 150px' : '60px 100px'} ${theme === 'dark' ? 'rgba(0,0,0,0.8)' : 'rgba(212,175,55,0.2)'})`,
               ease: "power2.inOut"
             })
             .to(".tech-node-1", { opacity: 1, x: 0, scale: 1, duration: 1 }, "-=0.8")
@@ -309,7 +309,7 @@ const ProductDetails = () => {
         style={{
             perspective: '2000px',
             transformStyle: 'preserve-3d',
-            filter: theme === 'dark' ? 'drop-shadow(0 150px 250px rgba(0,0,0,0.8))' : 'drop-shadow(0 120px 200px rgba(139,0,0,0.2))'
+            filter: theme === 'dark' ? 'drop-shadow(0 150px 250px rgba(0,0,0,0.8))' : 'drop-shadow(0 120px 200px rgba(212,175,55,0.15))'
         }}
       >
         {product?.model3D ? (

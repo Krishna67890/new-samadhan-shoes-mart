@@ -44,22 +44,18 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         opacity: 0.8 !important;
       }
 
-      /* Attractive RGB Text Animation - Enhanced */
-      @keyframes rgb-brand-glow {
-        0% { color: #ff0000; text-shadow: 0 0 8px rgba(255,0,0,0.6); }
-        20% { color: #ffff00; text-shadow: 0 0 8px rgba(255,255,0,0.6); }
-        40% { color: #00ff00; text-shadow: 0 0 8px rgba(0,255,0,0.6); }
-        60% { color: #00ffff; text-shadow: 0 0 8px rgba(0,255,255,0.6); }
-        80% { color: #0000ff; text-shadow: 0 0 8px rgba(0,0,255,0.6); }
-        100% { color: #ff00ff; text-shadow: 0 0 8px rgba(255,0,255,0.6); }
+      /* Premium Gold Brand Glow - Replaces Legacy RGB */
+      @keyframes gold-brand-glow {
+        0% { color: #d4af37; text-shadow: 0 0 8px rgba(212,175,55,0.4); }
+        50% { color: #f2d472; text-shadow: 0 0 15px rgba(212,175,55,0.6); }
+        100% { color: #d4af37; text-shadow: 0 0 8px rgba(212,175,55,0.4); }
       }
 
       .animate-rgb-text {
-        animation: rgb-brand-glow 3s infinite linear;
+        animation: gold-brand-glow 4s infinite ease-in-out;
         font-weight: 950;
         filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1)) brightness(1.1);
         letter-spacing: -0.02em;
-        -webkit-text-stroke: 0.5px rgba(0,0,0,0.05);
         user-select: none;
         will-change: color, text-shadow;
       }

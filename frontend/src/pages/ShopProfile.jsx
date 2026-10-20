@@ -63,7 +63,7 @@ const ShopProfile = () => {
 
   if (loading) return (
     <div className="bg-[#F7F5F0] min-h-screen flex items-center justify-center">
-       <div className="w-10 h-10 border-2 border-[#8B0000] border-t-transparent rounded-full animate-spin" />
+       <div className="w-10 h-10 border-2 border-[#d4af37] border-t-transparent rounded-full animate-spin" />
     </div>
   );
 
@@ -92,7 +92,7 @@ const ShopProfile = () => {
                <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
                   <div className="space-y-4">
                      <div className="flex flex-wrap items-center gap-3">
-                        <span className="px-4 py-1.5 bg-[#8B0000] text-white text-[9px] font-sans font-bold rounded-full uppercase tracking-widest shadow-md">Verified Partner</span>
+                        <span className="px-4 py-1.5 bg-[#d4af37] text-white text-[9px] font-sans font-bold rounded-full uppercase tracking-widest shadow-md">Verified Partner</span>
                         <div className="flex items-center gap-1.5 px-3 py-1 bg-white/20 rounded-full text-white text-[9px] font-sans font-bold uppercase tracking-widest border border-white/20">
                            <Star size={12} className="fill-white text-white" /> {shop.rating || '4.8'} Elite Score
                         </div>
@@ -107,10 +107,10 @@ const ShopProfile = () => {
                   </div>
 
                   <div className="flex gap-4">
-                     <button className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center text-white hover:bg-[#8B0000] hover:border-transparent transition-all border border-white/20 shadow-md">
+                     <button className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center text-white hover:bg-[#d4af37] hover:border-transparent transition-all border border-white/20 shadow-md">
                         <Heart size={20} />
                      </button>
-                     <button className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center text-white hover:bg-[#8B0000] hover:border-transparent transition-all border border-white/20 shadow-md">
+                     <button className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center text-white hover:bg-[#d4af37] hover:border-transparent transition-all border border-white/20 shadow-md">
                         <Share2 size={20} />
                      </button>
                   </div>
@@ -149,12 +149,12 @@ const ShopProfile = () => {
                {/* Description */}
                <div className="bg-white rounded-[2.5rem] p-10 border border-[#111111]/5 shadow-[0_40px_80px_rgba(0,0,0,0.03)] space-y-6">
                   <div className="flex items-center gap-4">
-                     <div className="w-10 h-10 rounded-xl bg-[#8B0000]/5 flex items-center justify-center text-[#8B0000] border border-[#8B0000]/10">
+                     <div className="w-10 h-10 rounded-xl bg-[#d4af37]/5 flex items-center justify-center text-[#d4af37] border border-[#d4af37]/10">
                         <Info size={20} />
                      </div>
                      <h3 className="text-lg font-sans font-bold text-[#111111] uppercase tracking-[0.2em]">Dealer Intel</h3>
                   </div>
-                  <p className="text-[#111111]/60 leading-relaxed font-medium text-base italic border-l-2 border-[#8B0000] pl-6">
+                  <p className="text-[#111111]/60 leading-relaxed font-medium text-base italic border-l-2 border-[#d4af37] pl-6">
                      "{shop.description || "The premier destination for high-end artisanal footwear and the latest sneaker drops. Specializing in luxury leather collections and performance sports shoes. We provide a curated shopping experience with expert sizing consultations."}"
                   </p>
                </div>
@@ -162,15 +162,15 @@ const ShopProfile = () => {
                {/* Location / Map Placeholder */}
                <div className="bg-white rounded-[2.5rem] p-10 border border-[#111111]/5 shadow-[0_40px_80px_rgba(0,0,0,0.03)] space-y-6 overflow-hidden">
                   <div className="flex items-center gap-4">
-                     <div className="w-10 h-10 rounded-xl bg-[#8B0000]/5 flex items-center justify-center text-[#8B0000] border border-[#8B0000]/10">
+                     <div className="w-10 h-10 rounded-xl bg-[#d4af37]/5 flex items-center justify-center text-[#d4af37] border border-[#d4af37]/10">
                         <Map size={20} />
                      </div>
                      <h3 className="text-lg font-sans font-bold text-[#111111] uppercase tracking-[0.2em]">Node Matrix</h3>
                   </div>
                   <div className="h-64 bg-[#F7F5F0] rounded-2xl flex flex-col items-center justify-center space-y-4 border border-[#111111]/5 relative group cursor-crosshair">
-                     <MapPin size={36} className="text-[#111111]/30 group-hover:text-[#8B0000] transition-colors duration-500" />
+                     <MapPin size={36} className="text-[#111111]/30 group-hover:text-[#d4af37] transition-colors duration-500" />
                      <p className="text-[10px] font-sans font-bold text-[#111111]/50 uppercase tracking-[0.2em] px-6 text-center">{shop.address}</p>
-                     <button className="bg-[#111111] text-white px-8 py-3 rounded-xl text-[9px] font-sans font-bold uppercase tracking-widest hover:bg-[#8B0000] transition-all shadow-md z-10">Sync Coordinates</button>
+                     <button className="bg-[#111111] text-white px-8 py-3 rounded-xl text-[9px] font-sans font-bold uppercase tracking-widest hover:bg-[#d4af37] transition-all shadow-md z-10">Sync Coordinates</button>
                   </div>
                </div>
 
@@ -181,9 +181,9 @@ const ShopProfile = () => {
 
                {/* Contact Card */}
                <div className="bg-white rounded-[2.5rem] p-10 text-[#111111] border border-[#111111]/5 shadow-[0_40px_80px_rgba(0,0,0,0.03)] sticky top-36 relative overflow-hidden">
-                  <div className="absolute top-0 left-0 w-full h-1.5 bg-[#8B0000]"></div>
+                  <div className="absolute top-0 left-0 w-full h-1.5 bg-[#d4af37]"></div>
 
-                  <p className="text-[9px] font-sans font-bold text-[#8B0000] uppercase tracking-[0.3em] mb-4">Secure Channel</p>
+                  <p className="text-[9px] font-sans font-bold text-[#d4af37] uppercase tracking-[0.3em] mb-4">Secure Channel</p>
                   <h3 className="text-3xl font-editorial font-bold tracking-tight uppercase mb-8 leading-none">Connect <br/> with Agent</h3>
 
                   <div className="space-y-4 mb-8">
@@ -197,12 +197,12 @@ const ShopProfile = () => {
                         </div>
                      </div>
 
-                     <div className="flex items-center gap-4 p-4 bg-[#8B0000]/5 rounded-xl border border-[#8B0000]/10 hover:border-[#8B0000]/30 transition-all cursor-pointer group" onClick={buyNowWhatsApp}>
-                        <div className="w-12 h-12 rounded-xl bg-[#8B0000] text-white flex items-center justify-center transition-transform group-hover:scale-105">
+                     <div className="flex items-center gap-4 p-4 bg-[#d4af37]/5 rounded-xl border border-[#d4af37]/10 hover:border-[#d4af37]/30 transition-all cursor-pointer group" onClick={buyNowWhatsApp}>
+                        <div className="w-12 h-12 rounded-xl bg-[#d4af37] text-white flex items-center justify-center transition-transform group-hover:scale-105">
                            <MessageCircle size={18} />
                         </div>
                         <div>
-                           <p className="text-[8px] font-sans font-bold text-[#8B0000] uppercase tracking-widest mb-0.5">WhatsApp Elite</p>
+                           <p className="text-[8px] font-sans font-bold text-[#d4af37] uppercase tracking-widest mb-0.5">WhatsApp Elite</p>
                            <p className="text-xs font-sans font-bold text-[#111111]">Encrypted Data</p>
                         </div>
                      </div>
@@ -210,14 +210,14 @@ const ShopProfile = () => {
 
                   <button
                      onClick={buyNowWhatsApp}
-                     className="w-full bg-[#111111] text-white py-5 rounded-xl text-[10px] font-sans font-bold uppercase tracking-[0.2em] flex items-center justify-center gap-3 hover:bg-[#8B0000] transition-all shadow-md group"
+                     className="w-full bg-[#111111] text-white py-5 rounded-xl text-[10px] font-sans font-bold uppercase tracking-[0.2em] flex items-center justify-center gap-3 hover:bg-[#d4af37] transition-all shadow-md group"
                   >
                      <Send size={14} className="group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform" />
                      Transmit Inquiry
                   </button>
 
                   <div className="mt-6 flex items-center gap-3 p-4 bg-[#F7F5F0] rounded-xl border border-[#111111]/5">
-                      <ShieldCheck className="text-[#8B0000]" size={20} />
+                      <ShieldCheck className="text-[#d4af37]" size={20} />
                       <p className="text-[9px] text-[#111111]/50 font-sans font-bold uppercase tracking-wider leading-relaxed">
                         Manual UPI verification required for elite clearance.
                       </p>

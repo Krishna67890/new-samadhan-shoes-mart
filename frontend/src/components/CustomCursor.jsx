@@ -33,8 +33,8 @@ const CustomCursor = () => {
     };
 
     const handleMouseEnter = () => {
-      gsap.to(cursor, { scale: 0.5, backgroundColor: "#8B0000", duration: 0.3 });
-      gsap.to(follower, { scale: 2.5, borderColor: "#8B0000", backgroundColor: "rgba(139,0,0,0.05)", duration: 0.3 });
+      gsap.to(cursor, { scale: 0.5, backgroundColor: "#d4af37", duration: 0.3 });
+      gsap.to(follower, { scale: 2.5, borderColor: "#d4af37", backgroundColor: "rgba(212,175,55,0.05)", duration: 0.3 });
     };
 
     const handleMouseLeave = () => {

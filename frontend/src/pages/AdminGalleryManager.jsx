@@ -85,7 +85,7 @@ const AdminGalleryManager = () => {
           <div className="flex gap-4">
              <button
                onClick={handleSave}
-               className="bg-[#111] text-white px-10 py-6 rounded-[2rem] flex items-center gap-3 hover:bg-[#8B0000] transition-all shadow-xl shadow-slate-200"
+               className="bg-[#111] text-white px-10 py-6 rounded-[2rem] flex items-center gap-3 hover:bg-[#d4af37] transition-all shadow-xl shadow-slate-200"
              >
                 <Save size={20} />
                 <span className="font-black uppercase tracking-widest text-xs">Deploy Changes</span>
@@ -94,7 +94,7 @@ const AdminGalleryManager = () => {
         </div>
 
         {success && (
-          <div className="bg-[#8B0000] text-white p-6 rounded-[2.5rem] mb-12 flex items-center shadow-xl border-4 border-white animate-in zoom-in-95 no-blur-zone">
+          <div className="bg-[#d4af37] text-white p-6 rounded-[2.5rem] mb-12 flex items-center shadow-xl border-4 border-white animate-in zoom-in-95 no-blur-zone">
             <CheckCircle className="w-8 h-8 mr-4" />
             <div>
               <p className="font-black uppercase tracking-widest text-lg">Update Successfull</p>
@@ -108,7 +108,7 @@ const AdminGalleryManager = () => {
           <section>
             <div className="flex justify-between items-center mb-10">
               <h2 className="text-3xl font-editorial font-black uppercase tracking-tight flex items-center gap-4">
-                <Film className="text-[#8B0000]" size={32} /> Workshop Reels
+                <Film className="text-[#d4af37]" size={32} /> Workshop Reels
               </h2>
               <button
                 onClick={() => handleAddMedia('video')}
@@ -144,7 +144,7 @@ const AdminGalleryManager = () => {
                         setWorkshopMedia(newMedia);
                       }}
                       placeholder="Enter Reel Title..."
-                      className="w-full bg-[#F7F5F0] border-0 rounded-xl px-5 py-3 text-xs font-black uppercase tracking-widest outline-none focus:ring-1 focus:ring-[#8B0000]"
+                      className="w-full bg-[#F7F5F0] border-0 rounded-xl px-5 py-3 text-xs font-black uppercase tracking-widest outline-none focus:ring-1 focus:ring-[#d4af37]"
                     />
                     <div className="flex gap-2">
                       <input

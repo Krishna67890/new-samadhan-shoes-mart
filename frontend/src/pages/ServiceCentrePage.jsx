@@ -191,7 +191,7 @@ const ServiceCentrePage = () => {
               <div className="bg-white w-full max-w-2xl rounded-[2.5rem] overflow-hidden relative z-10 shadow-2xl border border-[#111111]/5 animate-in slide-in-from-bottom-10 duration-700">
                  <button
                     onClick={() => setSelectedCenter(null)}
-                    className="absolute top-8 right-8 w-10 h-10 bg-[#F7F5F0] rounded-full flex items-center justify-center text-[#111111]/40 hover:text-[#8B0000] transition-all border border-[#111111]/5"
+                    className="absolute top-8 right-8 w-10 h-10 bg-[#F7F5F0] rounded-full flex items-center justify-center text-[#111111]/40 hover:text-[#d4af37] transition-all border border-[#111111]/5"
                  >
                     <X size={20} />
                  </button>

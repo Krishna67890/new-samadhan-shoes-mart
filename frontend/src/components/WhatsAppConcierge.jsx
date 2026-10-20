@@ -82,7 +82,7 @@ const WhatsAppConcierge = () => {
       >
         {isOpen ? <X size={28} /> : <MessageCircle size={28} />}
         {!isOpen && (
-          <span className="absolute -top-2 -right-2 w-6 h-6 bg-[#8B0000] text-white text-[10px] font-black rounded-full flex items-center justify-center animate-bounce shadow-lg">
+          <span className="absolute -top-2 -right-2 w-6 h-6 bg-[#d4af37] text-white text-[10px] font-black rounded-full flex items-center justify-center animate-bounce shadow-lg">
             1
           </span>
         )}

@@ -37,8 +37,8 @@ const STATS = [
 ];
 
 const S = {
-  label: { fontSize: '9px', fontWeight: 800, letterSpacing: '0.35em', color: '#8B0000', textTransform: 'uppercase' },
-  badge: { display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 16px', background: 'rgba(139,0,0,0.08)', borderRadius: '20px', marginBottom: '20px' },
+  label: { fontSize: '9px', fontWeight: 800, letterSpacing: '0.35em', color: '#d4af37', textTransform: 'uppercase' },
+  badge: { display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 16px', background: 'rgba(212,175,55,0.08)', borderRadius: '20px', marginBottom: '20px' },
 };
 
 const AboutPage = () => {
@@ -173,20 +173,20 @@ const AboutPage = () => {
 
         {/* TECHNICAL OVERLAYS */}
         <div className="absolute inset-0 pointer-events-none z-10">
-          <div className="about-hud absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle, rgba(139,0,0,0.2) 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
-          <div className="about-hud absolute top-10 left-10 w-20 h-20 border-t-2 border-l-2 border-[#8B0000]/30"></div>
-          <div className="about-hud absolute bottom-10 right-10 w-20 h-20 border-b-2 border-r-2 border-[#8B0000]/30"></div>
-          <div className="about-hud absolute top-12 left-32 font-mono text-[8px] text-[#8B0000] tracking-[0.4em] opacity-60">
+          <div className="about-hud absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle, rgba(212,175,55,0.2) 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
+          <div className="about-hud absolute top-10 left-10 w-20 h-20 border-t-2 border-l-2 border-[#d4af37]/30"></div>
+          <div className="about-hud absolute bottom-10 right-10 w-20 h-20 border-b-2 border-r-2 border-[#d4af37]/30"></div>
+          <div className="about-hud absolute top-12 left-32 font-mono text-[8px] text-[#d4af37] tracking-[0.4em] opacity-60">
             SYSTEM_TYPE: HERITAGE_CORE<br/>LOAD_VAL: 1990_STABLE
           </div>
         </div>
 
-        <div style={{ position: 'absolute', bottom: '5%', left: '-2vw', fontSize: '22vw', fontFamily: "'Playfair Display', serif", fontWeight: 900, color: 'rgba(139,0,0,0.03)', whiteSpace: 'nowrap', pointerEvents: 'none', letterSpacing: '-0.05em', userSelect: 'none' }}>SAMADHAN</div>
+        <div style={{ position: 'absolute', bottom: '5%', left: '-2vw', fontSize: '22vw', fontFamily: "'Playfair Display', serif", fontWeight: 900, color: 'rgba(212,175,55,0.03)', whiteSpace: 'nowrap', pointerEvents: 'none', letterSpacing: '-0.05em', userSelect: 'none' }}>SAMADHAN</div>
 
         <div style={{ maxWidth: '1280px', width: '100%', margin: '0 auto', position: 'relative', zIndex: 20 }}>
-          <div className="about-hero-reveal" style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '7px 18px', background: 'rgba(139,0,0,0.05)', borderRadius: '24px', marginBottom: '36px', border: '1px solid rgba(139,0,0,0.1)' }}>
-            <Cpu size={14} color="#8B0000" />
-            <span style={{ fontSize: '10px', fontWeight: 800, letterSpacing: '0.45em', color: '#8B0000', textTransform: 'uppercase' }}>ESTABLISHED 1990 · NASHIK</span>
+          <div className="about-hero-reveal" style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '7px 18px', background: 'rgba(212,175,55,0.05)', borderRadius: '24px', marginBottom: '36px', border: '1px solid rgba(212,175,55,0.1)' }}>
+            <Cpu size={14} color="#d4af37" />
+            <span style={{ fontSize: '10px', fontWeight: 800, letterSpacing: '0.45em', color: '#d4af37', textTransform: 'uppercase' }}>ESTABLISHED 1990 · NASHIK</span>
           </div>
           {[
             { text: 'ABOUT', italic: false },
@@ -194,7 +194,7 @@ const AboutPage = () => {
             { text: 'SAMADHAN', italic: true },
           ].map((w, i) => (
             <div key={i} style={{ overflow: 'hidden', marginBottom: i < 2 ? '12px' : '32px' }}>
-              <h1 style={{ margin: 0, fontFamily: "'Playfair Display', serif", fontWeight: w.italic ? 300 : 900, lineHeight: 0.9, letterSpacing: '-0.03em', textTransform: 'uppercase', fontSize: 'clamp(3rem, 9vw, 10rem)', fontStyle: w.italic ? 'italic' : 'normal', color: w.italic ? '#8B0000' : '#111111' }}>
+              <h1 style={{ margin: 0, fontFamily: "'Playfair Display', serif", fontWeight: w.italic ? 300 : 900, lineHeight: 0.9, letterSpacing: '-0.03em', textTransform: 'uppercase', fontSize: 'clamp(3rem, 9vw, 10rem)', fontStyle: w.italic ? 'italic' : 'normal', color: w.italic ? '#d4af37' : '#111111' }}>
                 <span className="about-hero-word" style={{ display: 'inline-block' }}>{w.text}</span>
               </h1>
             </div>
@@ -204,7 +204,7 @@ const AboutPage = () => {
               "In Sanskrit and Marathi, <strong style={{ color: '#111111' }}>'Samadhan'</strong> means absolute inner contentment. This philosophy is the foundation of our high-fidelity cobbler guild."
             </p>
             <div style={{ display: 'flex', gap: '20px', marginTop: '48px', flexWrap: 'wrap' }}>
-              <Link to="/products" style={{ background: '#8B0000', color: 'white', padding: '20px 48px', borderRadius: '16px', fontSize: '11px', fontWeight: 900, letterSpacing: '0.4em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '14px', boxShadow: '0 20px 50px rgba(139,0,0,0.2)' }}>
+              <Link to="/products" style={{ background: '#d4af37', color: 'white', padding: '20px 48px', borderRadius: '16px', fontSize: '11px', fontWeight: 900, letterSpacing: '0.4em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '14px', boxShadow: '0 20px 50px rgba(212,175,55,0.2)' }}>
                 EXPLORE COLLECTION <ArrowRight size={18} />
               </Link>
             </div>
@@ -221,17 +221,17 @@ const AboutPage = () => {
              </div>
            </div>
            {/* SCAN LINE */}
-           <div className="absolute top-0 left-0 w-full h-[2px] bg-[#8B0000] shadow-[0_0_20px_#8B0000] animate-scan-slow opacity-30"></div>
+           <div className="absolute top-0 left-0 w-full h-[2px] bg-[#d4af37] shadow-[0_0_20px_#d4af37] animate-scan-slow opacity-30"></div>
         </div>
       </section>
 
       {/* ── STATS ── */}
       <section ref={statsRef} style={{ background: '#111111', padding: '80px 24px', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 30% 50%, rgba(139,0,0,0.18) 0%, transparent 65%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 30% 50%, rgba(212,175,55,0.18) 0%, transparent 65%)', pointerEvents: 'none' }} />
         <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>
           {STATS.map((s, i) => (
             <div key={i} className="stat-card" style={{ padding: '48px 32px', borderRight: i < STATS.length - 1 ? '1px solid rgba(247,245,240,0.07)' : 'none', textAlign: 'center' }}>
-              <div style={{ color: '#8B0000', display: 'flex', justifyContent: 'center', marginBottom: '16px' }}>{s.icon}</div>
+              <div style={{ color: '#d4af37', display: 'flex', justifyContent: 'center', marginBottom: '16px' }}>{s.icon}</div>
               <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(2.5rem, 5vw, 4.5rem)', fontWeight: 900, color: '#F7F5F0', lineHeight: 1 }}>{s.value}</div>
               <div style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.3em', color: 'rgba(247,245,240,0.45)', textTransform: 'uppercase', marginTop: '12px' }}>{s.label}</div>
             </div>
@@ -243,9 +243,9 @@ const AboutPage = () => {
       <section style={{ padding: '120px 24px', background: '#F7F5F0' }}>
         <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '80px', alignItems: 'center' }}>
           <div>
-            <div style={S.badge}><Award size={14} color="#8B0000" /><span style={S.label}>Our Story</span></div>
+            <div style={S.badge}><Award size={14} color="#d4af37" /><span style={S.label}>Our Story</span></div>
             <h2 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 900, fontSize: 'clamp(2rem, 5vw, 4rem)', textTransform: 'uppercase', lineHeight: 0.95, margin: '0 0 24px' }}>
-              34 YEARS OF<br /><span style={{ color: '#8B0000', fontStyle: 'italic', fontWeight: 300 }}>PURE COBBLER DEDICATION</span>
+              34 YEARS OF<br /><span style={{ color: '#d4af37', fontStyle: 'italic', fontWeight: 300 }}>PURE COBBLER DEDICATION</span>
             </h2>
             <p style={{ fontSize: '15px', color: '#555', lineHeight: 1.85, marginBottom: '20px' }}>
               New Samadhan Shoe Mart was founded in 1990 in <strong style={{ color: '#111' }}>Nashik, Maharashtra</strong>. Our founder walked into Plot No. 29, Santkrupa Niwas with one conviction: footwear should feel like an extension of the body.
@@ -254,9 +254,9 @@ const AboutPage = () => {
               Three decades and 50,000+ pairs later, we remain true to that vision — stitched at <strong style={{ color: '#111' }}>12 stitches per inch</strong> with bonded German nylon, cut parallel to leather tension lines, fused under <strong style={{ color: '#111' }}>80-bar pneumatic pressure</strong>.
             </p>
             {[
-              { icon: <MapPin size={16} color="#8B0000" />, text: 'Plot No 29, Santkrupa Niwas, Nashik 422003' },
-              { icon: <Phone size={16} color="#8B0000" />, text: '+91 9423228843 / +91 8888644021' },
-              { icon: <Mail size={16} color="#8B0000" />, text: 'info@samadhanshoemart.com' },
+              { icon: <MapPin size={16} color="#d4af37" />, text: 'Plot No 29, Santkrupa Niwas, Nashik 422003' },
+              { icon: <Phone size={16} color="#d4af37" />, text: '+91 9423228843 / +91 8888644021' },
+              { icon: <Mail size={16} color="#d4af37" />, text: 'info@samadhanshoemart.com' },
             ].map((item, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '14px', marginBottom: '14px' }}>
                 <div style={{ marginTop: '2px', flexShrink: 0 }}>{item.icon}</div>
@@ -270,7 +270,7 @@ const AboutPage = () => {
               <div style={{
                 width: '100%',
                 aspectRatio: '4/5',
-                background: 'linear-gradient(135deg, #1a0a0a 0%, #2d0d0d 40%, #111 100%)',
+                background: 'linear-gradient(135deg, #111111 0%, #1a1a1a 40%, #000 100%)',
                 borderRadius: '40px',
                 display: 'flex',
                 alignItems: 'center',
@@ -282,7 +282,7 @@ const AboutPage = () => {
               }}>
                 {/* Animated Background Elements */}
                 <div className="absolute inset-0 opacity-30">
-                  <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(139,0,0,0.2),transparent_70%)] animate-pulse"></div>
+                  <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(212,175,55,0.2),transparent_70%)] animate-pulse"></div>
                 </div>
 
                 <img
@@ -301,21 +301,21 @@ const AboutPage = () => {
 
                 <div className="absolute bottom-32 right-10 pointer-events-none transition-all duration-500 group-hover:-translate-x-2">
                   <div className="flex items-center gap-3 bg-black/40 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full">
-                    <Hammer size={12} className="text-[#8B0000]" />
+                    <Hammer size={12} className="text-[#d4af37]" />
                     <span className="text-[9px] font-black text-white uppercase tracking-[0.2em]">12 Stitches / Inch</span>
                   </div>
                 </div>
 
-                <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 30%, rgba(139,0,0,0.22) 0%, transparent 65%)', pointerEvents: 'none' }} />
+                <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 30%, rgba(212,175,55,0.22) 0%, transparent 65%)', pointerEvents: 'none' }} />
 
                 {/* Glassmorphic Badge */}
                 <div className="absolute bottom-8 left-8 right-8 bg-white/10 backdrop-blur-xl border border-white/20 p-6 rounded-[2rem] shadow-2xl transform transition-all duration-500 group-hover:translate-y-[-10px]">
                   <div className="flex items-center justify-between">
                     <div>
-                      <div style={{ fontSize: '9px', fontWeight: 800, letterSpacing: '0.3em', color: '#ff6b6b', textTransform: 'uppercase', marginBottom: '4px' }}>Certified Mastercraft</div>
+                      <div style={{ fontSize: '9px', fontWeight: 800, letterSpacing: '0.3em', color: '#d4af37', textTransform: 'uppercase', marginBottom: '4px' }}>Certified Mastercraft</div>
                       <div style={{ fontSize: '16px', fontWeight: 900, color: 'white', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Goodyear Welted</div>
                     </div>
-                    <div className="w-12 h-12 rounded-2xl bg-[#8B0000] flex items-center justify-center shadow-lg shadow-red-900/40">
+                    <div className="w-12 h-12 rounded-2xl bg-[#d4af37] flex items-center justify-center shadow-lg shadow-[#d4af37]/40">
                       <ShieldCheck size={24} color="white" />
                     </div>
                   </div>
@@ -323,7 +323,7 @@ const AboutPage = () => {
               </div>
 
               {/* Advanced GSAP Hover Interaction Element */}
-              <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-[#8B0000] rounded-[2rem] flex flex-col items-center justify-center shadow-2xl z-20 transform transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
+              <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-[#d4af37] rounded-[2rem] flex flex-col items-center justify-center shadow-2xl z-20 transform transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
                 <div className="font-editorial text-4xl font-black text-white leading-none">34</div>
                 <div className="text-[8px] font-black text-white/70 uppercase tracking-[0.3em] mt-2">Years</div>
               </div>
@@ -346,9 +346,9 @@ const AboutPage = () => {
              </div>
            </div>
            <div className="order-1 md:order-2 heritage-reveal">
-             <div style={S.badge}><ShieldCheck size={14} color="#8B0000" /><span style={{...S.label, color: 'white'}}>Trusted by the Uniform</span></div>
+             <div style={S.badge}><ShieldCheck size={14} color="#d4af37" /><span style={{...S.label, color: 'white'}}>Trusted by the Uniform</span></div>
              <h2 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 900, fontSize: 'clamp(2rem, 5vw, 4rem)', textTransform: 'uppercase', lineHeight: 0.95, margin: '0 0 24px' }}>
-               A HERITAGE <br /><span style={{ color: '#8B0000', fontStyle: 'italic', fontWeight: 300 }}>OF TRUST & SERVICE</span>
+               A HERITAGE <br /><span style={{ color: '#d4af37', fontStyle: 'italic', fontWeight: 300 }}>OF TRUST & SERVICE</span>
              </h2>
              <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.85, marginBottom: '20px' }}>
                For three decades, New Samadhan Shoe Mart has been the preferred choice for Nashik's brave police officers and defense personnel.
@@ -358,12 +358,12 @@ const AboutPage = () => {
              </p>
              <div style={{ display: 'flex', gap: '40px' }}>
                 <div style={{ textAlign: 'left' }}>
-                  <div style={{ fontSize: '32px', fontWeight: 900, color: '#8B0000', fontFamily: "'Playfair Display', serif" }}>34+</div>
+                  <div style={{ fontSize: '32px', fontWeight: 900, color: '#d4af37', fontFamily: "'Playfair Display', serif" }}>34+</div>
                   <div style={{ fontSize: '9px', fontWeight: 800, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)' }}>Years Service</div>
                 </div>
                 <div style={{ width: '1px', background: 'rgba(255,255,255,0.1)' }}></div>
                 <div style={{ textAlign: 'left' }}>
-                  <div style={{ fontSize: '32px', fontWeight: 900, color: '#8B0000', fontFamily: "'Playfair Display', serif" }}>10k+</div>
+                  <div style={{ fontSize: '32px', fontWeight: 900, color: '#d4af37', fontFamily: "'Playfair Display', serif" }}>10k+</div>
                   <div style={{ fontSize: '9px', fontWeight: 800, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)' }}>Uniforms Fitted</div>
                 </div>
              </div>
@@ -375,9 +375,9 @@ const AboutPage = () => {
       <section ref={valuesRef} style={{ padding: '120px 24px', background: '#ffffff' }}>
         <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', maxWidth: '680px', margin: '0 auto 80px' }}>
-            <div style={S.badge}><Zap size={14} color="#8B0000" /><span style={S.label}>Our Core Values</span></div>
+            <div style={S.badge}><Zap size={14} color="#d4af37" /><span style={S.label}>Our Core Values</span></div>
             <h2 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 900, fontSize: 'clamp(2rem, 5vw, 4rem)', textTransform: 'uppercase', lineHeight: 0.95, margin: 0 }}>
-              THE PRINCIPLES<br /><span style={{ color: '#8B0000', fontStyle: 'italic', fontWeight: 300 }}>WE NEVER COMPROMISE</span>
+              THE PRINCIPLES<br /><span style={{ color: '#d4af37', fontStyle: 'italic', fontWeight: 300 }}>WE NEVER COMPROMISE</span>
             </h2>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
@@ -385,7 +385,7 @@ const AboutPage = () => {
               <div key={i} className="value-card" style={{ padding: '40px 32px', background: '#F7F5F0', borderRadius: '24px', border: '1px solid rgba(17,17,17,0.06)', transition: 'transform 0.3s ease, box-shadow 0.3s ease' }}
                 onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-6px)'; e.currentTarget.style.boxShadow = '0 24px 50px rgba(0,0,0,0.08)'; }}
                 onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>
-                <div style={{ color: '#8B0000', marginBottom: '20px' }}>{v.icon}</div>
+                <div style={{ color: '#d4af37', marginBottom: '20px' }}>{v.icon}</div>
                 <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: '20px', fontWeight: 900, textTransform: 'uppercase', margin: '0 0 12px', color: '#111' }}>{v.title}</h3>
                 <p style={{ fontSize: '14px', color: '#6B6B6B', lineHeight: 1.7, margin: 0 }}>{v.desc}</p>
               </div>
@@ -396,25 +396,25 @@ const AboutPage = () => {
 
       {/* ── TIMELINE ── */}
       <section ref={timelineRef} style={{ padding: '120px 24px', background: '#0a0a0a', color: '#F7F5F0', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', top: 0, right: 0, bottom: 0, width: '50%', background: 'radial-gradient(ellipse at right, rgba(139,0,0,0.1) 0%, transparent 65%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', top: 0, right: 0, bottom: 0, width: '50%', background: 'radial-gradient(ellipse at right, rgba(212,175,55,0.1) 0%, transparent 65%)', pointerEvents: 'none' }} />
         <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '80px' }}>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 16px', background: 'rgba(139,0,0,0.12)', borderRadius: '20px', marginBottom: '20px' }}>
-              <Clock size={14} color="#8B0000" /><span style={S.label}>Our Journey</span>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 16px', background: 'rgba(212,175,55,0.12)', borderRadius: '20px', marginBottom: '20px' }}>
+              <Clock size={14} color="#d4af37" /><span style={S.label}>Our Journey</span>
             </div>
             <h2 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 900, fontSize: 'clamp(2rem, 5vw, 4rem)', textTransform: 'uppercase', lineHeight: 0.95, margin: 0 }}>
-              THE HERITAGE<br /><span style={{ color: '#8B0000', fontStyle: 'italic', fontWeight: 300 }}>TIMELINE</span>
+              THE HERITAGE<br /><span style={{ color: '#d4af37', fontStyle: 'italic', fontWeight: 300 }}>TIMELINE</span>
             </h2>
           </div>
           <div style={{ position: 'relative', maxWidth: '800px', margin: '0 auto' }}>
-            <div className="timeline-line" style={{ position: 'absolute', left: '84px', top: 0, bottom: 0, width: '1px', background: 'linear-gradient(to bottom, #8B0000, rgba(139,0,0,0.15))', transformOrigin: 'top center' }} />
+            <div className="timeline-line" style={{ position: 'absolute', left: '84px', top: 0, bottom: 0, width: '1px', background: 'linear-gradient(to bottom, #d4af37, rgba(212,175,55,0.15))', transformOrigin: 'top center' }} />
             <div style={{ display: 'flex', flexDirection: 'column', gap: '48px' }}>
               {MILESTONES.map((m, i) => (
                 <div key={i} className="timeline-item" style={{ display: 'flex', gap: '32px', alignItems: 'flex-start' }}>
                   <div style={{ flexShrink: 0, width: '68px', textAlign: 'right', paddingTop: '4px' }}>
-                    <span style={{ fontFamily: "'Playfair Display', serif", fontSize: '18px', fontWeight: 900, color: '#8B0000' }}>{m.year}</span>
+                    <span style={{ fontFamily: "'Playfair Display', serif", fontSize: '18px', fontWeight: 900, color: '#d4af37' }}>{m.year}</span>
                   </div>
-                  <div style={{ flexShrink: 0, width: '14px', height: '14px', borderRadius: '50%', background: '#8B0000', border: '3px solid #0a0a0a', boxShadow: '0 0 0 1px rgba(139,0,0,0.8)', marginTop: '4px', zIndex: 2 }} />
+                  <div style={{ flexShrink: 0, width: '14px', height: '14px', borderRadius: '50%', background: '#d4af37', border: '3px solid #0a0a0a', boxShadow: '0 0 0 1px rgba(212,175,55,0.8)', marginTop: '4px', zIndex: 2 }} />
                   <div style={{ flex: 1 }}>
                     <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: '20px', fontWeight: 900, textTransform: 'uppercase', margin: '0 0 10px' }}>{m.title}</h3>
                     <p style={{ fontSize: '14px', color: 'rgba(247,245,240,0.55)', lineHeight: 1.75, margin: 0 }}>{m.desc}</p>
@@ -430,16 +430,16 @@ const AboutPage = () => {
       <section ref={developerRef} style={{ padding: '120px 24px', background: '#F7F5F0' }}>
         <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '80px' }}>
-            <div style={S.badge}><Code2 size={14} color="#8B0000" /><span style={S.label}>Meet The Builder</span></div>
+            <div style={S.badge}><Code2 size={14} color="#d4af37" /><span style={S.label}>Meet The Builder</span></div>
             <h2 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 900, fontSize: 'clamp(2rem, 5vw, 4rem)', textTransform: 'uppercase', lineHeight: 0.95, margin: 0 }}>
-              THE DEVELOPER<br /><span style={{ color: '#8B0000', fontStyle: 'italic', fontWeight: 300 }}>BEHIND THE SCREEN</span>
+              THE DEVELOPER<br /><span style={{ color: '#d4af37', fontStyle: 'italic', fontWeight: 300 }}>BEHIND THE SCREEN</span>
             </h2>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '60px', alignItems: 'center' }}>
 
             {/* Photo card */}
             <div className="dev-card">
-              <div style={{ borderRadius: '32px', overflow: 'hidden', background: '#0a0a0a', boxShadow: '0 40px 80px rgba(0,0,0,0.2), 0 0 0 1px rgba(139,0,0,0.12)' }}>
+              <div style={{ borderRadius: '32px', overflow: 'hidden', background: '#0a0a0a', boxShadow: '0 40px 80px rgba(0,0,0,0.2), 0 0 0 1px rgba(212,175,55,0.12)' }}>
                 <div style={{ aspectRatio: '1/1', overflow: 'hidden', position: 'relative' }}>
                   <img
                     src={resolveImageUrl("/Devloper.jpg")}
@@ -458,7 +458,7 @@ const AboutPage = () => {
                   <div style={{ fontSize: '12px', color: 'rgba(247,245,240,0.45)', marginTop: '6px' }}>Krishna Ajaysing Patil</div>
                   <div style={{ display: 'flex', gap: '8px', marginTop: '16px', flexWrap: 'wrap' }}>
                     {['React.js', 'Node.js', 'GSAP', 'MongoDB', 'TailwindCSS'].map(tech => (
-                      <span key={tech} style={{ padding: '5px 12px', background: 'rgba(139,0,0,0.15)', border: '1px solid rgba(139,0,0,0.3)', borderRadius: '8px', fontSize: '9px', fontWeight: 700, letterSpacing: '0.1em', color: '#ff6b6b', textTransform: 'uppercase' }}>{tech}</span>
+                      <span key={tech} style={{ padding: '5px 12px', background: 'rgba(212,175,55,0.15)', border: '1px solid rgba(212,175,55,0.3)', borderRadius: '8px', fontSize: '9px', fontWeight: 700, letterSpacing: '0.1em', color: '#d4af37', textTransform: 'uppercase' }}>{tech}</span>
                     ))}
                   </div>
 
@@ -469,7 +469,7 @@ const AboutPage = () => {
                       target="_blank"
                       rel="noreferrer"
                       style={{
-                        background: 'linear-gradient(135deg, #8B0000 0%, #b30000 100%)',
+                        background: 'linear-gradient(135deg, #d4af37 0%, #111111 100%)',
                         color: 'white',
                         padding: '12px 18px',
                         borderRadius: '12px',
@@ -482,7 +482,7 @@ const AboutPage = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                         gap: '8px',
-                        boxShadow: '0 8px 20px rgba(139,0,0,0.4)',
+                        boxShadow: '0 8px 20px rgba(212,175,55,0.4)',
                         transition: 'transform 0.2s',
                       }}
                       onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
@@ -551,7 +551,7 @@ const AboutPage = () => {
             <div>
               <div className="dev-info-item" style={{ marginBottom: '40px' }}>
                 <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 900, fontSize: '28px', textTransform: 'uppercase', margin: '0 0 16px' }}>
-                  BUILT WITH THE SAME<br /><span style={{ color: '#8B0000', fontStyle: 'italic', fontWeight: 300 }}>ARTISAN PRECISION</span>
+                  BUILT WITH THE SAME<br /><span style={{ color: '#d4af37', fontStyle: 'italic', fontWeight: 300 }}>ARTISAN PRECISION</span>
                 </h3>
                 <p style={{ fontSize: '15px', color: '#555', lineHeight: 1.8, margin: 0 }}>
                   This website was designed and developed by <strong style={{ color: '#111' }}>Krishna</strong> to embody the same craftsmanship that New Samadhan Shoe Mart brings to every pair. From 3D scroll animations to the premium design system — every detail was intentional.
@@ -563,10 +563,10 @@ const AboutPage = () => {
                   { icon: <Zap size={18} />, label: 'Animations', value: 'GSAP ScrollTrigger · 3D CSS Transforms' },
                   { icon: <ShieldCheck size={18} />, label: 'Auth & Security', value: 'JWT · Session Guards · Admin Routes' },
                   { icon: <Globe size={18} />, label: 'Platform', value: 'Responsive · Mobile-First · PWA Ready' },
-                  { icon: <Star size={18} />, label: 'Design System', value: 'Playfair Display · Inter · Burgundy Brand' },
+                  { icon: <Star size={18} />, label: 'Design System', value: 'Playfair Display · Inter · Gold & Black' },
                 ].map((item, i) => (
                   <div key={i} className="dev-info-item" style={{ display: 'flex', alignItems: 'center', gap: '20px', padding: '18px 24px', background: 'white', borderRadius: '16px', border: '1px solid rgba(17,17,17,0.06)', boxShadow: '0 4px 16px rgba(0,0,0,0.03)' }}>
-                    <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: 'rgba(139,0,0,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#8B0000', flexShrink: 0 }}>{item.icon}</div>
+                    <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: 'rgba(212,175,55,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#d4af37', flexShrink: 0 }}>{item.icon}</div>
                     <div>
                       <div style={{ ...S.label, marginBottom: '4px', display: 'block' }}>{item.label}</div>
                       <div style={{ fontSize: '13px', fontWeight: 600, color: '#111' }}>{item.value}</div>
@@ -580,7 +580,7 @@ const AboutPage = () => {
                   target="_blank"
                   rel="noreferrer"
                   style={{
-                    background: '#8B0000',
+                    background: '#d4af37',
                     color: 'white',
                     padding: '14px 24px',
                     borderRadius: '12px',
@@ -592,7 +592,7 @@ const AboutPage = () => {
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '8px',
-                    boxShadow: '0 8px 20px rgba(139,0,0,0.3)',
+                    boxShadow: '0 8px 20px rgba(212,175,55,0.3)',
                   }}
                 >
                   <Instagram size={14} /> Instagram
@@ -628,7 +628,7 @@ const AboutPage = () => {
                     const num = Math.random() > 0.5 ? '9423228843' : '8888644021';
                     window.open(`https://wa.me/91${num}?text=${encodeURIComponent(msg)}`, '_blank');
                   }}
-                  style={{ background: '#8B0000', color: 'white', border: 'none', cursor: 'pointer', padding: '14px 24px', borderRadius: '12px', fontSize: '11px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px', boxShadow: '0 8px 20px rgba(139,0,0,0.3)' }}
+                  style={{ background: '#d4af37', color: 'white', border: 'none', cursor: 'pointer', padding: '14px 24px', borderRadius: '12px', fontSize: '11px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px', boxShadow: '0 8px 20px rgba(212,175,55,0.3)' }}
                 >
                   <MessageCircle size={14} /> Shop WhatsApp
                 </button>
@@ -645,9 +645,9 @@ const AboutPage = () => {
       <section id="legal-policies" style={{ padding: '120px 24px', background: '#ffffff', borderTop: '1px solid rgba(17,17,17,0.05)' }}>
         <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '80px' }}>
-            <div style={S.badge}><ShieldCheck size={14} color="#8B0000" /><span style={S.label}>Transparency & Trust</span></div>
+            <div style={S.badge}><ShieldCheck size={14} color="#d4af37" /><span style={S.label}>Transparency & Trust</span></div>
             <h2 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 900, fontSize: 'clamp(2rem, 5vw, 4rem)', textTransform: 'uppercase', lineHeight: 0.95, margin: 0 }}>
-              LEGAL &<br /><span style={{ color: '#8B0000', fontStyle: 'italic', fontWeight: 300 }}>POLICIES</span>
+              LEGAL &<br /><span style={{ color: '#d4af37', fontStyle: 'italic', fontWeight: 300 }}>POLICIES</span>
             </h2>
           </div>
 
@@ -681,7 +681,7 @@ const AboutPage = () => {
       </section>
 
       {/* ── CTA STRIP ── */}
-      <section style={{ background: '#8B0000', padding: '80px 24px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+      <section style={{ background: '#d4af37', padding: '80px 24px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at center, rgba(255,255,255,0.06) 0%, transparent 65%)', pointerEvents: 'none' }} />
         <div style={{ position: 'relative', zIndex: 2 }}>
           <div style={{ fontSize: '10px', fontWeight: 800, letterSpacing: '0.5em', color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase', marginBottom: '16px' }}>Nashik's Finest Since 1990</div>
@@ -689,7 +689,7 @@ const AboutPage = () => {
             STEP INTO YOUR<br /><span style={{ fontStyle: 'italic', fontWeight: 300, color: 'rgba(255,255,255,0.75)' }}>SAMADHAN.</span>
           </h2>
           <div style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link to="/products" style={{ background: 'white', color: '#8B0000', padding: '20px 48px', borderRadius: '14px', fontSize: '11px', fontWeight: 800, letterSpacing: '0.3em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '12px', boxShadow: '0 16px 40px rgba(0,0,0,0.25)' }}>
+            <Link to="/products" style={{ background: 'white', color: '#d4af37', padding: '20px 48px', borderRadius: '14px', fontSize: '11px', fontWeight: 800, letterSpacing: '0.3em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '12px', boxShadow: '0 16px 40px rgba(0,0,0,0.25)' }}>
               Shop Collection <ArrowRight size={16} />
             </Link>
             <Link to="/workshop" style={{ background: 'transparent', color: 'white', padding: '20px 36px', borderRadius: '14px', fontSize: '11px', fontWeight: 700, letterSpacing: '0.3em', textTransform: 'uppercase', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '10px', border: '1px solid rgba(255,255,255,0.35)' }}>

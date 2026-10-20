@@ -4,6 +4,7 @@ import { gsap } from 'gsap';
 import { Star, ShoppingBag, MessageCircle, ArrowRight, Sparkles, Heart, Maximize2, Filter, X } from 'lucide-react';
 import { resolveImageUrl } from '../utils/urlConfig';
 import { getMergedProducts } from '../utils/productUtils';
+import AdComponent from '../components/AdComponent';
 
 const CollectionPage = () => {
   const navigate = useNavigate();
@@ -118,7 +119,7 @@ const CollectionPage = () => {
               <span className="w-16 h-px bg-[#d4af37]"></span>
               <span className="text-[#d4af37] font-black uppercase tracking-[0.5em] text-[10px]">THE ARCHIVE • 2026 EDITION</span>
             </div>
-            <h1 className="text-6xl md:text-[9rem] font-black uppercase tracking-tighter leading-[0.8] mb-8 bg-gradient-to-r from-[#111111] via-[#8B0000] to-[#111111] dark:from-white dark:via-[#d4af37] dark:to-white bg-clip-text text-transparent">
+            <h1 className="text-6xl md:text-[9rem] font-black uppercase tracking-tighter leading-[0.8] mb-8 bg-gradient-to-r from-[#111111] via-[#d4af37] to-[#111111] dark:from-white dark:via-[#d4af37] dark:to-white bg-clip-text text-transparent">
               CURATED <br /> <span className="text-[#d4af37] italic">SELECTION.</span>
             </h1>
             <p className="text-gray-400 dark:text-gray-500 font-bold uppercase tracking-[0.3em] text-[10px] max-w-xl">
@@ -201,6 +202,9 @@ const CollectionPage = () => {
             </div>
           </div>
         </div>
+
+        {/* AdSense Unit */}
+        <AdComponent adSlot="1234567890" />
 
         {/* Product Grid - More Space & Drama */}
         {filteredProducts.length > 0 ? (
@@ -291,6 +295,11 @@ const CollectionPage = () => {
             </button>
           </div>
         )}
+
+        {/* Bottom AdSense Unit */}
+        <div className="mt-20">
+          <AdComponent adSlot="2345678901" />
+        </div>
 
       </div>
 

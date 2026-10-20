@@ -146,13 +146,13 @@ const AdminOrders = () => {
              </div>
              <div className="bg-white px-8 py-6 rounded-[2rem] border border-[#111]/5 shadow-sm">
                 <span className="text-[9px] font-black text-[#6B6B6B] uppercase tracking-widest block mb-1">Active Shipments</span>
-                <span className="text-3xl font-black text-[#8B0000]">{stats.pending}</span>
+                <span className="text-3xl font-black text-[#d4af37]">{stats.pending}</span>
              </div>
           </div>
         </div>
 
         {success && (
-          <div className="bg-[#8B0000] text-white p-6 rounded-[2.5rem] mb-12 flex items-center shadow-xl border-4 border-white animate-in zoom-in-95 no-blur-zone">
+          <div className="bg-[#d4af37] text-white p-6 rounded-[2.5rem] mb-12 flex items-center shadow-xl border-4 border-white animate-in zoom-in-95 no-blur-zone">
             <CheckCircle className="w-8 h-8 mr-4" />
             <div>
               <p className="font-black uppercase tracking-widest text-lg">Update Successfull</p>
@@ -168,7 +168,7 @@ const AdminOrders = () => {
             <input
               type="text"
               placeholder="Search by Order ID, Customer, or Email..."
-              className="w-full bg-[#F7F5F0] border-0 rounded-2xl py-4 pl-16 pr-6 text-sm font-bold outline-none focus:ring-2 focus:ring-[#8B0000]"
+              className="w-full bg-[#F7F5F0] border-0 rounded-2xl py-4 pl-16 pr-6 text-sm font-bold outline-none focus:ring-2 focus:ring-[#d4af37]"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -192,7 +192,7 @@ const AdminOrders = () => {
         <div className="space-y-6">
           {loading ? (
             <div className="flex justify-center py-20">
-              <Loader2 className="w-12 h-12 animate-spin text-[#8B0000]" />
+              <Loader2 className="w-12 h-12 animate-spin text-[#d4af37]" />
             </div>
           ) : filteredOrders.length > 0 ? (
             filteredOrders.map((order) => (
@@ -241,7 +241,7 @@ const AdminOrders = () => {
                     {!order.isDelivered && (
                       <button
                         onClick={() => deliverHandler(order._id)}
-                        className="px-6 py-3 bg-[#111] text-white rounded-xl text-[9px] font-black uppercase tracking-widest hover:bg-[#8B0000] transition-all"
+                        className="px-6 py-3 bg-[#111] text-white rounded-xl text-[9px] font-black uppercase tracking-widest hover:bg-[#d4af37] transition-all"
                       >
                         Finalize
                       </button>

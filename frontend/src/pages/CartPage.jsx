@@ -39,11 +39,11 @@ const CartPage = () => {
   return (
     <div className="bg-[#F7F5F0] min-h-screen pt-32 pb-24 relative overflow-hidden text-[#111111] no-blur-zone">
       {/* Background Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-[#8B0000]/5 rounded-full"></div>
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-[#d4af37]/5 rounded-full"></div>
 
       <div className="container mx-auto px-6 max-w-7xl relative z-10">
         <div className="flex items-center gap-6 mb-16 reveal-item">
-          <div className="w-16 h-16 bg-[#8B0000] rounded-[2rem] flex items-center justify-center text-white shadow-lg">
+          <div className="w-16 h-16 bg-[#d4af37] rounded-[2rem] flex items-center justify-center text-white shadow-lg">
             <ShoppingBag size={28} />
           </div>
           <div>
@@ -60,7 +60,7 @@ const CartPage = () => {
             </div>
             <h2 className="text-2xl sm:text-4xl font-editorial font-bold text-[#111111] mb-4 sm:mb-6 uppercase tracking-tight">Vault is Empty</h2>
             <p className="text-[#6B6B6B] mb-8 sm:mb-12 text-sm sm:text-lg font-medium italic">"Your elite collection starts with a single pair."</p>
-            <Link to="/products" className="bg-[#111111] text-white px-8 sm:px-12 py-4 sm:py-6 rounded-[1.5rem] sm:rounded-[2rem] font-bold uppercase tracking-[0.2em] text-[10px] sm:text-xs inline-flex items-center gap-4 hover:bg-[#8B0000] transition-all shadow-md">
+            <Link to="/products" className="bg-[#111111] text-white px-8 sm:px-12 py-4 sm:py-6 rounded-[1.5rem] sm:rounded-[2rem] font-bold uppercase tracking-[0.2em] text-[10px] sm:text-xs inline-flex items-center gap-4 hover:bg-[#d4af37] transition-all shadow-md">
               Browse Trends <ArrowRight size={18} />
             </Link>
           </div>
@@ -69,7 +69,7 @@ const CartPage = () => {
             {/* Items List */}
             <div className="lg:col-span-8 space-y-6 sm:space-y-8">
               {cartItems.map((item) => (
-                <div key={`${item._id || item.id}-${item.size}`} className="group relative bg-white p-6 sm:p-8 rounded-[2rem] sm:rounded-[3.5rem] border border-[#111111]/5 hover:border-[#8B0000]/20 transition-all duration-500 flex flex-col sm:flex-row items-center gap-6 sm:gap-10 shadow-lg">
+                <div key={`${item._id || item.id}-${item.size}`} className="group relative bg-white p-6 sm:p-8 rounded-[2rem] sm:rounded-[3.5rem] border border-[#111111]/5 hover:border-[#d4af37]/20 transition-all duration-500 flex flex-col sm:flex-row items-center gap-6 sm:gap-10 shadow-lg">
                   <Link
                     to={`/product/${item._id || item.id}`}
                     className="w-32 h-32 sm:w-40 sm:h-40 bg-[#F7F5F0] rounded-[1.5rem] sm:rounded-[2.5rem] overflow-hidden shrink-0 border border-[#111111]/5 flex items-center justify-center p-4 hover:opacity-80 transition-opacity cursor-pointer group/img"
@@ -83,10 +83,10 @@ const CartPage = () => {
 
                   <div className="flex-grow text-center sm:text-left">
                     <div className="flex items-center justify-center sm:justify-start gap-4 mb-2 sm:mb-4">
-                      <span className="px-3 py-1 bg-[#8B0000]/10 border border-[#8B0000]/20 rounded-full text-[8px] font-bold text-[#8B0000] uppercase tracking-widest">{item.brand}</span>
+                      <span className="px-3 py-1 bg-[#d4af37]/10 border border-[#d4af37]/20 rounded-full text-[8px] font-bold text-[#d4af37] uppercase tracking-widest">{item.brand}</span>
                       <span className="px-3 py-1 bg-[#111111]/5 border border-[#111111]/10 rounded-full text-[8px] font-bold text-[#6B6B6B] uppercase tracking-widest">Size: {item.size}</span>
                     </div>
-                    <Link to={`/product/${item._id || item.id}`} className="hover:text-[#8B0000] transition-colors">
+                    <Link to={`/product/${item._id || item.id}`} className="hover:text-[#d4af37] transition-colors">
                       <h3 className="text-xl sm:text-2xl font-editorial font-bold text-[#111111] mb-2 sm:mb-4 tracking-tight uppercase leading-none">{item.name}</h3>
                     </Link>
                     <div className="text-2xl sm:text-3xl font-black text-[#111111] tracking-tighter tabular-nums">₹{(item.price || 0).toLocaleString()}</div>
@@ -94,12 +94,12 @@ const CartPage = () => {
 
                   <div className="flex flex-row sm:flex-col items-center sm:items-end gap-6 w-full sm:w-auto justify-between sm:justify-center">
                     <div className="flex items-center bg-[#F7F5F0] p-1.5 rounded-xl border border-[#111111]/5">
-                      <button onClick={() => addToCart(item, -1, item.size)} className="w-8 h-8 font-bold text-[#111111] hover:text-[#8B0000] transition-colors">-</button>
+                      <button onClick={() => addToCart(item, -1, item.size)} className="w-8 h-8 font-bold text-[#111111] hover:text-[#d4af37] transition-colors">-</button>
                       <span className="w-10 text-center font-bold text-[#111111] text-base">{item.qty}</span>
-                      <button onClick={() => addToCart(item, 1, item.size)} className="w-8 h-8 font-bold text-[#111111] hover:text-[#8B0000] transition-colors">+</button>
+                      <button onClick={() => addToCart(item, 1, item.size)} className="w-8 h-8 font-bold text-[#111111] hover:text-[#d4af37] transition-colors">+</button>
                     </div>
                     <div className="text-right">
-                      <p className="text-lg sm:text-xl font-black text-[#8B0000] tracking-tighter tabular-nums">₹{((item.price || 0) * item.qty).toLocaleString()}</p>
+                      <p className="text-lg sm:text-xl font-black text-[#d4af37] tracking-tighter tabular-nums">₹{((item.price || 0) * item.qty).toLocaleString()}</p>
                     </div>
                   </div>
 
@@ -131,20 +131,20 @@ const CartPage = () => {
                   <div className="pt-6 sm:pt-8 border-t border-[#111111]/5">
                     <div className="flex flex-col gap-1 sm:gap-2">
                       <span className="text-[9px] font-bold text-[#6B6B6B] uppercase tracking-[0.4em]">Total Commitment</span>
-                      <span className="text-3xl sm:text-5xl font-black text-[#8B0000] tracking-tighter tabular-nums">₹{(cartTotal || 0).toLocaleString()}</span>
+                      <span className="text-3xl sm:text-5xl font-black text-[#d4af37] tracking-tighter tabular-nums">₹{(cartTotal || 0).toLocaleString()}</span>
                     </div>
                   </div>
                 </div>
 
                 <button
                   onClick={handleCheckoutNavigation}
-                  className="w-full bg-[#111111] text-white py-5 sm:py-7 rounded-[1.5rem] sm:rounded-[2rem] font-bold uppercase tracking-[0.3em] text-[10px] sm:text-[11px] flex items-center justify-center gap-4 hover:bg-[#8B0000] transition-all shadow-md group relative overflow-hidden mb-6 sm:mb-8"
+                  className="w-full bg-[#111111] text-white py-5 sm:py-7 rounded-[1.5rem] sm:rounded-[2rem] font-bold uppercase tracking-[0.3em] text-[10px] sm:text-[11px] flex items-center justify-center gap-4 hover:bg-[#d4af37] transition-all shadow-md group relative overflow-hidden mb-6 sm:mb-8"
                 >
                   Initiate Protocol <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform" />
                 </button>
 
                 <div className="flex items-center gap-4 p-5 bg-[#F7F5F0] rounded-[2rem] border border-[#111111]/5">
-                  <div className="w-10 h-10 bg-[#8B0000]/10 rounded-xl flex items-center justify-center text-[#8B0000]">
+                  <div className="w-10 h-10 bg-[#d4af37]/10 rounded-xl flex items-center justify-center text-[#d4af37]">
                     <ShieldCheck size={20} />
                   </div>
                   <div>

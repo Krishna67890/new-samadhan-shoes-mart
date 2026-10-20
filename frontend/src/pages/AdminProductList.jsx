@@ -156,7 +156,7 @@ const AdminProductList = () => {
              </div>
              <Link
                to="/admin/product/new"
-               className="flex-1 md:flex-none bg-[#111] text-white px-6 md:px-10 py-5 md:py-6 rounded-[2rem] flex items-center justify-center gap-3 hover:bg-[#8B0000] transition-all shadow-xl shadow-slate-200 group"
+               className="flex-1 md:flex-none bg-[#111] text-white px-6 md:px-10 py-5 md:py-6 rounded-[2rem] flex items-center justify-center gap-3 hover:bg-[#d4af37] transition-all shadow-xl shadow-slate-200 group"
              >
                 <Plus size={20} className="group-hover:rotate-90 transition-transform duration-500" />
                 <span className="font-black uppercase tracking-widest text-[10px] md:text-xs text-nowrap">Add Product</span>
@@ -171,7 +171,7 @@ const AdminProductList = () => {
             <input
               type="text"
               placeholder="Search by product name or brand..."
-              className="w-full bg-[#F7F5F0] border-0 rounded-2xl py-4 pl-16 pr-6 text-sm font-bold outline-none focus:ring-2 focus:ring-[#8B0000]"
+              className="w-full bg-[#F7F5F0] border-0 rounded-2xl py-4 pl-16 pr-6 text-sm font-bold outline-none focus:ring-2 focus:ring-[#d4af37]"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -198,7 +198,7 @@ const AdminProductList = () => {
         <div className="space-y-6" ref={listRef}>
           {loading ? (
             <div className="flex justify-center py-20">
-              <Loader2 className="w-12 h-12 animate-spin text-[#8B0000]" />
+              <Loader2 className="w-12 h-12 animate-spin text-[#d4af37]" />
             </div>
           ) : filteredProducts.length > 0 ? (
             filteredProducts.map((product) => (

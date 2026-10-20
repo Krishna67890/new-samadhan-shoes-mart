@@ -102,13 +102,13 @@ const AdminReviewDashboard = () => {
              </div>
              <div className="bg-white px-8 py-6 rounded-[2rem] border border-[#111]/5 shadow-sm">
                 <span className="text-[9px] font-black text-[#6B6B6B] uppercase tracking-widest block mb-1">Avg Rating</span>
-                <span className="text-3xl font-black text-[#8B0000]">{stats.avg}★</span>
+                <span className="text-3xl font-black text-[#d4af37]">{stats.avg}★</span>
              </div>
           </div>
         </div>
 
         {success && (
-          <div className="bg-[#8B0000] text-white p-6 rounded-[2.5rem] mb-12 flex items-center shadow-xl border-4 border-white animate-in zoom-in-95 no-blur-zone">
+          <div className="bg-[#d4af37] text-white p-6 rounded-[2.5rem] mb-12 flex items-center shadow-xl border-4 border-white animate-in zoom-in-95 no-blur-zone">
             <CheckCircle className="w-8 h-8 mr-4" />
             <div>
               <p className="font-black uppercase tracking-widest text-lg">Update Successfull</p>
@@ -124,7 +124,7 @@ const AdminReviewDashboard = () => {
             <input
               type="text"
               placeholder="Search by customer, product, or content..."
-              className="w-full bg-[#F7F5F0] border-0 rounded-2xl py-4 pl-16 pr-6 text-sm font-bold outline-none focus:ring-2 focus:ring-[#8B0000]"
+              className="w-full bg-[#F7F5F0] border-0 rounded-2xl py-4 pl-16 pr-6 text-sm font-bold outline-none focus:ring-2 focus:ring-[#d4af37]"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -162,10 +162,10 @@ const AdminReviewDashboard = () => {
                   <div className="col-span-1">
                     <span className="text-[9px] font-black text-[#6B6B6B] uppercase tracking-widest block mb-2">Customer / Rating</span>
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-[#8B0000] text-white rounded-lg flex items-center justify-center text-[10px] font-black">{rev.avatar}</div>
+                      <div className="w-8 h-8 bg-[#d4af37] text-white rounded-lg flex items-center justify-center text-[10px] font-black">{rev.avatar}</div>
                       <div>
                         <p className="font-bold text-sm text-[#111]">{rev.name}</p>
-                        <div className="flex text-[#8B0000]">
+                        <div className="flex text-[#d4af37]">
                           {Array.from({ length: 5 }).map((_, i) => <Star key={i} size={10} fill={i < rev.rating ? "currentColor" : "none"} />)}
                         </div>
                       </div>
@@ -180,13 +180,13 @@ const AdminReviewDashboard = () => {
                   <div className="col-span-1 flex justify-end gap-4">
                     <button
                       onClick={() => navigate(`/product/${rev.productId}`)}
-                      className="px-6 py-3 bg-[#111] text-white rounded-xl text-[9px] font-black uppercase tracking-widest hover:bg-[#8B0000] transition-all"
+                      className="px-6 py-3 bg-[#111] text-white rounded-xl text-[9px] font-black uppercase tracking-widest hover:bg-[#d4af37] transition-all"
                     >
                       View
                     </button>
                     <button
                       onClick={() => handleDelete(rev.id)}
-                      className="p-3 text-[#8B0000] border border-[#8B0000]/20 rounded-xl hover:bg-[#8B0000] hover:text-white transition-all"
+                      className="p-3 text-[#d4af37] border border-[#d4af37]/20 rounded-xl hover:bg-[#d4af37] hover:text-white transition-all"
                     >
                       <Trash2 size={18} />
                     </button>

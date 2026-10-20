@@ -187,7 +187,7 @@ const AdminProductEdit = () => {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-16">
           <div>
             <div className="flex items-center gap-3 mb-4">
-              <div className="px-3 py-1 bg-[#8B0000] text-white text-[8px] font-black uppercase tracking-[0.2em] rounded-full flex items-center gap-2">
+              <div className="px-3 py-1 bg-[#d4af37] text-white text-[8px] font-black uppercase tracking-[0.2em] rounded-full flex items-center gap-2">
                 <Sparkles size={10} /> {isNew ? 'New Entry' : 'Matrix Update'}
               </div>
             </div>
@@ -229,7 +229,7 @@ const AdminProductEdit = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Left Column: Basic Info */}
             <div className="space-y-8">
-              <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#8B0000] border-b border-[#111]/5 pb-4 flex items-center">
+              <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#d4af37] border-b border-[#111]/5 pb-4 flex items-center">
                  General Information
               </h3>
 
@@ -239,7 +239,7 @@ const AdminProductEdit = () => {
                   <input
                     type="text"
                     required
-                    className="w-full px-6 py-5 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-[#8B0000] outline-none transition-all font-bold text-[#111]"
+                    className="w-full px-6 py-5 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-[#d4af37] outline-none transition-all font-bold text-[#111]"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                   />
@@ -274,7 +274,7 @@ const AdminProductEdit = () => {
                   <div className="space-y-2">
                     <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-2">Category</label>
                     <select
-                      className="w-full px-6 py-5 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-[#8B0000] outline-none transition-all font-bold text-[#111] appearance-none"
+                      className="w-full px-6 py-5 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-[#d4af37] outline-none transition-all font-bold text-[#111] appearance-none"
                       value={category}
                       onChange={(e) => setCategory(e.target.value)}
                     >
@@ -292,7 +292,7 @@ const AdminProductEdit = () => {
                   <div className="space-y-2">
                     <label className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] ml-2">Target Gender</label>
                     <select
-                      className="w-full px-6 py-5 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-[#8B0000] outline-none transition-all font-bold text-[#111] appearance-none"
+                      className="w-full px-6 py-5 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-[#d4af37] outline-none transition-all font-bold text-[#111] appearance-none"
                       value={targetGender}
                       onChange={(e) => setTargetGender(e.target.value)}
                     >
@@ -310,7 +310,7 @@ const AdminProductEdit = () => {
                     <input
                       type="number"
                       required
-                      className="w-full px-6 py-5 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-[#8B0000] outline-none transition-all font-bold text-[#111]"
+                      className="w-full px-6 py-5 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-[#d4af37] outline-none transition-all font-bold text-[#111]"
                       value={stock}
                       onChange={(e) => setStock(Number(e.target.value))}
                     />
@@ -322,7 +322,7 @@ const AdminProductEdit = () => {
                       step="0.1"
                       min="0"
                       max="5"
-                      className="w-full px-6 py-5 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-[#8B0000] outline-none transition-all font-bold text-[#111]"
+                      className="w-full px-6 py-5 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-[#d4af37] outline-none transition-all font-bold text-[#111]"
                       value={rating}
                       onChange={(e) => setRating(Number(e.target.value))}
                     />
@@ -334,7 +334,7 @@ const AdminProductEdit = () => {
                   <textarea
                     rows="5"
                     required
-                    className="w-full px-6 py-5 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-[#8B0000] outline-none transition-all font-bold text-[#111] resize-none"
+                    className="w-full px-6 py-5 bg-[#F7F5F0] border-none rounded-2xl focus:ring-2 focus:ring-[#d4af37] outline-none transition-all font-bold text-[#111] resize-none"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                   ></textarea>
@@ -356,7 +356,7 @@ const AdminProductEdit = () => {
                     <input
                       type="text"
                       placeholder="Paste Image URL here..."
-                      className="flex-1 px-4 py-2 bg-[#F7F5F0] rounded-xl text-[10px] font-bold outline-none border border-slate-200 focus:border-[#8B0000]"
+                      className="flex-1 px-4 py-2 bg-[#F7F5F0] rounded-xl text-[10px] font-bold outline-none border border-slate-200 focus:border-[#d4af37]"
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                           e.preventDefault();
@@ -386,8 +386,8 @@ const AdminProductEdit = () => {
                         </div>
                      ))}
                      {images.length < 4 && (
-                       <label className="aspect-square rounded-2xl border-2 border-dashed border-slate-200 flex flex-col items-center justify-center cursor-pointer hover:border-[#8B0000] hover:bg-slate-50 transition-all group">
-                          {uploading ? <Loader2 className="w-6 h-6 animate-spin text-[#8B0000]" /> : <PlusCircle className="w-6 h-6 text-slate-300 group-hover:text-[#8B0000]" />}
+                       <label className="aspect-square rounded-2xl border-2 border-dashed border-slate-200 flex flex-col items-center justify-center cursor-pointer hover:border-[#d4af37] hover:bg-slate-50 transition-all group">
+                          {uploading ? <Loader2 className="w-6 h-6 animate-spin text-[#d4af37]" /> : <PlusCircle className="w-6 h-6 text-slate-300 group-hover:text-[#d4af37]" />}
                           <span className="text-[8px] font-black text-slate-400 mt-2 uppercase tracking-widest">UPLOAD</span>
                           <input
                             type="file"
@@ -441,7 +441,7 @@ const AdminProductEdit = () => {
                            else setSizes([...sizes, s].sort((a,b) => a-b));
                         }}
                         className={`w-14 h-14 rounded-xl border-2 font-black transition-all text-[11px]
-                          ${sizes.includes(s) ? 'bg-[#111] border-[#111] text-white shadow-xl' : 'bg-white border-slate-100 text-slate-400 hover:border-[#8B0000]'}`}
+                          ${sizes.includes(s) ? 'bg-[#111] border-[#111] text-white shadow-xl' : 'bg-white border-slate-100 text-slate-400 hover:border-[#d4af37]'}`}
                       >
                         {s}
                       </button>
@@ -506,7 +506,7 @@ const AdminProductEdit = () => {
              <button
                type="submit"
                disabled={loading}
-               className="w-full bg-[#111] text-white py-6 rounded-[2.5rem] text-[11px] font-black uppercase tracking-[0.4em] transition-all hover:bg-[#8B0000] shadow-2xl flex items-center justify-center gap-4 group"
+               className="w-full bg-[#111] text-white py-6 rounded-[2.5rem] text-[11px] font-black uppercase tracking-[0.4em] transition-all hover:bg-[#d4af37] shadow-2xl flex items-center justify-center gap-4 group"
              >
                {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : <Save className="w-5 h-5" />}
                {isNew ? 'Authorize New Product Entry' : 'Commit Matrix Updates'}

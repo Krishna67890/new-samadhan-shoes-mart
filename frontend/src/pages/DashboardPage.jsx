@@ -71,18 +71,18 @@ const DashboardPage = () => {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
             <div>
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-6 h-px bg-[#8B0000]"></div>
-                <p className="text-[10px] font-sans font-bold text-[#8B0000] uppercase tracking-[0.4em]">COLLECTOR VAULT CONTROL</p>
+                <div className="w-6 h-px bg-[#d4af37]"></div>
+                <p className="text-[10px] font-sans font-bold text-[#d4af37] uppercase tracking-[0.4em]">COLLECTOR VAULT CONTROL</p>
               </div>
               <h1 className="text-5xl md:text-7xl font-editorial font-black text-[#111111] tracking-tighter leading-none uppercase">
-                WELCOME, <span className="italic font-light text-[#8B0000]">{user.name}</span>
+                WELCOME, <span className="italic font-light text-[#d4af37]">{user.name}</span>
               </h1>
             </div>
 
             <div className="flex items-center gap-4 bg-white p-2 rounded-full border border-[#111111]/5 shadow-sm">
               <div className="flex items-center gap-3 pl-4 pr-6">
                 <div className="w-10 h-10 bg-[#111111] rounded-full flex items-center justify-center text-white shadow-md">
-                  <ShieldCheck size={18} className="text-[#8B0000]" />
+                  <ShieldCheck size={18} className="text-[#d4af37]" />
                 </div>
                 <div>
                   <p className="text-[9px] font-sans font-bold text-[#111111]/40 uppercase tracking-widest">Account Security</p>
@@ -103,7 +103,7 @@ const DashboardPage = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           {[
             { label: 'ACQUISITIONS', value: confirmedOrders.length, icon: CheckCircle2, color: 'text-emerald-700', bg: 'bg-emerald-50' },
-            { label: 'LOGISTICS EN ROUTE', value: pendingDelivery.length, icon: Truck, color: 'text-[#8B0000]', bg: 'bg-[#8B0000]/5' },
+            { label: 'LOGISTICS EN ROUTE', value: pendingDelivery.length, icon: Truck, color: 'text-[#d4af37]', bg: 'bg-[#d4af37]/5' },
             { label: 'VAULT VALUE', value: '₹' + safeOrders.reduce((acc, o) => acc + (o.totalPrice || 0), 0).toLocaleString(), icon: TrendingUp, color: 'text-[#111111]', bg: 'bg-white' },
             { label: 'LOYALTY RECOGNITION', value: '3,840 PTS', icon: Zap, color: 'text-amber-700', bg: 'bg-amber-50' }
           ].map((stat, i) => (
@@ -124,7 +124,7 @@ const DashboardPage = () => {
             <div className="bg-white rounded-[2.5rem] p-8 md:p-10 border border-[#111111]/5 shadow-[0_30px_60px_rgba(0,0,0,0.015)] dash-reveal">
               <div className="flex justify-between items-center mb-10">
                 <h2 className="text-2xl font-editorial font-bold text-[#111111] tracking-tight flex items-center gap-3">
-                  <Box className="text-[#8B0000]" size={22} /> VERIFIED ACQUISITIONS
+                  <Box className="text-[#d4af37]" size={22} /> VERIFIED ACQUISITIONS
                 </h2>
                 <div className="px-4 py-2 bg-[#F7F5F0] rounded-full text-[9px] font-sans font-bold text-[#111111]/40 uppercase tracking-widest">
                   {safeOrders.length} TOTAL ARCHIVES
@@ -133,21 +133,21 @@ const DashboardPage = () => {
 
               {loading ? (
                 <div className="py-24 flex flex-col items-center gap-3">
-                   <div className="w-8 h-8 border-2 border-[#8B0000] border-t-transparent rounded-full animate-spin"></div>
+                   <div className="w-8 h-8 border-2 border-[#d4af37] border-t-transparent rounded-full animate-spin"></div>
                    <p className="text-[10px] font-sans font-bold text-[#111111]/40 uppercase tracking-widest">Querying Secure Protocol...</p>
                 </div>
               ) : safeOrders.length === 0 ? (
                 <div className="text-center py-24 bg-[#F7F5F0] rounded-2xl border border-dashed border-[#111111]/10">
                   <Package className="w-12 h-12 text-[#111111]/20 mx-auto mb-4" />
                   <p className="text-[#111111]/40 text-xs font-medium mb-6 italic">No luxury items registered in this sequence.</p>
-                  <Link to="/products" className="bg-[#111111] text-white px-10 py-4.5 rounded-xl text-[10px] font-sans font-bold uppercase tracking-widest hover:bg-[#8B0000] transition-all">
+                  <Link to="/products" className="bg-[#111111] text-white px-10 py-4.5 rounded-xl text-[10px] font-sans font-bold uppercase tracking-widest hover:bg-[#d4af37] transition-all">
                     Access Premium Vault
                   </Link>
                 </div>
               ) : (
                 <div className="space-y-4">
                   {safeOrders.map((order) => (
-                    <div key={order._id} className="group relative bg-[#F7F5F0] rounded-2xl overflow-hidden border border-transparent hover:border-[#8B0000]/10 hover:bg-white hover:shadow-xl transition-all duration-500">
+                    <div key={order._id} className="group relative bg-[#F7F5F0] rounded-2xl overflow-hidden border border-transparent hover:border-[#d4af37]/10 hover:bg-white hover:shadow-xl transition-all duration-500">
                       <div className="p-6 flex flex-col md:flex-row gap-6 items-center">
                         {/* Order Preview Images */}
                         <div className="flex -space-x-6">
@@ -159,7 +159,7 @@ const DashboardPage = () => {
                         </div>
 
                         <div className="flex-1 text-center md:text-left">
-                           <p className="text-[9px] font-mono text-[#8B0000] uppercase tracking-wider mb-0.5">ID: #{order._id.substring(order._id.length - 6).toUpperCase()}</p>
+                           <p className="text-[9px] font-mono text-[#d4af37] uppercase tracking-wider mb-0.5">ID: #{order._id.substring(order._id.length - 6).toUpperCase()}</p>
                            <h4 className="text-base font-sans font-bold text-[#111111] truncate max-w-xs">
                              {order.orderItems?.length || 1} Premium Asset Ordered
                            </h4>
@@ -180,7 +180,7 @@ const DashboardPage = () => {
                            <div className="text-right hidden sm:block">
                               <p className="text-[8px] font-sans font-bold text-[#111111]/30 uppercase tracking-widest mb-1">Transit Matrix</p>
                               <div className="w-24 h-1 bg-[#111111]/10 rounded-full overflow-hidden">
-                                 <div className={`h-full bg-[#8B0000] transition-all duration-1000 ${order.isDelivered ? 'w-full' : 'w-1/2'}`}></div>
+                                 <div className={`h-full bg-[#d4af37] transition-all duration-1000 ${order.isDelivered ? 'w-full' : 'w-1/2'}`}></div>
                               </div>
                            </div>
                            <Link
@@ -207,11 +207,11 @@ const DashboardPage = () => {
                 <h3 className="text-sm font-sans font-bold text-[#111111] tracking-widest flex items-center gap-2">
                   <Bell className="text-amber-600" size={16} /> RADAR INTELLIGENCE
                 </h3>
-                <span className="w-1.5 h-1.5 bg-[#8B0000] rounded-full animate-ping"></span>
+                <span className="w-1.5 h-1.5 bg-[#d4af37] rounded-full animate-ping"></span>
               </div>
               <div className="space-y-6">
                 {[
-                  { title: 'New Grail Horizon', time: '1h ago', desc: 'The Limited Premium Silhouette collection releases tomorrow at 10:00 AM IST.', icon: Zap, color: 'text-[#8B0000]', bg: 'bg-[#8B0000]/5' },
+                  { title: 'New Grail Horizon', time: '1h ago', desc: 'The Limited Premium Silhouette collection releases tomorrow at 10:00 AM IST.', icon: Zap, color: 'text-[#d4af37]', bg: 'bg-[#d4af37]/5' },
                   { title: 'WhatsApp Matrix Synced', time: '4h ago', desc: 'Dual shopkeeper route initialized for ultra-premium verification.', icon: Truck, color: 'text-emerald-700', bg: 'bg-emerald-50' },
                   { title: 'Aesthetic Upgrade Done', time: '1d ago', desc: 'The entire showroom interface has been refactored to Light Luxury #F7F5F0.', icon: TrendingUp, color: 'text-indigo-700', bg: 'bg-indigo-50' }
                 ].map((note, i) => (
@@ -237,7 +237,7 @@ const DashboardPage = () => {
                 <MapPin size={100} />
               </div>
               <h3 className="text-sm font-sans font-bold tracking-widest mb-6 flex items-center gap-2 relative z-10">
-                <MapPin className="text-[#8B0000]" size={16} /> ACCESS SECTOR Node
+                <MapPin className="text-[#d4af37]" size={16} /> ACCESS SECTOR Node
               </h3>
               <div className="relative z-10">
                 <p className="text-[9px] font-sans font-bold text-white/40 uppercase tracking-[0.3em] mb-1">AUTHENTICATED TERMINAL</p>
@@ -250,7 +250,7 @@ const DashboardPage = () => {
                   </div>
                   <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl border border-white/5">
                     <span className="text-[9px] font-sans font-bold text-white/40 uppercase tracking-widest">Encryption Sequence</span>
-                    <span className="text-[11px] font-sans font-bold text-[#8B0000]">ACTIVE VAULT</span>
+                    <span className="text-[11px] font-sans font-bold text-[#d4af37]">ACTIVE VAULT</span>
                   </div>
                 </div>
               </div>
